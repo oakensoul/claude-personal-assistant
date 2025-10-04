@@ -1,25 +1,35 @@
+---
+title: "CLAUDE.md - Project Instructions"
+description: "Guidance for Claude Code when working with this repository"
+category: "meta"
+tags: ["claude", "instructions", "project-config", "development"]
+last_updated: "2025-10-04"
+status: "published"
+audience: "developers"
+---
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
-AIDE (Agentic Intelligence & Digital Environment) is a conversational, agentic operating system for managing digital life through Claude AI. This is the **public framework** repository that provides the core system anyone can use.
+AIDA (Agentic Intelligence Digital Assistant) is a conversational, agentic operating system for managing digital life through Claude AI. This is the **public framework** repository that provides the core system anyone can use.
 
 ### Three-Repo Ecosystem
 
 1. **`claude-personal-assistant`** (this repo) - Public framework with templates, personalities, and installation scripts
-2. **`dotfiles`** - Public configuration templates with generic shell configs and AIDE templates
+2. **`dotfiles`** - Public configuration templates with generic shell configs and AIDA templates
 3. **`dotfiles-private`** - Private configurations with secrets and API keys (not public)
 
 ## Architecture
 
 ### Installation Model
 
-- Framework installs to `~/.aide/` (system-level)
+- Framework installs to `~/.aida/` (system-level)
 - User configuration generates in `~/.claude/` (user-level)
 - Main entry point generated at `~/CLAUDE.md`
-- Dev mode uses symlinks from `~/.aide/` to development directory for live editing
+- Dev mode uses symlinks from `~/.aida/` to development directory for live editing
 
 ### Key Components
 
@@ -53,11 +63,11 @@ AIDE (Agentic Intelligence & Digital Environment) is a conversational, agentic o
 
 ### CLI Commands (planned)
 ```bash
-aide status          # System status
-aide personality     # Manage personality
-aide knowledge       # View knowledge base
-aide memory          # View memory
-aide help            # Show help
+aida status          # System status
+aida personality     # Manage personality
+aida knowledge       # View knowledge base
+aida memory          # View memory
+aida help            # Show help
 ```
 
 ## Design Principles

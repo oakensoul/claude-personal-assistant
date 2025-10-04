@@ -1,12 +1,22 @@
-# Claude Personal Assistant (AIDE)
+---
+title: "Claude Personal Assistant (AIDA)"
+description: "A conversational, agentic operating system for managing digital life through Claude AI"
+category: "getting-started"
+tags: ["aida", "claude", "personal-assistant", "framework", "overview"]
+last_updated: "2025-10-04"
+status: "published"
+audience: "users"
+---
 
-**Agentic Intelligence & Digital Environment**
+# Claude Personal Assistant (AIDA)
 
-A conversational, agentic operating system for managing digital life through Claude AI. Unlike traditional dotfiles (shell configurations), AIDE provides a natural language interface to manage projects, files, tasks, and daily workflows.
+**Agentic Intelligence Digital Assistant**
+
+A conversational, agentic operating system for managing digital life through Claude AI. Unlike traditional dotfiles (shell configurations), AIDA provides a natural language interface to manage projects, files, tasks, and daily workflows.
 
 ## Overview
 
-**This is the PUBLIC FRAMEWORK** - the core AIDE system that anyone can use.
+**This is the PUBLIC FRAMEWORK** - the core AIDA system that anyone can use.
 
 ### The Three-Repo System
 
@@ -14,22 +24,22 @@ This project is part of a three-repository ecosystem:
 
 1. **`claude-personal-assistant`** (this repo) - Public framework
     - Templates, personalities, installation scripts
-    - The core AIDE system everyone can use
-    - Installed to `~/.aide/`
+    - The core AIDA system everyone can use
+    - Installed to `~/.aida/`
 
 2. **`dotfiles`** - Public configuration templates
-    - Generic shell configs, git setup, AIDE templates
+    - Generic shell configs, git setup, AIDA templates
     - Serves as base layer for configurations
     - Managed with GNU Stow
 
 3. **`dotfiles-private`** - Private personal configurations
-    - Actual secrets, API keys, personal AIDE configs
+    - Actual secrets, API keys, personal AIDA configs
     - Overrides public dotfiles
     - Not publicly accessible
 
-## What is AIDE?
+## What is AIDA?
 
-AIDE turns Claude into your personal assistant for:
+AIDA turns Claude into your personal assistant for:
 - 📊 Project tracking and workflow management
 - 🗂️ Intelligent file organization
 - 📝 Daily note-taking and summaries
@@ -43,8 +53,8 @@ AIDE turns Claude into your personal assistant for:
 
 ```bash
 # Clone the framework
-git clone https://github.com/yourusername/claude-personal-assistant.git ~/.aide
-cd ~/.aide
+git clone https://github.com/yourusername/claude-personal-assistant.git ~/.aida
+cd ~/.aida
 
 # Install
 ./install.sh
@@ -66,12 +76,12 @@ Creates `~/.claude/` with your personal configuration.
 ```bash
 ./install.sh --dev
 ```
-Symlinks `~/.aide/` to your development directory for live editing.
+Symlinks `~/.aida/` to your development directory for live editing.
 
 ## Directory Structure
 
 ```
-~/.aide/                    # Framework (installed from this repo)
+~/.aida/                    # Framework (installed from this repo)
 ├── templates/             # Shareable templates
 │   ├── knowledge/
 │   ├── agents/
@@ -102,7 +112,7 @@ Choose how your assistant behaves:
 - **Sage** - Zen guide (calm, mindful)
 - **Drill Sergeant** - No-nonsense coach (intense, demanding)
 
-Switch anytime: `aide personality jarvis`
+Switch anytime: `aida personality jarvis`
 
 ## Features
 
@@ -131,29 +141,29 @@ Switch anytime: `aide personality jarvis`
 
 ## Usage
 
-AIDE works through natural conversation with Claude:
+AIDA works through natural conversation with Claude:
 
 ```
 You: "What should I focus on today?"
-AIDE: "Good morning. Project Alpha is at 80%, 
+AIDA: "Good morning. Project Alpha is at 80%,
        Project Beta needs attention..."
 
 You: "Clean up my downloads"
-AIDE: "Your Downloads folder has 47 files. 
+AIDA: "Your Downloads folder has 47 files.
        Analyzing... shall I organize them?"
 
 You: "End of day summary"
-AIDE: "You completed the API integration, fixed 2 bugs..."
+AIDA: "You completed the API integration, fixed 2 bugs..."
 ```
 
 ## CLI Commands
 
 ```bash
-aide status        # System status
-aide personality   # Manage personality
-aide knowledge     # View knowledge base
-aide memory        # View memory
-aide help          # Show help
+aida status        # System status
+aida personality   # Manage personality
+aida knowledge     # View knowledge base
+aida memory        # View memory
+aida help          # Show help
 ```
 
 ## For Developers
@@ -187,11 +197,11 @@ This framework is designed to work with dotfiles managed by GNU Stow:
 
 ```bash
 # Install framework
-git clone https://github.com/you/claude-personal-assistant.git ~/.aide
-cd ~/.aide && ./install.sh
+git clone https://github.com/you/claude-personal-assistant.git ~/.aida
+cd ~/.aida && ./install.sh
 
 # Then stow your dotfiles (if you have them)
-cd ~/dotfiles && stow aide
+cd ~/dotfiles && stow aida
 ```
 
 ## Requirements
