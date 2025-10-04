@@ -1,0 +1,41 @@
+# ShellCheck configuration for AIDA
+# https://www.shellcheck.net/wiki/
+
+# Specify shell dialect
+shell=bash
+
+# Disable specific warnings
+
+# SC2034: Variable appears unused
+# Reason: Some variables used in sourced files or for documentation
+disable=SC2034
+
+# SC2154: Variable is referenced but not assigned
+# Reason: Some variables come from sourced files or environment
+disable=SC2154
+
+# SC1090: Can't follow non-constant source
+# Reason: Dynamic sourcing is intentional in some cases
+disable=SC1090
+
+# SC1091: Not following sourced file
+# Reason: Some sourced files may not exist in linting environment
+disable=SC1091
+
+# Enable optional checks
+
+# Check for POSIX compliance
+enable=add-default-case
+
+# Check for deprecated syntax
+enable=deprecate-which
+
+# Check for unquoted variables
+enable=quote-safe-variables
+
+# Severity level
+# error: Only report errors
+# warning: Report warnings and errors (default)
+# info: Report info, warnings, and errors
+# style: Report style suggestions too
+severity=warning
