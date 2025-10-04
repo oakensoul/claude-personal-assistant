@@ -13,4 +13,11 @@ Thumbs.db
 node_modules/
 
 # User configuration
-.claude/
+.claude/settings.local.json
+.claude/workflow-config.json
+
+# Issue tracking (in-progress)
+.github/issues/in-progress/
+
+# Time tracking logs
+.time-tracking/*.md
