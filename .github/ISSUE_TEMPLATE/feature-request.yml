@@ -1,0 +1,112 @@
+name: ✨ Feature Request
+description: Suggest a new feature or functionality
+labels: ["type:feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request
+
+        Suggest new functionality for AIDA.
+
+        For improvements to **existing features**, use the **Enhancement** issue type (blank issue).
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature?
+      options:
+        - P2 (Medium - default)
+        - P0 (Critical - blocking)
+        - P1 (High - important)
+        - P3 (Low - nice to have)
+      default: 0
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Need
+      description: What problem does this solve? What need does it address?
+      placeholder: |
+        As a [user type], I want [feature] so that [benefit].
+
+        Currently, [describe the gap or problem]...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How should this work?
+      placeholder: |
+        The feature should...
+
+        User workflow:
+        1. User does X
+        2. System responds with Y
+        3. Result is Z
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What other approaches did you consider?
+      placeholder: |
+        - Option A: ...
+        - Option B: ...
+        - Why proposed solution is better: ...
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: How will we know this is complete?
+      placeholder: |
+        - [ ] User can do X
+        - [ ] System does Y
+        - [ ] Documentation updated
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Suggested Milestone
+      description: Which release should this be in?
+      options:
+        - Undecided
+        - 0.1.0 - Foundation
+        - 0.2.0 - Core Features
+        - 0.3.0 - Enhanced Memory & Agents
+        - 0.4.0 - Extended Commands & Obsidian
+        - 0.5.0 - Project Agents
+        - 0.6.0 - Knowledge Sync
+        - 1.0.0 - First Stable Release
+        - Future - Post-1.0
+      default: 0
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Estimated Complexity
+      description: How complex do you think this feature is?
+      options:
+        - Unknown
+        - XS (1-2 hours)
+        - S (2-4 hours)
+        - M (1-2 days)
+        - L (3-5 days)
+        - XL (1-2 weeks)
+      default: 0
+
+  - type: textarea
+    id: agents
+    attributes:
+      label: Suggested Agents
+      description: Which development agents should work on this?
+      placeholder: |
+        @shell-script-specialist
+        @configuration-specialist
+        @qa-engineer
