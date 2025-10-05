@@ -1,0 +1,67 @@
+# yamllint configuration for AIDA
+# https://yamllint.readthedocs.io/
+
+extends: default
+
+rules:
+  # Line length - allow up to 120 characters
+  line-length:
+    max: 120
+    level: warning
+
+  # Indentation - 2 spaces, indent sequences
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+
+  # Comments - at least 1 space from content
+  comments:
+    min-spaces-from-content: 1
+
+  # Document start (---) - make it optional
+  document-start:
+    present: false
+
+  # Trailing spaces - error
+  trailing-spaces: enable
+
+  # Empty lines - allow up to 2
+  empty-lines:
+    max: 2
+
+  # Braces - allow inline mappings (common in GitHub Actions)
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+
+  # Brackets - allow inline sequences
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+
+  # Truthy values - allow yes/no and true/false
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no', 'on', 'off']
+    check-keys: false
+
+  # Quoted strings - allow both single and double quotes
+  quoted-strings:
+    quote-type: any
+    required: false
+
+  # Key duplicates - error
+  key-duplicates: enable
+
+  # New lines - Unix style (LF)
+  new-lines:
+    type: unix
+
+ignore: |
+  .github/workflows/
+  node_modules/
+  .venv/

@@ -1,0 +1,100 @@
+name: 🐛 Bug Report
+description: Report a bug in unreleased code (development)
+labels: ["type:bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug Report
+
+        Report bugs found during development (unreleased code).
+
+        For issues in **released/production code**, use the **Defect Report** template instead.
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this bug?
+      options:
+        - P2 (Medium - default)
+        - P0 (Critical - blocking work)
+        - P1 (High - important)
+        - P3 (Low - minor issue)
+      default: 0
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Clear description of the bug
+      placeholder: What's happening that shouldn't be?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Go to '...'
+        2. Run command '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen?
+      placeholder: The command should complete successfully without errors
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happens?
+      placeholder: The command fails with error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Where are you seeing this bug?
+      placeholder: |
+        - OS: macOS Sonoma 14.5
+        - Shell: zsh 5.9
+        - Branch: feature/personality-builder
+      value: |
+        - OS:
+        - Shell:
+        - Branch:
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Estimated Complexity
+      description: How complex do you think this fix will be?
+      options:
+        - Unknown
+        - XS (1-2 hours)
+        - S (2-4 hours)
+        - M (1-2 days)
+        - L (3-5 days)
+        - XL (1-2 weeks)
+      default: 0
+
+  - type: textarea
+    id: agents
+    attributes:
+      label: Suggested Agents
+      description: Which development agents should work on this?
+      placeholder: |
+        @shell-script-specialist
+        @qa-engineer

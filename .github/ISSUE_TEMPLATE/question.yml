@@ -1,0 +1,60 @@
+name: ❓ Question
+description: Ask a question or request clarification
+labels: ["type:question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Question
+
+        Ask questions about AIDA, how to use it, or how it works.
+
+        For bug reports or feature requests, use the appropriate template.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What do you want to know?
+      placeholder: How do I...? Why does...? What is...?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What are you trying to accomplish?
+      placeholder: |
+        I'm trying to [goal]...
+
+        I've looked at [documentation/code]...
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What Have You Tried?
+      description: What have you already attempted?
+      placeholder: |
+        1. Tried [approach A] - didn't work because...
+        2. Looked at [file/doc] - didn't find...
+        3. Searched for [keywords] - found...
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: What area is your question about?
+      options:
+        - General
+        - Installation
+        - CLI
+        - Personality System
+        - Templates
+        - Agents
+        - Memory System
+        - Integration (Obsidian, MCP, Git, Stow)
+        - Security & Privacy
+        - Knowledge Sync
+        - Documentation
+      default: 0
