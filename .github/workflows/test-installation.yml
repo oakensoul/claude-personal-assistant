@@ -47,8 +47,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install bash 5.x
+        run: |
+          brew install bash
+          echo "/opt/homebrew/bin/bash" | sudo tee -a /etc/shells
+          # Use newer bash for subsequent steps
+          BASH_PATH="/opt/homebrew/bin/bash"
+          echo "BASH_PATH=$BASH_PATH" >> $GITHUB_ENV
+
       - name: Check bash version
         run: |
+          /opt/homebrew/bin/bash --version
           bash --version
 
       - name: Test help flag
@@ -63,8 +72,8 @@ jobs:
 
       - name: Test installation (automated)
         run: |
-          # Automated test with inputs
-          echo -e "testassistant\n1\n" | ./install.sh
+          # Automated test with inputs using newer bash
+          echo -e "testassistant\n1\n" | /opt/homebrew/bin/bash ./install.sh
 
       - name: Verify installation
         run: |

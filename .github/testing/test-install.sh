@@ -24,6 +24,16 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 DOCKER_DIR="${REPO_ROOT}/.github/docker"
 LOG_DIR="${SCRIPT_DIR}/logs"
 
+# Detect docker-compose command (V1 vs V2)
+if command -v docker-compose &> /dev/null; then
+    DOCKER_COMPOSE="docker-compose"
+elif docker compose version &> /dev/null; then
+    DOCKER_COMPOSE="docker compose"
+else
+    echo "Error: Neither 'docker-compose' nor 'docker compose' found"
+    exit 1
+fi
+
 # Test configuration
 VERBOSE=false
 SPECIFIC_ENV=""
@@ -120,7 +130,7 @@ build_docker_images() {
 
     local log_file="${LOG_DIR}/build-${env}.log"
 
-    if docker-compose -f "${DOCKER_DIR}/docker-compose.yml" build "${env}" > "${log_file}" 2>&1; then
+    if ${DOCKER_COMPOSE} -f "${DOCKER_DIR}/docker-compose.yml" build "${env}" > "${log_file}" 2>&1; then
         print_msg "success" "Built ${env}"
         return 0
     else
@@ -140,7 +150,7 @@ test_help_flag() {
         print_msg "info" "Testing --help flag in ${env}..."
     fi
 
-    if docker-compose -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
+    if ${DOCKER_COMPOSE} -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
         bash -c "./install.sh --help" > "${log_file}" 2>&1; then
 
         if grep -q "AIDA Framework Installation Script" "${log_file}"; then
@@ -175,7 +185,7 @@ test_dependency_validation() {
     fi
 
     # Should fail because git and rsync are missing
-    if docker-compose -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
+    if ${DOCKER_COMPOSE} -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
         bash -c "./install.sh" < /dev/null > "${log_file}" 2>&1; then
 
         print_msg "error" "[${env}] Dependency validation should have failed but didn't"
@@ -216,7 +226,7 @@ test_normal_installation() {
     fi
 
     # Provide automated input: assistant name and personality choice
-    if echo -e "testassistant\n1\n" | docker-compose -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
+    if echo -e "testassistant\n1\n" | ${DOCKER_COMPOSE} -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
         bash -c "./install.sh" > "${log_file}" 2>&1; then
 
         # Verify success message
@@ -253,7 +263,7 @@ test_dev_installation() {
     fi
 
     # Provide automated input
-    if echo -e "devtest\n2\n" | docker-compose -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
+    if echo -e "devtest\n2\n" | ${DOCKER_COMPOSE} -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
         bash -c "./install.sh --dev" > "${log_file}" 2>&1; then
 
         # Verify dev mode messages
