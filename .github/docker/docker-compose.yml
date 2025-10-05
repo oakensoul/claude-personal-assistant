@@ -1,0 +1,43 @@
+# Docker Compose for AIDA Framework Testing
+# Provides multiple test environments for installation testing
+
+services:
+  # Ubuntu 22.04 LTS - Latest stable
+  ubuntu-22:
+    build:
+      context: ../..
+      dockerfile: .github/docker/ubuntu-22.04.Dockerfile
+    volumes:
+      - ../..:/workspace:ro
+    working_dir: /workspace
+    container_name: aida-test-ubuntu-22
+
+  # Ubuntu 20.04 LTS - Older stable
+  ubuntu-20:
+    build:
+      context: ../..
+      dockerfile: .github/docker/ubuntu-20.04.Dockerfile
+    volumes:
+      - ../..:/workspace:ro
+    working_dir: /workspace
+    container_name: aida-test-ubuntu-20
+
+  # Debian 12 (Bookworm)
+  debian-12:
+    build:
+      context: ../..
+      dockerfile: .github/docker/debian-12.Dockerfile
+    volumes:
+      - ../..:/workspace:ro
+    working_dir: /workspace
+    container_name: aida-test-debian-12
+
+  # Ubuntu Minimal - Dependency validation testing
+  ubuntu-minimal:
+    build:
+      context: ../..
+      dockerfile: .github/docker/ubuntu-minimal.Dockerfile
+    volumes:
+      - ../..:/workspace:ro
+    working_dir: /workspace
+    container_name: aida-test-ubuntu-minimal

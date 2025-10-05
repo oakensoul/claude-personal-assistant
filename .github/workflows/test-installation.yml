@@ -1,0 +1,222 @@
+---
+name: Installation Tests
+
+on:
+  push:
+    branches:
+      - main
+      - 'milestone-*/**'
+    paths:
+      - 'install.sh'
+      - '.github/docker/**'
+      - '.github/testing/**'
+      - '.github/workflows/test-installation.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'install.sh'
+      - '.github/docker/**'
+      - '.github/testing/**'
+      - '.github/workflows/test-installation.yml'
+  workflow_dispatch:
+
+env:
+  # Test inputs for automated installation
+  TEST_ASSISTANT_NAME: "testassistant"
+  TEST_PERSONALITY_CHOICE: "1"  # JARVIS personality
+
+jobs:
+  # Lint and validate the installation script
+  lint:
+    name: Lint Install Script
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run shellcheck
+        run: |
+          shellcheck install.sh
+
+      - name: Check bash syntax
+        run: |
+          bash -n install.sh
+
+  # Test on macOS (native)
+  test-macos:
+    name: Test on macOS
+    runs-on: macos-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install bash 5.x
+        run: |
+          brew install bash
+          echo "/opt/homebrew/bin/bash" | sudo tee -a /etc/shells
+          # Use newer bash for subsequent steps
+          BASH_PATH="/opt/homebrew/bin/bash"
+          echo "BASH_PATH=$BASH_PATH" >> $GITHUB_ENV
+
+      - name: Check bash version
+        run: |
+          /opt/homebrew/bin/bash --version
+          bash --version
+
+      - name: Test help flag
+        run: |
+          ./install.sh --help
+
+      - name: Verify dependencies
+        run: |
+          command -v git
+          command -v rsync
+          command -v bash
+
+      - name: Test installation (automated)
+        run: |
+          # Automated test with inputs using newer bash
+          echo -e "${TEST_ASSISTANT_NAME}\n${TEST_PERSONALITY_CHOICE}\n" | /opt/homebrew/bin/bash ./install.sh
+
+      - name: Verify installation
+        run: |
+          test -d ~/.aida && echo "✓ ~/.aida exists"
+          test -d ~/.claude && echo "✓ ~/.claude exists"
+          test -f ~/CLAUDE.md && echo "✓ CLAUDE.md exists"
+
+  # Test on Windows (WSL)
+  test-windows-wsl:
+    name: Test on Windows (WSL)
+    runs-on: windows-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up WSL
+        uses: Vampire/setup-wsl@v3
+        with:
+          distribution: Ubuntu-22.04
+
+      - name: Install dependencies in WSL
+        shell: wsl-bash {0}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git rsync
+
+      - name: Check bash version
+        shell: wsl-bash {0}
+        run: |
+          bash --version
+
+      - name: Test help flag
+        shell: wsl-bash {0}
+        run: |
+          ./install.sh --help
+
+      - name: Test installation (automated)
+        shell: wsl-bash {0}
+        run: |
+          # Automated test with inputs (WSL doesn't inherit workflow env vars)
+          echo -e "testassistant\n1\n" | ./install.sh
+
+      - name: Verify installation
+        shell: wsl-bash {0}
+        run: |
+          test -d ~/.aida && echo "✓ ~/.aida exists"
+          test -d ~/.claude && echo "✓ ~/.claude exists"
+          test -f ~/CLAUDE.md && echo "✓ CLAUDE.md exists"
+
+  # Test on Linux using Docker
+  test-linux-docker:
+    name: Test on Linux (Docker)
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        environment:
+          - ubuntu-22
+          - ubuntu-20
+          - debian-12
+          - ubuntu-minimal
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run tests for ${{ matrix.environment }}
+        run: |
+          ./.github/testing/test-install.sh --env ${{ matrix.environment }} --verbose
+
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs-${{ matrix.environment }}
+          path: .github/testing/logs/
+          retention-days: 7
+
+  # Full test suite
+  test-full-suite:
+    name: Run Full Test Suite
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run full test suite
+        run: |
+          ./.github/testing/test-install.sh
+
+      - name: Upload all test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs-full-suite
+          path: .github/testing/logs/
+          retention-days: 7
+
+  # Summary job that requires all tests to pass
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+      - test-macos
+      - test-windows-wsl
+      - test-linux-docker
+      - test-full-suite
+    if: always()
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.lint.result }}" != "success" ]; then
+            echo "❌ Linting failed"
+            exit 1
+          fi
+          if [ "${{ needs.test-macos.result }}" != "success" ]; then
+            echo "❌ macOS tests failed"
+            exit 1
+          fi
+          if [ "${{ needs.test-windows-wsl.result }}" != "success" ]; then
+            echo "❌ Windows WSL tests failed"
+            exit 1
+          fi
+          if [ "${{ needs.test-linux-docker.result }}" != "success" ]; then
+            echo "❌ Linux Docker tests failed"
+            exit 1
+          fi
+          if [ "${{ needs.test-full-suite.result }}" != "success" ]; then
+            echo "❌ Full test suite failed"
+            exit 1
+          fi
+          echo "✅ All tests passed!"

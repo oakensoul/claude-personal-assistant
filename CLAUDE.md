@@ -3,7 +3,7 @@ title: "CLAUDE.md - Project Instructions"
 description: "Guidance for Claude Code when working with this repository"
 category: "meta"
 tags: ["claude", "instructions", "project-config", "development"]
-last_updated: "2025-10-04"
+last_updated: "2025-10-05"
 status: "published"
 audience: "developers"
 ---
@@ -19,8 +19,21 @@ AIDA (Agentic Intelligence Digital Assistant) is a conversational, agentic opera
 ### Three-Repo Ecosystem
 
 1. **`claude-personal-assistant`** (this repo) - Public framework with templates, personalities, and installation scripts
+   - Installs to `~/.aida/`
+   - **Standalone**: Works without dotfiles
+   - Core AI functionality
+
 2. **`dotfiles`** - Public configuration templates with generic shell configs and AIDA templates
+   - Managed with GNU Stow
+   - **Standalone**: Works without AIDA (shell/git/vim configs)
+   - **Optional**: Can integrate with AIDA if `~/.aida/` exists
+   - **Recommended entry point** for most users
+
 3. **`dotfiles-private`** - Private configurations with secrets and API keys (not public)
+   - Overlays dotfiles and/or AIDA
+   - Not standalone
+
+**Architecture**: See [docs/architecture/dotfiles-integration.md](docs/architecture/dotfiles-integration.md) for complete integration details.
 
 ## Architecture
 
@@ -84,12 +97,79 @@ aida help            # Show help
 - **Privacy-aware** - Public framework separates from private configurations
 - **Platform-focused** - macOS primary (Linux support planned)
 
+## Code Quality Standards
+
+**IMPORTANT**: All code must pass pre-commit hooks before committing. See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for comprehensive guidelines.
+
+### Markdown Guidelines
+
+**CRITICAL**: Write markdown correctly the first time. Follow these rules when creating or editing markdown files:
+
+**Lists** - Always add blank lines before/after:
+
+```markdown
+Text before list.
+
+- Item 1
+- Item 2
+
+Text after list.
+```
+
+**Code Blocks** - Always specify language and add blank lines:
+
+```markdown
+Text before code.
+
+` ``bash
+./install.sh --dev
+` ``
+
+Text after code.
+```
+
+**Common linting errors to avoid:**
+
+- **MD032**: Lists need blank lines before/after
+- **MD031**: Code fences need blank lines before/after
+- **MD040**: Code blocks need language specifiers (`bash`, `text`, `yaml`, `json`)
+- **MD012**: No consecutive blank lines (use only one)
+
+**Validation before committing:**
+
+```bash
+pre-commit run markdownlint --files path/to/file.md
+```
+
+### Shell Script Guidelines
+
+- Pass `shellcheck` with zero warnings
+- Use `set -euo pipefail` for error handling
+- Use `readonly` for constants
+- Validate all user input
+- Include comprehensive comments
+
+### YAML Guidelines
+
+- Pass `yamllint --strict`
+- Use 2-space indentation
+- No document-start markers (`---`) in docker-compose.yml
+
+**Full standards**: See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
+
 ## Current State
 
-**Early development** - The repository currently contains planning documentation. The implementation of install scripts, templates, personalities, and agent systems is pending.
+**Active development** - v0.1.1 released with foundational installation script and testing infrastructure.
+
+**Installation flows**:
+
+- **AIDA standalone**: Works without dotfiles
+- **Dotfiles-first** (recommended): Dotfiles optionally install AIDA
+- **Either order works**: Install AIDA or dotfiles first, integrate later
 
 When implementing features, maintain the separation between:
 
-- Public shareable framework (this repo)
-- User-generated configuration (~/.claude/)
-- Private sensitive data (dotfiles-private repo)
+- Public shareable framework (this repo) - standalone AIDA
+- Public dotfiles (shell/git/vim) - optional AIDA integration
+- User-generated configuration (~/.claude/) - created by AIDA install
+- Private sensitive data (dotfiles-private repo) - overlays both

@@ -12,7 +12,7 @@ audience: "users"
 
 ## Agentic Intelligence Digital Assistant
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/oakensoul/claude-personal-assistant/releases/tag/v0.1.0)
+[![Version](https://img.shields.io/badge/version-0.1.1-blue.svg)](https://github.com/oakensoul/claude-personal-assistant/releases/tag/v0.1.1)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](LICENSE)
 
 A conversational, agentic operating system for managing digital life through Claude AI. Unlike traditional dotfiles (shell configurations), AIDA provides a natural language interface to manage projects, files, tasks, and daily workflows.
@@ -55,48 +55,111 @@ AIDA turns Claude into your personal assistant for:
 
 ## Quick Start
 
+**Choose your installation path:**
+
+### Option A: AIDA-First (AI Assistant)
+
+Want the AI assistant immediately?
+
 ```bash
-# Clone the framework
 git clone https://github.com/yourusername/claude-personal-assistant.git ~/.aida
-cd ~/.aida
-
-# Install
-./install.sh
-
-# Choose your personality (JARVIS, Alfred, FRIDAY, etc.)
-# Configure your preferences
-# Done!
+cd ~/.aida && ./install.sh
 ```
 
-## What's New in v0.1.0
+### Option B: Dotfiles-First (Shell Configs + Optional AIDA)
 
-This is the initial foundational release of AIDA framework. See [CHANGELOG.md](docs/CHANGELOG.md) for full details.
+Want shell/git/vim configs with optional AI enhancement?
 
-**Highlights:**
+```bash
+git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+cd ~/dotfiles && ./install.sh
+# Prompts: Install AIDA framework? [Y/n]
+```
 
-- **Project Infrastructure**: Complete linting setup with yamllint, shellcheck, markdownlint, and gitleaks secret detection
-- **Development Agents**: Six specialized agents for framework development (shell scripting, UX design, security, configuration, integration, QA)
-- **Product Management**: AIDA product manager agent with comprehensive product strategy and roadmap capabilities
-- **GitHub Integration**: Issue forms, PR templates, and automated workflow for standardized contributions
-- **Documentation**: Comprehensive setup guides for linting, project boards, and personality builder requirements
+See [Installation Flows](#installation-flows) for detailed comparison.
 
-## Installation Options
+## Recent Changes
 
-### Normal Install (For Users)
+### [0.1.1] - 2025-10-05
+
+- **Installation Script**: Complete foundational installation script with interactive setup, validation, and dev mode support
+- **Testing Infrastructure**: Comprehensive cross-platform testing with 4 Docker environments and GitHub Actions CI/CD
+- **Enhanced Workflows**: Added 5 reviewer strategies including GitHub Copilot support
+- **Quality Improvements**: Fixed yamllint strict mode for consistency between local and CI validation
+
+### [0.1.0] - 2025-10-04
+
+- **Project Infrastructure**: Complete linting setup with yamllint, shellcheck, markdownlint, and gitleaks
+- **Development Agents**: Six specialized agents for framework development
+- **Product Management**: AIDA product manager agent with comprehensive capabilities
+- **GitHub Integration**: Issue forms, PR templates, and automated workflows
+
+See [CHANGELOG.md](docs/CHANGELOG.md) for complete version history.
+
+## Installation Flows
+
+### AIDA-First (Standalone)
+
+**Best for**: Users who want the AI assistant immediately
+
+**What you get**: AIDA framework with personality system
+
+```bash
+# Install AIDA
+git clone https://github.com/yourusername/claude-personal-assistant.git ~/.aida
+cd ~/.aida && ./install.sh
+
+# Choose personality (JARVIS, Alfred, FRIDAY, etc.)
+# Creates: ~/.aida/, ~/.claude/, ~/CLAUDE.md
+
+# Optionally add dotfiles later
+git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+cd ~/dotfiles && stow */
+```
+
+### Dotfiles-First (Recommended)
+
+**Best for**: Users who want shell configs with optional AI enhancement
+
+**What you get**: Shell/git/vim configs + optional AIDA
+
+```bash
+# Install dotfiles (includes option for AIDA)
+git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+cd ~/dotfiles && ./install.sh
+
+# Prompts:
+#   - Install shell configs? [Y/n]
+#   - Install git configs? [Y/n]
+#   - Install AIDA framework? [Y/n]
+#     → If yes: clones AIDA and runs install.sh
+#     → If no: shell/git/vim only, add AIDA later
+
+# Creates: shell/git/vim configs
+# Optionally: ~/.aida/, ~/.claude/, ~/CLAUDE.md
+```
+
+### Install Modes
+
+**Normal Mode** (for users):
 
 ```bash
 ./install.sh
 ```
 
-Creates `~/.claude/` with your personal configuration.
+- Copies framework files to `~/.aida/`
+- Generates `~/.claude/` user configuration
+- Creates `~/CLAUDE.md` entry point
 
-### Dev Mode (For Contributors)
+**Dev Mode** (for contributors):
 
 ```bash
 ./install.sh --dev
 ```
 
-Symlinks `~/.aida/` to your development directory for live editing.
+- Symlinks `~/.aida/` to development directory
+- Enables live editing without reinstall
+- For framework development only
 
 ## Directory Structure
 
@@ -217,16 +280,35 @@ aida help          # Show help
 
 ## Integration with Dotfiles
 
-This framework is designed to work with dotfiles managed by GNU Stow:
+AIDA works standalone or integrated with dotfiles. Both approaches are supported:
+
+### Standalone AIDA (No Dotfiles)
 
 ```bash
-# Install framework
+# Just install AIDA
 git clone https://github.com/you/claude-personal-assistant.git ~/.aida
 cd ~/.aida && ./install.sh
-
-# Then stow your dotfiles (if you have them)
-cd ~/dotfiles && stow aida
+# Done! AIDA works without dotfiles
 ```
+
+### AIDA + Dotfiles Integration
+
+```bash
+# Option 1: Install dotfiles (prompts for AIDA)
+cd ~/dotfiles && ./install.sh
+
+# Option 2: Install AIDA first, add dotfiles later
+cd ~/.aida && ./install.sh
+cd ~/dotfiles && stow */  # includes AIDA integration
+
+# Option 3: Add AIDA to existing dotfiles install
+cd ~/.aida && ./install.sh  # install AIDA
+cd ~/dotfiles && stow aida  # integrate with dotfiles
+```
+
+**Smart detection**: Dotfiles automatically detects if `~/.aida/` exists and integrates accordingly.
+
+See [Dotfiles Integration Architecture](docs/architecture/dotfiles-integration.md) for complete details.
 
 ## Requirements
 

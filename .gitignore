@@ -21,3 +21,6 @@ node_modules/
 
 # Time tracking logs
 .time-tracking/*.md
+
+# Test logs (build artifacts)
+.github/testing/logs/
