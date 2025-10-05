@@ -324,7 +324,7 @@ pre-commit run yamllint --all-files
 
 ## Markdown Standards
 
-**CRITICAL**: All markdown files MUST pass markdownlint pre-commit hooks. Write markdown correctly the first time - fixing linting errors wastes time.
+**Required for consistency:** All markdown files should pass markdownlint pre-commit hooks. Writing markdown correctly from the start helps keep our codebase clean and saves everyone time!
 
 ### Lists
 
