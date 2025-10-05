@@ -84,59 +84,65 @@ aida help            # Show help
 - **Privacy-aware** - Public framework separates from private configurations
 - **Platform-focused** - macOS primary (Linux support planned)
 
-## Markdown Guidelines
+## Code Quality Standards
 
-All markdown files must pass markdownlint pre-commit hooks. Follow these rules when creating or editing markdown:
+**IMPORTANT**: All code must pass pre-commit hooks before committing. See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for comprehensive guidelines.
 
-### Lists
+### Markdown Guidelines
 
-- Always add blank line before list
-- Always add blank line after list
-- Applies to both ordered and unordered lists
+**CRITICAL**: Write markdown correctly the first time. Follow these rules when creating or editing markdown files:
 
-### Code Blocks
+**Lists** - Always add blank lines before/after:
 
-Always specify language and add spacing:
+```markdown
+Text before list.
 
-```bash
-# Good - has language, blank lines before/after
-command here
+- Item 1
+- Item 2
+
+Text after list.
 ```
 
-Bad examples:
+**Code Blocks** - Always specify language and add blank lines:
 
-- No language specified: ` ``` ` without language
-- No blank line before fence
-- No blank line after fence
+```markdown
+Text before code.
 
-### Headings
+` ``bash
+./install.sh --dev
+` ``
 
-- Use proper heading hierarchy (`####` for subsections)
-- Never use bold (`**text**`) or emphasis (`*text*`) as heading substitutes
-- Add blank line before heading
-- Add blank line after heading
+Text after code.
+```
 
-### Files
+**Common linting errors to avoid:**
 
-- End with single newline (LF line ending)
-- No CRLF (Windows) line endings
-- Use Unix (LF) format
+- **MD032**: Lists need blank lines before/after
+- **MD031**: Code fences need blank lines before/after
+- **MD040**: Code blocks need language specifiers (`bash`, `text`, `yaml`, `json`)
+- **MD012**: No consecutive blank lines (use only one)
 
-### Validation
-
-Before committing, verify markdown passes:
+**Validation before committing:**
 
 ```bash
 pre-commit run markdownlint --files path/to/file.md
 ```
 
-Common linting errors to avoid:
+### Shell Script Guidelines
 
-- **MD032**: Lists need blank lines before/after
-- **MD031**: Code fences need blank lines before/after
-- **MD040**: Code blocks need language specifiers
-- **MD036**: Don't use emphasis as headings
-- **MD022**: Headings need blank lines before/after
+- Pass `shellcheck` with zero warnings
+- Use `set -euo pipefail` for error handling
+- Use `readonly` for constants
+- Validate all user input
+- Include comprehensive comments
+
+### YAML Guidelines
+
+- Pass `yamllint --strict`
+- Use 2-space indentation
+- No document-start markers (`---`) in docker-compose.yml
+
+**Full standards**: See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 ## Current State
 
