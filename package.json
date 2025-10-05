@@ -1,0 +1,33 @@
+{
+  "name": "aida-framework",
+  "version": "0.1.0",
+  "description": "Agentic Intelligence Digital Assistant - A conversational AI operating system for managing digital life through Claude AI",
+  "type": "module",
+  "keywords": [
+    "aida",
+    "claude",
+    "ai-assistant",
+    "personal-assistant",
+    "framework",
+    "conversational-ai",
+    "task-management",
+    "project-management"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oakensoul/claude-personal-assistant.git"
+  },
+  "bugs": {
+    "url": "https://github.com/oakensoul/claude-personal-assistant/issues"
+  },
+  "homepage": "https://github.com/oakensoul/claude-personal-assistant#readme",
+  "author": "oakensoul",
+  "license": "AGPL-3.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "lint": "echo 'Linting not yet configured'",
+    "test": "echo 'Tests not yet configured'"
+  }
+}

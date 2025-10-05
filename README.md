@@ -12,6 +12,9 @@ audience: "users"
 
 **Agentic Intelligence Digital Assistant**
 
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/oakensoul/claude-personal-assistant/releases/tag/v0.1.0)
+[![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](LICENSE)
+
 A conversational, agentic operating system for managing digital life through Claude AI. Unlike traditional dotfiles (shell configurations), AIDA provides a natural language interface to manage projects, files, tasks, and daily workflows.
 
 ## Overview
@@ -63,6 +66,17 @@ cd ~/.aida
 # Configure your preferences
 # Done!
 ```
+
+## What's New in v0.1.0
+
+This is the initial foundational release of AIDA framework. See [CHANGELOG.md](docs/CHANGELOG.md) for full details.
+
+**Highlights:**
+- **Project Infrastructure**: Complete linting setup with yamllint, shellcheck, markdownlint, and gitleaks secret detection
+- **Development Agents**: Six specialized agents for framework development (shell scripting, UX design, security, configuration, integration, QA)
+- **Product Management**: AIDA product manager agent with comprehensive product strategy and roadmap capabilities
+- **GitHub Integration**: Issue forms, PR templates, and automated workflow for standardized contributions
+- **Documentation**: Comprehensive setup guides for linting, project boards, and personality builder requirements
 
 ## Installation Options
 
