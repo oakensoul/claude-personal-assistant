@@ -188,6 +188,67 @@ Before considering any documentation complete, verify:
 - [ ] `audience` is one of: users, developers, both
 - [ ] Optional fields (version, author, etc.) are included when relevant
 
+### ⚠️ MANDATORY MARKDOWN LINTING RULES ⚠️
+
+**CRITICAL: All markdown files MUST pass markdownlint pre-commit hooks.**
+
+Every markdown file must follow these linting rules:
+
+#### Lists
+
+- ALWAYS add blank line before list
+- ALWAYS add blank line after list
+- Applies to both ordered and unordered lists
+
+#### Code Blocks
+
+- ALWAYS specify language for code blocks (bash, yaml, json, text, markdown, etc.)
+- ALWAYS add blank line before code fence
+- ALWAYS add blank line after code fence
+
+Good example:
+
+```bash
+# Code example with language and spacing
+command here
+```
+
+Bad examples:
+
+- ` ``` ` without language specified
+- No blank line before fence
+- No blank line after fence
+
+#### Headings
+
+- Use proper heading hierarchy (`####` for subsections)
+- NEVER use bold (`**text**`) or emphasis (`*text*`) as heading substitutes
+- ALWAYS add blank line before heading
+- ALWAYS add blank line after heading
+
+#### Files
+
+- Files MUST end with single newline (LF line ending)
+- NO CRLF (Windows) line endings
+- Use Unix (LF) format exclusively
+
+#### Validation
+
+Before completing documentation, verify it passes linting:
+
+```bash
+pre-commit run markdownlint --files path/to/file.md
+```
+
+#### Common Linting Errors to Avoid
+
+- **MD032**: Lists need blank lines before/after
+- **MD031**: Code fences need blank lines before/after
+- **MD040**: Code blocks need language specifiers
+- **MD036**: Don't use emphasis as headings (use `####` instead)
+- **MD022**: Headings need blank lines before/after
+- **MD012**: No multiple consecutive blank lines
+
 ## Writing Style Guidelines
 
 ### Tone and Voice
@@ -264,6 +325,7 @@ All documentation must meet these standards:
 ## Error Prevention
 
 ### Common Mistakes to Avoid
+
 ❌ Creating markdown files without frontmatter
 ❌ Using incomplete or incorrect frontmatter format
 ❌ Missing required frontmatter fields
@@ -271,14 +333,28 @@ All documentation must meet these standards:
 ❌ Forgetting to update last_updated when editing
 ❌ Using invalid status or audience values
 ❌ Creating documentation without proper categorization
+❌ Omitting blank lines before/after lists
+❌ Omitting blank lines before/after code fences
+❌ Not specifying language for code blocks
+❌ Using bold/emphasis as headings instead of `####`
+❌ Missing blank lines before/after headings
+❌ Using CRLF line endings instead of LF
 
 ### Correct Approach
+
 ✅ Always start with complete YAML frontmatter
 ✅ Include all required fields
 ✅ Use proper YAML format and syntax
 ✅ Update last_updated on every edit
 ✅ Choose appropriate category and tags
 ✅ Validate frontmatter before completing task
+✅ Add blank lines before/after all lists
+✅ Add blank lines before/after all code fences
+✅ Specify language for every code block
+✅ Use proper heading hierarchy (####, not bold)
+✅ Add blank lines before/after headings
+✅ End files with single LF newline
+✅ Run markdownlint before completion
 
 ## Integration with AIDE
 
@@ -313,4 +389,8 @@ Documentation quality is measured by:
 
 ---
 
-**Remember**: Frontmatter is not optional. Every markdown file MUST have complete frontmatter metadata. This is the first and most important rule of documentation.
+**Remember**:
+
+1. Frontmatter is not optional - every markdown file MUST have complete frontmatter metadata
+2. Markdown linting is not optional - every file MUST pass markdownlint pre-commit hooks
+3. These are the two most critical rules of documentation

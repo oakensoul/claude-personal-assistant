@@ -3,7 +3,7 @@ title: "CLAUDE.md - Project Instructions"
 description: "Guidance for Claude Code when working with this repository"
 category: "meta"
 tags: ["claude", "instructions", "project-config", "development"]
-last_updated: "2025-10-04"
+last_updated: "2025-10-05"
 status: "published"
 audience: "developers"
 ---
@@ -83,6 +83,60 @@ aida help            # Show help
 - **Modularity** - Pluggable personalities and agents
 - **Privacy-aware** - Public framework separates from private configurations
 - **Platform-focused** - macOS primary (Linux support planned)
+
+## Markdown Guidelines
+
+All markdown files must pass markdownlint pre-commit hooks. Follow these rules when creating or editing markdown:
+
+### Lists
+
+- Always add blank line before list
+- Always add blank line after list
+- Applies to both ordered and unordered lists
+
+### Code Blocks
+
+Always specify language and add spacing:
+
+```bash
+# Good - has language, blank lines before/after
+command here
+```
+
+Bad examples:
+
+- No language specified: ` ``` ` without language
+- No blank line before fence
+- No blank line after fence
+
+### Headings
+
+- Use proper heading hierarchy (`####` for subsections)
+- Never use bold (`**text**`) or emphasis (`*text*`) as heading substitutes
+- Add blank line before heading
+- Add blank line after heading
+
+### Files
+
+- End with single newline (LF line ending)
+- No CRLF (Windows) line endings
+- Use Unix (LF) format
+
+### Validation
+
+Before committing, verify markdown passes:
+
+```bash
+pre-commit run markdownlint --files path/to/file.md
+```
+
+Common linting errors to avoid:
+
+- **MD032**: Lists need blank lines before/after
+- **MD031**: Code fences need blank lines before/after
+- **MD040**: Code blocks need language specifiers
+- **MD036**: Don't use emphasis as headings
+- **MD022**: Headings need blank lines before/after
 
 ## Current State
 
