@@ -19,7 +19,13 @@
 set -euo pipefail
 
 # Script version
-readonly VERSION="0.1.1"
+VERSION_FILE="${SCRIPT_DIR}/VERSION"
+if [[ -f "$VERSION_FILE" ]]; then
+    readonly VERSION="$(cat "$VERSION_FILE")"
+else
+    echo -e "${RED}Error:${NC} VERSION file not found at $VERSION_FILE"
+    exit 1
+fi
 
 # Installation directories
 readonly AIDA_DIR="${HOME}/.aida"
