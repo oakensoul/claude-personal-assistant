@@ -198,6 +198,7 @@ aide help            # Show help and usage
 - Respect umask settings
 
 **File Operations**
+
 - Safe file creation (mktemp for temporary files)
 - Atomic operations where possible
 - Backup before destructive operations
@@ -205,13 +206,15 @@ aide help            # Show help and usage
 
 ### Text Processing
 
-**Built-in Tools**
+#### Built-in Tools
+
 - grep for pattern matching
 - sed for stream editing
 - awk for text processing
 - cut, tr, paste for text manipulation
 
-**String Operations**
+#### String Operations
+
 - Parameter expansion for string manipulation
 - Pattern matching and replacement
 - Case conversion and trimming
@@ -219,13 +222,15 @@ aide help            # Show help and usage
 
 ### System Integration
 
-**Process Management**
+#### Process Management
+
 - Background processes and job control
 - Signal handling (SIGINT, SIGTERM, etc.)
 - Exit codes and error propagation
 - Process substitution
 
-**Environment Management**
+#### Environment Management
+
 - Environment variable handling
 - Configuration file parsing
 - Shell configuration (bashrc, zshrc)
