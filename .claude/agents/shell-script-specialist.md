@@ -26,26 +26,30 @@ Invoke the `shell-script-specialist` subagent when you need to:
 
 ### 1. Installation Script Development
 
-**AIDE Installation System**
+#### AIDE Installation System
+
 - Implement dual-mode installation (normal and --dev mode)
 - Normal mode: Copy framework to ~/.aide/ and generate configs in ~/.claude/
 - Dev mode: Create symlinks from ~/.aide/ to development directory for live editing
 - Generate main entry point at ~/CLAUDE.md
 - Handle existing installations and upgrade paths
 
-**Directory Structure Management**
+#### Directory Structure Management
+
 - Create required directories: ~/.aide/, ~/.claude/, ~/.claude/agents/, etc.
 - Set appropriate permissions (755 for directories, 644 for files, 755 for executables)
 - Handle nested directory creation with mkdir -p
 - Validate directory structure post-installation
 
-**File Operations**
+#### File Operations
+
 - Copy templates from framework to user configuration
 - Create symlinks for dev mode with proper validation
 - Handle file conflicts and backup existing configurations
 - Preserve file metadata during copy operations
 
-**Configuration Generation**
+#### Configuration Generation
+
 - Process template files with variable substitution
 - Generate personality configurations from YAML
 - Create agent definitions with proper frontmatter
@@ -53,7 +57,8 @@ Invoke the `shell-script-specialist` subagent when you need to:
 
 ### 2. CLI Tool Development
 
-**Command Structure**
+#### Command Structure
+
 ```bash
 aide status          # System status and health checks
 aide personality     # Manage personality (switch, list, info)
@@ -64,19 +69,22 @@ aide update          # Update AIDE framework
 aide help            # Show help and usage
 ```
 
-**Interactive Prompts**
+#### Interactive Prompts
+
 - Use `read` for user input with proper validation
 - Implement menu systems with numbered options
 - Create confirmation prompts for destructive operations
 - Provide helpful defaults and examples
 
-**Argument Parsing**
+#### Argument Parsing
+
 - Parse command-line arguments and flags
 - Support long-form (--flag) and short-form (-f) options
 - Validate required vs optional arguments
 - Provide clear usage messages
 
-**Output Formatting**
+#### Output Formatting
+
 - Use colors for better readability (with tput or ANSI codes)
 - Create table-like output with column alignment
 - Implement progress indicators for long operations
@@ -84,25 +92,29 @@ aide help            # Show help and usage
 
 ### 3. Cross-Platform Compatibility
 
-**macOS vs Linux Differences**
+#### macOS vs Linux Differences
+
 - Handle different versions of core utilities (GNU vs BSD)
 - Account for different default shells (bash vs zsh)
 - Test path handling across different filesystems
 - Handle case-sensitive vs case-insensitive filesystems
 
-**Shell Compatibility**
+#### Shell Compatibility
+
 - Ensure bash 3.2+ compatibility (macOS default)
 - Support zsh for macOS users
 - Use POSIX-compatible constructs where possible
 - Avoid bashisms when broader compatibility needed
 
-**Dependency Detection**
+#### Dependency Detection
+
 - Check for required commands (git, stow, etc.)
 - Provide helpful installation instructions when missing
 - Gracefully degrade features if optional deps missing
 - Version check for critical dependencies
 
-**Platform-Specific Features**
+#### Platform-Specific Features
+
 - Use appropriate package managers (brew for macOS, apt/yum for Linux)
 - Handle different path conventions (/usr/local vs /opt)
 - Account for macOS security features (Gatekeeper, quarantine)
@@ -110,25 +122,29 @@ aide help            # Show help and usage
 
 ### 4. Error Handling & Validation
 
-**Robust Error Checking**
+#### Robust Error Checking
+
 - Check exit codes after every critical operation
 - Use `set -euo pipefail` for strict error handling
 - Implement trap handlers for cleanup on error/interrupt
 - Provide context in error messages (what failed, why, how to fix)
 
-**Input Validation**
+#### Input Validation
+
 - Validate paths exist before operations
 - Check file permissions before reading/writing
 - Verify command availability before execution
 - Sanitize user input to prevent injection
 
-**Edge Case Handling**
+#### Edge Case Handling
+
 - Handle spaces and special characters in paths
 - Deal with symlink loops and circular references
 - Manage concurrent installations (lock files)
 - Handle partial/interrupted installations
 
-**Graceful Degradation**
+#### Graceful Degradation
+
 - Continue with warnings for non-critical failures
 - Provide fallback options when features unavailable
 - Implement rollback for failed installations
@@ -136,25 +152,29 @@ aide help            # Show help and usage
 
 ### 5. Best Practices & Code Quality
 
-**Script Organization**
+#### Script Organization
+
 - Use functions for reusable logic
 - Keep main script flow clean and readable
 - Separate configuration from logic
 - Document complex operations with comments
 
-**Variable Management**
+#### Variable Management
+
 - Use uppercase for environment/global variables
 - Use lowercase for local variables
 - Quote all variable expansions to prevent word splitting
 - Use `readonly` for constants
 
-**Code Style**
+#### Code Style
+
 - Follow ShellCheck recommendations
 - Use consistent indentation (2 or 4 spaces)
 - Name functions and variables descriptively
 - Keep functions focused and single-purpose
 
-**Testing & Validation**
+#### Testing & Validation
+
 - Test on both macOS and Linux
 - Test with different shell versions (bash 3.2, bash 5, zsh)
 - Validate with shellcheck for common issues
@@ -164,20 +184,23 @@ aide help            # Show help and usage
 
 ### Shell Scripting
 
-**Bash/Zsh Features**
+#### Bash/Zsh Features
+
 - Arrays and associative arrays
 - Parameter expansion and string manipulation
 - Process substitution and command substitution
 - Conditional expressions and pattern matching
 - Functions and variable scope
 
-**POSIX Compliance**
+#### POSIX Compliance
+
 - Understand POSIX shell vs Bash extensions
 - Use portable constructs when needed
 - Know when to use bash-specific features
 - Document non-portable code clearly
 
-**Advanced Techniques**
+#### Advanced Techniques
+
 - Here documents and here strings
 - Trap handlers for cleanup and signal handling
 - Co-processes and named pipes
@@ -185,19 +208,22 @@ aide help            # Show help and usage
 
 ### File System Operations
 
-**Path Handling**
+#### Path Handling
+
 - Absolute vs relative path resolution
 - Tilde expansion and parameter expansion
 - Handling spaces and special characters
 - Symlink creation and validation
 
-**Permissions & Ownership**
+#### Permissions & Ownership
+
 - Set proper file permissions (chmod)
 - Manage ownership (chown) when needed
 - Handle setuid/setgid when appropriate
 - Respect umask settings
 
-**File Operations**
+#### File Operations
+
 - Safe file creation (mktemp for temporary files)
 - Atomic operations where possible
 - Backup before destructive operations
@@ -205,13 +231,15 @@ aide help            # Show help and usage
 
 ### Text Processing
 
-**Built-in Tools**
+#### Built-in Tools
+
 - grep for pattern matching
 - sed for stream editing
 - awk for text processing
 - cut, tr, paste for text manipulation
 
-**String Operations**
+#### String Operations
+
 - Parameter expansion for string manipulation
 - Pattern matching and replacement
 - Case conversion and trimming
@@ -219,13 +247,15 @@ aide help            # Show help and usage
 
 ### System Integration
 
-**Process Management**
+#### Process Management
+
 - Background processes and job control
 - Signal handling (SIGINT, SIGTERM, etc.)
 - Exit codes and error propagation
 - Process substitution
 
-**Environment Management**
+#### Environment Management
+
 - Environment variable handling
 - Configuration file parsing
 - Shell configuration (bashrc, zshrc)
@@ -389,7 +419,7 @@ The shell-script-specialist agent maintains extensive knowledge at `.claude/agen
 
 ### Knowledge Organization
 
-```
+```bash
 .claude/agents/shell-script-specialist/knowledge/
 ├── installation/
 │   ├── install-script-architecture.md
@@ -421,18 +451,21 @@ The shell-script-specialist agent maintains extensive knowledge at `.claude/agen
 ## Integration with AIDE Workflow
 
 ### Installation Integration
+
 - Coordinate with configuration-specialist for YAML template processing
 - Work with integration-specialist for GNU Stow setup
 - Ensure privacy-security-auditor reviews installation security
 - Collaborate with shell-systems-ux-designer for CLI UX
 
 ### Development Workflow
+
 - Dev mode enables live testing without reinstallation
 - Symlinks allow real-time editing of framework files
 - Maintains separation between framework and user config
 - Supports rapid iteration and testing
 
 ### Testing & Validation
+
 - Test installation on clean macOS system
 - Test installation on clean Linux system
 - Validate dev mode symlink creation
@@ -441,6 +474,7 @@ The shell-script-specialist agent maintains extensive knowledge at `.claude/agen
 ## Best Practices
 
 ### Installation Script Best Practices
+
 1. **Always check for existing installations before proceeding**
 2. **Create backups before modifying existing configurations**
 3. **Validate directory structure after creation**
@@ -448,6 +482,7 @@ The shell-script-specialist agent maintains extensive knowledge at `.claude/agen
 5. **Test rollback procedures for failed installations**
 
 ### CLI Development Best Practices
+
 1. **Provide helpful usage messages with examples**
 2. **Use consistent command naming and structure**
 3. **Implement --help for all commands and subcommands**
@@ -455,6 +490,7 @@ The shell-script-specialist agent maintains extensive knowledge at `.claude/agen
 5. **Use exit codes correctly (0 for success, non-zero for errors)**
 
 ### Cross-Platform Best Practices
+
 1. **Test on both macOS and Linux before releasing**
 2. **Document platform-specific behavior clearly**
 3. **Use portable constructs unless platform-specific needed**
@@ -462,6 +498,7 @@ The shell-script-specialist agent maintains extensive knowledge at `.claude/agen
 5. **Version-check critical dependencies**
 
 ### Error Handling Best Practices
+
 1. **Always check exit codes of critical operations**
 2. **Provide actionable error messages (what, why, how to fix)**
 3. **Use trap handlers for cleanup on error/interrupt**
@@ -576,6 +613,7 @@ get_canonical_path() {
 ## Success Metrics
 
 Scripts developed by this agent should achieve:
+
 - **Reliability**: 100% success rate on supported platforms (macOS, Linux)
 - **Error Handling**: Graceful handling of all edge cases with helpful messages
 - **Portability**: Works on bash 3.2+ and zsh without modification
