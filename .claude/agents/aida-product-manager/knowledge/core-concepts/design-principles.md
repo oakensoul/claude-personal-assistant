@@ -22,6 +22,7 @@ AIDA should feel like talking to a capable assistant, not typing commands into a
 ### Examples
 
 **Good (Natural Language)**:
+
 - "Help me start my day"
 - "What should I focus on today?"
 - "Remember that I prefer TypeScript for new projects"
@@ -29,6 +30,7 @@ AIDA should feel like talking to a capable assistant, not typing commands into a
 - "Switch to my work personality"
 
 **Bad (Command-Driven)**:
+
 - `aida morning-routine --execute`
 - `aida tasks --priority high --list`
 - `aida config set preferred_language typescript`
@@ -46,12 +48,14 @@ AIDA should feel like talking to a capable assistant, not typing commands into a
 ### Trade-offs
 
 **Pros**:
+
 - Lower learning curve for new users
 - More flexible and forgiving interface
 - Feels more like AI assistant, less like tool
 - Aligns with AIDA's "conversational OS" vision
 
 **Cons**:
+
 - Harder to script/automate (though still possible)
 - Ambiguity in parsing intent
 - May be slower for power users who know exact commands
@@ -61,6 +65,7 @@ AIDA should feel like talking to a capable assistant, not typing commands into a
 ### Validation
 
 This principle is working when:
+
 - New users can accomplish tasks without reading documentation
 - Users prefer conversational interaction over command flags
 - Onboarding friction is low
@@ -77,12 +82,14 @@ AIDA remembers previous conversations, decisions, preferences, and context. Each
 ### Examples
 
 **Good (Persistent Context)**:
+
 - "Continue working on that API design we discussed yesterday"
 - "Use the same approach you suggested last time"
 - "What projects am I currently working on?"
 - "Why did we decide to use PostgreSQL over MongoDB?" (recalls past decision)
 
 **Bad (Stateless)**:
+
 - Requiring user to re-explain project context each session
 - Forgetting previous decisions and suggesting same thing again
 - Not knowing what user was working on recently
@@ -99,18 +106,21 @@ AIDA remembers previous conversations, decisions, preferences, and context. Each
 ### Trade-offs
 
 **Pros**:
+
 - Users feel AIDA "knows them"
 - No repeating context each session
 - Decisions and preferences persist
 - AI gets better at helping over time
 
 **Cons**:
+
 - Memory storage and retrieval complexity
 - Privacy concerns (what's being remembered?)
 - Potential for stale or incorrect memory
 - Performance impact of large memory systems
 
 **Resolution**:
+
 - Make memory transparent (users can view/edit)
 - Provide memory controls (delete, categorize, export)
 - Implement memory decay (old context fades)
@@ -119,6 +129,7 @@ AIDA remembers previous conversations, decisions, preferences, and context. Each
 ### Validation
 
 This principle is working when:
+
 - Users reference past conversations without re-explaining
 - AIDA proactively uses context from previous sessions
 - Users trust memory system (feel it's accurate)
@@ -135,6 +146,7 @@ AIDA should be composable - users can customize personalities, add agents, and e
 ### Examples
 
 **Good (Modular)**:
+
 - Switch between JARVIS (professional) and Drill Sergeant (motivational)
 - Add custom "kubernetes-expert" agent for k8s help
 - Community-contributed agents can be installed via config
@@ -142,6 +154,7 @@ AIDA should be composable - users can customize personalities, add agents, and e
 - Plugin system for extending AIDA (future)
 
 **Bad (Monolithic)**:
+
 - Hardcoded personality in core code
 - Adding agent requires forking AIDA repo
 - No way to customize behavior without code changes
@@ -159,6 +172,7 @@ AIDA should be composable - users can customize personalities, add agents, and e
 ### Trade-offs
 
 **Pros**:
+
 - Users can customize AIDA to fit needs
 - Community can contribute agents/personalities
 - No vendor lock-in to specific behaviors
@@ -166,12 +180,14 @@ AIDA should be composable - users can customize personalities, add agents, and e
 - Shareability increases adoption
 
 **Cons**:
+
 - Complexity in architecture (plugin systems are hard)
 - Quality control for community contributions
 - Testing burden (many configurations to test)
 - Documentation overhead (each extension needs docs)
 
 **Resolution**:
+
 - Start with simple plugin model (YAML configs)
 - Curate official personalities/agents
 - Community marketplace (future) with ratings/reviews
@@ -180,6 +196,7 @@ AIDA should be composable - users can customize personalities, add agents, and e
 ### Validation
 
 This principle is working when:
+
 - Users customize AIDA beyond defaults
 - Community contributions emerge (shared personalities/agents)
 - Users don't need to fork AIDA to customize
@@ -196,6 +213,7 @@ AIDA framework is public and shareable, but user data and configurations remain 
 ### Examples
 
 **Good (Privacy-Aware)**:
+
 - Framework code in public repo (claude-personal-assistant)
 - User config in private directory (~/.claude/)
 - Secrets in separate private repo (dotfiles-private)
@@ -204,6 +222,7 @@ AIDA framework is public and shareable, but user data and configurations remain 
 - User control over data retention and deletion
 
 **Bad (Privacy-Ignorant)**:
+
 - Mixing user data with framework code
 - No separation between public and private
 - Unclear what data is sent to cloud
@@ -222,6 +241,7 @@ AIDA framework is public and shareable, but user data and configurations remain 
 ### Trade-offs
 
 **Pros**:
+
 - Users trust AIDA with sensitive data
 - Can work on proprietary code without concerns
 - Framework can be open-source while keeping user data private
@@ -229,12 +249,14 @@ AIDA framework is public and shareable, but user data and configurations remain 
 - Users control their data
 
 **Cons**:
+
 - Architectural complexity (managing separation)
 - Setup complexity (multiple repos/directories)
 - Harder to provide cloud features (sync, backup)
 - Users responsible for data management
 
 **Resolution**:
+
 - Clear documentation on architecture
 - Install script handles setup automatically
 - Optional cloud features (opt-in)
@@ -243,6 +265,7 @@ AIDA framework is public and shareable, but user data and configurations remain 
 ### Validation
 
 This principle is working when:
+
 - Users trust AIDA with proprietary/sensitive work
 - Privacy-conscious orgs adopt AIDA
 - Users understand what data is stored where
@@ -260,6 +283,7 @@ AIDA prioritizes macOS as primary platform (where most development happens) with
 ### Examples
 
 **Good (Platform-Focused)**:
+
 - macOS-first installation (uses Homebrew, assumes zsh/bash)
 - Leverage macOS features (Spotlight integration future)
 - Test primarily on macOS, ensure Linux compatibility
@@ -267,6 +291,7 @@ AIDA prioritizes macOS as primary platform (where most development happens) with
 - Platform-specific optimizations where beneficial
 
 **Bad (Platform-Agnostic Compromise)**:
+
 - Lowest-common-denominator features across all OSes
 - Windows quirks holding back macOS/Linux features
 - Generic installation that works poorly everywhere
@@ -284,6 +309,7 @@ AIDA prioritizes macOS as primary platform (where most development happens) with
 ### Trade-offs
 
 **Pros**:
+
 - Higher quality on supported platforms
 - Faster development (not solving Windows quirks)
 - Can leverage platform-specific features
@@ -291,12 +317,14 @@ AIDA prioritizes macOS as primary platform (where most development happens) with
 - 90% of target users on macOS/Linux anyway
 
 **Cons**:
+
 - Windows users excluded (until post-1.0)
 - Some potential users turned away
 - Community contributions may require Windows support
 - Documentation must be clear about platform support
 
 **Resolution**:
+
 - Be transparent about platform support
 - Welcome community contributions for Windows (post-1.0)
 - Focus on excellence on supported platforms
@@ -305,6 +333,7 @@ AIDA prioritizes macOS as primary platform (where most development happens) with
 ### Validation
 
 This principle is working when:
+
 - macOS installation is smooth and error-free
 - Linux users report good compatibility
 - No Windows-specific bugs blocking macOS/Linux users
@@ -316,6 +345,7 @@ This principle is working when:
 ### In Product Decisions
 
 When evaluating a feature request:
+
 1. Does this align with natural language principle? (conversational?)
 2. How does this interact with memory/persistence? (stateful?)
 3. Can this be modular/extensible? (pluggable?)
@@ -325,6 +355,7 @@ When evaluating a feature request:
 ### In Technical Decisions
 
 When evaluating technical approach:
+
 1. Natural language: Does this make interaction more conversational?
 2. Persistence: How does this integrate with memory system?
 3. Modularity: Is this extensible without core changes?
@@ -334,6 +365,7 @@ When evaluating technical approach:
 ### Resolving Conflicts
 
 When principles conflict, prioritize:
+
 1. **Privacy** (non-negotiable - user data security)
 2. **Persistence** (core differentiator - memory is key)
 3. **Natural language** (user experience - conversational is vision)
@@ -343,12 +375,14 @@ When principles conflict, prioritize:
 ## Evolution of Principles
 
 These principles should be reviewed and refined:
+
 - After each major milestone (0.1.0, 0.2.0, etc.)
 - When significant user feedback challenges assumptions
 - When technical constraints change (new platforms, new AI capabilities)
 - Annually for strategic alignment
 
 Principles can evolve, but changes should be:
+
 - Deliberate and documented
 - Based on evidence (user feedback, data)
 - Communicated clearly to community
@@ -357,6 +391,7 @@ Principles can evolve, but changes should be:
 ## Anti-Patterns (What to Avoid)
 
 ### Anti-Pattern 1: Feature Bloat
+
 Adding features that violate principles just because competitors have them
 
 **Example**: Adding Windows support in 0.1.0 just because ChatGPT runs on Windows
@@ -364,6 +399,7 @@ Adding features that violate principles just because competitors have them
 **Better Approach**: Deliver excellent macOS/Linux experience, defer Windows to post-1.0
 
 ### Anti-Pattern 2: Stateless Convenience
+
 Making AIDA stateless to simplify implementation
 
 **Example**: Not persisting conversation history to avoid database complexity
@@ -371,6 +407,7 @@ Making AIDA stateless to simplify implementation
 **Better Approach**: Invest in robust memory system, it's AIDA's superpower
 
 ### Anti-Pattern 3: Monolithic Rigidity
+
 Hardcoding behaviors to avoid plugin architecture complexity
 
 **Example**: Hardcoding JARVIS personality instead of YAML-based system
@@ -378,6 +415,7 @@ Hardcoding behaviors to avoid plugin architecture complexity
 **Better Approach**: Invest in plugin architecture, enables community growth
 
 ### Anti-Pattern 4: Privacy Compromise
+
 Mixing user data with framework code for convenience
 
 **Example**: Storing user configs in git repo with framework code
@@ -385,6 +423,7 @@ Mixing user data with framework code for convenience
 **Better Approach**: Maintain clear separation, even if more complex
 
 ### Anti-Pattern 5: Command-Line Obsession
+
 Forcing CLI paradigms when conversation is more natural
 
 **Example**: Requiring `aida task add --title "Fix bug" --priority high`
@@ -394,6 +433,7 @@ Forcing CLI paradigms when conversation is more natural
 ## Success Metrics
 
 Design principles are being followed when:
+
 - New features align with all 5 principles (or conflicts are explicitly resolved)
 - User feedback references principles positively ("love the privacy focus", "feels natural")
 - Technical decisions reference principles in documentation

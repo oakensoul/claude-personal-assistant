@@ -108,12 +108,14 @@ Documentation is outdated after recent API changes.
 Investigate alternatives to current testing setup.
 
 ---
-```
+```text
 
 ### Natural Language Task Operations
 
 **Capture**:
+
 ```
+
 User: "Remember to call the dentist tomorrow"
 AIDA: ✓ Added task: Call dentist
       Priority: Medium
@@ -124,10 +126,13 @@ User: "High priority: fix the production bug by end of day"
 AIDA: ✓ Added high priority task: Fix production bug
       Due: Today (2025-10-04) EOD
       Category: Work
-```
+
+```text
 
 **Query**:
+
 ```
+
 User: "What tasks do I have?"
 AIDA: You have 7 active tasks:
 
@@ -162,10 +167,13 @@ AIDA: Work tasks due today (1):
       • Fix production payment processing bug (High)
         Status: in-progress
         Time remaining: 6 hours
-```
+
+```text
 
 **Complete**:
+
 ```
+
 User: "I finished fixing the production bug"
 AIDA: ✓ Marked complete: Fix production payment processing bug
 
@@ -180,10 +188,13 @@ AIDA: ✓ Marked complete: Research new testing framework
 
       Completed in 2 days
       Would you like to capture any learnings from this task?
-```
+
+```text
 
 **Modify**:
+
 ```
+
 User: "Change the documentation task to high priority"
 AIDA: ✓ Updated: Update project documentation
       Priority: Medium → High
@@ -191,11 +202,13 @@ AIDA: ✓ Updated: Update project documentation
 User: "Move PR review to Friday"
 AIDA: ✓ Updated: Review PR #123
       Due: 2025-10-05 → 2025-10-08 (Friday)
-```
+
+```text
 
 ### Task Organization
 
 ```
+
 ~/.claude/memory/tasks/
 ├── active.md              # Current active tasks
 ├── completed.md           # Recently completed (last 30 days)
@@ -206,7 +219,8 @@ AIDA: ✓ Updated: Review PR #123
 └── templates/
     ├── task-template.md
     └── project-task-template.md
-```
+
+```text
 
 ### Task CLI Commands
 
@@ -275,7 +289,7 @@ Active Tasks: 7
 Overdue Tasks: 1 ⚠️
 
 Most Productive Day: Wednesday (4 tasks completed)
-```
+```text
 
 ### Obsidian Integration
 
@@ -328,7 +342,7 @@ recurring_tasks:
     priority: high
     category: work
     template: "Prepare standup update (yesterday, today, blockers)"
-```
+```text
 
 ## Dependencies
 

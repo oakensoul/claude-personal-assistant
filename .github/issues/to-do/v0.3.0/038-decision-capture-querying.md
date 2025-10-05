@@ -31,12 +31,14 @@ Implement natural language decision capture with guided ADR/PDR creation, decisi
 ### Decision Capture Flow
 
 **User Input**:
-```
+
+```text
 "Document decision: We chose PostgreSQL over MongoDB for Project Alpha because we need ACID compliance and complex relational queries"
 ```
 
 **AIDA Response**:
-```
+
+```text
 Creating Architecture Decision Record...
 
 ADR-003: Use PostgreSQL for Project Alpha Database
@@ -58,7 +60,8 @@ Shall I guide you through these, or would you prefer to write the full ADR yours
 ### Guided Creation
 
 **Guided Flow for ADR**:
-```
+
+```text
 Creating ADR-003: Database Choice for Project Alpha
 
 1. What problem are you solving?
@@ -104,17 +107,20 @@ Saved to: ~/.claude/memory/decisions/adr/003-database-choice.md
 Determine ADR vs PDR based on keywords:
 
 **Technical/Architecture (ADR)**:
+
 - Keywords: database, framework, architecture, deployment, infrastructure, technology
 - Context: technical trade-offs, implementation details
 - Focus: engineering decisions
 
 **Product (PDR)**:
+
 - Keywords: feature, user, customer, business, roadmap, pricing, UX
 - Context: user value, business impact
 - Focus: product direction
 
 **Auto-suggestion**:
-```
+
+```text
 Detected as: Architecture Decision (technical trade-offs mentioned)
 Create as ADR? (Y/n)
 ```
@@ -122,7 +128,8 @@ Create as ADR? (Y/n)
 ### Decision Querying
 
 **Natural Language**:
-```
+
+```text
 "Why did we choose PostgreSQL?"
 "Show me database decisions"
 "What decisions have we made about Project Alpha?"
@@ -131,6 +138,7 @@ Create as ADR? (Y/n)
 ```
 
 **CLI Commands**:
+
 ```bash
 # List all decisions
 aida decisions list
@@ -155,7 +163,7 @@ aida decisions list --type pdr
 
 # Show recent
 aida decisions recent --limit 5
-```
+```text
 
 ### Decision History and Evolution
 
@@ -207,7 +215,7 @@ Title for new decision:
 ✓ ADR-003 marked as Superseded
 ✓ ADR-008 created
 ✓ Cross-references updated
-```
+```text
 
 ### Obsidian Integration
 
@@ -229,6 +237,7 @@ Created decision notes:
 ```
 
 **Obsidian Format**:
+
 ```markdown
 ---
 tags: [decision, adr, database, postgresql]
@@ -250,7 +259,7 @@ superseded-by: [[ADR-008-NewSQL-Migration]]
 
 - [[ADR-008-NewSQL-Migration]] (supersedes this)
 - [[PDR-001-Personality-Builder]] (uses this database)
-```
+```text
 
 ### Decision Index Auto-Update
 

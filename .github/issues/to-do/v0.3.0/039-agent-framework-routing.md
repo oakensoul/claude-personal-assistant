@@ -31,7 +31,7 @@ Create the foundational agent framework and intelligent routing system that auto
 
 ### Agent Framework Architecture
 
-```
+```text
 ~/.claude/agents/
 ├── framework/
 │   ├── agent-base.md           # Base agent interface
@@ -82,11 +82,12 @@ All agents have access to:
 - `~/.claude/config/` - Configuration
 - Active personality settings
 - Current context
-```
+```text
 
 ### Routing Rules (YAML)
 
 `~/.claude/agents/routing-rules.yaml`:
+
 ```yaml
 routing_rules:
   # Explicit agent invocation
@@ -218,7 +219,7 @@ def route_request(user_input, context):
 
     # 4. Use default (general AIDA)
     return (None, 0.5)
-```
+```text
 
 ### Agent Context
 
@@ -298,7 +299,7 @@ agents:
     status: "active"
     version: "0.3.0"
     location: "~/.claude/agents/core/dev-assistant/"
-```
+```text
 
 ### Routing Visualization
 

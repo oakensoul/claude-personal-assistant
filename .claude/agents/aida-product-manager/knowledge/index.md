@@ -22,11 +22,13 @@ This knowledge base contains comprehensive product management documentation for 
 Foundation documents defining AIDA's product vision, audience, and principles.
 
 ### product-vision.md
+
 **Path**: `/Users/oakensoul/Developer/oakensoul/claude-personal-assistant/.claude/agents/aida-product-manager/knowledge/core-concepts/product-vision.md`
 
 **Purpose**: Defines AIDA's overall vision, mission, goals, and success criteria
 
 **Key Contents**:
+
 - Vision statement: "AIDA makes AI assistance feel like your own personal assistant"
 - Mission: Empower users to customize, extend, and own their AI experience
 - Five core goals: Natural language, persistence, modularity, privacy, platform focus
@@ -34,12 +36,14 @@ Foundation documents defining AIDA's product vision, audience, and principles.
 - Non-goals (what AIDA explicitly doesn't aim to do)
 
 **When to Reference**:
+
 - Evaluating new feature requests against product vision
 - Making strategic product decisions
 - Explaining AIDA's purpose to stakeholders
 - Resolving conflicts between competing priorities
 
 **Key Insights**:
+
 - AIDA is conversational operating system, not just AI wrapper
 - Persistence across sessions is core differentiator
 - Privacy-aware architecture enables professional use
@@ -48,11 +52,13 @@ Foundation documents defining AIDA's product vision, audience, and principles.
 ---
 
 ### target-audience.md
+
 **Path**: `/Users/oakensoul/Developer/oakensoul/claude-personal-assistant/.claude/agents/aida-product-manager/knowledge/core-concepts/target-audience.md`
 
 **Purpose**: Defines who AIDA is for, user personas, and use cases
 
 **Key Contents**:
+
 - Primary audience: Developers and tech-savvy power users
 - Secondary audience: Solo developers, team leads, knowledge workers
 - Anti-personas: Non-technical users, Windows-primary, enterprise teams (initially)
@@ -60,12 +66,14 @@ Foundation documents defining AIDA's product vision, audience, and principles.
 - Use cases by category: Daily workflow, development, knowledge management, project management
 
 **When to Reference**:
+
 - Prioritizing features (which users benefit?)
 - Writing user stories and requirements
 - Making UX decisions (what does target user expect?)
 - Evaluating feature complexity (is this worth it for our audience?)
 
 **Key Insights**:
+
 - 70%+ of users are developers or tech-savvy power users
 - CLI-first fits existing terminal-based workflows
 - Privacy-conscious users are key demographic
@@ -74,11 +82,13 @@ Foundation documents defining AIDA's product vision, audience, and principles.
 ---
 
 ### value-proposition.md
+
 **Path**: `/Users/oakensoul/Developer/oakensoul/claude-personal-assistant/.claude/agents/aida-product-manager/knowledge/core-concepts/value-proposition.md`
 
 **Purpose**: Articulates AIDA's competitive differentiation and value vs alternatives
 
 **Key Contents**:
+
 - Core value prop: "AI assistant that feels like yours - personal, persistent, private"
 - Competitive analysis: vs ChatGPT, Copilot, Cursor, Claude, Perplexity
 - Six key differentiators: Memory, personalities, privacy, multi-agent, terminal-native, workflow integration
@@ -86,12 +96,14 @@ Foundation documents defining AIDA's product vision, audience, and principles.
 - Use cases where AIDA excels: Developer workflow, proprietary code, multi-domain, long-term projects
 
 **When to Reference**:
+
 - Explaining why someone should use AIDA
 - Making feature decisions (does this reinforce our differentiators?)
 - Competitive positioning and messaging
 - Identifying market opportunities
 
 **Key Insights**:
+
 - Persistent memory is #1 differentiator vs ChatGPT
 - Customizable personalities set us apart from generic AI
 - Privacy-first enables use on proprietary/sensitive work
@@ -100,11 +112,13 @@ Foundation documents defining AIDA's product vision, audience, and principles.
 ---
 
 ### design-principles.md
+
 **Path**: `/Users/oakensoul/Developer/oakensoul/claude-personal-assistant/.claude/agents/aida-product-manager/knowledge/core-concepts/design-principles.md`
 
 **Purpose**: Establishes five core design principles guiding all product decisions
 
 **Key Contents**:
+
 - **Principle 1**: Natural Language Interface (conversational, not command-driven)
 - **Principle 2**: Persistence Across Sessions (memory and context)
 - **Principle 3**: Modularity & Extensibility (pluggable personalities and agents)
@@ -115,12 +129,14 @@ Foundation documents defining AIDA's product vision, audience, and principles.
 - Anti-patterns to avoid
 
 **When to Reference**:
+
 - Making product decisions (does this align with principles?)
 - Resolving conflicting priorities (use conflict resolution priority)
 - Evaluating technical approaches (which approach upholds principles?)
 - Explaining product philosophy to contributors
 
 **Key Insights**:
+
 - Principles can conflict - we have priority order for resolution
 - Privacy is non-negotiable (highest priority)
 - Persistence is core differentiator (high priority)
@@ -133,11 +149,13 @@ Foundation documents defining AIDA's product vision, audience, and principles.
 Reusable patterns for user stories, prioritization, and product workflows.
 
 ### user-stories.md
+
 **Path**: `/Users/oakensoul/Developer/oakensoul/claude-personal-assistant/.claude/agents/aida-product-manager/knowledge/patterns/user-stories.md`
 
 **Purpose**: Comprehensive collection of user stories for AIDA features
 
 **Key Contents**:
+
 - 22 detailed user stories (US-001 through US-022)
 - Story template: Title, Persona, Story, Acceptance Criteria, Priority, Milestone, Dependencies, Effort
 - Categories: Installation, personality system, daily workflow, knowledge management, development, project management, privacy, integration, agents, system management
@@ -145,12 +163,14 @@ Reusable patterns for user stories, prioritization, and product workflows.
 - Story writing guidelines
 
 **When to Reference**:
+
 - Planning milestones (which stories go in which release?)
 - Writing new user stories (follow template)
 - Understanding user needs (what workflows matter?)
 - Creating acceptance criteria for features
 
 **Key Stories**:
+
 - US-001: First-time installation (0.1.0 must-have)
 - US-004: Create custom personality (0.1.0 must-have)
 - US-008: Quick task capture (0.2.0 must-have)
@@ -158,6 +178,7 @@ Reusable patterns for user stories, prioritization, and product workflows.
 - US-019: Invoke specialized agent (0.5.0 nice-to-have)
 
 **Key Insights**:
+
 - Must-have stories for 0.1.0: Installation, personality system, basic CLI, memory foundation
 - Personality system is critical MVP feature (core differentiator)
 - Task capture demonstrates memory + natural language (0.2.0)
@@ -166,11 +187,13 @@ Reusable patterns for user stories, prioritization, and product workflows.
 ---
 
 ### prioritization-framework.md
+
 **Path**: `/Users/oakensoul/Developer/oakensoul/claude-personal-assistant/.claude/agents/aida-product-manager/knowledge/patterns/prioritization-framework.md`
 
 **Purpose**: Framework for prioritizing features and making product tradeoffs
 
 **Key Contents**:
+
 - Core principle: User value + technical feasibility + strategic alignment = Priority
 - Five evaluation criteria: User Value, Technical Complexity, Strategic Alignment, Dependencies, Risk
 - Scoring system: 15-point scale mapping to priority levels (P0, P1, P2, P-)
@@ -180,12 +203,14 @@ Reusable patterns for user stories, prioritization, and product workflows.
 - Milestone prioritization guidance (0.1.0 through 1.0.0)
 
 **When to Reference**:
+
 - Evaluating new feature requests
 - Scoping milestones (what goes in, what gets deferred?)
 - Making tradeoff decisions (feature A vs feature B)
 - Explaining prioritization rationale to stakeholders
 
 **Key Insights**:
+
 - User value trumps technical elegance
 - Must-have > nice-to-have > future (clear prioritization)
 - Foundation features first (memory system before features that use memory)
@@ -199,11 +224,13 @@ Reusable patterns for user stories, prioritization, and product workflows.
 Historical record of significant product decisions with rationale.
 
 ### roadmap.md
+
 **Path**: `/Users/oakensoul/Developer/oakensoul/claude-personal-assistant/.claude/agents/aida-product-manager/knowledge/decisions/roadmap.md`
 
 **Purpose**: Comprehensive product roadmap from 0.1.0 MVP through 1.0.0 and beyond
 
 **Key Contents**:
+
 - Milestone philosophy: Incremental value, learn and adapt, foundation first, quality over quantity
 - Release strategy: Semantic versioning, release cadence
 - Seven milestones with detailed feature lists:
@@ -218,12 +245,14 @@ Historical record of significant product decisions with rationale.
 - Roadmap principles and change management
 
 **When to Reference**:
+
 - Planning current and future milestones
 - Understanding feature sequencing and dependencies
 - Communicating product timeline to stakeholders
 - Making scope decisions (what fits in current milestone?)
 
 **Key Insights**:
+
 - 0.1.0 MVP focuses on core value prop (personality + basic CLI)
 - Memory system built incrementally across milestones (foundation in 0.1.0, enhanced in 0.2.0-0.3.0)
 - Agents introduced in 0.3.0 after memory is stable
@@ -233,11 +262,13 @@ Historical record of significant product decisions with rationale.
 ---
 
 ### personality-builder.md
+
 **Path**: `/Users/oakensoul/Developer/oakensoul/claude-personal-assistant/.claude/agents/aida-product-manager/knowledge/decisions/personality-builder.md`
 
 **Purpose**: Documents decision to use hybrid approach (presets + interactive builder) for personalities
 
 **Key Contents**:
+
 - Context: Need to decide between pre-built personalities only vs custom builder
 - Decision: Hybrid approach with 5 presets (JARVIS, Alfred, FRIDAY, Sage, Drill Sergeant) + 12-question builder
 - Rationale: Serves different user needs, scalability, community growth, product differentiation
@@ -248,12 +279,14 @@ Historical record of significant product decisions with rationale.
 - Trade-offs accepted: Complexity, analysis paralysis, maintenance
 
 **When to Reference**:
+
 - Implementing personality system
 - Explaining personality approach to users
 - Making similar customization decisions for other features
 - Understanding why we chose this approach
 
 **Key Insights**:
+
 - Hybrid approach serves both new users (presets) and power users (builder)
 - 5 presets cover 80% of users, builder covers remaining 20%
 - 12 questions is sweet spot (2-3 minutes to complete)
@@ -265,11 +298,13 @@ Historical record of significant product decisions with rationale.
 ---
 
 ### three-repo-architecture.md
+
 **Path**: `/Users/oakensoul/Developer/oakensoul/claude-personal-assistant/.claude/agents/aida-product-manager/knowledge/decisions/three-repo-architecture.md`
 
 **Purpose**: Documents decision to use three-repository architecture for AIDA
 
 **Key Contents**:
+
 - Context: Need to balance shareability, privacy, and flexibility
 - Decision: Three repos - `claude-personal-assistant` (public framework), `dotfiles` (public templates), `dotfiles-private` (secrets)
 - Rationale: Separation of concerns, privacy by design, version control benefits, installation model, GNU Stow integration
@@ -279,12 +314,14 @@ Historical record of significant product decisions with rationale.
 - Trade-offs accepted: Complexity, setup time, coordination
 
 **When to Reference**:
+
 - Understanding repository structure
 - Making architecture decisions
 - Explaining privacy model to users
 - Contributing to framework (understanding what goes where)
 
 **Key Insights**:
+
 - Three repos enable privacy (framework is public, user data is private)
 - Clear boundaries: framework code vs public configs vs secrets
 - Framework can be shared openly, contributed to by community
@@ -296,11 +333,13 @@ Historical record of significant product decisions with rationale.
 ---
 
 ### naming-decisions.md
+
 **Path**: `/Users/oakensoul/Developer/oakensoul/claude-personal-assistant/.claude/agents/aida-product-manager/knowledge/decisions/naming-decisions.md`
 
 **Purpose**: Documents naming evolution from AIDE to AIDA and all naming conventions
 
 **Key Contents**:
+
 - Context: Originally named AIDE (Agentic Intelligence & Digital Environment)
 - Decision: Renamed to AIDA (Agentic Intelligence Digital Assistant)
 - Rationale: Clearer meaning, pop culture reference (A.I.D.A. from Marvel), better branding, personality alignment, better acronym
@@ -311,12 +350,14 @@ Historical record of significant product decisions with rationale.
 - Future naming decisions: Extensions, features, branding elements
 
 **When to Reference**:
+
 - Understanding product naming and branding
 - Naming new features or components
 - Explaining AIDA name to users
 - Creating consistent naming across codebase
 
 **Key Insights**:
+
 - AIDA clearer than AIDE ("Assistant" vs "Environment")
 - A.I.D.A. from Agents of S.H.I.E.L.D. fits superhero AI theme
 - ~/.aida/ for framework, ~/.claude/ for user config (clear separation)
@@ -332,18 +373,21 @@ Historical record of significant product decisions with rationale.
 Links to external documentation, references, and learning resources.
 
 ### Product Management
+
 - [Product Management Best Practices](https://www.productplan.com/learn/product-management-best-practices/)
 - [Prioritization Frameworks](https://www.productplan.com/glossary/prioritization/)
 - [User Story Writing](https://www.mountaingoatsoftware.com/agile/user-stories)
 - [Product Roadmap Planning](https://www.aha.io/roadmapping/guide/product-roadmap)
 
 ### AI Assistant Market
+
 - [ChatGPT](https://chat.openai.com/) - Primary competitor (generic AI chat)
 - [GitHub Copilot](https://github.com/features/copilot) - Code-focused AI
 - [Cursor](https://cursor.sh/) - AI-powered IDE
 - [Claude](https://claude.ai/) - Underlying AI technology for AIDA
 
 ### Technical References
+
 - [Claude AI Documentation](https://docs.anthropic.com/)
 - [Claude Code Documentation](https://docs.claude.ai/code)
 - [Bash Scripting Guide](https://www.gnu.org/software/bash/manual/bash.html)
@@ -351,11 +395,13 @@ Links to external documentation, references, and learning resources.
 - [GNU Stow](https://www.gnu.org/software/stow/) - Dotfiles management
 
 ### Design & UX
+
 - [CLI Design Patterns](https://clig.dev/) - Command-line interface guidelines
 - [Conversational UI Design](https://www.nngroup.com/articles/conversational-interfaces/)
 - [Privacy by Design](https://www.ipc.on.ca/wp-content/uploads/resources/7foundationalprinciples.pdf)
 
 ### Open Source
+
 - [Open Source Guide](https://opensource.guide/) - Best practices for open source
 - [Semantic Versioning](https://semver.org/) - Version numbering
 - [Keep a Changelog](https://keepachangelog.com/) - Changelog format
@@ -367,21 +413,25 @@ Links to external documentation, references, and learning resources.
 ### When to Reference Knowledge Base
 
 **During Product Decisions**:
+
 - Check if decision aligns with product vision and design principles
 - Review past decisions to maintain consistency
 - Consult user stories and roadmap for context
 
 **When Prioritizing Features**:
+
 - Use prioritization framework to evaluate requests
 - Check target audience to validate user value
 - Review roadmap to understand milestone context
 
 **When Writing Requirements**:
+
 - Reference user stories for format and examples
 - Check design principles for constraints
 - Review target audience for user perspective
 
 **When Communicating Decisions**:
+
 - Reference value proposition for competitive positioning
 - Check product vision for messaging
 - Review decisions for rationale and context
@@ -389,6 +439,7 @@ Links to external documentation, references, and learning resources.
 ### When to Add Knowledge
 
 Add new knowledge when:
+
 - **Significant Decision Made**: Document in decisions/ with rationale
 - **New Pattern Discovered**: Add to patterns/ for reuse
 - **Core Concept Refined**: Update core-concepts/ with learnings
@@ -397,16 +448,19 @@ Add new knowledge when:
 ### Knowledge Priorities
 
 **High Priority** (always maintain):
+
 - Core concepts (vision, audience, value prop, principles)
 - Current roadmap
 - Recent decisions
 
 **Medium Priority** (update regularly):
+
 - User stories (add new, update existing)
 - Prioritization framework (refine based on learnings)
 - External resources (keep links current)
 
 **Low Priority** (update as needed):
+
 - Historical decisions (valuable but static)
 - Patterns (add when discovered, not forced)
 
@@ -417,18 +471,21 @@ Add new knowledge when:
 ### Update Cadence
 
 **After Each Milestone** (0.1.0, 0.2.0, etc.):
+
 - Update roadmap with actual vs planned
 - Add decision records for significant choices
 - Refine user stories based on learnings
 - Update product vision if needed (rare)
 
 **Monthly Review**:
+
 - Check external links (fix broken links)
 - Update knowledge count in this index
 - Add new patterns discovered
 - Archive outdated decisions (mark as superseded)
 
 **Quarterly Review**:
+
 - Validate product vision still aligns
 - Review design principles (still relevant?)
 - Update target audience (market changes?)
@@ -437,16 +494,19 @@ Add new knowledge when:
 ### Knowledge Organization
 
 **Core Concepts** (4 files):
+
 - Foundational documents defining AIDA
 - Should be relatively stable (infrequent updates)
 - Changes should be deliberate and documented
 
 **Patterns** (2 files):
+
 - Reusable templates and frameworks
 - Updated as we discover better patterns
 - Add new patterns as we learn
 
 **Decisions** (4 files):
+
 - Historical record of significant choices
 - Add new decisions, don't modify old ones (append)
 - Mark superseded decisions clearly
@@ -465,18 +525,21 @@ Add new knowledge when:
 ### Knowledge Base vs Agent Memory
 
 **Knowledge Base** (this):
+
 - Persistent across all sessions
 - Curated and structured
 - Product management specific
 - Manually maintained
 
 **Agent Context** (AIDA's memory):
+
 - Session-specific
 - User-specific
 - Automatically captured
 - Queryable and searchable
 
 **Relationship**:
+
 - Knowledge base informs agent context (provides foundation)
 - Agent context may surface insights for knowledge base (learnings)
 - Knowledge base is "long-term memory", agent context is "working memory"
@@ -484,6 +547,7 @@ Add new knowledge when:
 ### When Knowledge Base Helps
 
 **Product Manager Agent Uses Knowledge Base To**:
+
 - Ground decisions in product vision
 - Reference past decisions for consistency
 - Apply prioritization framework systematically
@@ -491,6 +555,7 @@ Add new knowledge when:
 - Communicate product direction clearly
 
 **Without Knowledge Base**:
+
 - Would need to rediscover rationale each session
 - Risk inconsistent decisions
 - No historical context for why choices were made
@@ -521,6 +586,7 @@ Add new knowledge when:
 ### Quality Standards
 
 **Knowledge Should Be**:
+
 - **Actionable**: Helps make decisions, not just information
 - **Structured**: Clear headings, scannable, organized
 - **Contextual**: Includes rationale, not just facts
@@ -559,6 +625,7 @@ Add new knowledge when:
 ### Priority Hierarchy
 
 When principles conflict:
+
 1. **Privacy** (non-negotiable)
 2. **Persistence** (core differentiator)
 3. **Natural Language** (user experience)
@@ -570,6 +637,7 @@ When principles conflict:
 ## Conclusion
 
 This knowledge base provides comprehensive product context for the AIDA Product Manager agent. It enables:
+
 - **Consistent decisions** aligned with product vision
 - **Historical context** for why choices were made
 - **Structured approach** to prioritization and planning

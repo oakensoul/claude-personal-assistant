@@ -43,7 +43,7 @@ aida memory search --date 2025-10 --project alpha
 
 # Combined filters
 aida memory search "hooks" --category knowledge --tag react --project alpha
-```
+```text
 
 ### Natural Language Interface
 
@@ -52,7 +52,7 @@ aida memory search "hooks" --category knowledge --tag react --project alpha
 "Show me decisions from October"
 "Find tasks related to project alpha"
 "Search memory for PostgreSQL patterns"
-```
+```text
 
 ### Search Algorithm
 
@@ -96,7 +96,7 @@ Found 5 results for "React hooks":
    → ~/.claude/memory/tasks/completed.md:89
 
 [Show all 5 results? (y/N)]
-```
+```text
 
 ## Dependencies
 

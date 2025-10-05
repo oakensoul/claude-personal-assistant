@@ -36,7 +36,9 @@ Create the memory system templates that provide structure for tracking current s
 ## Implementation Notes
 
 ### context.md.template
+
 Current state that Claude updates frequently:
+
 ```markdown
 ---
 title: "Current Context"
@@ -106,7 +108,9 @@ last_updated: "${INSTALL_DATE}"
 ```
 
 ### decisions.md.template
+
 Decision log with rationale:
+
 ```markdown
 ---
 title: "Decision Log"
@@ -167,7 +171,9 @@ Each decision should include:
 ```
 
 ### history/YYYY-MM.md format
+
 Monthly activity log:
+
 ```markdown
 ---
 title: "[Month] [Year] Activity Log"

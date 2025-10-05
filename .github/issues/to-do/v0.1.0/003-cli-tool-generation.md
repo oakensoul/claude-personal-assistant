@@ -31,7 +31,8 @@ Create the CLI tool generation system that produces a personalized executable sc
 
 ## Implementation Notes
 
-**CLI Tool Structure:**
+### CLI Tool Structure
+
 ```bash
 #!/bin/bash
 set -e
@@ -66,16 +67,18 @@ case "$1" in
 esac
 ```
 
-**Status Command:**
+### Status Command
 Display:
+
 - AIDA version
 - Installation path
 - Active personality
 - Last context update timestamp
 - Quick health check (files exist, permissions OK)
 
-**Help Command:**
+### Help Command
 Display:
+
 - Available commands
 - Brief description of each
 - Examples of usage

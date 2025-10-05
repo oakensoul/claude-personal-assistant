@@ -29,6 +29,7 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
 ## MVP Feature Checklist
 
 ### Core Installation (#001-#004)
+
 - [ ] Installation script works (normal mode)
 - [ ] Installation script works (dev mode)
 - [ ] Template system copies and substitutes variables
@@ -39,6 +40,7 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
 - [ ] Tested on WSL
 
 ### Templates (#005-#007)
+
 - [ ] CLAUDE.md template complete
 - [ ] All knowledge templates complete:
   - [ ] system.md
@@ -52,11 +54,13 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
   - [ ] history/YYYY-MM.md structure
 
 ### Personality System (#008)
+
 - [ ] JARVIS personality complete and tested
 - [ ] Personality loads correctly in CLAUDE.md
 - [ ] Personality responses work with procedures
 
 ### Agents (#009)
+
 - [ ] Secretary agent template complete
 - [ ] File Manager agent template complete
 - [ ] Dev Assistant agent template complete
@@ -64,6 +68,7 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
 - [ ] Agents integrate with procedures
 
 ### CLI Tool (#010)
+
 - [ ] CLI tool template complete
 - [ ] Basic commands work:
   - [ ] status
@@ -73,6 +78,7 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
 - [ ] Help text is clear
 
 ### Core Procedures (#011)
+
 - [ ] start-day procedure documented
 - [ ] end-day procedure documented
 - [ ] status procedure documented
@@ -80,6 +86,7 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
 - [ ] All procedures have example outputs
 
 ### Testing (#012)
+
 - [ ] Fresh install tested on macOS
 - [ ] Fresh install tested on Ubuntu
 - [ ] Dev mode tested
@@ -89,6 +96,7 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
 - [ ] Permissions set correctly
 
 ### Documentation (#013)
+
 - [ ] README.md polished and complete
 - [ ] Installation guide complete
 - [ ] Quick start guide complete
@@ -97,6 +105,7 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
 - [ ] Examples are accurate
 
 ### Additional Documentation
+
 - [ ] ARCHITECTURE.md up to date
 - [ ] ROADMAP.md reflects current state
 - [ ] MCP servers guide complete (#020)
@@ -105,6 +114,7 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
 ## Pre-Release Tasks
 
 ### Code Quality
+
 - [ ] No placeholder or TODO comments in release code
 - [ ] Shell scripts follow consistent style
 - [ ] YAML files are valid
@@ -112,6 +122,7 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
 - [ ] File permissions are correct (755 for executables, 644 for files)
 
 ### Documentation Quality
+
 - [ ] No broken links
 - [ ] No outdated information
 - [ ] Examples match actual functionality
@@ -119,12 +130,14 @@ Prepare for the v0.1.0 MVP release by completing all necessary tasks, documentat
 - [ ] Platform-specific notes are accurate
 
 ### Version Management
+
 - [ ] Update version in install.sh: `AIDE_VERSION="0.1.0"`
 - [ ] Update version in CLI tool template: `AIDE_VERSION="0.1.0"`
 - [ ] Update version in CLAUDE.md template frontmatter
 - [ ] Update version in all documentation
 
 ### Git Cleanup
+
 - [ ] All feature branches merged
 - [ ] main branch is clean and builds
 - [ ] No sensitive data committed
@@ -187,7 +200,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced memory system
 
 [0.1.0]: https://github.com/oakensoul/claude-personal-assistant/releases/tag/v0.1.0
-```
+```text
 
 ### 2. Draft Release Notes
 
@@ -220,28 +233,33 @@ Follow the prompts to create your assistant. See [Installation Guide](docs/getti
 ## 📋 MVP Features
 
 **Core Installation**:
+
 - Simple installation script
 - Template-based configuration
 - Personalized CLI tool
 - Automatic PATH setup
 
 **Templates**:
+
 - Main CLAUDE.md entry point
 - Knowledge base structure
 - Memory system structure
 - Agent definitions
 
 **Personality**:
+
 - JARVIS (snarky, witty assistant)
 - More personalities coming in v0.2.0
 
 **Commands**:
+
 - `jarvis start day` - Morning routine
 - `jarvis end day` - Evening wrap-up
 - `jarvis status` - Quick status check
 - `jarvis cleanup downloads` - Organize downloads
 
 **Documentation**:
+
 - Installation guide
 - Quick start tutorial
 - Architecture overview
@@ -252,6 +270,7 @@ Follow the prompts to create your assistant. See [Installation Guide](docs/getti
 See [ROADMAP.md](docs/development/ROADMAP.md) for planned features.
 
 **Coming in v0.2.0** (4-6 weeks):
+
 - 4 additional personalities (Alfred, FRIDAY, Sage, Drill Sergeant)
 - Personality switching
 - Extended command system
@@ -269,6 +288,7 @@ See [ROADMAP.md](docs/development/ROADMAP.md) for planned features.
 ## 🤝 Contributing
 
 We welcome contributions! See [ROADMAP.md](docs/development/ROADMAP.md) for:
+
 - Development guidelines
 - Good first issues
 - How to contribute
@@ -291,7 +311,8 @@ MIT License - See [LICENSE](LICENSE)
 ---
 
 **Note**: This is an MVP release. Expect frequent updates and improvements. Star the repo to stay updated!
-```
+
+```text
 
 ### 3. Tag Release
 
@@ -350,6 +371,7 @@ If critical issues are discovered:
 ## Dependencies
 
 All MVP issues must be completed:
+
 - #001-#013 (MVP core features)
 - #020 (MCP guide)
 

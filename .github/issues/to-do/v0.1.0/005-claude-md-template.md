@@ -31,7 +31,8 @@ Create the primary `CLAUDE.md.template` file that serves as the main entry point
 
 ## Implementation Notes
 
-**Template Structure:**
+### Template Structure
+
 ```markdown
 ---
 title: "${ASSISTANT_DISPLAY_NAME} - Your Personal AI Assistant"
@@ -94,7 +95,8 @@ Available commands:
 - Follow procedures defined in knowledge/procedures.md
 ```
 
-**Key Sections:**
+#### Key Sections
+
 1. **Header** - Frontmatter and introduction
 2. **Personality** - How to communicate
 3. **Knowledge Base** - Where to find reference info

@@ -31,7 +31,8 @@ Create the JARVIS personality YAML file defining the snarky, casual, tough-love 
 
 ## Implementation Notes
 
-**Personality Definition:**
+### Personality Definition
+
 ```yaml
 ---
 # JARVIS Personality Definition
@@ -121,7 +122,8 @@ behavior:
     - "repeated mistakes"
 ```
 
-**Character Consistency:**
+### Character Consistency
+
 - Always competent and capable
 - Snarky but never mean
 - Genuinely wants user to succeed

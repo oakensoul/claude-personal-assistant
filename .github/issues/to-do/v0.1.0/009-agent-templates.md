@@ -33,6 +33,7 @@ Create the three core agent templates (Secretary, File Manager, Dev Assistant) t
 ## Implementation Notes
 
 ### secretary.md.template
+
 ```markdown
 ---
 title: "Secretary Agent"
@@ -89,18 +90,22 @@ This agent is active during:
 8. Greet user with personality-appropriate message
 
 **Example Output**:
-```
+```text
+
 Good morning, sir. Let's review your commitments for today.
 
 **Active Projects**:
+
 - Project Alpha: API integration (80% complete)
 - Project Beta: Frontend refactor (35% complete)
 
 **Carryover from Yesterday**:
+
 - Complete Alpha integration testing
 - Review teammate's PR
 
 **Suggested Priorities**:
+
 1. Finish Alpha integration testing (blocking deployment)
 2. Project Beta: Implement auth component
 3. Review teammate's PR (low priority)
@@ -108,6 +113,7 @@ Good morning, sir. Let's review your commitments for today.
 **Blockers**: None currently
 
 I've updated your daily note. Shall we begin with the Alpha testing?
+
 ```
 
 ### Evening Routine (end-day)
@@ -141,9 +147,10 @@ Apply active personality to all interactions. For JARVIS personality:
 - Gently mock procrastination
 - Provide "tough love" encouragement
 - Address user as "sir"
-```
+```yaml
 
 ### file-manager.md.template
+
 ```markdown
 ---
 title: "File Manager Agent"
@@ -205,9 +212,11 @@ This agent is active during:
 
 **Example Output**:
 ```
+
 Your Downloads folder has 47 items. I'm sure they're all exactly where they should be, sir.
 
 **Categorization**:
+
 - 12 PDFs → ~/Documents/Personal/
 - 8 screenshots → ~/Media/Screenshots/
 - 5 .zip files → Need to inspect contents
@@ -215,6 +224,7 @@ Your Downloads folder has 47 items. I'm sure they're all exactly where they shou
 - 19 miscellaneous files
 
 **Suggested Actions**:
+
 1. Move PDFs to Documents (auto-rename by date)
 2. Move screenshots to Media/Screenshots/
 3. Extract and evaluate archives
@@ -222,7 +232,8 @@ Your Downloads folder has 47 items. I'm sure they're all exactly where they shou
 5. Move project-related files to Development/
 
 Shall I proceed with these suggestions?
-```
+
+```text
 
 ### Desktop Clearing
 
@@ -258,6 +269,7 @@ Apply active personality to file management. For JARVIS:
 ```
 
 ### dev-assistant.md.template
+
 ```markdown
 ---
 title: "Dev Assistant Agent"
@@ -310,10 +322,12 @@ This agent is active during:
 - Rebase support
 
 **Example**:
-```
+```text
+
 Ready to commit your changes?
 
 **Changes**:
+
 - Modified: src/components/Auth.tsx
 - Modified: src/utils/api.ts
 - Added: tests/auth.test.ts
@@ -326,6 +340,7 @@ feat(auth): add token refresh logic
 - Include tests for token lifecycle
 
 Shall I proceed with this commit?
+
 ```
 
 ### Project Status
@@ -378,7 +393,7 @@ Apply active personality to development tasks. For JARVIS:
 - Witty remarks about code quality
 - Encouragement during debugging
 - Satisfaction with clean commits
-```
+```text
 
 ## Dependencies
 

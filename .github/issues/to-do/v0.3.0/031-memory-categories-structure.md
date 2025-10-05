@@ -33,7 +33,7 @@ Create the enhanced memory storage structure with distinct categories (tasks, kn
 
 ### Directory Structure
 
-```
+```text
 ~/.claude/memory/
 ├── tasks/
 │   ├── active.md
@@ -73,31 +73,36 @@ Create the enhanced memory storage structure with distinct categories (tasks, kn
 **Related**:
 - Link to related memory
 - Link to related project
-```
+```text
 
 ### Category-Specific Formats
 
 **Tasks**:
+
 - Status: active/completed/archived
 - Priority: p0/p1/p2/p3
 - Due date (optional)
 - Related project
 
 **Knowledge**:
+
 - Type: learning/pattern/technique/insight
 - Source: where this came from
 - Applied in: where it's been used
 
 **Decisions**:
+
 - Status: proposed/accepted/rejected/superseded
 - Decision number (for ADRs)
 - Alternatives considered
 
 **Preferences**:
+
 - Category: coding/workflow/communication/etc
 - Applies to: global or project-specific
 
 **Context**:
+
 - Current state tracking
 - Active projects
 - Focus areas

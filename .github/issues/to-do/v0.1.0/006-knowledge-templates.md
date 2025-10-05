@@ -33,7 +33,9 @@ Create the foundational knowledge base templates that provide structure for docu
 ## Implementation Notes
 
 ### system.md.template
+
 Documents how the user's computer is organized:
+
 ```markdown
 ---
 title: "System Organization"
@@ -78,7 +80,9 @@ Files and directories ${ASSISTANT_NAME} should ignore:
 ```
 
 ### procedures.md.template
+
 Defines how to perform tasks:
+
 ```markdown
 ---
 title: "Procedures"
@@ -136,7 +140,9 @@ last_updated: "${INSTALL_DATE}"
 ```
 
 ### workflows.md.template
+
 Describes when to do things:
+
 ```markdown
 ---
 title: "Workflows"
@@ -186,7 +192,9 @@ last_updated: "${INSTALL_DATE}"
 ```
 
 ### projects.md.template
+
 Indexes active projects:
+
 ```markdown
 ---
 title: "Active Projects"
@@ -223,7 +231,9 @@ last_updated: "${INSTALL_DATE}"
 ```
 
 ### preferences.md.template
+
 Personal preferences and context:
+
 ```markdown
 ---
 title: "Preferences"

@@ -41,7 +41,8 @@ This epic is broken down into the following issues:
 **User**: "Remember that React useEffect needs cleanup functions for subscriptions to prevent memory leaks"
 
 **AIDA**:
-```
+
+```text
 ✓ Captured knowledge about React useEffect cleanup
 
 Category: React, Best Practices
@@ -54,7 +55,7 @@ Would you like to:
   [L] Link to project
   [S] Share to Obsidian
   [D] Done
-```
+```javascript
 
 ### Knowledge Entry Format
 
@@ -98,12 +99,15 @@ useEffect(() => {
 - Any resource that needs cleanup
 
 **Related Knowledge**:
+
 - [[React Hooks Best Practices]]
 - [[Memory Management in React]]
 
 **Used In Projects**:
+
 - Project Alpha (chat feature)
-```
+
+```text
 
 ### Knowledge Templates
 
@@ -142,6 +146,7 @@ useEffect(() => {
 ```
 
 **Technique Template**:
+
 ```markdown
 ## [Technique Name]
 
@@ -165,9 +170,10 @@ useEffect(() => {
 
 - [Common mistake 1]
 - [Common mistake 2]
-```
+```text
 
 **Insight Template**:
+
 ```markdown
 ## [Insight Title]
 
@@ -206,7 +212,7 @@ aida knowledge by-project alpha
 
 ### Knowledge Organization
 
-```
+```text
 ~/.claude/memory/knowledge/
 ├── learnings.md           # General learnings
 ├── patterns/              # Design and code patterns

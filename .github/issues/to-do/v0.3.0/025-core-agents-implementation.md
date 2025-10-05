@@ -42,7 +42,7 @@ This epic is broken down into the following issues:
 
 ### Agent Framework Architecture
 
-```
+```text
 ~/.claude/agents/
 ├── framework/
 │   ├── agent-base.md           # Base agent interface
@@ -67,6 +67,7 @@ This epic is broken down into the following issues:
 ### Secretary Agent
 
 **Responsibilities**:
+
 - Scheduling and calendar management
 - Task organization and prioritization
 - Communication drafting and review
@@ -75,7 +76,8 @@ This epic is broken down into the following issues:
 - Reminder and follow-up tracking
 
 **Example Capabilities**:
-```
+
+```text
 User: "@secretary Schedule a meeting with the team next Tuesday at 2pm"
 Secretary: I'll help you schedule that meeting. Let me check your calendar...
 
@@ -91,6 +93,7 @@ What would you like me to do?
 ```
 
 **Agent Definition** (`~/.claude/agents/core/secretary/CLAUDE.md`):
+
 ```markdown
 # Secretary Agent
 
@@ -135,11 +138,12 @@ What would you like me to do?
    - Follow-up tracking
 
 **Personality Trait**: Organized, proactive, detail-oriented
-```
+```text
 
 ### File Manager Agent
 
 **Responsibilities**:
+
 - File organization and cleanup
 - File search and discovery
 - Directory structure recommendations
@@ -148,6 +152,7 @@ What would you like me to do?
 - File analysis and categorization
 
 **Example Capabilities**:
+
 ```
 User: "@file-manager My Downloads folder is a mess. Can you help organize it?"
 File Manager: Let me analyze your Downloads folder...
@@ -169,9 +174,10 @@ I recommend:
   4. Extract ZIPs if needed, then delete
 
 Proceed with this organization? (Y/n)
-```
+```text
 
 **Agent Definition**:
+
 ```markdown
 # File Manager Agent
 
@@ -222,6 +228,7 @@ Proceed with this organization? (Y/n)
 ### Dev Assistant Agent
 
 **Responsibilities**:
+
 - Code review and suggestions
 - Debugging assistance
 - Architecture guidance
@@ -230,7 +237,8 @@ Proceed with this organization? (Y/n)
 - Git workflow assistance
 
 **Example Capabilities**:
-```
+
+```javascript
 User: "@dev-assistant Review this function for potential bugs"
 Dev Assistant: I'll review the code...
 
@@ -256,6 +264,7 @@ Shall I show you the corrected code?
 ```
 
 **Agent Definition**:
+
 ```markdown
 # Dev Assistant Agent
 
@@ -307,11 +316,12 @@ Shall I show you the corrected code?
    - PR review
 
 **Personality Trait**: Analytical, precise, pragmatic
-```
+```text
 
 ### Agent Routing System
 
 **Routing Rules** (`~/.claude/agents/routing-rules.yaml`):
+
 ```yaml
 routing_rules:
   # Explicit agent invocation
@@ -380,6 +390,7 @@ routing_rules:
 ```
 
 **Routing Logic**:
+
 ```python
 def route_request(user_input, context):
     # 1. Check for explicit agent invocation
@@ -399,7 +410,7 @@ def route_request(user_input, context):
 
     # 4. Use default (general AIDA)
     return (None, 0.5)
-```
+```text
 
 ### Agent Collaboration
 
@@ -432,7 +443,7 @@ Secretary: Updated plan:
   3. [10:30-11:00] Code review for PR #123
 
 Shall I set reminders for these?
-```
+```text
 
 ## Dependencies
 

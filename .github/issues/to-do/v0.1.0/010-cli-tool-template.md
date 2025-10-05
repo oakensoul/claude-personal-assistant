@@ -27,7 +27,8 @@ Create the `templates/cli-tool.template` file that serves as the basis for gener
 
 ## Implementation Notes
 
-**Template Structure:**
+### Template Structure
+
 ```bash
 #!/bin/bash
 # ${ASSISTANT_DISPLAY_NAME} - Personal AI Assistant CLI
@@ -184,13 +185,15 @@ main() {
 main "$@"
 ```
 
-**Variables Used:**
+### Variables Used
+
 - `${ASSISTANT_NAME}` - lowercase assistant name (e.g., "jarvis")
 - `${ASSISTANT_DISPLAY_NAME}` - capitalized name (e.g., "JARVIS")
 - `${AIDE_VERSION}` - AIDA framework version
 - `${INSTALL_DATE}` - Installation timestamp
 
-**Extensibility:**
+### Extensibility
+
 - Clear structure for adding new commands
 - Placeholder sections for future functionality
 - Comments indicate where to add features

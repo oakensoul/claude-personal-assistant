@@ -31,6 +31,7 @@ Create templates for different knowledge types (pattern, technique, insight) and
 ### Knowledge Templates
 
 **Pattern Template** (`~/.claude/templates/knowledge/pattern.md`):
+
 ```markdown
 ## [Pattern Name]
 
@@ -62,9 +63,10 @@ Create templates for different knowledge types (pattern, technique, insight) and
 
 **Cons**:
 - [Disadvantage 1]
-```
+```text
 
 **Technique Template** (`~/.claude/templates/knowledge/technique.md`):
+
 ```markdown
 ## [Technique Name]
 
@@ -91,6 +93,7 @@ Create templates for different knowledge types (pattern, technique, insight) and
 ```
 
 **Insight Template** (`~/.claude/templates/knowledge/insight.md`):
+
 ```markdown
 ## [Insight Title]
 
@@ -110,20 +113,22 @@ Create templates for different knowledge types (pattern, technique, insight) and
 ### Action Items
 
 - [How to apply this insight]
-```
+```text
 
 ### Knowledge Querying
 
 **Natural Language**:
+
 ```
 "What did I learn about React hooks?"
 "Show me knowledge about memory management"
 "Find patterns for API design"
 "What techniques do I have for debugging?"
 "Show me insights from October"
-```
+```text
 
 **CLI Commands**:
+
 ```bash
 # Search knowledge
 aida knowledge search "React hooks"
@@ -145,7 +150,7 @@ aida knowledge by-project alpha
 
 ### Knowledge Organization
 
-```
+```text
 ~/.claude/memory/knowledge/
 ├── learnings.md           # General learnings
 ├── patterns/              # Design and code patterns
@@ -180,9 +185,10 @@ Created notes:
 ✓ Exported 3 knowledge entries
 ✓ Created backlinks and tags
 ✓ Updated knowledge index
-```
+```javascript
 
 **Obsidian Note Format**:
+
 ```markdown
 ---
 tags: [react, useEffect, hooks, memory-management]
@@ -228,7 +234,7 @@ useEffect(() => {
 
 ### Query Results Format
 
-```
+```text
 Found 3 knowledge entries about "React hooks":
 
 1. React useEffect Cleanup Functions [Learning]

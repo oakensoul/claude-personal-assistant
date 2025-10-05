@@ -45,7 +45,6 @@ Related to #
 
 **Test details:**
 
-
 ## Breaking Changes
 
 <!-- If this is a breaking change, describe the impact and migration path -->
@@ -54,7 +53,6 @@ Related to #
 - [ ] Breaking changes (describe below)
 
 **Breaking changes:**
-
 
 ## Checklist
 

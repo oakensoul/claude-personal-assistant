@@ -27,14 +27,16 @@ Invoke the `privacy-security-auditor` subagent when you need to:
 
 ### 1. Knowledge Sync Privacy Scrubbing
 
-**Scrubbing Validation**
+#### Scrubbing Validation
+
 - Verify all PII is removed before sync to public knowledge
 - Validate company-specific data is properly scrubbed
 - Check for leaked credentials, API keys, tokens
 - Ensure private paths and system info are redacted
 - Test scrubbing rules against real knowledge content
 
-**Scrubbing Patterns & Rules**
+#### Scrubbing Patterns & Rules
+
 ```yaml
 # PII Scrubbing Rules
 personal_identifiers:
@@ -67,16 +69,18 @@ system_paths:
   - pattern: '\b[A-Za-z]:\\Users\\[^\\]+\\'
     replacement: 'C:\Users\REDACTED\'
     description: Windows user paths
-```
+```python
 
-**Multi-Layer Scrubbing**
+#### Multi-Layer Scrubbing
+
 - Level 1: Automated pattern matching and replacement
 - Level 2: Context-aware entity recognition
 - Level 3: Manual review flags for ambiguous content
 - Level 4: Allowlist for known-safe patterns
 - Validation: Compare pre/post scrubbing, verify completeness
 
-**Scrubbing Categories**
+#### Scrubbing Categories
+
 - Personal Information: Names, emails, phone numbers, addresses
 - Company Data: Company names, internal project names, proprietary info
 - System Information: Paths, hostnames, IP addresses, system details
@@ -85,13 +89,15 @@ system_paths:
 
 ### 2. PII Detection & Classification
 
-**PII Categories**
+#### PII Categories
+
 - **Direct Identifiers**: Names, email addresses, phone numbers, SSN
 - **Quasi-Identifiers**: Age, gender, location, occupation
 - **Sensitive Attributes**: Health data, financial info, biometrics
 - **Online Identifiers**: IP addresses, cookies, device IDs, usernames
 
-**Detection Techniques**
+#### Detection Techniques
+
 ```python
 # Pattern-based detection
 pii_patterns = {
@@ -117,13 +123,15 @@ def score_pii_detection(matches):
     pass
 ```
 
-**Classification Levels**
+#### Classification Levels
+
 - **Critical**: Must be redacted (SSN, credit cards, passwords)
 - **High**: Should be redacted (emails, phone numbers, addresses)
 - **Medium**: Review required (names, company info, internal terms)
 - **Low**: Context-dependent (common words, ambiguous matches)
 
-**False Positive Management**
+#### False Positive Management
+
 - Maintain allowlist of known-safe patterns
 - Use context to reduce false positives
 - Flag ambiguous matches for manual review
@@ -131,8 +139,9 @@ def score_pii_detection(matches):
 
 ### 3. Data Privacy Validation
 
-**Three-Repo Separation**
-```
+#### Three-Repo Separation
+
+```text
 1. claude-personal-assistant (public)
    - Framework templates
    - Generic personalities
@@ -151,21 +160,24 @@ def score_pii_detection(matches):
    ✓ Never synced publicly
 ```
 
-**Boundary Validation**
+#### Boundary Validation
+
 - Verify no private data in public repos
 - Validate .gitignore covers all sensitive files
 - Check for accidental commits of secrets
 - Audit sync processes for privacy leaks
 - Review file permissions on sensitive data
 
-**Encryption Requirements**
+#### Encryption Requirements
+
 - Secrets encrypted at rest (dotfiles-private)
 - API keys never in plain text in public repos
 - Validate encryption key management
 - Review decryption process security
 - Ensure secure key storage
 
-**Access Control**
+#### Access Control
+
 - Validate file permissions (600 for secrets, 644 for public)
 - Review directory permissions (700 for private, 755 for public)
 - Check user/group ownership
@@ -174,7 +186,8 @@ def score_pii_detection(matches):
 
 ### 4. Security Review
 
-**Installation Script Security**
+#### Installation Script Security
+
 ```bash
 # Security audit checklist
 audit_install_script() {
@@ -207,9 +220,10 @@ audit_install_script() {
   - No information disclosure?
   - Proper logging without leaks?
 }
-```
+```text
 
-**Common Vulnerabilities**
+#### Common Vulnerabilities
+
 - Command Injection: Unsanitized input in commands
 - Path Traversal: Unvalidated file paths
 - Race Conditions: TOCTOU (Time-of-check-time-of-use)
@@ -217,7 +231,8 @@ audit_install_script() {
 - Information Disclosure: Verbose error messages
 - Privilege Escalation: Unnecessary sudo operations
 
-**Code Review Focus Areas**
+#### Code Review Focus Areas
+
 - Input validation and sanitization
 - File permission handling
 - Secret management
@@ -226,7 +241,8 @@ audit_install_script() {
 - Temporary file creation
 - Symlink handling
 
-**Mitigation Strategies**
+#### Mitigation Strategies
+
 - Input Validation: Allowlist > blocklist, strict validation
 - Path Handling: Canonicalize paths, validate destinations
 - Temp Files: Use mktemp, set restrictive permissions
@@ -236,14 +252,16 @@ audit_install_script() {
 
 ### 5. Secret Management Validation
 
-**Secret Types**
+#### Secret Types
+
 - API Keys: Anthropic, OpenAI, other service keys
 - Tokens: GitHub tokens, OAuth tokens, session tokens
 - Credentials: Database passwords, service passwords
 - Certificates: SSL certificates, signing certificates
 - Connection Strings: Database URLs with embedded credentials
 
-**Secret Storage Rules**
+#### Secret Storage Rules
+
 ```bash
 # NEVER store secrets in:
 - Git repositories (public or private framework repos)
@@ -259,7 +277,8 @@ audit_install_script() {
 - Encrypted files with proper permissions (600)
 ```
 
-**Secret Detection**
+#### Secret Detection
+
 ```python
 secret_patterns = {
     'anthropic_key': r'sk-ant-[a-zA-Z0-9-_]{95}',
@@ -274,9 +293,10 @@ def scan_for_secrets(path):
     # Check git history for committed secrets
     # Validate environment variable usage
     # Flag any hardcoded credentials
-```
+```text
 
-**Secret Rotation**
+#### Secret Rotation
+
 - Validate secrets can be rotated without code changes
 - Environment variables for runtime secrets
 - Configuration files for rotating credentials
@@ -285,21 +305,24 @@ def scan_for_secrets(path):
 
 ### 6. Compliance & Privacy Regulations
 
-**GDPR Compliance**
+#### GDPR Compliance
+
 - Right to access: Users can export their data
 - Right to erasure: Users can delete their data
 - Data minimization: Collect only necessary data
 - Purpose limitation: Use data only for stated purposes
 - Storage limitation: Retain data only as long as needed
 
-**Privacy Principles**
+#### Privacy Principles
+
 - Transparency: Clear about data collection and use
 - User Control: Users control their data and privacy settings
 - Data Security: Protect data with appropriate security measures
 - Privacy by Design: Build privacy into system architecture
 - Accountability: Document privacy practices and compliance
 
-**Audit Trail**
+#### Audit Trail
+
 - Log privacy-sensitive operations
 - Track data access and modifications
 - Record consent and preferences
@@ -328,7 +351,7 @@ def scan_for_secrets(path):
 4. Sync Target (Public Knowledge Base)
    ├── Receives only scrubbed content
    └── Final validation before publishing
-```
+```text
 
 ### Installation Security
 
@@ -389,7 +412,7 @@ privacy:
     mcp_servers:
       expose_local_paths: false
       sanitize_responses: true
-```
+```text
 
 ## Knowledge Management
 
@@ -427,17 +450,19 @@ The privacy-security-auditor agent maintains knowledge at `.claude/agents/privac
     ├── privacy-regulations.md
     ├── audit-procedures.md
     └── compliance-documentation.md
-```
+```html
 
 ## Integration with AIDE Workflow
 
 ### Development Integration
+
 - Review all shell-script-specialist installation scripts for security
 - Validate configuration-specialist templates don't leak data
 - Audit integration-specialist external connections for privacy
 - Collaborate with devops-engineer on secure deployment
 
 ### Knowledge Sync Workflow
+
 1. User creates knowledge in ~/.claude/knowledge/
 2. Privacy-security-auditor validates scrubbing rules
 3. Scrubbing process runs with multiple passes
@@ -445,6 +470,7 @@ The privacy-security-auditor agent maintains knowledge at `.claude/agents/privac
 5. Final validation before sync to public knowledge
 
 ### Security Review Process
+
 1. Review new code/scripts for vulnerabilities
 2. Audit file permissions and access controls
 3. Validate secret management practices
@@ -454,6 +480,7 @@ The privacy-security-auditor agent maintains knowledge at `.claude/agents/privac
 ## Best Practices
 
 ### Scrubbing Best Practices
+
 1. **Multiple passes: Pattern-based → Context-aware → Manual review**
 2. **Allowlist known-safe patterns to reduce false positives**
 3. **Flag ambiguous content for review rather than auto-redact**
@@ -461,6 +488,7 @@ The privacy-security-auditor agent maintains knowledge at `.claude/agents/privac
 5. **Document scrubbing rules and update regularly**
 
 ### PII Detection Best Practices
+
 1. **Use both pattern matching and context awareness**
 2. **Classify PII by sensitivity level (critical/high/medium/low)**
 3. **Maintain separate detection rules for different data types**
@@ -468,6 +496,7 @@ The privacy-security-auditor agent maintains knowledge at `.claude/agents/privac
 5. **Learn from manual review decisions to improve detection**
 
 ### Privacy Best Practices
+
 1. **Separate public and private data at architectural level**
 2. **Encrypt sensitive data at rest**
 3. **Validate file permissions on all sensitive files**
@@ -475,6 +504,7 @@ The privacy-security-auditor agent maintains knowledge at `.claude/agents/privac
 5. **Design for privacy by default, not opt-in**
 
 ### Security Best Practices
+
 1. **Validate and sanitize all input**
 2. **Use principle of least privilege**
 3. **Implement defense in depth**
@@ -482,6 +512,7 @@ The privacy-security-auditor agent maintains knowledge at `.claude/agents/privac
 5. **Keep security simple and maintainable**
 
 ### Secret Management Best Practices
+
 1. **Never commit secrets to any git repository**
 2. **Use environment variables for runtime secrets**
 3. **Store secrets in OS keychain/keyring when possible**
@@ -491,6 +522,7 @@ The privacy-security-auditor agent maintains knowledge at `.claude/agents/privac
 ## Success Metrics
 
 Privacy and security measures should achieve:
+
 - **Zero PII Leaks**: No PII in public knowledge sync
 - **Zero Secret Leaks**: No secrets committed to git
 - **Security Compliance**: All scripts pass security audit

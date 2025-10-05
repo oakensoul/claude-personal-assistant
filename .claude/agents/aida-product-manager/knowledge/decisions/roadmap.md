@@ -47,6 +47,7 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 **Timeline**: ~6 weeks (initial development)
 
 **Success Criteria**:
+
 - Users can install AIDA without errors
 - Users can choose or create custom personality
 - Users can have basic conversations with AIDA
@@ -54,7 +55,8 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 
 ### Features (Must-Have)
 
-**Installation & Setup**
+#### Installation & Setup
+
 - `./install.sh` for standard installation
 - `./install.sh --dev` for development mode
 - Creates `~/.aida/` framework directory
@@ -62,7 +64,8 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 - Prompts for Claude API key (stored securely)
 - Welcome message and getting started guide
 
-**Personality System**
+#### Personality System
+
 - 5 pre-built personalities: JARVIS, Alfred, FRIDAY, Sage, Drill Sergeant
 - Interactive personality builder (12 questions)
 - YAML-based personality configuration
@@ -70,7 +73,8 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 - Personality switching: `aida personality switch [name]`
 - Personality management: list, preview, current
 
-**Basic CLI**
+#### Basic CLI
+
 - `aida` - Start conversational mode
 - `aida status` - System status and health check
 - `aida help` - Help and documentation
@@ -78,13 +82,15 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 - Natural language support (not just flags)
 - Error messages are helpful and conversational
 
-**Core Memory System (Foundation)**
+#### Core Memory System (Foundation)
+
 - Persistent storage for conversations
 - Session tracking
 - Basic context retrieval
 - Memory architecture for future features
 
-**Documentation**
+#### Documentation
+
 - README with installation instructions
 - Personality guide (how to choose/create)
 - Basic usage examples
@@ -121,31 +127,36 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 **Timeline**: ~4-5 weeks after 0.1.0
 
 **Success Criteria**:
+
 - Users adopt AIDA for daily task management
 - Memory system demonstrates value (remembers context)
 - Users stick with AIDA beyond initial trial
 
 ### Features (Must-Have)
 
-**Task Management**
+#### Task Management
+
 - Natural language task capture: "Remember to update docs"
 - Task prioritization: "High priority: fix prod bug"
 - Task querying: "What tasks do I have?"
 - Task completion: "I finished updating docs"
 - Task persistence across sessions
 
-**Memory Improvements**
+#### Memory Improvements
+
 - Enhanced conversation memory
 - User preference learning
 - Project context tracking
 - Decision history capture
 
-**Workflow Automation (Basic)**
+#### Workflow Automation (Basic)
+
 - Simple scripted workflows
 - Morning/evening routines (basic version)
 - Context-aware responses based on time of day
 
-**CLI Enhancements**
+#### CLI Enhancements
+
 - `aida task` - Task management commands
 - `aida memory` - Memory inspection and management
 - Improved help and documentation
@@ -153,13 +164,15 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 
 ### Features (Nice-to-Have)
 
-**Morning/Evening Routines**
+#### Morning/Evening Routines
+
 - `aida morning` - Start-of-day planning
 - `aida evening` - End-of-day reflection
 - Integration with task list
 - Customizable routine templates
 
-**Update Mechanism**
+#### Update Mechanism
+
 - `aida update` - Check for and install updates
 - Version checking
 - Changelog display
@@ -187,32 +200,37 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 **Timeline**: ~5-6 weeks after 0.2.0
 
 **Success Criteria**:
+
 - Specialized agents provide better responses than generic AI
 - Knowledge capture becomes part of user workflow
 - Decision documentation is valued by users
 
 ### Features (Must-Have)
 
-**Core Agents**
+#### Core Agents
+
 - Secretary Agent (scheduling, organization, communication)
 - File Manager Agent (file operations, search, organization)
 - Dev Assistant Agent (code help, debugging, reviews)
 - Agent routing (right agent for right task)
 - Agent invocation: `@agent-name question`
 
-**Knowledge Capture**
+#### Knowledge Capture
+
 - "Remember that [learning]" stores knowledge
 - Knowledge categorization (topics, tags)
 - Knowledge querying: "What did I learn about React?"
 - Knowledge linking to projects and contexts
 
-**Decision Documentation**
+#### Decision Documentation
+
 - "Document decision: [decision]" creates ADR
 - Decision records with context, alternatives, rationale
 - Decision querying: "Why did we choose PostgreSQL?"
 - Decision history and evolution
 
-**Memory System (Enhanced)**
+#### Memory System (Enhanced)
+
 - Structured memory (not just conversation logs)
 - Memory categories: tasks, knowledge, decisions, preferences
 - Memory search and filtering
@@ -220,13 +238,15 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 
 ### Features (Nice-to-Have)
 
-**Git Integration**
+#### Git Integration
+
 - Awareness of current git context (branch, status)
 - Code review from git diff: `aida review`
 - Commit message suggestions
 - Branch and project tracking
 
-**Code Review Assistance**
+#### Code Review Assistance
+
 - Review current changes: `aida review`
 - Review specific file: `aida review src/api.ts`
 - Automated checks (bugs, style, security)
@@ -255,13 +275,15 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 **Timeline**: ~5-6 weeks after 0.3.0
 
 **Success Criteria**:
+
 - Obsidian users have seamless integration
 - Expanded command set covers most daily workflows
 - AIDA feels like part of user's workflow, not separate tool
 
 ### Features (Must-Have)
 
-**Obsidian Integration**
+#### Obsidian Integration
+
 - Daily note creation and updates
 - Task sync to Obsidian
 - Knowledge sync to Obsidian vault
@@ -269,14 +291,16 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 - Configurable vault location
 - Template support
 
-**Expanded Commands**
+#### Expanded Commands
+
 - `aida plan` - Project/roadmap planning assistance
 - `aida document [file]` - Documentation generation
 - `aida search` - Search memory, knowledge, decisions
 - `aida export` - Export data (tasks, knowledge, etc.)
 - `aida config` - Configuration management
 
-**Workflow Templates**
+#### Workflow Templates
+
 - Reusable workflow templates
 - User-defined workflows
 - Workflow sharing and import
@@ -284,13 +308,15 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 
 ### Features (Nice-to-Have)
 
-**Documentation Generation**
+#### Documentation Generation
+
 - Generate README from codebase
 - Generate API docs from code
 - Generate runbooks from procedures
 - Comment generation for code
 
-**Project Planning**
+#### Project Planning
+
 - Roadmap planning assistance
 - Feature prioritization help
 - Milestone scoping
@@ -319,26 +345,30 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 **Timeline**: ~6-8 weeks after 0.4.0
 
 **Success Criteria**:
+
 - Project-specific agents provide expert-level help
 - Users begin creating custom agents
 - Plugin system enables community contributions
 
 ### Features (Must-Have)
 
-**Project Agent Framework**
+#### Project Agent Framework
+
 - Pluggable agent architecture
 - Agent discovery and loading
 - Agent configuration (YAML-based)
 - Agent versioning and updates
 
-**Initial Project Agents**
+#### Initial Project Agents
+
 - kubernetes-expert (k8s help and best practices)
 - react-specialist (React patterns and debugging)
 - python-guru (Python code and architecture)
 - devops-engineer (Infrastructure and deployment)
 - Additional agents based on user demand
 
-**Agent Management**
+#### Agent Management
+
 - `aida agents list` - Show available agents
 - `aida agents install [name]` - Install agent from registry
 - `aida agents create [name]` - Create custom agent (basic)
@@ -346,13 +376,15 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 
 ### Features (Nice-to-Have)
 
-**Plugin System (Foundation)**
+#### Plugin System (Foundation)
+
 - Plugin API specification
 - Plugin discovery and loading
 - Plugin sandboxing (security)
 - Community plugin registry (preparation)
 
-**Agent Marketplace (Preparation)**
+#### Agent Marketplace (Preparation)
+
 - Agent registry (initially curated)
 - Agent ratings and reviews
 - Agent documentation and examples
@@ -381,13 +413,15 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 **Timeline**: ~6-8 weeks after 0.5.0
 
 **Success Criteria**:
+
 - Users trust privacy scrubbing to remove sensitive data
 - Knowledge sharing becomes part of workflow
 - Data audit and control features are used
 
 ### Features (Must-Have)
 
-**Knowledge Export with Privacy**
+#### Knowledge Export with Privacy
+
 - `aida knowledge export --scrub` - Export with scrubbing
 - Automated privacy scrubbing:
   - Company names
@@ -398,13 +432,15 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 - User review before sharing
 - Configurable scrubbing rules
 
-**Knowledge Import**
+#### Knowledge Import
+
 - Import knowledge from others
 - Merge imported knowledge with local
 - Knowledge provenance tracking
 - Conflict resolution
 
-**Data Audit & Control**
+#### Data Audit & Control
+
 - `aida data audit` - Show all stored data
 - View data by category (conversations, tasks, knowledge, etc.)
 - Export specific data: `aida data export [category]`
@@ -413,13 +449,15 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 
 ### Features (Nice-to-Have)
 
-**Community Knowledge Sharing**
+#### Community Knowledge Sharing
+
 - Publish scrubbed knowledge to community
 - Browse and import community knowledge
 - Knowledge attribution and versioning
 - Community knowledge curation
 
-**Privacy Dashboard**
+#### Privacy Dashboard
+
 - Visual overview of stored data
 - Privacy settings and controls
 - Data flow transparency (what goes to Claude API)
@@ -448,6 +486,7 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 **Timeline**: When ready (quality over timeline, ~8-12 weeks after 0.6.0)
 
 **Success Criteria**:
+
 - All core features are stable and well-tested
 - Documentation is comprehensive
 - No critical bugs
@@ -456,14 +495,16 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 
 ### Features (Must-Have)
 
-**Polish & Quality**
+#### Polish & Quality
+
 - All P0 features from 0.1-0.6 are complete and polished
 - Comprehensive error handling
 - Performance optimization
 - Extensive testing (unit, integration, e2e)
 - Security audit and hardening
 
-**Documentation**
+#### Documentation
+
 - Complete user guide
 - API documentation
 - Agent development guide
@@ -471,14 +512,16 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 - Video tutorials
 - FAQ
 
-**Stability**
+#### Stability
+
 - No known critical bugs
 - Graceful degradation for errors
 - Clear upgrade path from 0.x
 - Data migration tools if needed
 - Backward compatibility guarantees
 
-**Developer Experience**
+#### Developer Experience
+
 - Agent development toolkit
 - Plugin development guide
 - Testing framework for agents
@@ -487,13 +530,15 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 
 ### Features (Nice-to-Have)
 
-**Top Community Requests**
+#### Top Community Requests
+
 - Features requested by 20%+ of users
 - Quick wins that improve experience
 - Integrations with popular tools
 - Additional personalities and agents
 
-**Performance Optimizations**
+#### Performance Optimizations
+
 - Faster startup time
 - Reduced memory footprint
 - Optimized API usage (fewer calls)
@@ -525,6 +570,7 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 ### Potential Features (Not Committed)
 
 **Web Dashboard** (1.1+)
+
 - Visual interface for AIDA
 - Task/project dashboard
 - Knowledge browser
@@ -532,12 +578,14 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 - Mobile-responsive
 
 **Team Features** (1.2+)
+
 - Shared knowledge bases
 - Team agents
 - Collaborative workflows
 - Role-based access control
 
 **Advanced Integrations** (1.x)
+
 - Calendar integration (Google, Apple)
 - Email integration (Gmail, Outlook)
 - Jira/Linear integration
@@ -545,30 +593,35 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 - GitHub/GitLab integration
 
 **Mobile App** (2.0+)
+
 - iOS/Android apps
 - Quick capture on mobile
 - Sync with desktop AIDA
 - Voice interface
 
 **Platform Expansion** (1.x)
+
 - Windows support (community-driven)
 - Linux improvements
 - Docker containerization
 - Cloud deployment options
 
 **AI Enhancements** (1.x+)
+
 - Multi-modal (image understanding, generation)
 - Voice input/output
 - Proactive suggestions (not just reactive)
 - Continuous learning from user
 
 **Plugin Marketplace** (1.x)
+
 - Community plugin repository
 - Plugin ratings and reviews
 - One-click plugin installation
 - Plugin revenue sharing (optional)
 
 **Enterprise Features** (2.0+)
+
 - Self-hosted deployment
 - SAML/SSO integration
 - Compliance certifications
@@ -580,27 +633,35 @@ AIDA uses semantic versioning: `MAJOR.MINOR.PATCH`
 ## Roadmap Principles
 
 ### 1. User Value First
+
 Every milestone should deliver tangible user value, not just internal improvements.
 
 ### 2. Incremental & Iterative
+
 Build foundation, then features, then polish. Don't try to perfect early milestones.
 
 ### 3. Feedback-Driven
+
 Gather user feedback after each milestone and adjust roadmap accordingly.
 
 ### 4. Quality Over Speed
+
 Better to delay a milestone than ship broken features.
 
 ### 5. Manage Scope
+
 Be ruthless about cutting features that don't fit milestone goals.
 
 ### 6. Dependencies First
+
 Build required infrastructure before features that depend on it.
 
 ### 7. Technical Debt Balance
+
 Allow some technical debt in early milestones, pay it down before 1.0.
 
 ### 8. Community Involvement
+
 Encourage and incorporate community feedback and contributions.
 
 ---
@@ -617,6 +678,7 @@ This roadmap is a living document. Changes should be:
 ### Recent Changes
 
 **2025-10-04**: Initial roadmap created
+
 - Defined milestones 0.1.0 through 1.0.0
 - Established milestone philosophy and principles
 - Identified must-have vs nice-to-have features

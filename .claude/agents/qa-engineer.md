@@ -28,7 +28,8 @@ Invoke the `qa-engineer` subagent when you need to:
 
 ### 1. Installation Testing
 
-**Installation Scenarios**
+#### Installation Scenarios
+
 ```bash
 # Test matrix
 platforms:
@@ -49,9 +50,10 @@ modes:
   - Upgrade from previous version
   - Fresh install (no existing config)
   - Install over existing config
-```
+```bash
 
-**Installation Test Cases**
+#### Installation Test Cases
+
 ```yaml
 # Installation test suite
 test_cases:
@@ -94,7 +96,8 @@ test_cases:
       - "No breaking changes for user"
 ```
 
-**Installation Validation Script**
+#### Installation Validation Script
+
 ```bash
 #!/usr/bin/env bash
 # validate-installation.sh
@@ -153,11 +156,12 @@ check_dir() {
   echo "✓ Directory OK: $dir ($expected_perms)"
   return 0
 }
-```
+```python
 
 ### 2. Template System Testing
 
-**Template Test Cases**
+#### Template Test Cases
+
 ```python
 # Template processing tests
 def test_template_processing():
@@ -202,7 +206,8 @@ def test_template_processing():
         assert result == test['expected'], f"Failed: {test['name']}"
 ```
 
-**Personality Generation Testing**
+#### Personality Generation Testing
+
 ```bash
 # Test personality generation from templates
 test_personality_generation() {
@@ -232,11 +237,12 @@ test_personality_generation() {
   cleanup "$test_dir"
   echo "✓ Personality generation test passed"
 }
-```
+```json
 
 ### 3. CLI Testing
 
-**CLI Test Suite**
+#### CLI Test Suite
+
 ```bash
 # AIDE CLI test suite
 test_cli() {
@@ -289,7 +295,8 @@ test_cmd() {
 }
 ```
 
-**Interactive Prompt Testing**
+#### Interactive Prompt Testing
+
 ```python
 # Test interactive prompts
 import pexpect
@@ -327,11 +334,12 @@ def test_install_confirmation():
     child.expect(pexpect.EOF)
     child.close()
     assert child.exitstatus == 1  # Non-zero for cancelled
-```
+```text
 
 ### 4. Cross-Platform Testing
 
-**Platform Compatibility Matrix**
+#### Platform Compatibility Matrix
+
 ```yaml
 # Cross-platform test matrix
 test_matrix:
@@ -361,7 +369,8 @@ test_matrix:
     tests: [install, cli, templates, personalities]
 ```
 
-**Platform-Specific Testing**
+#### Platform-Specific Testing
+
 ```bash
 # Test platform-specific features
 test_platform_specific() {
@@ -398,9 +407,10 @@ test_linux_specific() {
 
   echo "✓ Linux tests passed"
 }
-```
+```json
 
-**Shell Compatibility Testing**
+#### Shell Compatibility Testing
+
 ```bash
 # Test across different shells
 test_shell_compatibility() {
@@ -436,7 +446,8 @@ test_zsh_features() {
 
 ### 5. Integration Testing
 
-**Obsidian Integration Tests**
+#### Obsidian Integration Tests
+
 ```python
 def test_obsidian_integration():
     # Test daily note creation
@@ -452,9 +463,10 @@ def test_obsidian_integration():
     sync_knowledge_to_obsidian()
     # Verify synced files exist and are scrubbed
     assert no_pii_in_vault()
-```
+```python
 
-**MCP Server Testing**
+#### MCP Server Testing
+
 ```python
 async def test_mcp_servers():
     manager = MCPManager("~/.claude/mcp-servers.yml")
@@ -475,7 +487,8 @@ async def test_mcp_servers():
     await manager.disconnect_all()
 ```
 
-**GNU Stow Integration Tests**
+#### GNU Stow Integration Tests
+
 ```bash
 test_stow_integration() {
   local test_dir=$(mktemp -d)
@@ -497,11 +510,12 @@ test_stow_integration() {
 
   cleanup "$test_dir"
 }
-```
+```yaml
 
 ### 6. Regression Testing
 
-**Regression Test Suite**
+#### Regression Test Suite
+
 ```yaml
 # Regression tests - ensure changes don't break existing functionality
 regression_tests:
@@ -526,7 +540,8 @@ regression_tests:
     validate: "Commands work or show helpful migration message"
 ```
 
-**Automated Regression Testing**
+#### Automated Regression Testing
+
 ```bash
 # Run regression suite
 run_regression_tests() {
@@ -551,11 +566,12 @@ run_regression_tests() {
   # Report results
   generate_regression_report
 }
-```
+```text
 
 ### 7. Edge Case Testing
 
-**Edge Case Test Suite**
+#### Edge Case Test Suite
+
 ```bash
 # Test edge cases and error conditions
 test_edge_cases() {
@@ -630,7 +646,7 @@ test_permission_errors() {
 
 The qa-engineer agent maintains knowledge at `.claude/agents/qa-engineer/knowledge/`:
 
-```
+```text
 .claude/agents/qa-engineer/knowledge/
 ├── installation-testing/
 │   ├── test-matrix.md
@@ -667,18 +683,21 @@ The qa-engineer agent maintains knowledge at `.claude/agents/qa-engineer/knowled
 ## Integration with AIDE Workflow
 
 ### Pre-Release Testing
+
 - Run full test suite before each release
 - Validate on all supported platforms
 - Test upgrade paths from previous versions
 - Ensure backward compatibility
 
 ### Continuous Testing
+
 - Automated tests on every commit
 - Platform-specific CI/CD pipelines
 - Integration tests with external services
 - Regression tests on feature changes
 
 ### Post-Release Validation
+
 - Monitor installation success rates
 - Track error reports from users
 - Validate upgrade procedures
@@ -687,6 +706,7 @@ The qa-engineer agent maintains knowledge at `.claude/agents/qa-engineer/knowled
 ## Best Practices
 
 ### Installation Testing Best Practices
+
 1. **Test on clean systems to avoid environmental contamination**
 2. **Validate both fresh installs and upgrades**
 3. **Check file permissions and directory structure**
@@ -694,6 +714,7 @@ The qa-engineer agent maintains knowledge at `.claude/agents/qa-engineer/knowled
 5. **Verify rollback procedures work correctly**
 
 ### Template Testing Best Practices
+
 1. **Test all variable types (system, user, runtime)**
 2. **Validate error handling for undefined variables**
 3. **Test with special characters and edge cases**
@@ -701,6 +722,7 @@ The qa-engineer agent maintains knowledge at `.claude/agents/qa-engineer/knowled
 5. **Ensure generated configs are valid**
 
 ### CLI Testing Best Practices
+
 1. **Test both valid and invalid input**
 2. **Validate exit codes (0 for success, non-zero for errors)**
 3. **Check error messages are helpful and actionable**
@@ -708,6 +730,7 @@ The qa-engineer agent maintains knowledge at `.claude/agents/qa-engineer/knowled
 5. **Verify command output is consistent**
 
 ### Cross-Platform Testing Best Practices
+
 1. **Test on actual platforms, not just emulation**
 2. **Account for shell differences (bash vs zsh)**
 3. **Test with minimum supported versions**
@@ -715,6 +738,7 @@ The qa-engineer agent maintains knowledge at `.claude/agents/qa-engineer/knowled
 5. **Maintain compatibility matrices**
 
 ### Integration Testing Best Practices
+
 1. **Mock external services when testing in isolation**
 2. **Test with real services in integration tests**
 3. **Validate error handling for service failures**
@@ -724,6 +748,7 @@ The qa-engineer agent maintains knowledge at `.claude/agents/qa-engineer/knowled
 ## Success Metrics
 
 Testing should achieve:
+
 - **Installation Success**: >99% successful installs on supported platforms
 - **Platform Coverage**: 100% of supported platforms tested
 - **Test Coverage**: >90% code coverage for critical paths

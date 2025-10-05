@@ -33,13 +33,15 @@ Thoroughly test the installation script on fresh systems to ensure it works corr
 
 ### Test Environments
 
-**macOS Testing:**
+### macOS Testing
+
 - Fresh macOS user account or VM
 - Test with default shell (zsh on modern macOS)
 - Test with bash (if user changes shell)
 - Verify Homebrew compatibility (if present)
 
-**Linux Testing:**
+### Linux Testing
+
 - Ubuntu 22.04 LTS (most common)
 - Debian 12 (stable)
 - Test with bash (default on most Linux)
@@ -47,7 +49,8 @@ Thoroughly test the installation script on fresh systems to ensure it works corr
 
 ### Test Procedure
 
-**1. Clean System Test:**
+### 1. Clean System Test
+
 ```bash
 # Start with no ~/.claude/ or ~/.aida/
 # No ~/CLAUDE.md
@@ -66,7 +69,8 @@ Thoroughly test the installation script on fresh systems to ensure it works corr
 # - CLI is accessible
 ```
 
-**2. Dev Mode Test:**
+### 2. Dev Mode Test
+
 ```bash
 # Clean system
 ./install.sh --dev
@@ -78,7 +82,8 @@ Thoroughly test the installation script on fresh systems to ensure it works corr
 # - Dev mode warning displayed
 ```
 
-**3. Re-installation Test:**
+### 3. Re-installation Test
+
 ```bash
 # Install once
 ./install.sh
@@ -93,7 +98,8 @@ Thoroughly test the installation script on fresh systems to ensure it works corr
 # - Idempotent behavior
 ```
 
-**4. Error Scenario Testing:**
+### 4. Error Scenario Testing
+
 ```bash
 # Test with no write permissions
 chmod 000 ~
@@ -114,7 +120,8 @@ chmod 000 ~
 
 For each test run, verify:
 
-**Directory Structure:**
+### Directory Structure
+
 - [ ] `~/.aida/` exists and contains framework files
 - [ ] `~/.claude/` exists with correct subdirectories
 - [ ] `~/.claude/config/` contains personality.yaml
@@ -124,7 +131,8 @@ For each test run, verify:
 - [ ] `~/bin/` exists and contains CLI tool
 - [ ] `~/CLAUDE.md` exists
 
-**File Contents:**
+### File Contents
+
 - [ ] All `${ASSISTANT_NAME}` replaced with actual name
 - [ ] All `${PERSONALITY_NAME}` replaced correctly
 - [ ] All `${INSTALL_DATE}` has valid timestamp
@@ -132,12 +140,14 @@ For each test run, verify:
 - [ ] YAML files are valid
 - [ ] Markdown files are well-formed
 
-**Permissions:**
+### Permissions
+
 - [ ] Directories are 755 (rwxr-xr-x)
 - [ ] Regular files are 644 (rw-r--r--)
 - [ ] CLI tool is 755 (rwxr-xr-x)
 
-**Functionality:**
+### Functionality
+
 - [ ] CLI tool executes without errors
 - [ ] `{name} status` works
 - [ ] `{name} help` displays correctly
@@ -145,7 +155,8 @@ For each test run, verify:
 - [ ] CLI is in PATH (accessible from anywhere)
 - [ ] Shell restart not required (or clearly indicated)
 
-**Error Handling:**
+### Error Handling
+
 - [ ] Missing dependencies detected
 - [ ] Invalid input rejected
 - [ ] Permission issues reported clearly
@@ -155,6 +166,7 @@ For each test run, verify:
 ### Test Documentation
 
 Create `docs/development/testing.md`:
+
 ```markdown
 # Testing Guide
 

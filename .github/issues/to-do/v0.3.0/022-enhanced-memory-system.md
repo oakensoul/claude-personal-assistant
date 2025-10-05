@@ -40,7 +40,7 @@ This epic is broken down into the following issues:
 
 ### Memory Categories
 
-```
+```text
 ~/.claude/memory/
 ├── tasks/
 │   ├── active.md
@@ -82,7 +82,7 @@ Each memory entry should have:
 **Related**:
 - Link to related memory
 - Link to related project
-```
+```text
 
 ### Memory Search
 
@@ -112,7 +112,7 @@ aida memory import ~/backups/memory-2025-10-04.tar.gz
 
 # Import specific category
 aida memory import --category knowledge ~/knowledge-export.json
-```
+```text
 
 ### Memory Visualization
 

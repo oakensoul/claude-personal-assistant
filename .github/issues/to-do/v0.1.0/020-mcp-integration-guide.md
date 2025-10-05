@@ -76,7 +76,7 @@ Model Context Protocol (MCP) servers are tools that extend Claude's capabilities
 # Install filesystem MCP server (via Claude Desktop settings)
 # Or via command line if available:
 npm install -g @modelcontextprotocol/server-filesystem
-```
+```json
 
 **Configuration** (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
 
@@ -93,6 +93,7 @@ npm install -g @modelcontextprotocol/server-filesystem
 ```
 
 **For AIDA, grant access to**:
+
 - `~/` (home directory) - for CLAUDE.md
 - `~/.claude/` - for all AIDA files
 - `~/Knowledge/Obsidian-Vault/` - for Obsidian integration
@@ -103,6 +104,7 @@ npm install -g @modelcontextprotocol/server-filesystem
 **Purpose**: Allows Claude to execute git commands
 
 **What it enables**:
+
 - Commit changes to dotfiles automatically
 - Create branches and PRs
 - Check git status
@@ -112,7 +114,7 @@ npm install -g @modelcontextprotocol/server-filesystem
 
 ```bash
 npm install -g @modelcontextprotocol/server-git
-```
+```json
 
 **Configuration**:
 
@@ -133,6 +135,7 @@ npm install -g @modelcontextprotocol/server-git
 **Purpose**: Provides persistent memory across Claude sessions
 
 **What it enables**:
+
 - Claude remembers context from previous conversations
 - No need to re-explain setup each time
 - Continuity in multi-day workflows
@@ -143,7 +146,7 @@ Check if available in Claude Desktop settings or:
 
 ```bash
 npm install -g @modelcontextprotocol/server-memory
-```
+```json
 
 **Configuration**:
 
@@ -184,7 +187,7 @@ npm install -g @modelcontextprotocol/server-memory
     }
   }
 }
-```
+```html
 
 **Important**: Replace `YOUR-USERNAME` with your actual username.
 
@@ -192,7 +195,7 @@ npm install -g @modelcontextprotocol/server-memory
 
 ### 1. Install Claude Desktop
 
-Download from: https://claude.ai/download
+Download from: <https://claude.ai/download>
 
 ### 2. Install Node.js (if not already installed)
 
@@ -213,20 +216,23 @@ npm --version
 ### 3. Configure MCP Servers
 
 **On macOS**:
+
 ```bash
 # Create config file if it doesn't exist
 mkdir -p ~/Library/Application\ Support/Claude/
 nano ~/Library/Application\ Support/Claude/claude_desktop_config.json
-```
+```text
 
 **On Linux**:
+
 ```bash
 mkdir -p ~/.config/Claude/
 nano ~/.config/Claude/claude_desktop_config.json
 ```
 
 **On Windows**:
-```
+
+```text
 %APPDATA%\Claude\claude_desktop_config.json
 ```
 
@@ -241,6 +247,7 @@ Completely quit and restart Claude Desktop app.
 ### 6. Verify MCP Servers
 
 In Claude Desktop, check for indicators that MCP servers are active:
+
 - Filesystem icon or mention
 - Git capabilities available
 - No permission errors when accessing files
@@ -248,7 +255,8 @@ In Claude Desktop, check for indicators that MCP servers are active:
 ### 7. Test with AIDA
 
 Start conversation:
-```
+
+```text
 Please read ~/CLAUDE.md and introduce yourself
 ```
 
@@ -258,22 +266,24 @@ Claude should automatically read the file without you copying/pasting it.
 
 ### First Conversation
 
-```
+```text
 Read ~/CLAUDE.md and introduce yourself as my assistant
 ```
 
 Claude will:
+
 1. Read ~/CLAUDE.md via filesystem MCP
 2. Load personality from ~/.claude/config/personality.yaml
 3. Introduce itself with appropriate personality
 
 ### Daily Workflow
 
-```
+```text
 jarvis start day
 ```
 
 Claude will:
+
 1. Read memory/context.md
 2. Read knowledge/projects.md
 3. Create/update today's Obsidian daily note (via filesystem)
@@ -282,11 +292,12 @@ Claude will:
 
 ### Project Work
 
-```
+```text
 I'm working on Project Alpha. Update its status to 80% complete.
 ```
 
 Claude will:
+
 1. Read knowledge/projects.md
 2. Update Project Alpha entry
 3. Write file back (via filesystem)
@@ -300,6 +311,7 @@ Claude will:
 **Symptom**: "Server not available" or similar error
 
 **Solutions**:
+
 1. Verify Node.js is installed: `node --version`
 2. Check config file path is correct
 3. Ensure JSON is valid (no trailing commas, proper quotes)
@@ -310,6 +322,7 @@ Claude will:
 **Symptom**: "Cannot read file" or "Permission denied"
 
 **Solutions**:
+
 1. Check filesystem server has access to directory
 2. Verify file permissions: `ls -la ~/.claude/`
 3. Grant Claude Desktop full disk access (macOS System Preferences > Security & Privacy)
@@ -319,6 +332,7 @@ Claude will:
 **Symptom**: Git operations don't work
 
 **Solutions**:
+
 1. Verify git is installed: `git --version`
 2. Check git server is in config
 3. Ensure repository has proper remote configured
@@ -329,6 +343,7 @@ Claude will:
 **Symptom**: MCP servers don't seem to activate
 
 **Solutions**:
+
 1. Verify config file location (different per OS)
 2. Check JSON syntax with validator
 3. Ensure file is named exactly `claude_desktop_config.json`
@@ -340,11 +355,13 @@ Claude will:
 ### Filesystem Access
 
 **What Claude can do**:
+
 - Read files in specified directories
 - Write to specified directories
 - Create/delete files
 
 **Recommendations**:
+
 - Grant access only to needed directories
 - Don't grant root access
 - Review filesystem server permissions
@@ -353,11 +370,13 @@ Claude will:
 ### Git Access
 
 **What Claude can do**:
+
 - Read repository status
 - Create commits
 - Push to remotes (if credentials available)
 
 **Recommendations**:
+
 - Review commits before pushing
 - Use separate git user for Claude commits (optional)
 - Don't grant access to repositories with secrets
@@ -366,11 +385,13 @@ Claude will:
 ### Memory Persistence
 
 **What Claude remembers**:
+
 - Information from previous conversations
 - Preferences and context
 - Project details
 
 **Recommendations**:
+
 - Don't share extremely sensitive information
 - Review memory occasionally
 - Clear memory if switching contexts
@@ -412,7 +433,8 @@ If you prefer not to use MCP servers or they're not available:
 ---
 
 **Recommended Setup**: Filesystem + Git servers minimum for best AIDA experience.
-```
+
+```text
 
 ## Dependencies
 

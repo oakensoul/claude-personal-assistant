@@ -136,11 +136,12 @@ output:
   files:
     - path: "{{obsidian_vault}}/Daily/{{date}}.md"
       condition: "{{obsidian_enabled}}"
-```
+```sql
 
 ### Built-in Workflows
 
 **Morning Routine** (`morning-routine.yaml`):
+
 1. Greeting and current state
 2. File cleanup check (Desktop/Downloads)
 3. Calendar review for today
@@ -151,6 +152,7 @@ output:
 8. Set reminders
 
 **Evening Routine** (`evening-routine.yaml`):
+
 1. Greeting and day summary
 2. Review completed tasks
 3. Review incomplete tasks (reschedule/defer)
@@ -160,6 +162,7 @@ output:
 7. End-of-day cleanup (close windows, save state)
 
 **Code Review Workflow** (`code-review.yaml`):
+
 1. Identify changes (git diff)
 2. Run automated checks (linting, tests)
 3. Agent-based code review
@@ -169,6 +172,7 @@ output:
 7. Create review checklist
 
 **Project Setup Workflow** (`project-setup.yaml`):
+
 1. Gather project details (name, type, tech stack)
 2. Create directory structure
 3. Initialize git repository
@@ -327,7 +331,7 @@ output:
     Deployment to {{environment}} complete!
     Version: {{git_tag}}
     Time: {{timestamp}}
-```
+```python
 
 ### Workflow Management CLI
 
@@ -373,7 +377,7 @@ aida workflow show morning-routine
 
 ### Workflow Templates
 
-```
+```text
 ~/.aida/workflow-templates/
 ├── daily-routines/
 │   ├── morning-basic.yaml

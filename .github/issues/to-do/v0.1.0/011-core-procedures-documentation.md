@@ -104,10 +104,12 @@ Each procedure should follow this format:
 
 **Example Output** (JARVIS personality):
 
-```
+```text
+
 Good morning, sir. Let's review your commitments for today.
 
 **Active Projects**:
+
 1. Project Alpha: API integration (80% complete)
    - Status: Ready for final testing
    - Blocker: None
@@ -117,10 +119,12 @@ Good morning, sir. Let's review your commitments for today.
    - Blocker: Waiting on design mockups
 
 **Carryover from Yesterday**:
+
 - Complete Alpha integration testing
 - Review teammate's PR #247
 
 **Suggested Priorities for Today**:
+
 1. ⚡ Finish Alpha integration testing (blocking deployment)
 2. 🎨 Project Beta: Implement auth component (design available now)
 3. 📝 Review teammate's PR #247 (low priority)
@@ -128,12 +132,14 @@ Good morning, sir. Let's review your commitments for today.
 **Current Blockers**: None
 
 **System Status**:
+
 - Downloads: 34 files (last cleanup: 3 days ago)
 - Disk space: 456GB free
 
 I've created today's daily note and updated your context.
 
 Shall we begin with the Alpha testing, or would you like to adjust priorities?
+
 ```
 
 **Personality Integration**:
@@ -141,9 +147,10 @@ Shall we begin with the Alpha testing, or would you like to adjust priorities?
 - Apply tone to task descriptions
 - Use encouragement style from personality
 - Address user according to preferences
-```
+```text
 
-**Key Points:**
+#### Key Points:
+
 - Procedures should be detailed enough for Claude to execute without ambiguity
 - Include specific file paths
 - Show example outputs for each personality type

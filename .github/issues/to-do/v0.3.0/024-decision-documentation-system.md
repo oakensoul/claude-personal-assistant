@@ -118,13 +118,14 @@ We will use PostgreSQL as the primary database for Project Alpha.
 
 **Decision Made By**: Development Team
 **Reviewed By**: Tech Lead, Product Manager
-```
+```text
 
 ### Decision Capture Flow
 
 **User**: "Document decision: We chose PostgreSQL over MongoDB for Project Alpha because we need ACID compliance and complex relational queries"
 
 **AIDA**:
+
 ```
 Creating Architecture Decision Record...
 
@@ -138,7 +139,7 @@ I've captured the core decision. Let me help you complete the ADR.
   3. What are the consequences (pros/cons)?
 
 Shall I guide you through these, or would you prefer to write the full ADR yourself?
-```
+```text
 
 ### Decision Querying
 
@@ -158,13 +159,14 @@ aida decisions by-status accepted
 
 ### Decision Status Workflow
 
-```
+```text
 Proposed → Accepted → [Superseded|Deprecated]
          ↓
       Rejected
 ```
 
 **Status Meanings**:
+
 - **Proposed**: Under consideration
 - **Accepted**: Active decision
 - **Rejected**: Decided against
@@ -174,6 +176,7 @@ Proposed → Accepted → [Superseded|Deprecated]
 ### Decision Templates
 
 **Technical Decision Template**:
+
 ```markdown
 # ADR-XXX: [Decision Title]
 
@@ -210,9 +213,10 @@ Proposed → Accepted → [Superseded|Deprecated]
 
 ## Superseded By
 - [Link if decision is superseded]
-```
+```text
 
 **Product Decision Template**:
+
 ```markdown
 # PDR-XXX: [Product Decision Title]
 
@@ -252,7 +256,7 @@ Proposed → Accepted → [Superseded|Deprecated]
 
 ### Decision Organization
 
-```
+```text
 ~/.claude/memory/decisions/
 ├── decisions.md           # Index of all decisions
 ├── adr/                   # Architecture Decision Records

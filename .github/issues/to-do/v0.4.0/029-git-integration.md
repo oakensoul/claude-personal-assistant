@@ -4,9 +4,7 @@ labels:
   - "type: feature"
   - "priority: p2"
   - "effort: medium"
-  - "milestone: 0.4.0"
----
-
+##   - "milestone: 0.4.0"
 # Implement git integration and code review assistance
 
 ## Description
@@ -31,6 +29,7 @@ Implement git awareness and code review assistance to help developers understand
 ### Git Context Awareness
 
 **Automatic Detection**:
+
 ```python
 def detect_git_context():
     if is_git_repository():
@@ -44,15 +43,14 @@ def detect_git_context():
             'last_commit': get_last_commit()
         }
     return None
-```
+```text
 
 **Context Display**:
+
 ```bash
 $ aida status
 
-AIDA System Status
-==================
-
+# AIDA System Status
 Git Context:
   Repository: claude-personal-assistant
   Branch: feature/git-integration
@@ -64,11 +62,12 @@ Git Context:
     d4e5f6g - Update documentation (3 hours ago)
 
 [rest of status...]
-```
+```json
 
 ### Code Review Assistance
 
 **Review Current Changes**:
+
 ```bash
 $ aida review
 
@@ -85,9 +84,7 @@ Running automated checks...
   ✓ Tests (Jest)
   ⚠️  Security scan (1 warning)
 
-Code Review Summary:
-====================
-
+# Code Review Summary:
 ### src/git-integration.ts
 
 **Strengths**:
@@ -101,8 +98,10 @@ Code Review Summary:
    ```typescript
    const branch = await execCommand('git branch --show-current');
    return branch.trim();  // Could be empty string in detached HEAD
-   ```
+   ```json
+
    **Fix**: Check for detached HEAD state
+
    ```typescript
    const branch = await execCommand('git branch --show-current');
    if (!branch.trim()) {
@@ -113,20 +112,25 @@ Code Review Summary:
    ```
 
 2. **Security Warning** (Line 89) - LOW
+
    ```typescript
    await execCommand(`git commit -m "${message}"`);  // Injection risk
-   ```
+   ```text
+
    **Fix**: Use parameterized command or escape properly
+
    ```typescript
    await execCommand('git', ['commit', '-m', message]);
    ```
 
 3. **Performance** (Line 112) - LOW
+
    ```typescript
    for (const file of files) {
      await analyzeFile(file);  // Sequential, could be parallel
    }
-   ```
+   ```text
+
    **Fix**: Use Promise.all for parallel processing
 
 ### tests/git-integration.test.ts
@@ -140,29 +144,27 @@ Code Review Summary:
   • Add test for commit message with special characters
   • Consider adding integration tests
 
-Overall Assessment:
-===================
-
+# Overall Assessment
 **Quality Score**: 8.5/10
 
 **Recommendation**: Fix security warning before committing
 
 Next Steps:
+
   1. Fix injection vulnerability (line 89)
   2. Add detached HEAD check (line 47)
   3. Consider parallel file processing
   4. Add suggested tests
 
 Would you like me to generate a corrected version?
-```
+
+```text
 
 **Review Specific File**:
 ```bash
 $ aida review src/git-integration.ts --detailed
 
-Detailed Review: src/git-integration.ts
-=======================================
-
+# Detailed Review: src/git-integration.ts
 [Detailed line-by-line analysis]
 ```
 
@@ -182,28 +184,31 @@ Change summary:
   • Added code review functionality
   • Added unit tests
 
-Suggested commit messages:
-===========================
-
+# Suggested commit messages:
 1. Conventional Commits (Recommended):
-   ```
+   ```text
+
    feat(git): add git integration and code review
 
-   - Implement git context detection
-   - Add code review analysis functionality
-   - Add unit tests for git integration
-   - Include security and performance checks
+- Implement git context detection
+- Add code review analysis functionality
+- Add unit tests for git integration
+- Include security and performance checks
 
    BREAKING CHANGE: None
-   ```
+
+   ```text
 
 2. Simple:
    ```
+
    Add git integration and code review features
-   ```
+
+   ```text
 
 3. Detailed:
-   ```
+   ```sql
+
    Add git integration with code review capabilities
 
    This commit introduces git repository awareness and automated code
@@ -211,19 +216,21 @@ Suggested commit messages:
    changes, and provide actionable feedback.
 
    Features:
-   - Git repository detection
-   - Branch and status tracking
-   - Automated code review with security and performance checks
-   - Commit message suggestions
-   - Integration with Dev Assistant agent
+
+- Git repository detection
+- Branch and status tracking
+- Automated code review with security and performance checks
+- Commit message suggestions
+- Integration with Dev Assistant agent
 
    Tests added for all new functionality with 87% coverage.
-   ```
+
+   ```text
 
 Select option (1-3) or write custom: 1
 
 Committing with message:
-```
+
 feat(git): add git integration and code review
 
 - Implement git context detection
@@ -232,7 +239,6 @@ feat(git): add git integration and code review
 - Include security and performance checks
 
 BREAKING CHANGE: None
-```
 
 Proceed? (Y/n): y
 
@@ -242,6 +248,7 @@ Proceed? (Y/n): y
 ### Branch and PR Tracking
 
 **Track Branch Context**:
+
 ```markdown
 # ~/.claude/memory/context/current.md
 
@@ -272,6 +279,7 @@ Proceed? (Y/n): y
 ### Git Workflow Support
 
 **Feature Branch Workflow**:
+
 ```bash
 $ aida git feature start "Add Obsidian integration"
 
@@ -310,6 +318,7 @@ You're all set! Let me know when you're ready to commit.
 ```
 
 **Commit and Review Flow**:
+
 ```bash
 $ aida git commit
 

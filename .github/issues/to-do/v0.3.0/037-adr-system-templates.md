@@ -91,7 +91,7 @@ Location: `~/.claude/templates/decisions/adr-template.md`
 
 **Decision Made By**: [Person/Team]
 **Reviewed By**: [Reviewers]
-```
+```text
 
 ### PDR Template
 
@@ -156,16 +156,19 @@ Location: `~/.claude/templates/decisions/pdr-template.md`
 ### Decision Numbering System
 
 **ADR Numbering**:
+
 - Auto-increment from 001
 - Check `~/.claude/memory/decisions/adr/` for highest number
 - Format: `ADR-001`, `ADR-002`, etc.
 
 **PDR Numbering**:
+
 - Auto-increment from 001
 - Check `~/.claude/memory/decisions/pdr/` for highest number
 - Format: `PDR-001`, `PDR-002`, etc.
 
 **Numbering Logic**:
+
 ```bash
 # Find next ADR number
 find ~/.claude/memory/decisions/adr/ -name "*.md" | \
@@ -173,7 +176,7 @@ find ~/.claude/memory/decisions/adr/ -name "*.md" | \
   sort -n | \
   tail -1 | \
   awk '{printf "%03d\n", $1+1}'
-```
+```text
 
 ### Decision Status Workflow
 
@@ -181,9 +184,10 @@ find ~/.claude/memory/decisions/adr/ -name "*.md" | \
 Proposed → Accepted → [Superseded|Deprecated]
          ↓
       Rejected
-```
+```text
 
 **Status Definitions**:
+
 - **Proposed**: Under consideration, seeking feedback
 - **Accepted**: Active decision, being implemented
 - **Rejected**: Decided against, with reasoning
@@ -191,6 +195,7 @@ Proposed → Accepted → [Superseded|Deprecated]
 - **Deprecated**: No longer recommended but not formally replaced
 
 **Status Transitions**:
+
 - `Proposed → Accepted`: Decision approved
 - `Proposed → Rejected`: Decision declined
 - `Accepted → Superseded`: New decision replaces this
@@ -211,11 +216,12 @@ Proposed → Accepted → [Superseded|Deprecated]
 └── templates/
     ├── adr-template.md
     └── pdr-template.md
-```
+```text
 
 ### Decisions Index Format
 
 `~/.claude/memory/decisions/decisions.md`:
+
 ```markdown
 # Decision Index
 

@@ -31,12 +31,14 @@ Implement the natural language knowledge capture system that allows users to sav
 ### Knowledge Capture Flow
 
 **User Input**:
-```
+
+```text
 "Remember that React useEffect needs cleanup functions for subscriptions to prevent memory leaks"
 ```
 
 **AIDA Response**:
-```
+
+```text
 ✓ Captured knowledge about React useEffect cleanup
 
 Category: React, Best Practices
@@ -54,6 +56,7 @@ Would you like to:
 ### Natural Language Patterns
 
 Recognize these patterns as knowledge capture requests:
+
 - "Remember that..."
 - "I learned that..."
 - "Note for later:..."
@@ -75,41 +78,46 @@ aida knowledge capture --project alpha "API rate limiting strategy"
 
 # Capture with type
 aida knowledge capture --type pattern "Repository pattern for data access"
-```
+```text
 
 ### Automatic Categorization
 
 Extract categories from content:
+
 - **Technology keywords**: React, Python, Go, PostgreSQL, etc.
 - **Domain keywords**: authentication, API design, testing, deployment
 - **Context clues**: "when building X", "for Y applications"
 
 Suggest primary category and subcategories:
+
 ```
 Detected categories:
   Primary: React
   Secondary: Best Practices, Memory Management
 
 Is this correct? (Y/n)
-```
+```text
 
 ### Automatic Tagging
 
 Extract tags from content:
+
 - **Technical terms**: useEffect, hooks, cleanup, subscriptions
 - **Concepts**: memory-management, patterns, lifecycle
 - **Technologies**: react, javascript, frontend
 
 Smart tag suggestions:
+
 ```
 Suggested tags: #react #useEffect #hooks #memory-management
 
 Additional tags? (comma-separated, or press Enter to continue)
-```
+```text
 
 ### Interactive Elaboration
 
 After capture, offer to enhance:
+
 ```
 Knowledge captured! Enhance this entry?
 
@@ -126,31 +134,36 @@ Knowledge captured! Enhance this entry?
 
 [D] Done
     → Saves as-is
-```
+```text
 
 ### Knowledge Types
 
 **Learning** (default):
+
 - Simple fact or discovery
 - No elaborate structure needed
 - Quick capture format
 
 **Pattern**:
+
 - Problem-solution format
 - Requires example
 - Includes when to use / trade-offs
 
 **Technique**:
+
 - Step-by-step approach
 - How-to format
 - Includes gotchas
 
 **Insight**:
+
 - Higher-level realization
 - Context-driven
 - Includes implications
 
 Auto-detect type from keywords:
+
 - "pattern for..." → Pattern
 - "how to..." → Technique
 - "realized that..." → Insight

@@ -1,11 +1,12 @@
 ---
 title: "Implement File Manager agent"
 labels:
-  - "type: feature"
-  - "priority: p1"
-  - "effort: medium"
-  - "milestone: 0.3.0"
----
+
+- "type: feature"
+- "priority: p1"
+- "effort: medium"
+
+## - "milestone: 0.3.0"
 
 # Implement File Manager agent
 
@@ -32,13 +33,13 @@ Implement the File Manager agent responsible for file organization, cleanup, sys
 
 Location: `~/.claude/agents/core/file-manager/CLAUDE.md`
 
-```markdown
----
+## ```markdown
+
 title: "File Manager Agent"
 description: "File organization and system maintenance"
 category: "agent"
-version: "0.3.0"
----
+
+## version: "0.3.0"
 
 # File Manager Agent
 
@@ -65,6 +66,7 @@ I am your file management specialist, responsible for keeping your filesystem or
 ## Capabilities
 
 ### 1. Downloads Cleanup
+
 - Scan and categorize files
 - Apply naming conventions
 - Suggest destinations
@@ -72,6 +74,7 @@ I am your file management specialist, responsible for keeping your filesystem or
 - Update tracking
 
 ### 2. Desktop Clearing
+
 - List Desktop items
 - Categorize by type and age
 - Suggest destinations
@@ -79,6 +82,7 @@ I am your file management specialist, responsible for keeping your filesystem or
 - Archive temp files
 
 ### 3. File Organization
+
 - Analyze file type/contents
 - Apply naming conventions
 - Suggest destinations
@@ -86,17 +90,20 @@ I am your file management specialist, responsible for keeping your filesystem or
 - Update project notes
 
 ### 4. System Health
+
 - Disk space monitoring
 - File count tracking
 - Organization status
 - Cleanup recommendations
-```
+
+```python
 
 ### Downloads Cleanup Implementation
 
 **Trigger**: `aida cleanup-downloads` or `@file-manager cleanup downloads`
 
 **Procedure**:
+
 1. Scan `~/Downloads/` for files
 2. Categorize by type and content
 3. Apply file naming conventions from preferences
@@ -106,6 +113,7 @@ I am your file management specialist, responsible for keeping your filesystem or
 7. Report summary with personality
 
 **Categorization Logic**:
+
 ```python
 def categorize_file(filepath):
     """Categorize file by extension and content."""
@@ -158,7 +166,8 @@ def suggest_destination(filepath, category):
 ```
 
 **Example Output**:
-```
+
+```text
 Your Downloads folder has 47 items. I'm sure they're all exactly where they should be, sir.
 
 **Categorization**:
@@ -199,6 +208,7 @@ Shall I proceed with these suggestions?
 **Trigger**: `aida clear-desktop` or `@file-manager clear desktop`
 
 **Procedure**:
+
 1. List all items on Desktop
 2. Categorize by type and age
 3. Identify essential vs temporary
@@ -207,10 +217,9 @@ Shall I proceed with these suggestions?
 6. Report clean status
 
 **Example Output**:
-```
-Desktop Analysis (23 items)
-===========================
 
+```text
+# Desktop Analysis (23 items)
 **Essential** (Keep):
 - Applications folder alias
 - Documents folder alias
@@ -259,13 +268,14 @@ Apply user preferences from `~/.claude/memory/preferences/preferences.md`:
 **Archives**:
 - Pattern: `YYYY-MM-DD-content-description.zip`
 - Example: `2025-10-04-project-alpha-backup.zip`
-```
+```text
 
 ### System Health Check
 
 **Trigger**: `aida system-health` or `@file-manager system health`
 
 **Procedure**:
+
 1. Check disk space usage
 2. Count files in common locations
 3. Identify large files
@@ -273,9 +283,10 @@ Apply user preferences from `~/.claude/memory/preferences/preferences.md`:
 5. Report overall health
 
 **Example Output**:
+
 ```
-System Health Check
-===================
+
+# System Health Check
 
 **Disk Space**:
 Total: 500 GB
@@ -290,11 +301,13 @@ Documents: 1,247 files (✓ organized)
 Development: 89 projects (✓ good)
 
 **Large Files** (>1GB):
+
 1. ~/Downloads/ubuntu-desktop.iso (2.8 GB) - 30 days old
 2. ~/Movies/project-demo.mov (1.4 GB) - 15 days old
 3. ~/Documents/backup.zip (1.2 GB) - 60 days old
 
 **Recommendations**:
+
 1. 🔴 Cleanup Downloads (47 files, ~2.5 GB recoverable)
 2. 🟡 Clear Desktop (23 items)
 3. 🟢 Archive large old files (3 files, ~5.4 GB recoverable)
@@ -302,19 +315,24 @@ Development: 89 projects (✓ good)
 Potential space recovery: ~7.9 GB
 
 Would you like me to help with these cleanups?
-```
+
+```text
 
 ### Personality Integration
 
 Apply active personality (example: JARVIS):
+
 ```
+
 JARVIS tone for file management:
+
 - Snarky about messy folders: "I'm sure they're all exactly where they should be"
 - Witty about file accumulation: "47 files in Downloads. Impressive restraint, sir."
 - Gentle mockery: "Only 23 items on Desktop today. You're improving."
 - Satisfaction: "Desktop clear. As it should be."
 - British precision: "Shall I proceed with surgical precision?"
-```
+
+```text
 
 ## Dependencies
 

@@ -32,6 +32,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a developer discovering AIDA, I want a smooth installation process, so that I can start using AIDA quickly without troubleshooting.
 
 **Acceptance Criteria**:
+
 - `./install.sh` completes without errors on macOS
 - Creates `~/.aida/` directory with framework
 - Creates `~/CLAUDE.md` entry point
@@ -51,6 +52,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a contributor, I want to install AIDA in development mode, so that I can test changes without reinstalling.
 
 **Acceptance Criteria**:
+
 - `./install.sh --dev` creates symlinks instead of copying files
 - Changes to source files reflect immediately in `~/.aida/`
 - Can switch between dev and normal mode
@@ -71,6 +73,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a new user, I want to choose from pre-built personalities, so that AIDA matches my preferred communication style without customization.
 
 **Acceptance Criteria**:
+
 - Installation offers 5 personality choices: JARVIS, Alfred, FRIDAY, Sage, Drill Sergeant
 - Each personality has clear description (tone, style, use case)
 - User can preview personality before selecting
@@ -88,6 +91,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a user with specific needs, I want to create a custom personality, so that AIDA communicates exactly how I prefer.
 
 **Acceptance Criteria**:
+
 - Interactive builder with 12 questions:
   - Formality (formal / casual / balanced)
   - Expertise level (explain like expert / explain simply / balanced)
@@ -117,6 +121,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a user with different contexts, I want to switch between personalities, so that AIDA adapts to work vs personal time.
 
 **Acceptance Criteria**:
+
 - `aida personality switch [name]` changes active personality
 - Can list available personalities: `aida personality list`
 - Can preview personality without switching: `aida personality preview [name]`
@@ -138,6 +143,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a developer starting my day, I want AIDA to help me get organized, so that I can focus on what matters most.
 
 **Acceptance Criteria**:
+
 - `aida morning` or "Help me start my day" triggers morning routine
 - Shows:
   - Unfinished tasks from yesterday
@@ -160,6 +166,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a team lead, I want to reflect on my day, so that I can track progress and plan for tomorrow.
 
 **Acceptance Criteria**:
+
 - `aida evening` or "Help me wrap up for today" triggers evening routine
 - Prompts:
   - What did you accomplish today?
@@ -180,6 +187,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a busy engineer, I want to quickly capture tasks, so that I don't forget important items during interruptions.
 
 **Acceptance Criteria**:
+
 - Natural language: "Remember to update database schema"
 - AIDA confirms: "Added 'Update database schema' to your tasks"
 - Can add priority: "High priority: fix production bug"
@@ -202,6 +210,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a researcher, I want to capture learnings from my work, so that I can build a knowledge base over time.
 
 **Acceptance Criteria**:
+
 - "Remember that React hooks can't be called conditionally"
 - AIDA stores in knowledge base with metadata (topic, date, project)
 - Knowledge is categorized (e.g., "react", "best-practices")
@@ -220,6 +229,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a tech lead, I want to document technical decisions, so that my team understands why choices were made.
 
 **Acceptance Criteria**:
+
 - "Document decision: we chose PostgreSQL over MongoDB because..."
 - AIDA creates decision record with:
   - Decision summary
@@ -247,6 +257,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a solo developer, I want AI code review, so that I catch issues before deploying.
 
 **Acceptance Criteria**:
+
 - `aida review` or "Review this code" analyzes current git diff
 - Checks for:
   - Potential bugs
@@ -269,6 +280,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a DevOps engineer, I want to generate documentation for my scripts, so that my team can understand and maintain them.
 
 **Acceptance Criteria**:
+
 - `aida document [file]` generates documentation
 - Creates README or inline comments
 - Explains what script does, parameters, examples
@@ -291,6 +303,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a tech lead, I want help planning roadmap, so that I can prioritize features effectively.
 
 **Acceptance Criteria**:
+
 - "Help me plan roadmap for Q4"
 - AIDA asks:
   - What features are being considered?
@@ -315,6 +328,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a tech lead, I want sprint planning assistance, so that I can scope sprints realistically.
 
 **Acceptance Criteria**:
+
 - "Help me plan this sprint"
 - AIDA considers:
   - Team velocity (from past sprints)
@@ -340,6 +354,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a user learning from proprietary work, I want to share knowledge without exposing company data, so that I can contribute to community while respecting confidentiality.
 
 **Acceptance Criteria**:
+
 - `aida knowledge export --scrub` generates shareable knowledge
 - Automatically removes:
   - Company names
@@ -363,6 +378,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a privacy-conscious user, I want to see what data AIDA has stored, so that I can verify nothing sensitive is persisted.
 
 **Acceptance Criteria**:
+
 - `aida data audit` shows all stored data categories:
   - Conversations (count, size, date range)
   - Decisions (count, topics)
@@ -389,6 +405,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As an Obsidian user, I want AIDA to integrate with my daily notes, so that my AI assistant and knowledge base are connected.
 
 **Acceptance Criteria**:
+
 - AIDA creates daily note if missing (uses template)
 - Appends to daily note:
   - Morning routine summary
@@ -411,6 +428,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a developer, I want AIDA to understand my git workflow, so that I can get context-aware assistance.
 
 **Acceptance Criteria**:
+
 - AIDA knows current branch, recent commits, uncommitted changes
 - Can reference code from git: "Review my latest commit"
 - Can suggest commit messages based on diff
@@ -432,6 +450,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a DevOps engineer, I want kubernetes-specific help, so that I get expert-level assistance for k8s questions.
 
 **Acceptance Criteria**:
+
 - AIDA routes kubernetes questions to kubernetes-expert agent
 - User can explicitly invoke: "@kubernetes-expert How do I configure pod autoscaling?"
 - Agent has domain-specific knowledge (k8s docs, best practices)
@@ -449,6 +468,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a power user, I want to create custom agents, so that I can extend AIDA for my specific domain.
 
 **Acceptance Criteria**:
+
 - `aida agent create [name]` launches agent builder
 - Prompts for:
   - Agent name and description
@@ -474,6 +494,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a user, I want to check AIDA's status, so that I know everything is working correctly.
 
 **Acceptance Criteria**:
+
 - `aida status` shows:
   - Version (0.1.0, etc.)
   - Active personality
@@ -495,6 +516,7 @@ This document contains user stories for AIDA features organized by persona and w
 **Story**: As a user, I want to update AIDA easily, so that I get latest features without reinstalling.
 
 **Acceptance Criteria**:
+
 - `aida update` checks for new version
 - Shows changelog and what's new
 - Prompts for confirmation before updating
@@ -513,7 +535,9 @@ This document contains user stories for AIDA features organized by persona and w
 ## Story Prioritization Guide
 
 ### Must-Have (0.1.0 MVP)
+
 Stories required for minimally viable product:
+
 - US-001: First-Time Installation
 - US-003: Choose Pre-Built Personality
 - US-004: Create Custom Personality
@@ -522,7 +546,9 @@ Stories required for minimally viable product:
 - US-021: Check System Status
 
 ### Nice-to-Have (0.2.0 - 0.6.0)
+
 Stories that enhance AIDA but not required for MVP:
+
 - US-002: Development Mode
 - US-006: Morning Routine
 - US-007: End-of-Day Reflection
@@ -539,7 +565,9 @@ Stories that enhance AIDA but not required for MVP:
 - US-022: Update AIDA
 
 ### Future (Post-1.0)
+
 Stories deferred to future releases:
+
 - US-014: Sprint Planning
 - US-020: Custom Agent Creation
 - Multi-user features

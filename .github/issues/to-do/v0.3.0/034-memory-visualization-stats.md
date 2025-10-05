@@ -43,14 +43,14 @@ aida memory stats --category knowledge
 # Time-based stats
 aida memory stats --month 2025-10
 aida memory stats --since 2025-09-01
-```
+```text
 
 ### Statistics Output Format
 
 **Summary View**:
+
 ```
-Memory Statistics
-==================
+## Memory Statistics
 
 Total Entries: 1,247
 
@@ -75,12 +75,12 @@ Most Active Tags:
   #architecture  72 entries
   #api-design    56 entries
   #testing       43 entries
-```
+```text
 
 **Detailed View**:
+
 ```
-Memory Statistics (Detailed)
-============================
+## Memory Statistics (Detailed)
 
 Total Entries: 1,247
 Storage: 12.3 MB (12,883,456 bytes)
@@ -139,31 +139,36 @@ Health Indicators:
   ✓ Knowledge capture active (40.7% of entries)
   ! Decisions could use more documentation (5.4%)
   ✓ Storage within healthy limits (<100 MB)
-```
+```text
 
 ### Calculation Logic
 
 **Entry Counting**:
+
 - Parse all markdown files in memory categories
 - Count entries by detecting `## [Title]` headers
 - Extract metadata from each entry
 
 **Size Calculation**:
+
 - Use file system stats for accurate sizes
 - Calculate averages and totals
 - Format using human-readable units (KB, MB)
 
 **Tag Frequency**:
+
 - Extract all tags (#word) from entries
 - Count occurrences
 - Sort by frequency
 
 **Project Activity**:
+
 - Extract project references from metadata
 - Group entries by project
 - Show category breakdown per project
 
 **Trend Analysis**:
+
 - Group entries by month based on date metadata
 - Calculate growth/decline percentages
 - Detect activity patterns

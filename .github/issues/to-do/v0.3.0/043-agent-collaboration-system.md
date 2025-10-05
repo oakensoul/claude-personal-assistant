@@ -74,15 +74,16 @@ def invoke_agent(agent_name, request, context=None):
     log_collaboration(current_agent, agent_name, request, response)
 
     return response
-```
+```text
 
 ### Collaboration Patterns
 
-**Pattern 1: Sequential Collaboration**
+#### Pattern 1: Sequential Collaboration
 
 Secretary asks File Manager for cleanup, then continues planning:
 
 ```
+
 User: "Help me start my day"
 
 Secretary: Let me help you plan your day.
@@ -94,18 +95,21 @@ File Manager: Downloads has 23 files, Desktop has 12 items.
               Recommend 15-minute cleanup before starting work.
 
 Secretary: I recommend:
+
   1. [9:00-9:15] Quick cleanup (File Manager can help)
   2. [9:15-9:30] Review today's tasks
   3. [9:30-10:00] Priority task #1: Fix production bug
 
 Shall we start with the cleanup?
-```
 
-**Pattern 2: Parallel Information Gathering**
+```text
+
+#### Pattern 2: Parallel Information Gathering
 
 Secretary asks both File Manager and Dev Assistant for status:
 
 ```
+
 User: "What's my status?"
 
 Secretary: Gathering status information...
@@ -120,19 +124,22 @@ Dev Assistant: Project Alpha 85% complete. 3 commits ahead of main.
 
 Secretary:
 **Overall Status**:
+
 - System: ✓ Healthy (minimal cleanup needed)
 - Active Work: Project Alpha at 85%
 - Next Actions: Create PR for Project Alpha
 
 Detailed breakdown:
 [... combines info from both agents ...]
-```
 
-**Pattern 3: Expert Handoff**
+```text
+
+#### Pattern 3: Expert Handoff
 
 Secretary recognizes technical question and hands off to Dev Assistant:
 
 ```
+
 User: "I'm getting a TypeError in my React component"
 
 Secretary: This appears to be a technical issue.
@@ -143,13 +150,15 @@ Dev Assistant: I'll help you debug that.
 Can you share the error message and relevant code?
 
 [... Dev Assistant continues with debugging ...]
-```
 
-**Pattern 4: Coordinated Workflow**
+```text
+
+#### Pattern 4: Coordinated Workflow
 
 Multi-agent deployment workflow:
 
 ```
+
 User: "@secretary prepare for deployment"
 
 Secretary: Preparing deployment workflow...
@@ -158,6 +167,7 @@ First, let me check the code is ready.
 [@dev-assistant: Verify code ready for deployment]
 
 Dev Assistant: Checking deployment readiness...
+
 - Tests: ✓ Passing
 - Build: ✓ Success
 - Coverage: ✓ 85%
@@ -167,11 +177,13 @@ Secretary: Before deployment:
   [@dev-assistant: What docs need updating?]
 
 Dev Assistant: API documentation needs:
+
 - New endpoints documented
 - Auth flow updated
 - Rate limits noted
 
 Secretary: Deployment Plan:
+
   1. [10 min] Update API documentation
      [@dev-assistant will guide]
   2. [5 min] System cleanup
@@ -184,13 +196,15 @@ Secretary: Deployment Plan:
 Total time: ~55 minutes
 
 Ready to begin? (Y/n)
-```
+
+```text
 
 ### Collaboration Visualization
 
 Show user when agents collaborate:
 
 ```
+
 User: "Help me start my day"
 
 Secretary → File Manager
@@ -206,10 +220,12 @@ Secretary (coordinating):
 ✓ Urgent bug found (priority)
 
 Recommended Plan:
+
   1. Fix production bug (urgent)
   2. Quick file cleanup
   3. Regular daily tasks
-```
+
+```text
 
 ### Preventing Circular Invocations
 
@@ -264,13 +280,14 @@ Track agent collaborations in memory:
 4. Secretary → User: Deployment plan with steps
 
 **Outcome**: Deployment plan created, documentation identified as blocker
-```
+```text
 
 ### Error Handling
 
 Handle agent invocation failures gracefully:
 
 ```
+
 Secretary: Let me check with the Dev Assistant...
 [@dev-assistant: Project status]
 
@@ -280,12 +297,14 @@ Secretary: I'm having trouble reaching the Dev Assistant.
            Let me provide status from my records instead.
 
 **Project Alpha** (last updated 2 hours ago):
+
 - Status: 80% complete
 - Last commit: feat(auth): add token refresh
 - Next actions: Testing and documentation
 
 Would you like me to try the Dev Assistant again, or proceed with this information?
-```
+
+```text
 
 ## Dependencies
 

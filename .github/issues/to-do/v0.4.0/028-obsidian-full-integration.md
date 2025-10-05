@@ -81,11 +81,12 @@ features:
   sync_decisions: true
   create_backlinks: true
   update_dataview_metadata: true
-```
+```text
 
 ### Bidirectional Task Sync
 
 **AIDA → Obsidian**:
+
 ```markdown
 # Daily Note (2025-10-04)
 
@@ -103,6 +104,7 @@ features:
 ```
 
 **Obsidian → AIDA**:
+
 - Parse Obsidian tasks from daily notes
 - Extract priority from heading context
 - Extract due dates from ⏰ notation
@@ -110,6 +112,7 @@ features:
 - Sync completion status
 
 **Sync Logic**:
+
 ```python
 def sync_tasks_bidirectional():
     # Get AIDA tasks
@@ -139,11 +142,12 @@ def sync_tasks_bidirectional():
                 update_aida_task(obs_task)
             elif conflict_detected():
                 resolve_conflict(aida_task, obs_task)
-```
+```text
 
 ### Automatic Daily Note Creation
 
 **Morning Routine Integration**:
+
 ```bash
 $ aida morning
 
@@ -162,6 +166,7 @@ Opening in Obsidian...
 ```
 
 **Daily Note Structure**:
+
 ```markdown
 ---
 date: 2025-10-04
@@ -227,22 +232,24 @@ created_by: aida
 ---
 
 **Last updated by AIDA**: 2025-10-04 17:30
-```
+```text
 
 ### Knowledge Sync
 
 **AIDA Learning → Obsidian Note**:
 
 When user captures knowledge:
+
 ```
 User: "Remember that React useEffect needs cleanup functions"
 AIDA: ✓ Captured knowledge
 
       Syncing to Obsidian...
       ✓ Created: ~/Knowledge/Obsidian-Vault/Learnings/React-useEffect-Cleanup.md
-```
+```json
 
 **Obsidian Note**:
+
 ```markdown
 ---
 title: "React useEffect Cleanup Functions"
@@ -297,7 +304,8 @@ useEffect(() => {
 ---
 
 **Captured by AIDA**: 2025-10-04
-```
+
+```text
 
 ### Decision Records Sync
 
@@ -327,7 +335,8 @@ FROM #adr
 WHERE status = "Accepted"
 SORT date DESC
 ```
-```
+
+```text
 
 ### CLI Commands
 
@@ -356,6 +365,7 @@ aida obsidian conflicts          # Show conflicts
 ### Dataview Integration
 
 **Dashboard Query**:
+
 ```markdown
 # 📊 AIDA Dashboard
 
@@ -367,7 +377,7 @@ FROM #daily-note OR "Tasks"
 WHERE !completed
 WHERE contains(text, "📌aida")
 GROUP BY priority
-```
+```text
 
 ## Recent Learnings
 
@@ -392,7 +402,7 @@ TABLE
 FROM "Projects"
 WHERE contains(file.frontmatter.tags, "project")
 SORT progress DESC
-```
+```text
 
 ## Architecture Decisions
 
@@ -405,7 +415,8 @@ FROM "Decisions/ADR"
 WHERE created_by = "aida"
 SORT adr_number DESC
 ```
-```
+
+```text
 
 ### Conflict Resolution
 

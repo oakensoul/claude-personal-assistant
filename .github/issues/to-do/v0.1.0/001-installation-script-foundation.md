@@ -33,7 +33,8 @@ Create the core `install.sh` script that handles the basic AIDA framework instal
 
 ## Implementation Notes
 
-**Key Functions:**
+### Key Functions
+
 ```bash
 prompt_assistant_name()    # Get and validate assistant name
 prompt_personality()       # Interactive personality selection
@@ -42,14 +43,16 @@ create_directories()       # Set up directory structure
 check_existing_install()   # Detect and backup existing installation
 ```
 
-**Error Handling:**
+### Error Handling
+
 - Check if bash version >= 4.0
 - Verify write permissions to home directory
 - Detect if personality file exists
 - Handle interrupted installations
 
-**Development Mode:**
+### Development Mode
 When `--dev` flag is used:
+
 - Symlink `~/.aida/` to repository directory
 - Copy (not symlink) `~/.claude/` to allow modifications
 - Display dev mode warning

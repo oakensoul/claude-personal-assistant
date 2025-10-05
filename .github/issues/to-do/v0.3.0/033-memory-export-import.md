@@ -44,7 +44,7 @@ aida memory export --from 2025-10-01 --to 2025-10-31 --output ~/october-memory.t
 aida memory export --format json --output memory.json
 aida memory export --format markdown --output memory.md
 aida memory export --format tar.gz --output memory.tar.gz  # default
-```
+```python
 
 ### Import Functionality
 
@@ -65,7 +65,8 @@ aida memory import --dry-run ~/backups/memory-2025-10-04.tar.gz
 ### Export Format
 
 **Archive Structure (tar.gz)**:
-```
+
+```text
 memory-export-2025-10-04/
 ├── manifest.json          # Export metadata
 ├── tasks/
@@ -80,6 +81,7 @@ memory-export-2025-10-04/
 ```
 
 **Manifest Format**:
+
 ```json
 {
   "export_date": "2025-10-04T10:30:00Z",
@@ -98,21 +100,24 @@ memory-export-2025-10-04/
     "newest": "2025-10-04"
   }
 }
-```
+```python
 
 ### Import Conflict Handling
 
 **Merge Strategy (default)**:
+
 - Keep existing entries
 - Add new entries from import
 - For duplicates (same date + title), keep most recent
 
 **Replace Strategy**:
+
 - Remove existing category data
 - Replace with import data
 - Create backup before replacing
 
 **Interactive Mode**:
+
 ```
 Found 3 conflicts:
 
@@ -129,7 +134,7 @@ Found 3 conflicts:
    Keep: [C]urrent, [I]mport, [B]oth?
 
 ...
-```
+```text
 
 ## Dependencies
 

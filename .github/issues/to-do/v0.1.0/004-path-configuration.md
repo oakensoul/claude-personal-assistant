@@ -28,7 +28,8 @@ Ensure the generated CLI tool is accessible from anywhere by adding it to the us
 
 ## Implementation Notes
 
-**Shell Detection:**
+### Shell Detection
+
 ```bash
 detect_shell() {
     local shell_name
@@ -59,18 +60,21 @@ get_shell_config() {
 }
 ```
 
-**PATH Addition:**
+### PATH Addition
+
 ```bash
 # AIDA - Added by installation
 export PATH="$HOME/bin:$PATH"
 ```
 
-**Idempotency:**
+### Idempotency
+
 - Check if PATH addition already exists
 - Use marker comment to identify AIDA's additions
 - Don't add duplicate entries
 
-**Verification:**
+### Verification
+
 ```bash
 # Verify CLI is in PATH
 if command -v "$ASSISTANT_NAME" &> /dev/null; then

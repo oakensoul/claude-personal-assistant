@@ -1,11 +1,12 @@
 ---
 title: "Implement Secretary agent"
 labels:
-  - "type: feature"
-  - "priority: p1"
-  - "effort: medium"
-  - "milestone: 0.3.0"
----
+
+- "type: feature"
+- "priority: p1"
+- "effort: medium"
+
+## - "milestone: 0.3.0"
 
 # Implement Secretary agent
 
@@ -32,13 +33,13 @@ Implement the Secretary agent responsible for daily workflow management, task or
 
 Location: `~/.claude/agents/core/secretary/CLAUDE.md`
 
-```markdown
----
+## ```markdown
+
 title: "Secretary Agent"
 description: "Daily workflow management and planning"
 category: "agent"
-version: "0.3.0"
----
+
+## version: "0.3.0"
 
 # Secretary Agent
 
@@ -65,6 +66,7 @@ I am your secretary, responsible for daily workflow management, planning, priori
 ## Capabilities
 
 ### 1. Morning Routine (start-day)
+
 - Review current context
 - Check active projects
 - Identify blockers
@@ -73,6 +75,7 @@ I am your secretary, responsible for daily workflow management, planning, priori
 - Create/update daily note
 
 ### 2. Evening Routine (end-day)
+
 - Review accomplishments
 - Update project statuses
 - Note blockers for tomorrow
@@ -81,6 +84,7 @@ I am your secretary, responsible for daily workflow management, planning, priori
 - Provide encouraging wrap-up
 
 ### 3. Status Check
+
 - Quick work summary
 - Current task progress
 - Blockers/issues
@@ -88,23 +92,27 @@ I am your secretary, responsible for daily workflow management, planning, priori
 - System health check
 
 ### 4. Task Organization
+
 - Capture tasks from conversation
 - Prioritize by urgency/importance
 - Suggest task breakdown
 - Track progress
 
 ### 5. Planning
+
 - Daily planning
 - Weekly planning
 - Meeting preparation
 - Follow-up tracking
-```
+
+```text
 
 ### Morning Routine Implementation
 
 **Trigger**: `aida start-day` or `aida start day` or `@secretary start day`
 
 **Procedure**:
+
 1. Read `~/.claude/memory/context/current.md`
 2. Read `~/.claude/knowledge/projects.md`
 3. Check `~/.claude/memory/tasks/active.md` for blockers
@@ -115,18 +123,23 @@ I am your secretary, responsible for daily workflow management, planning, priori
 8. Greet with personality-appropriate message
 
 **Example Output**:
+
 ```
+
 Good morning, sir. Let's review your commitments for today.
 
 **Active Projects**:
+
 - Project Alpha: API integration (80% complete)
 - Project Beta: Frontend refactor (35% complete)
 
 **Carryover from Yesterday**:
+
 - Complete Alpha integration testing
 - Review teammate's PR #234
 
 **Suggested Priorities**:
+
 1. 🔴 Finish Alpha integration testing (blocking deployment)
 2. 🟡 Project Beta: Implement auth component
 3. 🟢 Review teammate's PR #234
@@ -134,17 +147,20 @@ Good morning, sir. Let's review your commitments for today.
 **Blockers**: None currently
 
 **System Health**:
+
 - Downloads: 12 files (recommend cleanup)
 - Desktop: 8 items
 
 I've updated your daily note. Shall we begin with the Alpha testing?
-```
+
+```text
 
 ### Evening Routine Implementation
 
 **Trigger**: `aida end-day` or `aida end day` or `@secretary end day`
 
 **Procedure**:
+
 1. Review what was accomplished
 2. Update `~/.claude/knowledge/projects.md`
 3. Note any blockers in `~/.claude/memory/tasks/active.md`
@@ -154,7 +170,9 @@ I've updated your daily note. Shall we begin with the Alpha testing?
 7. Provide encouraging wrap-up
 
 **Example Output**:
+
 ```
+
 Excellent work today, sir. Let's review your progress.
 
 **Accomplished**:
@@ -163,10 +181,12 @@ Excellent work today, sir. Let's review your progress.
 ✓ Reviewed PR #234
 
 **Project Updates**:
+
 - Project Alpha: 80% → 95% (testing complete, ready for deployment)
 - Project Beta: 35% → 45% (auth component done)
 
 **For Tomorrow**:
+
 - Deploy Alpha to staging
 - Project Beta: Connect auth to backend
 - Start work on Beta dashboard
@@ -176,13 +196,15 @@ Excellent work today, sir. Let's review your progress.
 **Tomorrow's Focus**: Alpha deployment and Beta backend integration
 
 I've updated your daily note and project tracking. You've made solid progress today. Rest well, and we'll tackle deployment first thing tomorrow.
-```
+
+```text
 
 ### Status Check Implementation
 
 **Trigger**: `aida status` or `@secretary status`
 
 **Procedure**:
+
 1. Read current context
 2. Check active tasks and progress
 3. Identify blockers
@@ -190,15 +212,17 @@ I've updated your daily note and project tracking. You've made solid progress to
 5. System health (file counts, disk space)
 
 **Example Output**:
+
 ```
-Status Report (2025-10-04 14:30)
-================================
+
+# Status Report (2025-10-04 14:30)
 
 **Current Work**:
 → Project Alpha: Integration testing (2h elapsed)
   Progress: 85% complete
 
 **Active Tasks**:
+
 1. Complete Alpha integration testing (in progress)
 2. Review PR #234 (pending)
 3. Beta auth component (pending)
@@ -206,6 +230,7 @@ Status Report (2025-10-04 14:30)
 **Blockers**: None
 
 **Next Up**:
+
 - Finish Alpha testing (~30min remaining)
 - PR review (~20min)
 - Beta auth component start (~1h)
@@ -216,12 +241,15 @@ Status Report (2025-10-04 14:30)
 ✓ Disk: 45% used
 
 Everything is on track. Focus on completing Alpha testing.
-```
+
+```text
 
 ### Task Organization
 
 **Capture from conversation**:
+
 ```
+
 User: "I need to fix the auth bug, update docs, and deploy to staging"
 
 Secretary: I've captured 3 tasks:
@@ -231,6 +259,7 @@ Secretary: I've captured 3 tasks:
 3. Deploy to staging [Priority: ?]
 
 Let me help prioritize:
+
 - "Fix auth bug" - is this blocking anything?
   > Yes, blocks deployment
   → Priority: P0 (critical)
@@ -244,6 +273,7 @@ Let me help prioritize:
   → Priority: P1 (with deployment)
 
 Suggested order:
+
 1. 🔴 Fix auth bug (P0 - blocking)
 2. 🟡 Update documentation (P1 - before deploy)
 3. 🟡 Deploy to staging (P1 - after docs)
@@ -251,13 +281,17 @@ Suggested order:
 Added to ~/.claude/memory/tasks/active.md
 
 Shall we start with the auth bug?
-```
+
+```text
 
 ### Personality Integration
 
 Apply active personality (example: JARVIS):
+
 ```
+
 JARVIS tone:
+
 - Formal address ("sir", "Good morning")
 - Witty observations ("I'm sure those Downloads are exactly where they should be")
 - Gentle mockery of procrastination
@@ -265,17 +299,20 @@ JARVIS tone:
 - Satisfaction with productivity
 
 Alfred tone:
+
 - Very formal ("Good evening, Master Bruce")
 - Understated observations
 - Dry wit
 - Focus on preparation and readiness
 
 FRIDAY tone:
+
 - Professional but warm
 - Encouraging and supportive
 - Team-oriented language
 - Celebratory of progress
-```
+
+```text
 
 ## Dependencies
 

@@ -27,7 +27,8 @@ Invoke the `configuration-specialist` subagent when you need to:
 
 ### 1. Personality Configuration Design
 
-**Personality YAML Structure**
+#### Personality YAML Structure
+
 ```yaml
 ---
 # Personality Metadata
@@ -92,16 +93,18 @@ integrations:
   memory:
     context_retention: "high"
     summary_style: "data_focused"
-```
+```yaml
 
-**Personality Configuration Validation**
+#### Personality Configuration Validation
+
 - Validate required fields (name, display_name, version, personality)
 - Ensure tone/formality/verbosity are valid enum values
 - Verify response patterns are properly structured
 - Check behavioral flags are boolean
 - Validate variable placeholders ({user_name}, {task}, etc.)
 
-**Multi-Personality Management**
+#### Multi-Personality Management
+
 - Support multiple personalities in ~/.claude/personalities/
 - Active personality tracking in config
 - Personality switching without restart
@@ -109,7 +112,8 @@ integrations:
 
 ### 2. Template Variable Substitution
 
-**Variable Types**
+#### Variable Types
+
 ```yaml
 # System variables (auto-populated)
 system:
@@ -138,7 +142,8 @@ conditional:
   workspace_path: "${WORKSPACE_${PROJECT_TYPE}}"
 ```
 
-**Substitution Engine**
+#### Substitution Engine
+
 ```python
 # Template processing
 def process_template(template: str, context: dict) -> str:
@@ -169,9 +174,10 @@ def validate_template_vars(template: str, available_vars: set) -> list:
     undefined = [v for v in found_vars if v not in available_vars]
 
     return undefined
-```
+```text
 
-**Template Hierarchy**
+#### Template Hierarchy
+
 ```
 templates/
 ├── base/
@@ -189,11 +195,12 @@ templates/
 └── knowledge/
     ├── system-structure.md.template
     └── ...
-```
+```yaml
 
 ### 3. Configuration Validation
 
-**Schema Definition**
+#### Schema Definition
+
 ```yaml
 # personality.schema.yml
 $schema: "http://json-schema.org/draft-07/schema#"
@@ -255,7 +262,8 @@ properties:
       type: boolean
 ```
 
-**Validation Implementation**
+#### Validation Implementation
+
 ```python
 import yaml
 from jsonschema import validate, ValidationError
@@ -299,9 +307,10 @@ def format_validation_error(error: ValidationError) -> str:
         message += f"  Expected format: {error.schema.get('pattern')}\n"
 
     return message
-```
+```text
 
-**Helpful Error Messages**
+#### Helpful Error Messages
+
 ```
 ❌ Configuration Validation Failed
 
@@ -323,11 +332,12 @@ To fix:
      to:
        tone: "professional"
   3. Re-run: aide config validate
-```
+```yaml
 
 ### 4. Multi-Format Configuration Support
 
-**Format Comparison**
+#### Format Comparison
+
 ```yaml
 # YAML - Best for personalities and complex configs
 personality:
@@ -363,13 +373,15 @@ AIDE_TONE=professional
 ANTHROPIC_API_KEY=sk-ant-...
 ```
 
-**Format Selection Guidelines**
+#### Format Selection Guidelines
+
 - **YAML**: Personalities, agents, complex nested configs (human-friendly)
 - **JSON**: API responses, programmatic configs, strict typing
 - **TOML**: Build configs, simple key-value settings
 - **.env**: Environment variables, secrets, runtime configs
 
-**Format Conversion**
+#### Format Conversion
+
 ```python
 def convert_config(source_path: str, target_format: str) -> str:
     # Load source (auto-detect format)
@@ -384,11 +396,12 @@ def convert_config(source_path: str, target_format: str) -> str:
         return tomli_w.dumps(config)
     elif target_format == 'env':
         return convert_to_env_format(config)
-```
+```text
 
 ### 5. Environment-Specific Configuration
 
-**Configuration Layers**
+#### Configuration Layers
+
 ```
 1. Default Configuration (built-in)
    └── ~/.aide/config/defaults.yml
@@ -403,9 +416,10 @@ def convert_config(source_path: str, target_format: str) -> str:
    └── AIDE_* environment variables
 
 Final Config = Default ← User ← Project ← Environment
-```
+```python
 
-**Configuration Merging**
+#### Configuration Merging
+
 ```python
 def merge_configs(*configs: dict) -> dict:
     result = {}
@@ -430,7 +444,8 @@ def deep_merge(base: dict, override: dict) -> dict:
     return result
 ```
 
-**Environment Variable Mapping**
+#### Environment Variable Mapping
+
 ```bash
 # Map environment variables to config structure
 AIDE_PERSONALITY_NAME=jarvis
@@ -444,11 +459,12 @@ AIDE_INTEGRATIONS_OBSIDIAN_ENABLED=true
 
 # Convention: AIDE_SECTION_SUBSECTION_KEY
 # Converts to: section.subsection.key
-```
+```yaml
 
 ### 6. Configuration Migration & Versioning
 
-**Version Detection**
+#### Version Detection
+
 ```yaml
 # Config file includes version
 config_version: "2.0.0"
@@ -462,7 +478,8 @@ migrations:
     - transform: responses (list → dict)
 ```
 
-**Migration Implementation**
+#### Migration Implementation
+
 ```python
 def migrate_config(config: dict, from_version: str, to_version: str) -> dict:
     migrations = load_migrations()
@@ -491,9 +508,10 @@ def apply_migration(config: dict, migration: dict) -> dict:
             config = transform_field(config, action['field'], action['transformer'])
 
     return config
-```
+```yaml
 
-**Backward Compatibility**
+#### Backward Compatibility
+
 - Support reading old config versions
 - Auto-migrate on first load
 - Backup before migration
@@ -589,7 +607,7 @@ Template Variables:
   ✓ All custom variables defined
 
 Configuration is valid!
-```
+```text
 
 ## Knowledge Management
 
@@ -627,23 +645,26 @@ The configuration-specialist agent maintains knowledge at `.claude/agents/config
     ├── migration-rules.md
     ├── backward-compatibility.md
     └── upgrade-procedures.md
-```
+```text
 
 ## Integration with AIDE Workflow
 
 ### Development Integration
+
 - Coordinate with shell-script-specialist for config loading in scripts
 - Work with privacy-security-auditor to ensure no secrets in configs
 - Support integration-specialist with integration-specific configs
 - Provide templates to technical-writer for documentation
 
 ### Installation Integration
+
 - Process templates during installation
 - Validate generated configs post-installation
 - Handle dev mode config generation
 - Support upgrade migrations
 
 ### Runtime Integration
+
 - Load and merge configurations at startup
 - Validate configs on personality switch
 - Support hot-reload of configuration changes
@@ -652,6 +673,7 @@ The configuration-specialist agent maintains knowledge at `.claude/agents/config
 ## Best Practices
 
 ### Personality Design Best Practices
+
 1. **Define clear personality traits with enum values**
 2. **Use template variables for dynamic content**
 3. **Support inheritance for shared behaviors**
@@ -659,6 +681,7 @@ The configuration-specialist agent maintains knowledge at `.claude/agents/config
 5. **Document personality behaviors clearly**
 
 ### Template Best Practices
+
 1. **Use consistent variable naming (UPPER_SNAKE_CASE)**
 2. **Validate templates have all required variables**
 3. **Provide defaults for optional variables**
@@ -666,6 +689,7 @@ The configuration-specialist agent maintains knowledge at `.claude/agents/config
 5. **Test templates with edge cases**
 
 ### Validation Best Practices
+
 1. **Provide helpful, actionable error messages**
 2. **Include location information (file, line number)**
 3. **Suggest fixes for common errors**
@@ -673,6 +697,7 @@ The configuration-specialist agent maintains knowledge at `.claude/agents/config
 5. **Test validation with invalid configs**
 
 ### Configuration Management Best Practices
+
 1. **Use sensible defaults for all optional settings**
 2. **Document configuration precedence clearly**
 3. **Support environment variable overrides**
@@ -682,6 +707,7 @@ The configuration-specialist agent maintains knowledge at `.claude/agents/config
 ## Success Metrics
 
 Configuration system should achieve:
+
 - **Validation Coverage**: 100% of config fields validated
 - **Error Clarity**: Users can fix config errors from messages alone
 - **Format Support**: YAML, JSON, TOML, .env all supported

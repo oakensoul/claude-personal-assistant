@@ -16,22 +16,26 @@ Extend the command system beyond the MVP basics to include file management, proj
 ## Acceptance Criteria
 
 ### File Management Commands
+
 - [ ] `${ASSISTANT_NAME}-clear-desktop` documented in procedures.md
 - [ ] `${ASSISTANT_NAME}-organize-screenshots` documented
 - [ ] `${ASSISTANT_NAME}-file-this [path]` documented
 
 ### Project Management Commands
+
 - [ ] `${ASSISTANT_NAME}-project-status [name]` documented
 - [ ] `${ASSISTANT_NAME}-project-update [name]` documented
 - [ ] `${ASSISTANT_NAME}-projects-list` documented
 - [ ] `${ASSISTANT_NAME}-blockers` documented
 
 ### Memory Commands
+
 - [ ] `${ASSISTANT_NAME}-remember [thing]` documented
 - [ ] `${ASSISTANT_NAME}-recall [topic]` documented
 - [ ] `${ASSISTANT_NAME}-context` documented
 
 ### System Commands
+
 - [ ] `${ASSISTANT_NAME}-system-health` documented
 - [ ] All commands integrate with appropriate agents
 - [ ] All commands have example outputs
@@ -64,10 +68,12 @@ Extend the command system beyond the MVP basics to include file management, proj
 6. Report clean desktop status
 
 **Example Output** (JARVIS):
-```
+```text
+
 Your Desktop has 23 items. Shocking levels of disorder, sir.
 
 **Categorization**:
+
 - 8 screenshots → ~/Media/Screenshots/
 - 5 PDFs → ~/Documents/Personal/
 - 3 project folders → Keep (active work)
@@ -75,8 +81,9 @@ Your Desktop has 23 items. Shocking levels of disorder, sir.
 - 3 old installers → Trash
 
 Shall I proceed with this cleanup?
+
 ```
-```
+```bash
 
 #### organize-screenshots
 
@@ -97,18 +104,22 @@ Shall I proceed with this cleanup?
 
 **Example Output**:
 ```
+
 Found 47 screenshots across Desktop and Downloads.
 
 **Organization Plan**:
+
 - 12 screenshots from October 2025 → Media/Screenshots/2025/10/
 - 35 screenshots from September 2025 → Media/Screenshots/2025/09/
 
 **Optional Renaming**:
+
 - Screenshot-2025-10-04-at-3.45.12-PM.png → error-message-postgresql.png
 - [Similar for others]
 
 Rename for clarity? (Y/n):
-```
+
+```text
 ```
 
 #### file-this
@@ -135,21 +146,25 @@ Rename for clarity? (Y/n):
 5. If project-related, update projects.md
 
 **Example**:
-```
+```bash
+
 $ jarvis file-this ~/Downloads/api-documentation.pdf
 
 **Analysis**:
+
 - Type: PDF document
 - Content: API documentation for Stripe payments
 - Related to: Project Alpha (payment integration)
 
 **Suggested Action**:
+
 - Destination: ~/Development/personal/project-alpha/docs/
 - Rename to: stripe-api-reference.pdf
 
 Proceed? (Y/n):
+
 ```
-```
+```bash
 
 ### Project Management Commands
 
@@ -175,14 +190,17 @@ Proceed? (Y/n):
 
 **Example Output**:
 ```
-**Project Alpha Status**
+
+#### Project Alpha Status
 
 **Overview**:
+
 - Progress: 80% complete
 - Status: 🟢 Active
 - Last Update: 2 hours ago
 
 **Git Status**:
+
 - Branch: feature/payment-integration
 - Uncommitted changes: 3 files
 - Recent commits:
@@ -190,6 +208,7 @@ Proceed? (Y/n):
   - "Update API client" (yesterday)
 
 **Next Actions**:
+
 1. Complete integration testing
 2. Write unit tests for payment flow
 3. Update documentation
@@ -200,7 +219,8 @@ Proceed? (Y/n):
 Ready for final testing before merge to main.
 
 Would you like to proceed with testing?
-```
+
+```text
 ```
 
 #### projects-list
@@ -224,7 +244,8 @@ Would you like to proceed with testing?
 5. Suggest focus areas
 
 **Example Output**:
-```
+```text
+
 **Active Projects** (3):
 
 1. 🟢 Project Alpha - API Integration
@@ -251,11 +272,13 @@ Would you like to proceed with testing?
    Completed: 1 week ago
 
 **Recommendations**:
+
 - Focus: Project Alpha (nearly complete, high priority)
 - Unblock: Project Beta (follow up on designs)
 - Review: Project Gamma (stale, needs attention)
+
 ```
-```
+```bash
 
 ### Memory Commands
 
@@ -280,6 +303,7 @@ Would you like to proceed with testing?
 
 **Example**:
 ```
+
 $ jarvis remember "We decided to use PostgreSQL instead of MongoDB for Project Alpha because we need ACID compliance and complex relational queries"
 
 **Categorized as**: Decision
@@ -287,18 +311,21 @@ $ jarvis remember "We decided to use PostgreSQL instead of MongoDB for Project A
 **Logged to**: ~/.claude/memory/decisions.md
 
 **Entry**:
+
 ### 2025-10-04: Database Choice for Project Alpha
 
 **Decision**: Use PostgreSQL instead of MongoDB
 
 **Rationale**:
+
 - Need ACID compliance
 - Complex relational queries required
 
 **Project**: Project Alpha
 
 ✓ Remembered. I will reference this in future discussions about Project Alpha.
-```
+
+```text
 ```
 
 #### recall
@@ -322,26 +349,31 @@ $ jarvis remember "We decided to use PostgreSQL instead of MongoDB for Project A
 4. Show sources
 
 **Example**:
-```
+```bash
+
 $ jarvis recall "database choice"
 
 **Found in Memory**:
 
 **Decision** (2025-10-04):
 Database choice for Project Alpha: PostgreSQL
+
 - Rationale: ACID compliance, relational queries
 - Source: ~/.claude/memory/decisions.md
 
 **History** (2025-10-03):
 Researched database options (PostgreSQL vs MongoDB)
+
 - Source: ~/.claude/memory/history/2025-10.md
 
 **Related Projects**:
+
 - Project Alpha uses PostgreSQL
 
 Anything specific about database choices you'd like to know?
+
 ```
-```
+```text
 
 ## Dependencies
 

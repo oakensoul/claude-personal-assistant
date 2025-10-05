@@ -31,7 +31,8 @@ Create the template processing system that copies template files from the framew
 
 ## Implementation Notes
 
-**Substitution Strategy:**
+### Substitution Strategy
+
 ```bash
 substitute_variables() {
     local file="$1"
@@ -50,12 +51,14 @@ substitute_variables() {
 }
 ```
 
-**Template Discovery:**
+### Template Discovery
+
 - Recursively find all `.template` files
 - Process in dependency order (config before knowledge)
 - Skip files in .templateignore if it exists
 
-**Error Handling:**
+### Error Handling
+
 - Verify template file exists before processing
 - Check destination directory is writable
 - Validate substitution didn't corrupt file

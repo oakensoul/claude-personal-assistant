@@ -65,7 +65,7 @@ cd claude-personal-assistant
 
 # Start using AIDA
 jarvis status  # or whatever you named your assistant
-```
+```text
 
 ## 📋 Prerequisites
 
@@ -98,6 +98,7 @@ See [ROADMAP.md](docs/development/ROADMAP.md) for development plans and contribu
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE)
+
 ```
 
 ### Installation Guide (`docs/getting-started/installation.md`)
@@ -130,7 +131,7 @@ git --version  # Should be 2.0+
 
 # Check shell
 echo $SHELL
-```
+```text
 
 ## Installation Steps
 
@@ -146,18 +147,20 @@ cd claude-personal-assistant
 
 ```bash
 ./install.sh
-```
+```text
 
 ### 3. Follow Prompts
 
 The installer will ask:
 
-**Assistant Name:**
+#### Assistant Name:
+
 - Enter a name for your assistant (lowercase, no spaces)
 - Examples: jarvis, alfred, friday
 - This becomes your CLI command
 
-**Personality:**
+#### Personality:
+
 - Choose from 5 personalities:
   1. JARVIS (snarky, witty)
   2. Alfred (professional, dignified)
@@ -181,11 +184,12 @@ jarvis status  # Replace 'jarvis' with your assistant name
 ### 5. Shell Restart (if needed)
 
 If the CLI isn't found:
+
 ```bash
 # Restart shell or source config
 source ~/.bashrc  # For bash
 source ~/.zshrc   # For zsh
-```
+```text
 
 ## What Gets Installed
 
@@ -198,7 +202,7 @@ source ~/.zshrc   # For zsh
   ├── memory/         # Current context and history
   └── agents/         # Specialized agents
 ~/bin/jarvis          # CLI tool (or your chosen name)
-```
+```text
 
 ## Development Mode
 
@@ -213,17 +217,20 @@ This symlinks `~/.aida/` to the repository for live editing.
 ## Platform-Specific Notes
 
 ### macOS
+
 - Default shell is zsh (macOS 10.15+)
 - Uses `~/.zshrc` for configuration
 - Homebrew optional but recommended
 
 ### Linux (Ubuntu/Debian)
+
 - Default shell is bash
 - Uses `~/.bashrc` for configuration
 - May need to install git: `sudo apt install git`
 
 ### Windows (WSL)
-- Install WSL2 first: https://learn.microsoft.com/en-us/windows/wsl/install
+
+- Install WSL2 first: <https://learn.microsoft.com/en-us/windows/wsl/install>
 - Recommended: Ubuntu 22.04 from Microsoft Store
 - Follow Linux instructions once in WSL
 
@@ -234,6 +241,7 @@ This symlinks `~/.aida/` to the repository for live editing.
 **Cause**: CLI not in PATH
 
 **Solution**:
+
 ```bash
 # Check if ~/bin exists
 ls ~/bin/jarvis
@@ -241,13 +249,14 @@ ls ~/bin/jarvis
 # If it exists, add to PATH manually
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
-```
+```text
 
 ### "Permission denied"
 
 **Cause**: CLI not executable
 
 **Solution**:
+
 ```bash
 chmod +x ~/bin/jarvis
 ```
@@ -257,16 +266,18 @@ chmod +x ~/bin/jarvis
 **Cause**: Installation issue
 
 **Solution**:
+
 ```bash
 # Re-run installation
 ./install.sh
-```
+```text
 
 ### "YAML parsing error"
 
 **Cause**: Corrupted personality file
 
 **Solution**:
+
 ```bash
 # Re-install personality
 cp ~/.aida/personalities/jarvis.yaml ~/.claude/config/personality.yaml
@@ -275,7 +286,8 @@ cp ~/.aida/personalities/jarvis.yaml ~/.claude/config/personality.yaml
 ## Next Steps
 
 See [Quick Start Guide](quick-start.md) for first steps after installation.
-```
+
+```text
 
 ### Quick Start Guide (`docs/getting-started/quick-start.md`)
 
@@ -315,8 +327,10 @@ Get started with AIDA after installation.
 
 ### Morning Routine
 ```
+
 jarvis start day
-```
+
+```text
 
 Claude will:
 - Review your active projects
@@ -326,15 +340,19 @@ Claude will:
 
 ### Check Status
 ```
+
 jarvis status
-```
+
+```text
 
 Shows quick system overview.
 
 ### End of Day
 ```
+
 jarvis end day
-```
+
+```text
 
 Claude will:
 - Review accomplishments
@@ -344,8 +362,10 @@ Claude will:
 
 ### Clean Downloads
 ```
+
 jarvis cleanup downloads
-```
+
+```text
 
 Claude will:
 - Scan Downloads folder
@@ -383,7 +403,7 @@ $EDITOR ~/.claude/agents/file-manager.md
 
 # Dev assistant agent
 $EDITOR ~/.claude/agents/dev-assistant.md
-```
+```text
 
 ## Obsidian Integration (Optional)
 
@@ -400,7 +420,7 @@ $EDITOR ~/.claude/agents/dev-assistant.md
 ├── Daily/           # Daily notes (auto-created)
 ├── Projects/        # Project tracking
 └── Index/           # Overview and dashboards
-```
+```text
 
 ## Tips
 
@@ -418,7 +438,7 @@ $EDITOR ~/.claude/agents/dev-assistant.md
 I'm starting a new project called "awesome-app".
 It's a React web application for [purpose].
 Can you help me track this?
-```
+```text
 
 ### Daily Planning
 
@@ -427,7 +447,7 @@ jarvis start day
 [Review suggestions]
 Actually, I need to prioritize the design work today.
 Can you update my plan?
-```
+```text
 
 ### Organizing Files
 
@@ -435,13 +455,14 @@ Can you update my plan?
 My Downloads folder is a mess. Can you help organize it?
 [Claude shows categorization]
 Yes, proceed with those suggestions.
-```
+```text
 
 ## Next Steps
 
 - Read [Architecture](../architecture/ARCHITECTURE.md) to understand how AIDA works
 - Explore [Roadmap](../development/ROADMAP.md) for upcoming features
 - Join discussions for questions and feedback
+
 ```
 
 ## Dependencies

@@ -6,7 +6,7 @@ This directory contains issue definition files for the AIDA framework implementa
 
 Issues are organized into milestone-based subdirectories for better clarity and navigation:
 
-```
+```text
 .github/issues/to-do/
 ├── v0.1.0/          # Foundation (15 issues)
 ├── v0.2.0/          # Core Features (6 issues)
@@ -22,6 +22,7 @@ Issues are organized into milestone-based subdirectories for better clarity and 
 **Goal**: Prove core value proposition with installable, personality-driven AI assistant
 
 **Issues**: 15 (located in `v0.1.0/`)
+
 - #001: Installation script foundation
 - #002: Template system
 - #003: CLI tool generation
@@ -43,6 +44,7 @@ Issues are organized into milestone-based subdirectories for better clarity and 
 **Goal**: Daily usability with task management and workflow automation
 
 **Issues**: 6 (located in `v0.2.0/`)
+
 - #014: Additional personalities (Alfred, FRIDAY, Sage, Drill Sergeant)
 - #015: Personality switching
 - #016: Obsidian templates
@@ -55,6 +57,7 @@ Issues are organized into milestone-based subdirectories for better clarity and 
 **Goal**: Specialized assistance with richer memory and knowledge management
 
 **Issues**: 4 (located in `v0.3.0/`)
+
 - #022: Enhanced memory system
 - #023: Knowledge capture system
 - #024: Decision documentation system
@@ -65,6 +68,7 @@ Issues are organized into milestone-based subdirectories for better clarity and 
 **Goal**: Full workflow integration with comprehensive Obsidian support
 
 **Issues**: 2 (located in `v0.4.0/`)
+
 - #028: Obsidian full integration
 - #029: Git integration
 
@@ -73,6 +77,7 @@ Issues are organized into milestone-based subdirectories for better clarity and 
 **Goal**: Tech-stack specific expertise and extensibility
 
 **Issues**: 1 (located in `v0.5.0/`)
+
 - #018: Project-specific agents system (React, Next.js, Go, Python, etc.)
 
 ### Milestone v0.6.0 - Knowledge Sync & Privacy
@@ -80,6 +85,7 @@ Issues are organized into milestone-based subdirectories for better clarity and 
 **Goal**: Privacy-aware knowledge sharing and data control
 
 **Issues**: 1 (located in `v0.6.0/`)
+
 - #019: Knowledge sync and scrubbing system
 
 ### Milestone v1.0.0 - First Stable Release
@@ -87,6 +93,7 @@ Issues are organized into milestone-based subdirectories for better clarity and 
 **Goal**: Production-ready, polished experience with stability guarantees
 
 **Issues**: 1 (located in `v1.0.0/`)
+
 - #030: v1.0.0 release preparation
 
 ## Priority Legend
@@ -137,14 +144,14 @@ labels:
 
 ## Definition of Done
 [Final checklist for completion]
-```
+```text
 
 ## Dependency Graph
 
-```
+```text
 v0.1.0 Dependencies:
 
-#001 (Installation foundation)
+Issue #001 (Installation foundation)
   ├─→ #002 (Template system)
   │    ├─→ #005 (CLAUDE.md template)
   │    ├─→ #006 (Knowledge templates)
@@ -154,54 +161,54 @@ v0.1.0 Dependencies:
   │    └─→ #004 (PATH config)
   └─→ #008 (JARVIS personality)
 
-#006 (Knowledge templates)
+Issue #006 (Knowledge templates)
   └─→ #011 (Core procedures)
        ├─→ #009 (Agent templates)
        └─→ #012 (Testing)
 
-#012 (Testing)
+Issue #012 (Testing)
   └─→ #013 (Documentation)
        └─→ #021 (Release checklist)
 
-#020 (MCP guide) - Parallel to main flow
+Issue #020 (MCP guide) - Parallel to main flow
 
 ---
 
 v0.2.0 Dependencies:
 
-#007 (Memory templates) + #022 (Enhanced memory) → #026 (Task management)
-#009 (Agent templates) → #027 (Workflow automation)
-#008 (JARVIS) → #014 (Additional personalities) → #015 (Personality switching)
-#006 (Knowledge) → #016 (Obsidian templates)
-#011 (Core procedures) → #017 (Extended commands)
+Issue #007 (Memory templates) + #022 (Enhanced memory) → #026 (Task management)
+Issue #009 (Agent templates) → #027 (Workflow automation)
+Issue #008 (JARVIS) → #014 (Additional personalities) → #015 (Personality switching)
+Issue #006 (Knowledge) → #016 (Obsidian templates)
+Issue #011 (Core procedures) → #017 (Extended commands)
 
 ---
 
 v0.3.0 Dependencies:
 
-#007 (Memory templates) → #022 (Enhanced memory system)
-#022 (Enhanced memory) → #023 (Knowledge capture)
-#022 (Enhanced memory) → #024 (Decision documentation)
-#009 (Agent templates) + #022 (Enhanced memory) → #025 (Core agents)
+Issue #007 (Memory templates) → #022 (Enhanced memory system)
+Issue #022 (Enhanced memory) → #023 (Knowledge capture)
+Issue #022 (Enhanced memory) → #024 (Decision documentation)
+Issue #009 (Agent templates) + #022 (Enhanced memory) → #025 (Core agents)
 
 ---
 
 v0.4.0 Dependencies:
 
-#016 (Obsidian templates) + #026 (Tasks) + #023 (Knowledge) → #028 (Obsidian full)
-#025 (Core agents) + #023 (Knowledge) → #029 (Git integration)
+Issue #016 (Obsidian templates) + #026 (Tasks) + #023 (Knowledge) → #028 (Obsidian full)
+Issue #025 (Core agents) + #023 (Knowledge) → #029 (Git integration)
 
 ---
 
 v0.5.0 Dependencies:
 
-#025 (Core agents) + #009 (Agent templates) → #018 (Project agents)
+Issue #025 (Core agents) + #009 (Agent templates) → #018 (Project agents)
 
 ---
 
 v0.6.0 Dependencies:
 
-#016 (Obsidian templates) + #023 (Knowledge) → #019 (Knowledge sync)
+Issue #016 (Obsidian templates) + #023 (Knowledge) → #019 (Knowledge sync)
 
 ---
 
@@ -226,6 +233,7 @@ To create GitHub issues from these definitions:
 ```
 
 The devops-engineer agent will:
+
 1. Read the issue definition file
 2. Parse frontmatter for labels, priority, effort, milestone
 3. Create GitHub issue with proper formatting
@@ -239,6 +247,7 @@ The devops-engineer agent will:
 **Total Estimated Effort**: ~350-400 hours for complete implementation
 
 **Breakdown by Milestone**:
+
 - v0.1.0 Foundation: 15 issues (~40-50 hours)
 - v0.2.0 Core Features: 6 issues (~50-60 hours)
 - v0.3.0 Enhanced Memory & Agents: 4 issues (~65-75 hours)
@@ -248,12 +257,14 @@ The devops-engineer agent will:
 - v1.0.0 Stable Release: 1 issue (~80-100 hours)
 
 **Breakdown by Type**:
+
 - Features: 24 issues (80%)
 - Documentation: 3 issues (10%)
 - Testing: 1 issue (3%)
 - Release: 2 issues (7%)
 
 **Breakdown by Priority**:
+
 - P0 (Critical): 14 issues (47%)
 - P1 (High): 9 issues (30%)
 - P2 (Medium): 7 issues (23%)

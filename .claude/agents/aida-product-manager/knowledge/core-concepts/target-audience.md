@@ -14,8 +14,10 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 ## Primary Audience
 
 ### Developers
+
 **Who**: Software engineers, DevOps, full-stack developers, data scientists
 **Why AIDA**:
+
 - CLI-first fits existing workflow (terminal, git, editors)
 - Customizable agents for tech-stack specific assistance
 - Integration with development tools (git, Obsidian, dotfiles)
@@ -23,6 +25,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Extensible (can add custom agents and workflows)
 
 **Common Use Cases**:
+
 - Daily standup preparation and task prioritization
 - Project planning and architecture decisions
 - Code review assistance and documentation
@@ -30,6 +33,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Context switching between multiple projects
 
 **Pain Points AIDA Solves**:
+
 - Generic AI tools don't remember project context
 - Switching between ChatGPT tabs loses conversation history
 - No way to customize AI behavior for different contexts (work vs personal)
@@ -37,8 +41,10 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Manually managing TODO lists, notes, and project status
 
 ### Tech-Savvy Power Users
+
 **Who**: System administrators, technical writers, researchers, advanced macOS users
 **Why AIDA**:
+
 - Comfortable with terminal and configuration files
 - Want personal assistant that integrates with their workflow
 - Value privacy and local-first approach
@@ -46,6 +52,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Use text-based tools (vim, tmux, Obsidian, etc.)
 
 **Common Use Cases**:
+
 - Knowledge capture and synthesis
 - Research assistance and note-taking
 - System administration tasks and automation
@@ -53,6 +60,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Personal productivity and task management
 
 **Pain Points AIDA Solves**:
+
 - AI tools feel impersonal and generic
 - No memory of previous conversations or preferences
 - Limited customization options
@@ -62,8 +70,10 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 ## Secondary Audience
 
 ### Solo Developers & Indie Hackers
+
 **Who**: Independent developers, freelancers, startup founders
 **Why AIDA**:
+
 - Wearing multiple hats (dev, PM, designer, marketer)
 - Need assistant for diverse tasks beyond just coding
 - Appreciate open-source and customizable tools
@@ -71,6 +81,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Budget-conscious (prefer self-hosted/local tools)
 
 **Common Use Cases**:
+
 - Product planning and prioritization
 - Marketing copy and content creation
 - Customer support and documentation
@@ -78,6 +89,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Learning new technologies and skills
 
 **Pain Points AIDA Solves**:
+
 - Juggling multiple roles without team support
 - Context switching between business and technical tasks
 - Need for different "modes" (e.g., creative vs analytical)
@@ -85,8 +97,10 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Cost of multiple SaaS tools
 
 ### Team Leads & Engineering Managers
+
 **Who**: Tech leads, engineering managers, project managers
 **Why AIDA**:
+
 - Need to organize team workflows and knowledge
 - Balance technical and leadership responsibilities
 - Want AI that understands technical context
@@ -94,6 +108,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Appreciate structured knowledge management
 
 **Common Use Cases**:
+
 - Sprint planning and roadmap management
 - One-on-one preparation and follow-up
 - Team documentation and knowledge sharing
@@ -101,6 +116,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Technical decision documentation
 
 **Pain Points AIDA Solves**:
+
 - Losing track of team context and decisions
 - No central place for team knowledge
 - Generic AI doesn't understand technical nuances
@@ -108,8 +124,10 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Difficulty switching between IC work and management tasks
 
 ### Knowledge Workers
+
 **Who**: Researchers, writers, analysts, consultants
 **Why AIDA**:
+
 - Work with large amounts of information
 - Need to synthesize and connect ideas
 - Value structured knowledge management
@@ -117,6 +135,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Appreciate customizable tools
 
 **Common Use Cases**:
+
 - Research synthesis and note-taking
 - Writing assistance and editing
 - Information organization and retrieval
@@ -124,6 +143,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Project and client management
 
 **Pain Points AIDA Solves**:
+
 - Information overload without good organization
 - AI tools don't remember previous research context
 - Disconnected tools for notes, tasks, writing
@@ -133,26 +153,31 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 ## Anti-Personas (Who AIDA Is NOT For)
 
 ### Non-Technical Users
+
 **Why Not**: AIDA assumes comfort with command-line, configuration files, and text-based workflows. Users who prefer GUI applications and avoid the terminal will find AIDA frustrating.
 
 **Alternative**: Wait for future web dashboard (post-1.0.0) or use consumer AI tools like ChatGPT app
 
 ### Windows-Primary Users
+
 **Why Not**: AIDA focuses on macOS and Linux. Windows support is not a priority for early releases.
 
 **Alternative**: Wait for Windows support (post-1.0.0) or use WSL/Linux VM
 
 ### Enterprise Teams Needing Multi-User Features
+
 **Why Not**: AIDA focuses on individual productivity, not team collaboration. No shared workspaces, role-based access, or team analytics.
 
 **Alternative**: Look for enterprise AI tools with team features
 
 ### Users Needing Mobile Access
+
 **Why Not**: AIDA is CLI-first, no mobile app planned for 1.0.0.
 
 **Alternative**: Use Claude mobile app for basic AI assistance
 
 ### Users Requiring 24/7 Availability
+
 **Why Not**: AIDA is local-first, runs on user's machine, not cloud-hosted.
 
 **Alternative**: Use cloud AI services with guaranteed uptime
@@ -160,6 +185,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 ## User Personas
 
 ### Persona 1: "Sarah the Solo Developer"
+
 - **Age**: 28
 - **Role**: Full-stack developer, indie hacker
 - **Goals**: Build and ship products quickly, learn new technologies, maintain work-life balance
@@ -173,6 +199,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
   - Context switching: Switch between JARVIS (work) and FRIDAY (learning) personalities
 
 ### Persona 2: "David the DevOps Engineer"
+
 - **Age**: 35
 - **Role**: Senior DevOps engineer at mid-size startup
 - **Goals**: Automate infrastructure, maintain system reliability, document decisions
@@ -186,6 +213,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
   - Knowledge capture: "Remember that we use Terraform workspaces for env separation"
 
 ### Persona 3: "Maria the Tech Lead"
+
 - **Age**: 32
 - **Role**: Engineering team lead at Series B company
 - **Goals**: Ship features on time, grow team members, maintain code quality
@@ -199,6 +227,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
   - Code review: "Review this PR and suggest improvements"
 
 ### Persona 4: "Alex the Researcher"
+
 - **Age**: 40
 - **Role**: Independent AI researcher and technical writer
 - **Goals**: Synthesize research, write articles, stay current with AI developments
@@ -214,6 +243,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 ## Use Cases by Category
 
 ### Daily Workflow Management
+
 - Start-of-day planning and prioritization
 - End-of-day summary and reflection
 - Context switching between projects
@@ -221,6 +251,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Time management and focus
 
 ### Development Assistance
+
 - Code review and improvement suggestions
 - API design and architecture decisions
 - Documentation generation
@@ -228,6 +259,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Learning new technologies
 
 ### Knowledge Management
+
 - Note-taking and organization
 - Research synthesis
 - Decision documentation
@@ -235,6 +267,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Knowledge retrieval and search
 
 ### Project Management
+
 - Roadmap planning and prioritization
 - Feature scoping and estimation
 - Sprint planning and retrospectives
@@ -242,6 +275,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Stakeholder communication
 
 ### Writing & Communication
+
 - Technical writing and documentation
 - Email drafting and responses
 - Presentation preparation
@@ -249,6 +283,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Team communication
 
 ### Learning & Growth
+
 - Technology exploration and learning
 - Code examples and tutorials
 - Concept explanations
@@ -258,7 +293,9 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 ## Adoption Journey
 
 ### Awareness
+
 **How they discover AIDA**:
+
 - GitHub search for "AI assistant CLI"
 - Hacker News discussions
 - Reddit (r/commandline, r/MacOS, r/selfhosted)
@@ -266,19 +303,23 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Word-of-mouth from colleagues
 
 **Initial Questions**:
+
 - "What makes this different from ChatGPT?"
 - "Is my data private?"
 - "How hard is it to set up?"
 - "Can I customize it?"
 
 ### Evaluation
+
 **Trial Phase**:
+
 - Install AIDA and try default JARVIS personality
 - Run through basic commands (status, help)
 - Test conversation quality
 - Evaluate vs current workflow
 
 **Key Decision Factors**:
+
 - Ease of installation
 - Quality of AI responses
 - Privacy and data control
@@ -286,20 +327,25 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 - Personality system appeal
 
 ### Adoption
+
 **Initial Usage**:
+
 - Use for daily standup preparation
 - Try different personalities
 - Integrate into morning routine
 - Start capturing notes and decisions
 
 **Habit Formation**:
+
 - AIDA becomes default for questions/help
 - Prefer AIDA over switching to browser
 - Customize personality to preferences
 - Share AIDA with colleagues
 
 ### Advocacy
+
 **Power User Stage**:
+
 - Create custom agents
 - Share personality configurations
 - Contribute to documentation
@@ -309,6 +355,7 @@ AIDA targets users who want AI assistance that's personal, customizable, and pri
 ## Success Metrics
 
 AIDA is reaching its target audience when:
+
 - 70%+ of users are developers or tech-savvy power users
 - Users adopt AIDA within first week of installation
 - Daily active users stick around for 30+ days

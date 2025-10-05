@@ -39,6 +39,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 ## Acceptance Criteria
 
 ### Code Quality & Polish
+
 - [ ] All P0 and P1 features from v0.1-v0.6 are complete and stable
 - [ ] Code quality improvements (linting, formatting, structure)
 - [ ] Performance optimization pass
@@ -48,6 +49,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Technical debt from early milestones addressed
 
 ### Testing & Quality Assurance
+
 - [ ] Unit test coverage ≥ 80% for core functionality
 - [ ] Integration tests for all major features
 - [ ] End-to-end tests for critical workflows
@@ -58,6 +60,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] User acceptance testing completed
 
 ### Security
+
 - [ ] Security audit completed
 - [ ] Dependency vulnerability scan clean
 - [ ] Secret handling reviewed and secure
@@ -67,6 +70,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] File permissions correct and safe
 
 ### Documentation
+
 - [ ] Complete user guide (getting started through advanced features)
 - [ ] Installation guide for all platforms
 - [ ] Configuration reference
@@ -82,6 +86,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Architecture documentation current
 
 ### Stability & Compatibility
+
 - [ ] No breaking API changes planned post-1.0
 - [ ] Configuration format finalized
 - [ ] Data migration from v0.x tested
@@ -91,6 +96,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Rollback procedures documented
 
 ### Release Process
+
 - [ ] CHANGELOG.md complete for v1.0.0
 - [ ] Version numbers updated throughout codebase
 - [ ] LICENSE file verified (MIT)
@@ -103,6 +109,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 ## v1.0.0 Feature Checklist
 
 ### Foundation (v0.1.0)
+
 - [ ] Installation script (normal and dev modes)
 - [ ] Template system
 - [ ] CLI tool generation
@@ -115,6 +122,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Core procedures
 
 ### Core Features (v0.2.0)
+
 - [ ] Task management system
 - [ ] Workflow automation (morning/evening routines)
 - [ ] Memory improvements
@@ -123,6 +131,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Extended command system
 
 ### Enhanced Memory & Agents (v0.3.0)
+
 - [ ] Enhanced memory system (structured categories)
 - [ ] Knowledge capture system
 - [ ] Decision documentation (ADR/PDR)
@@ -130,17 +139,20 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Agent routing system
 
 ### Extended Commands & Obsidian (v0.4.0)
+
 - [ ] Full Obsidian integration (bidirectional sync)
 - [ ] Git integration and code review
 - [ ] Expanded command set
 - [ ] Workflow templates
 
 ### Project Agents (v0.5.0)
+
 - [ ] Project-specific agent system
 - [ ] Initial project agents (React, Next.js, Go, Python)
 - [ ] Agent installation and management
 
 ### Knowledge Sync & Privacy (v0.6.0)
+
 - [ ] Knowledge export with privacy scrubbing
 - [ ] Knowledge import and sharing
 - [ ] Data audit and control features
@@ -149,6 +161,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 ## Quality Metrics
 
 ### Performance Targets
+
 - [ ] Installation time: < 5 minutes
 - [ ] Startup time: < 2 seconds
 - [ ] Command response time: < 1 second
@@ -158,12 +171,14 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Memory footprint: < 100 MB
 
 ### Reliability Targets
+
 - [ ] Installation success rate: ≥ 95%
 - [ ] Command success rate: ≥ 99%
 - [ ] Data corruption rate: 0%
 - [ ] Critical bug rate: < 0.1%
 
 ### User Experience Metrics
+
 - [ ] First-time setup completion: ≥ 90%
 - [ ] Feature adoption (at least 1 feature): ≥ 80%
 - [ ] Daily active users (7-day retention): ≥ 60%
@@ -172,6 +187,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 ## Pre-Release Tasks
 
 ### Code Quality Pass
+
 - [ ] Run comprehensive linting (shellcheck, yamllint, markdownlint)
 - [ ] Fix all linting warnings
 - [ ] Code review of critical modules
@@ -180,6 +196,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Consistent code style throughout
 
 ### Testing Pass
+
 - [ ] Run full test suite on macOS
 - [ ] Run full test suite on Ubuntu 22.04
 - [ ] Run full test suite on Ubuntu 24.04
@@ -190,6 +207,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Stress testing with large datasets
 
 ### Security Pass
+
 - [ ] Run security scanner (gitleaks, grype)
 - [ ] Review all credential handling
 - [ ] Review file permissions
@@ -199,6 +217,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Third-party security review (optional)
 
 ### Documentation Pass
+
 - [ ] Technical review of all documentation
 - [ ] Copy editing for clarity and grammar
 - [ ] Verify all code examples work
@@ -208,6 +227,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 - [ ] Translate key docs (optional)
 
 ### User Acceptance Testing
+
 - [ ] Beta testing with 10+ users
 - [ ] Collect and address feedback
 - [ ] Fix critical UX issues
@@ -218,6 +238,7 @@ Each sub-issue should be scoped to Small or Medium effort.
 ## Release Preparation
 
 ### 1. Version Finalization
+
 ```bash
 # Update all version references
 - install.sh: AIDA_VERSION="1.0.0"
@@ -225,9 +246,10 @@ Each sub-issue should be scoped to Small or Medium effort.
 - CLAUDE.md template: version: "1.0.0"
 - Documentation: version: "1.0.0"
 - package.json (if exists): "version": "1.0.0"
-```
+```text
 
 ### 2. CHANGELOG.md
+
 ```markdown
 # Changelog
 
@@ -333,7 +355,8 @@ Thank you to all contributors who made v1.0.0 possible!
 ## [0.6.0] - 2025-XX-XX
 
 [Previous release notes...]
-```
+
+```text
 
 ### 3. Release Notes
 
@@ -364,6 +387,7 @@ cd claude-personal-assistant
 ```
 
 Follow the prompts to:
+
 1. Choose your assistant name
 2. Select a personality (JARVIS, Alfred, FRIDAY, Sage, Drill Sergeant)
 3. Configure integrations (Obsidian, MCP servers)
@@ -386,7 +410,7 @@ aida review
 
 # Check status
 aida status
-```
+```text
 
 ## ✨ Key Features
 
@@ -452,6 +476,7 @@ Choose from 5 pre-built personalities or create your own:
 ## 🤝 Contributing
 
 We welcome contributions! See:
+
 - [Contributing Guide](CONTRIBUTING.md)
 - [Good First Issues](https://github.com/username/repo/labels/good-first-issue)
 - [Roadmap](docs/roadmap.md)
@@ -475,6 +500,7 @@ MIT License - See [LICENSE](LICENSE)
 ---
 
 **Ready to get started?** Install AIDA and transform your AI workflow today!
+
 ```
 
 ### 4. Git Tag & Release
@@ -495,7 +521,7 @@ gh release create v1.0.0 \
   --title "AIDA v1.0.0 - First Stable Release" \
   --notes-file RELEASE_NOTES.md \
   --latest
-```
+```text
 
 ### 5. Post-Release Tasks
 
@@ -533,6 +559,7 @@ If critical issues are discovered:
    - Medium: Minor features broken
 
 2. **Hotfix Process** (for critical/high issues)
+
    ```bash
    # Create hotfix branch
    git checkout -b hotfix/critical-issue main
@@ -560,6 +587,7 @@ If critical issues are discovered:
 ## Dependencies
 
 **All prior milestones must be complete**:
+
 - v0.1.0 - Foundation
 - v0.2.0 - Core Features
 - v0.3.0 - Enhanced Memory & Agents
