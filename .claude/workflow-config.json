@@ -1,0 +1,63 @@
+{
+  "workflow": {
+    "issue_tracking": {
+      "enabled": true,
+      "directory": ".github/issues",
+      "states": {
+        "in_progress": "in-progress",
+        "completed": "completed"
+      }
+    },
+    "time_tracking": {
+      "enabled": false,
+      "directory": ".time-tracking",
+      "branch_prefix": "time-tracking"
+    },
+    "branching": {
+      "format": "milestone-v{milestone}/{type}/{id}-{description}",
+      "requires_milestone": true
+    },
+    "pull_requests": {
+      "versioning": {
+        "enabled": true,
+        "files": [
+          "VERSION"
+        ],
+        "changelog": "docs/CHANGELOG.md",
+        "readme_summary": true,
+        "readme_max_entries": 3,
+        "readme_path": "README.md"
+      },
+      "reviewers": {
+        "strategy": "list",
+        "team": ["github-copilot[bot]"]
+      },
+      "merge_strategy": "squash"
+    },
+    "issue_creation": {
+      "requires_milestone": true,
+      "auto_assign": false,
+      "templates": {
+        "use_structured_body": true
+      }
+    },
+    "github_project": {
+      "enabled": true,
+      "status_field": "Status",
+      "status_transitions": {
+        "start_work": {
+          "from": "Prioritized",
+          "to": "In Progress"
+        },
+        "open_pr": {
+          "from": "In Progress",
+          "to": "In Review"
+        },
+        "complete": {
+          "from": "In Review",
+          "to": "Done"
+        }
+      }
+    }
+  }
+}

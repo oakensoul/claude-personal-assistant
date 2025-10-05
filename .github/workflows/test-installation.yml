@@ -21,6 +21,11 @@ on:
       - '.github/workflows/test-installation.yml'
   workflow_dispatch:
 
+env:
+  # Test inputs for automated installation
+  TEST_ASSISTANT_NAME: "testassistant"
+  TEST_PERSONALITY_CHOICE: "1"  # JARVIS personality
+
 jobs:
   # Lint and validate the installation script
   lint:
@@ -73,7 +78,7 @@ jobs:
       - name: Test installation (automated)
         run: |
           # Automated test with inputs using newer bash
-          echo -e "testassistant\n1\n" | /opt/homebrew/bin/bash ./install.sh
+          echo -e "${TEST_ASSISTANT_NAME}\n${TEST_PERSONALITY_CHOICE}\n" | /opt/homebrew/bin/bash ./install.sh
 
       - name: Verify installation
         run: |
@@ -115,7 +120,7 @@ jobs:
         shell: wsl-bash {0}
         run: |
           # Automated test with inputs
-          echo -e "wsltest\n1\n" | ./install.sh
+          echo -e "${TEST_ASSISTANT_NAME}\n${TEST_PERSONALITY_CHOICE}\n" | ./install.sh
 
       - name: Verify installation
         shell: wsl-bash {0}

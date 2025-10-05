@@ -24,7 +24,10 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 DOCKER_DIR="${REPO_ROOT}/.github/docker"
 LOG_DIR="${SCRIPT_DIR}/logs"
 
-# Detect docker-compose command (V1 vs V2)
+# Detect docker-compose command (backward compatibility)
+# Docker Compose V1: docker-compose (standalone binary, deprecated)
+# Docker Compose V2: docker compose (plugin, shipped with Docker Desktop)
+# Check for both to support users on different Docker versions
 if command -v docker-compose &> /dev/null; then
     DOCKER_COMPOSE="docker-compose"
 elif docker compose version &> /dev/null; then

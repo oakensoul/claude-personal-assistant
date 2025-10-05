@@ -18,10 +18,22 @@
 
 set -euo pipefail
 
+# Script directory (repository root)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly SCRIPT_DIR
+
+# Color codes for output
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly NC='\033[0m' # No Color
+
 # Script version
 VERSION_FILE="${SCRIPT_DIR}/VERSION"
 if [[ -f "$VERSION_FILE" ]]; then
-    readonly VERSION="$(cat "$VERSION_FILE")"
+    VERSION="$(cat "$VERSION_FILE")"
+    readonly VERSION
 else
     echo -e "${RED}Error:${NC} VERSION file not found at $VERSION_FILE"
     exit 1
@@ -32,19 +44,8 @@ readonly AIDA_DIR="${HOME}/.aida"
 readonly CLAUDE_DIR="${HOME}/.claude"
 readonly CLAUDE_MD="${HOME}/CLAUDE.md"
 
-# Script directory (repository root)
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly SCRIPT_DIR
-
 # Installation mode
 DEV_MODE=false
-
-# Color codes for output
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[1;33m'
-readonly BLUE='\033[0;34m'
-readonly NC='\033[0m' # No Color
 
 # User configuration
 ASSISTANT_NAME=""
