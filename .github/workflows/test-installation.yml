@@ -119,8 +119,8 @@ jobs:
       - name: Test installation (automated)
         shell: wsl-bash {0}
         run: |
-          # Automated test with inputs
-          echo -e "${TEST_ASSISTANT_NAME}\n${TEST_PERSONALITY_CHOICE}\n" | ./install.sh
+          # Automated test with inputs (WSL doesn't inherit workflow env vars)
+          echo -e "testassistant\n1\n" | ./install.sh
 
       - name: Verify installation
         shell: wsl-bash {0}
