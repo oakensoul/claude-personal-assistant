@@ -112,15 +112,17 @@ version: "1.0.0"
 ```
 
 ### Naming Conventions
+
 - [Convention 1]
 - [Convention 2]
 
 ## Development Commands
 
 ### [Command Category]
+
 ```bash
 [commands with explanations]
-```text
+```
 
 ## Common Patterns
 
@@ -141,7 +143,7 @@ When working in this [Technology] project, I understand:
 - [Capability 1]
 - [Capability 2]
 
-```
+```text
 
 ### React Agent
 
@@ -224,6 +226,7 @@ src/
 ```
 
 ### Naming Conventions
+
 - **Components**: PascalCase (`UserProfile.tsx`)
 - **Hooks**: camelCase with "use" prefix (`useAuth.ts`)
 - **Utils**: camelCase (`formatDate.ts`)
@@ -231,6 +234,7 @@ src/
 - **Types**: PascalCase (`User`, `AuthState`)
 
 ### Import Order
+
 ```typescript
 // 1. External libraries
 import React, { useState, useEffect } from 'react';

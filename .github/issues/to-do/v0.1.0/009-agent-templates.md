@@ -121,6 +121,7 @@ I've updated your daily note. Shall we begin with the Alpha testing?
 **Trigger**: User runs `${ASSISTANT_NAME}-end-day` or `${ASSISTANT_NAME} end day`
 
 **Procedure**:
+
 1. Review what was accomplished today
 2. Update project statuses in projects.md
 3. Note any blockers for tomorrow
@@ -134,6 +135,7 @@ I've updated your daily note. Shall we begin with the Alpha testing?
 **Trigger**: User runs `${ASSISTANT_NAME}-status` or `${ASSISTANT_NAME} status`
 
 **Procedure**:
+
 1. Quick summary of active work
 2. Progress on current tasks
 3. Any blockers or issues
@@ -143,11 +145,11 @@ I've updated your daily note. Shall we begin with the Alpha testing?
 ## Personality Integration
 
 Apply active personality to all interactions. For JARVIS personality:
+
 - Use witty observations about productivity
 - Gently mock procrastination
 - Provide "tough love" encouragement
 - Address user as "sir"
-```yaml
 
 ### file-manager.md.template
 
@@ -348,6 +350,7 @@ Shall I proceed with this commit?
 **Trigger**: `${ASSISTANT_NAME}-project-status [name]`
 
 **Procedure**:
+
 1. Read project info from projects.md
 2. Check git status if applicable
 3. Review recent commits
@@ -360,6 +363,7 @@ Shall I proceed with this commit?
 **Trigger**: Deployment requests
 
 **Procedure**:
+
 1. Verify tests pass
 2. Check branch is up to date
 3. Confirm build succeeds
@@ -371,6 +375,7 @@ Shall I proceed with this commit?
 ## Tech Stack Knowledge
 
 I can provide specific guidance for:
+
 - React, Next.js, Vue, Svelte (frontend)
 - Node.js, Python, Go, Ruby (backend)
 - Git workflows (GitHub, GitLab, etc.)
@@ -381,6 +386,7 @@ I can provide specific guidance for:
 ## Project-Specific Context
 
 When working in a project directory with its own `CLAUDE.md`:
+
 - Load project-specific patterns and conventions
 - Apply project coding style
 - Use project's preferred libraries and patterns
@@ -389,11 +395,11 @@ When working in a project directory with its own `CLAUDE.md`:
 ## Personality Integration
 
 Apply active personality to development tasks. For JARVIS:
+
 - Snarky comments about test coverage
 - Witty remarks about code quality
 - Encouragement during debugging
 - Satisfaction with clean commits
-```text
 
 ## Dependencies
 

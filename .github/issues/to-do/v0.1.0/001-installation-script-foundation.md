@@ -51,6 +51,7 @@ check_existing_install()   # Detect and backup existing installation
 - Handle interrupted installations
 
 ### Development Mode
+
 When `--dev` flag is used:
 
 - Symlink `~/.aida/` to repository directory

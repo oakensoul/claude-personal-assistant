@@ -121,7 +121,7 @@ The knowledge base provides persistent context for product decisions and ensures
 
 ## Invocation Patterns
 
-#### Explicit invocation
+### Explicit invocation
 
 ```text
 @aida-product-manager Should we include web dashboard in 0.1.0 or defer to later?
@@ -130,6 +130,7 @@ The knowledge base provides persistent context for product decisions and ensures
 ```
 
 #### Contextual invocation
+
 Claude Code should invoke this agent when:
 
 - User asks "should we build [feature]?"

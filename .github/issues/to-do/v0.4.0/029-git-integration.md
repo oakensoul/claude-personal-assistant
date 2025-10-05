@@ -403,13 +403,14 @@ Push and create PR? (Y/n): y
 ✓ Pushed to origin/feature/obsidian-integration
 ✓ Created PR #45: Add full Obsidian integration
 
-PR created: https://github.com/user/repo/pull/45
+PR created: <https://github.com/user/repo/pull/45>
 
 I'll track this PR in your context. Let me know when you need help with:
   • Responding to review comments
   • Addressing change requests
   • Merging the PR
-```
+
+```text
 
 ### CLI Commands
 

@@ -43,13 +43,13 @@ aida memory stats --category knowledge
 # Time-based stats
 aida memory stats --month 2025-10
 aida memory stats --since 2025-09-01
-```text
+```
 
 ### Statistics Output Format
 
 **Summary View**:
 
-```
+```text
 ## Memory Statistics
 
 Total Entries: 1,247
@@ -75,11 +75,11 @@ Most Active Tags:
   #architecture  72 entries
   #api-design    56 entries
   #testing       43 entries
-```text
+```
 
 **Detailed View**:
 
-```
+```text
 ## Memory Statistics (Detailed)
 
 Total Entries: 1,247
@@ -139,7 +139,7 @@ Health Indicators:
   ✓ Knowledge capture active (40.7% of entries)
   ! Decisions could use more documentation (5.4%)
   ✓ Storage within healthy limits (<100 MB)
-```text
+```
 
 ### Calculation Logic
 

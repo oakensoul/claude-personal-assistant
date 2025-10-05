@@ -136,64 +136,64 @@ AIDA: ✓ Added high priority task: Fix production bug
 User: "What tasks do I have?"
 AIDA: You have 7 active tasks:
 
-      High Priority (2):
-      • Fix production payment processing bug (in-progress)
-      • Review PR #123 (pending)
+High Priority (2):
+• Fix production payment processing bug (in-progress)
+• Review PR #123 (pending)
 
-      Medium Priority (3):
-      • Update project documentation (pending)
-      • Prepare for team meeting (pending)
-      • Research deployment options (pending)
+Medium Priority (3):
+• Update project documentation (pending)
+• Prepare for team meeting (pending)
+• Research deployment options (pending)
 
-      Low Priority (2):
-      • Research new testing framework (pending)
-      • Clean up old branches (pending)
+Low Priority (2):
+• Research new testing framework (pending)
+• Clean up old branches (pending)
 
 User: "Show only high priority tasks"
 AIDA: High Priority Tasks (2):
 
-      1. Fix production payment processing bug
-         Status: in-progress
-         Due: Today EOD
-         Started 2 hours ago
+1. Fix production payment processing bug
+   Status: in-progress
+   Due: Today EOD
+   Started 2 hours ago
 
-      2. Review PR #123
-         Status: pending
-         Due: Tomorrow
+2. Review PR #123
+   Status: pending
+   Due: Tomorrow
 
 User: "What work tasks are due today?"
 AIDA: Work tasks due today (1):
 
-      • Fix production payment processing bug (High)
-        Status: in-progress
-        Time remaining: 6 hours
+• Fix production payment processing bug (High)
+  Status: in-progress
+  Time remaining: 6 hours
 
 ```text
 
 **Complete**:
 
-```
+```text
 
 User: "I finished fixing the production bug"
 AIDA: ✓ Marked complete: Fix production payment processing bug
 
-      Time to completion: 3 hours
-      Status: Deployed to production
+Time to completion: 3 hours
+Status: Deployed to production
 
-      Great work! That was a high priority task.
-      Next up: Review PR #123 (due tomorrow)
+Great work! That was a high priority task.
+Next up: Review PR #123 (due tomorrow)
 
 User: "Mark task 4 as done"
 AIDA: ✓ Marked complete: Research new testing framework
 
-      Completed in 2 days
-      Would you like to capture any learnings from this task?
+Completed in 2 days
+Would you like to capture any learnings from this task?
 
-```text
+```
 
 **Modify**:
 
-```
+```text
 
 User: "Change the documentation task to high priority"
 AIDA: ✓ Updated: Update project documentation

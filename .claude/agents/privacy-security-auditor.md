@@ -334,6 +334,7 @@ def scan_for_secrets(path):
 ### Knowledge Sync Security Flow
 
 ```
+
 1. User's Knowledge Base (~/.claude/knowledge/)
    ├── Contains: Project notes, learnings, context
    └── May include: PII, company data, system info
@@ -351,6 +352,7 @@ def scan_for_secrets(path):
 4. Sync Target (Public Knowledge Base)
    ├── Receives only scrubbed content
    └── Final validation before publishing
+
 ```text
 
 ### Installation Security
@@ -419,6 +421,7 @@ privacy:
 The privacy-security-auditor agent maintains knowledge at `.claude/agents/privacy-security-auditor/knowledge/`:
 
 ```
+
 .claude/agents/privacy-security-auditor/knowledge/
 ├── scrubbing/
 │   ├── pii-patterns.md
@@ -450,6 +453,7 @@ The privacy-security-auditor agent maintains knowledge at `.claude/agents/privac
     ├── privacy-regulations.md
     ├── audit-procedures.md
     └── compliance-documentation.md
+
 ```html
 
 ## Integration with AIDE Workflow

@@ -189,11 +189,11 @@ If the CLI isn't found:
 # Restart shell or source config
 source ~/.bashrc  # For bash
 source ~/.zshrc   # For zsh
-```text
+```
 
 ## What Gets Installed
 
-```
+```text
 ~/.aida/              # Framework installation
 ~/CLAUDE.md           # Main entry point for Claude
 ~/.claude/            # Your personal configuration
@@ -202,7 +202,7 @@ source ~/.zshrc   # For zsh
   ├── memory/         # Current context and history
   └── agents/         # Specialized agents
 ~/bin/jarvis          # CLI tool (or your chosen name)
-```text
+```
 
 ## Development Mode
 
@@ -416,10 +416,12 @@ $EDITOR ~/.claude/agents/dev-assistant.md
 ### Structure
 
 ```
+
 ~/Knowledge/Obsidian-Vault/
 ├── Daily/           # Daily notes (auto-created)
 ├── Projects/        # Project tracking
 └── Index/           # Overview and dashboards
+
 ```text
 
 ## Tips
@@ -434,28 +436,28 @@ $EDITOR ~/.claude/agents/dev-assistant.md
 
 ### Starting a New Project
 
-```
+```text
 I'm starting a new project called "awesome-app".
 It's a React web application for [purpose].
 Can you help me track this?
-```text
+```
 
 ### Daily Planning
 
-```
+```text
 jarvis start day
 [Review suggestions]
 Actually, I need to prioritize the design work today.
 Can you update my plan?
-```text
+```
 
 ### Organizing Files
 
-```
+```text
 My Downloads folder is a mess. Can you help organize it?
 [Claude shows categorization]
 Yes, proceed with those suggestions.
-```text
+```
 
 ## Next Steps
 
@@ -463,7 +465,7 @@ Yes, proceed with those suggestions.
 - Explore [Roadmap](../development/ROADMAP.md) for upcoming features
 - Join discussions for questions and feedback
 
-```
+```text
 
 ## Dependencies
 

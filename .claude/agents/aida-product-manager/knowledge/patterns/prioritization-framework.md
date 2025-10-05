@@ -13,7 +13,7 @@ This framework guides feature prioritization decisions for AIDA. Use it to evalu
 
 ## Core Principle
 
-#### User value + technical feasibility + strategic alignment = Priority
+### User value + technical feasibility + strategic alignment = Priority
 
 Features should maximize user value while being technically feasible and aligned with AIDA's vision and design principles.
 

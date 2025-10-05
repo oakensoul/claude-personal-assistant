@@ -120,11 +120,13 @@ Create templates for different knowledge types (pattern, technique, insight) and
 **Natural Language**:
 
 ```
+
 "What did I learn about React hooks?"
 "Show me knowledge about memory management"
 "Find patterns for API design"
 "What techniques do I have for debugging?"
 "Show me insights from October"
+
 ```text
 
 **CLI Commands**:

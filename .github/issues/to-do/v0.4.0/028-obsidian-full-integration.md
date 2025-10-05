@@ -240,13 +240,13 @@ created_by: aida
 
 When user captures knowledge:
 
-```
+```text
 User: "Remember that React useEffect needs cleanup functions"
 AIDA: ✓ Captured knowledge
 
-      Syncing to Obsidian...
-      ✓ Created: ~/Knowledge/Obsidian-Vault/Learnings/React-useEffect-Cleanup.md
-```json
+Syncing to Obsidian...
+✓ Created: ~/Knowledge/Obsidian-Vault/Learnings/React-useEffect-Cleanup.md
+```
 
 **Obsidian Note**:
 

@@ -13,7 +13,7 @@ AIDA (Agentic Intelligence Digital Assistant) is a conversational, agentic opera
 
 ## Vision Statement
 
-#### AIDA makes AI assistance feel like your own personal assistant - one that knows your preferences, remembers your context, and adapts to your communication style
+### AIDA makes AI assistance feel like your own personal assistant - one that knows your preferences, remembers your context, and adapts to your communication style
 
 Unlike generic AI chatbots that treat every conversation as new, AIDA provides:
 

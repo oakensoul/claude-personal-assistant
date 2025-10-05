@@ -179,6 +179,7 @@ def validate_template_vars(template: str, available_vars: set) -> list:
 #### Template Hierarchy
 
 ```
+
 templates/
 ├── base/
 │   ├── CLAUDE.md.template          # Main entry point
@@ -195,6 +196,7 @@ templates/
 └── knowledge/
     ├── system-structure.md.template
     └── ...
+
 ```yaml
 
 ### 3. Configuration Validation
@@ -312,6 +314,7 @@ def format_validation_error(error: ValidationError) -> str:
 #### Helpful Error Messages
 
 ```
+
 ❌ Configuration Validation Failed
 
 Error in personality configuration at: personality → tone
@@ -326,12 +329,14 @@ Error in personality configuration at: personality → tone
 Location: ~/.claude/personalities/jarvis.yml:8
 
 To fix:
+
   1. Edit ~/.claude/personalities/jarvis.yml
   2. Change line 8 from:
        tone: "Professional"
      to:
        tone: "professional"
   3. Re-run: aide config validate
+
 ```yaml
 
 ### 4. Multi-Format Configuration Support
@@ -403,6 +408,7 @@ def convert_config(source_path: str, target_format: str) -> str:
 #### Configuration Layers
 
 ```
+
 1. Default Configuration (built-in)
    └── ~/.aide/config/defaults.yml
 
@@ -416,6 +422,7 @@ def convert_config(source_path: str, target_format: str) -> str:
    └── AIDE_* environment variables
 
 Final Config = Default ← User ← Project ← Environment
+
 ```python
 
 #### Configuration Merging
@@ -614,6 +621,7 @@ Configuration is valid!
 The configuration-specialist agent maintains knowledge at `.claude/agents/configuration-specialist/knowledge/`:
 
 ```
+
 .claude/agents/configuration-specialist/knowledge/
 ├── personality-design/
 │   ├── personality-structure.md
@@ -645,6 +653,7 @@ The configuration-specialist agent maintains knowledge at `.claude/agents/config
     ├── migration-rules.md
     ├── backward-compatibility.md
     └── upgrade-procedures.md
+
 ```text
 
 ## Integration with AIDE Workflow

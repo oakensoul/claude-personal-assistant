@@ -48,10 +48,12 @@ aida memory search "hooks" --category knowledge --tag react --project alpha
 ### Natural Language Interface
 
 ```
+
 "What did I learn about React hooks last week?"
 "Show me decisions from October"
 "Find tasks related to project alpha"
 "Search memory for PostgreSQL patterns"
+
 ```text
 
 ### Search Algorithm
@@ -78,6 +80,7 @@ aida memory search "hooks" --category knowledge --tag react --project alpha
 ### Search Results Format
 
 ```
+
 Found 5 results for "React hooks":
 
 1. ⭐⭐⭐ React useEffect Cleanup Functions [Knowledge]
@@ -96,6 +99,7 @@ Found 5 results for "React hooks":
    → ~/.claude/memory/tasks/completed.md:89
 
 [Show all 5 results? (y/N)]
+
 ```text
 
 ## Dependencies

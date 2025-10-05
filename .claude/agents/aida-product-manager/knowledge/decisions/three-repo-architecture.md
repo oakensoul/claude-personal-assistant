@@ -250,6 +250,7 @@ stow aida   # Creates ~/.config/aida/ -> ~/dotfiles/aida/.config/aida/
 **Framework Installation** (`~/.aida/`):
 
 ```
+
 ~/.aida/                         # Installed from claude-personal-assistant
 ├── agents/                      # Pre-built agents
 │   ├── dev-assistant.md
@@ -266,11 +267,13 @@ stow aida   # Creates ~/.config/aida/ -> ~/dotfiles/aida/.config/aida/
 └── bin/                        # AIDA CLI scripts
     ├── aida
     └── install.sh
+
 ```text
 
 **User Configuration** (`~/.claude/`):
 
 ```
+
 ~/.claude/                       # Generated during installation
 ├── config.yaml                 # User's AIDA config
 ├── personalities/              # User's custom personalities
@@ -281,11 +284,13 @@ stow aida   # Creates ~/.config/aida/ -> ~/dotfiles/aida/.config/aida/
 │   └── decisions/
 └── agents/                     # User's custom agents
     └── kubernetes-expert.md
+
 ```text
 
 **Public Dotfiles** (`~/dotfiles/`):
 
 ```
+
 ~/dotfiles/                      # Stow-managed, public repo
 ├── zsh/
 │   └── .zshrc
@@ -296,11 +301,13 @@ stow aida   # Creates ~/.config/aida/ -> ~/dotfiles/aida/.config/aida/
 └── aida/
     └── .config/aida/
         └── templates/          # AIDA config templates
+
 ```text
 
 **Private Dotfiles** (`~/dotfiles-private/`):
 
 ```
+
 ~/dotfiles-private/              # Private repo, NOT stowed
 ├── .env                        # API keys, secrets
 ├── work/                       # Work-specific configs
@@ -309,6 +316,7 @@ stow aida   # Creates ~/.config/aida/ -> ~/dotfiles/aida/.config/aida/
 └── personal/                   # Personal notes
     ├── journal/
     └── projects/
+
 ```text
 
 ### Repository Responsibilities
@@ -367,6 +375,7 @@ stow aida   # Creates ~/.config/aida/ -> ~/dotfiles/aida/.config/aida/
 **Dependencies**:
 
 ```
+
 claude-personal-assistant (standalone, no dependencies)
   ↓ (installs framework to ~/.aida/)
 
@@ -375,6 +384,7 @@ dotfiles (optional, enhances shell experience)
 
 dotfiles-private (optional, for secrets and private data)
   ↓ (referenced by AIDA for API keys)
+
 ```text
 
 **Installation Order**:

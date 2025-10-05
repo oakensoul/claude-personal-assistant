@@ -181,9 +181,11 @@ find ~/.claude/memory/decisions/adr/ -name "*.md" | \
 ### Decision Status Workflow
 
 ```
+
 Proposed → Accepted → [Superseded|Deprecated]
          ↓
       Rejected
+
 ```text
 
 **Status Definitions**:
@@ -204,6 +206,7 @@ Proposed → Accepted → [Superseded|Deprecated]
 ### Decision Directory Structure
 
 ```
+
 ~/.claude/memory/decisions/
 ├── decisions.md           # Index of all decisions
 ├── adr/                   # Architecture Decision Records
@@ -216,6 +219,7 @@ Proposed → Accepted → [Superseded|Deprecated]
 └── templates/
     ├── adr-template.md
     └── pdr-template.md
+
 ```text
 
 ### Decisions Index Format

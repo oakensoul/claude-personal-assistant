@@ -319,7 +319,7 @@ tone: mixed
 
 **Builder UI** (CLI):
 
-```
+```text
 AIDA Personality Builder
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -336,12 +336,13 @@ How formal should AIDA be?
   [3] Balanced   - Mix of formal and casual depending on context
 
 Your choice (1-3):
-```text
+```
 
 **Preview System**:
+
 After answering all questions, show sample responses:
 
-```
+```text
 Preview Your Personality
 ━━━━━━━━━━━━━━━━━━━━━━
 
@@ -357,9 +358,10 @@ You: "I'm stuck on this bug"
 AIDA: [Sample response showing proactivity and support style]
 
 Satisfied with this personality? (y/n):
-```yaml
+```
 
 **YAML Generation**:
+
 Builder generates YAML configuration:
 
 ```yaml

@@ -68,6 +68,7 @@ esac
 ```
 
 ### Status Command
+
 Display:
 
 - AIDA version
@@ -77,6 +78,7 @@ Display:
 - Quick health check (files exist, permissions OK)
 
 ### Help Command
+
 Display:
 
 - Available commands

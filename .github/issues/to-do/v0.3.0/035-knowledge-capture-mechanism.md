@@ -91,11 +91,13 @@ Extract categories from content:
 Suggest primary category and subcategories:
 
 ```
+
 Detected categories:
   Primary: React
   Secondary: Best Practices, Memory Management
 
 Is this correct? (Y/n)
+
 ```text
 
 ### Automatic Tagging
@@ -109,9 +111,11 @@ Extract tags from content:
 Smart tag suggestions:
 
 ```
+
 Suggested tags: #react #useEffect #hooks #memory-management
 
 Additional tags? (comma-separated, or press Enter to continue)
+
 ```text
 
 ### Interactive Elaboration
@@ -119,6 +123,7 @@ Additional tags? (comma-separated, or press Enter to continue)
 After capture, offer to enhance:
 
 ```
+
 Knowledge captured! Enhance this entry?
 
 [E] Elaborate with example
@@ -134,6 +139,7 @@ Knowledge captured! Enhance this entry?
 
 [D] Done
     → Saves as-is
+
 ```text
 
 ### Knowledge Types

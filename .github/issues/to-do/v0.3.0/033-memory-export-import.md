@@ -119,6 +119,7 @@ memory-export-2025-10-04/
 **Interactive Mode**:
 
 ```
+
 Found 3 conflicts:
 
 1. Task "Fix auth bug" exists in both
@@ -134,6 +135,7 @@ Found 3 conflicts:
    Keep: [C]urrent, [I]mport, [B]oth?
 
 ...
+
 ```text
 
 ## Dependencies

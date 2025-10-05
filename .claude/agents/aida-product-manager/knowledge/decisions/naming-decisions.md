@@ -180,10 +180,10 @@ aida help              # Help documentation
 
 **Structure**:
 
-```
+```text
 ~/.aida/          # Framework (from claude-personal-assistant repo)
 ~/.claude/        # User config and data (user-specific)
-```bash
+```
 
 ### Repository Naming
 

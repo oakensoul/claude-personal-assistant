@@ -127,6 +127,7 @@ We will use PostgreSQL as the primary database for Project Alpha.
 **AIDA**:
 
 ```
+
 Creating Architecture Decision Record...
 
 ADR-003: Use PostgreSQL for Project Alpha Database
@@ -134,11 +135,13 @@ ADR-003: Use PostgreSQL for Project Alpha Database
 I've captured the core decision. Let me help you complete the ADR.
 
 **Context Questions**:
+
   1. What problem are you solving?
   2. What alternatives did you consider?
   3. What are the consequences (pros/cons)?
 
 Shall I guide you through these, or would you prefer to write the full ADR yourself?
+
 ```text
 
 ### Decision Querying

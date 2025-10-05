@@ -153,19 +153,21 @@ What would you like me to do?
 
 **Example Capabilities**:
 
-```
+```text
 User: "@file-manager My Downloads folder is a mess. Can you help organize it?"
 File Manager: Let me analyze your Downloads folder...
 
 Found 127 files (3.2 GB):
-  - 47 PDFs (documents, invoices, manuals)
+
+- 47 PDFs (documents, invoices, manuals)
   - 32 images (screenshots, photos)
   - 18 installers/DMGs
   - 15 ZIP archives
   - 15 miscellaneous
 
 I recommend:
-  1. Archive: Move 18 old installers to ~/.Trash
+
+1. Archive: Move 18 old installers to ~/.Trash
   2. Organize PDFs:
      - Invoices → ~/Documents/Invoices/
      - Manuals → ~/Documents/Manuals/
@@ -174,7 +176,7 @@ I recommend:
   4. Extract ZIPs if needed, then delete
 
 Proceed with this organization? (Y/n)
-```text
+```
 
 **Agent Definition**:
 
@@ -416,7 +418,7 @@ def route_request(user_input, context):
 
 Agents can invoke other agents:
 
-```
+```text
 User: "Help me start my day"
 
 Secretary: Let me help you plan your day.
@@ -428,7 +430,8 @@ File Manager: Desktop has 12 files, Downloads has 23 files.
               Recommend 15-minute cleanup before starting work.
 
 Secretary: I recommend:
-  1. [9:00-9:15] Quick cleanup (File Manager can help)
+
+1. [9:00-9:15] Quick cleanup (File Manager can help)
   2. [9:15-9:30] Review today's tasks
   3. [9:30-10:00] Priority task #1: Fix production bug
 
@@ -438,12 +441,13 @@ Dev Assistant: Production bug in payment processing (reported 2h ago)
                This should be top priority.
 
 Secretary: Updated plan:
-  1. [9:00-9:15] Quick cleanup
+
+1. [9:00-9:15] Quick cleanup
   2. [9:15-10:30] **URGENT: Fix payment processing bug**
   3. [10:30-11:00] Code review for PR #123
 
 Shall I set reminders for these?
-```text
+```
 
 ## Dependencies
 

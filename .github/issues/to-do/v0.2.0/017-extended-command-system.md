@@ -83,6 +83,7 @@ Your Desktop has 23 items. Shocking levels of disorder, sir.
 Shall I proceed with this cleanup?
 
 ```
+
 ```bash
 
 #### organize-screenshots
@@ -164,6 +165,7 @@ $ jarvis file-this ~/Downloads/api-documentation.pdf
 Proceed? (Y/n):
 
 ```
+
 ```bash
 
 ### Project Management Commands
@@ -278,6 +280,7 @@ Would you like to proceed with testing?
 - Review: Project Gamma (stale, needs attention)
 
 ```
+
 ```bash
 
 ### Memory Commands
@@ -373,6 +376,7 @@ Researched database options (PostgreSQL vs MongoDB)
 Anything specific about database choices you'd like to know?
 
 ```
+
 ```text
 
 ## Dependencies
