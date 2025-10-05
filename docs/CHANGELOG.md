@@ -15,6 +15,59 @@ All notable changes to the AIDA framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2025-10-05
+
+### Added
+
+#### Installation & Testing
+
+- **Installation Script** (`install.sh`): Complete foundational installation script with:
+  - Interactive assistant name and personality selection
+  - Comprehensive input validation (3-20 chars, lowercase, no spaces)
+  - Directory structure creation (`~/.aida/`, `~/.claude/`)
+  - Development mode support (`--dev` flag with symlinks)
+  - Automatic backup of existing installations
+  - Idempotent design (safe to run multiple times)
+  - Full dependency validation (Bash >= 4.0, git, rsync, etc.)
+  - Passes shellcheck with zero warnings
+
+- **Testing Infrastructure**: Comprehensive cross-platform testing:
+  - 4 Docker test environments (Ubuntu 22.04, Ubuntu 20.04, Debian 12, minimal)
+  - Automated test runner (`.github/testing/test-install.sh`)
+  - GitHub Actions CI/CD workflow for automated testing
+  - Platform-specific guides (WSL, Git Bash, Docker)
+  - Test scenarios documentation with 10+ comprehensive tests
+  - Test results: 11 passed, 0 failed, 5 skipped (expected)
+
+- **Documentation**: Comprehensive testing and platform guides:
+  - WSL setup and testing guide
+  - Git Bash setup and testing guide
+  - Test scenarios with validation checklist
+  - Docker testing infrastructure README
+
+### Changed
+
+- **CI/CD**: Enhanced pre-commit hooks to match GitHub Actions:
+  - Added `--strict` flag to yamllint (warnings now fail locally like in CI)
+  - Ensures local validation exactly matches CI validation
+
+- **Workflow Configuration**: Enhanced reviewer strategies:
+  - Added 5 reviewer strategies (none, query, list, round-robin, auto)
+  - Support for GitHub Copilot as reviewer (`github-copilot[bot]`)
+  - Added `--reviewers` parameter to `/open-pr` for per-PR overrides
+  - Created comprehensive schema documentation
+
+### Fixed
+
+- **YAML Linting**: Removed `---` document-start marker from docker-compose.yml
+- **Pre-commit**: Fixed strict mode mismatch between local and CI validation
+
+### Infrastructure
+
+- **Cross-Platform Support**: Validated on macOS, Ubuntu 22.04/20.04, Debian 12, WSL2
+- **CI/CD**: Automated testing on every push and PR
+- **Quality Gates**: Pre-commit hooks with strict mode enforcement
+
 ## [0.1.0] - 2025-10-04
 
 ### Added

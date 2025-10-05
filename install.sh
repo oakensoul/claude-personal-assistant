@@ -19,7 +19,7 @@
 set -euo pipefail
 
 # Script version
-readonly VERSION="0.1.0"
+readonly VERSION="0.1.1"
 
 # Installation directories
 readonly AIDA_DIR="${HOME}/.aida"
