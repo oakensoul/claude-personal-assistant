@@ -16,6 +16,7 @@ Thank you for your interest in contributing to the AIDA (Agentic Intelligence Di
 
 - [Getting Started](#getting-started)
 - [Development Workflow](#development-workflow)
+- [Multi-Repo Coordination](#multi-repo-coordination)
 - [Code Quality Standards](#code-quality-standards)
 - [Markdown Standards](#markdown-standards)
 - [Testing Requirements](#testing-requirements)
@@ -71,6 +72,204 @@ git pull origin main
 
 # Create your feature branch
 git checkout -b milestone-v0.2/feature/42-your-feature-name
+```
+
+## Multi-Repo Coordination
+
+AIDA works with a three-repository ecosystem. Understanding how they interact is critical for development.
+
+### The Three Repositories
+
+**1. claude-personal-assistant (this repo)** - Core AIDA framework
+
+- **Location**: `~/.aida/`
+- **Standalone**: Yes - works without dotfiles
+- **Dependencies**: None
+- **Provides**: AI assistant, personalities, agents, templates
+
+**2. dotfiles (public)** - Base shell/git/vim configurations
+
+- **Location**: `~/dotfiles/` → stowed to `~/`
+- **Standalone**: Yes - works without AIDA
+- **Dependencies**: Optional AIDA for integration
+- **Provides**: Shell configs, git configs, AIDA integration templates
+
+**3. dotfiles-private** - Personal overrides with secrets
+
+- **Location**: `~/dotfiles-private/` → stowed to `~/`
+- **Standalone**: No - overlays dotfiles and/or AIDA
+- **Dependencies**: Either dotfiles or AIDA (or both)
+- **Provides**: API keys, secrets, personal customizations
+
+See [docs/architecture/dotfiles-integration.md](../architecture/dotfiles-integration.md) for complete architecture details.
+
+### Development Order
+
+**When developing features:**
+
+1. **AIDA framework** (this repo):
+   - Develop and test standalone
+   - Ensure works without dotfiles
+   - Document integration points for dotfiles
+
+2. **Dotfiles** (public repo):
+   - Develop shell/git/vim standalone
+   - Test without AIDA installed
+   - Add AIDA integration as optional stow package
+   - Test with and without AIDA
+
+3. **Dotfiles-private**:
+   - Develop personal overrides as needed
+   - Test layering on top of public repos
+
+### Testing Integration
+
+**Test all installation flows:**
+
+```bash
+# Flow 1: AIDA only (standalone)
+cd ~/.aida && ./install.sh
+# Verify: ~/.aida/ created, ~/.claude/ configured
+# Verify: Works without dotfiles
+
+# Flow 2: Dotfiles only (standalone)
+cd ~/dotfiles && stow shell git vim
+# Verify: Shell/git/vim work
+# Verify: AIDA package skipped gracefully
+
+# Flow 3: AIDA first, then dotfiles
+cd ~/.aida && ./install.sh
+cd ~/dotfiles && stow */
+# Verify: AIDA integration works
+# Verify: Dotfiles detect ~/.aida/
+
+# Flow 4: Dotfiles first, add AIDA later
+cd ~/dotfiles && stow shell git vim
+cd ~/.aida && ./install.sh
+cd ~/dotfiles && stow aida
+# Verify: Integration works after both installed
+
+# Flow 5: Full stack with private
+cd ~/.aida && ./install.sh
+cd ~/dotfiles && stow */
+cd ~/dotfiles-private && stow */
+# Verify: All layers work together
+# Verify: Private overrides public
+```
+
+### Version Compatibility
+
+**Semantic versioning across repos:**
+
+- Major versions must match: `dotfiles 0.x.x` ↔ `AIDA 0.x.x`
+- Minor versions are forward compatible
+- Patch versions are independent
+- Document compatibility in changelogs
+
+**Version compatibility matrix:**
+
+| Dotfiles | AIDA | Status | Notes |
+|----------|------|--------|-------|
+| 0.1.x | 0.1.x | ✅ Tested | Current release |
+| 0.1.x | 0.2.x | ⚠️ Partial | May miss features |
+| 1.x.x | 0.x.x | ❌ Breaking | Incompatible |
+
+### Coordinating Breaking Changes
+
+**If AIDA changes break dotfiles:**
+
+1. Bump AIDA major version
+2. Update compatibility matrix in both repos
+3. Create migration guide in AIDA repo
+4. Test dotfiles with both old and new AIDA
+5. Announce in both repositories
+6. Update dotfiles to support migration
+
+**If dotfiles change break AIDA integration:**
+
+1. Bump dotfiles major version
+2. Update compatibility matrix in both repos
+3. Create migration guide in dotfiles repo
+4. Test AIDA with both old and new dotfiles
+5. Announce in both repositories
+
+### Creating Cross-Repo Issues
+
+**When changes require updates in multiple repos:**
+
+1. Create primary issue in the repo where work starts
+2. Create linked issues in dependent repos
+3. Reference issues across repos: `owner/repo#issue`
+4. Update all issues when work completes
+
+**Example:**
+
+```markdown
+# In claude-personal-assistant
+Issue #42: Add personality switching API
+
+Related:
+- dotfiles#10: Add shell alias for personality switching
+- dotfiles-private#5: Configure default personality
+
+# In dotfiles
+Issue #10: Add shell alias for personality switching
+
+Depends on:
+- claude-personal-assistant#42: Personality switching API
+
+# In dotfiles-private
+Issue #5: Configure default personality
+
+Depends on:
+- claude-personal-assistant#42: Personality switching API
+- dotfiles#10: Shell aliases
+```
+
+### Multi-Repo PR Strategy
+
+**For changes spanning multiple repos:**
+
+1. **Create PRs in dependency order**:
+   - AIDA first (no dependencies)
+   - Dotfiles second (may depend on AIDA)
+   - Dotfiles-private last (depends on both)
+
+2. **Link PRs across repos**:
+   - Reference in PR descriptions
+   - Note version requirements
+   - Document testing across repos
+
+3. **Merge in dependency order**:
+   - Merge AIDA first
+   - Wait for AIDA release/tag
+   - Update dotfiles to reference new version
+   - Merge dotfiles
+   - Merge dotfiles-private
+
+**Example PR linking:**
+
+```markdown
+# PR in claude-personal-assistant
+feat: add personality switching API
+
+Related PRs:
+- dotfiles#15: Adds shell integration
+- dotfiles-private#8: Configures default
+
+Breaking changes: None
+Version: 0.2.0
+
+# PR in dotfiles
+feat: add shell integration for personality switching
+
+Depends on:
+- claude-personal-assistant#42 (merged)
+- claude-personal-assistant v0.2.0+ required
+
+Testing:
+- Tested with AIDA v0.2.0
+- Tested without AIDA (graceful skip)
 ```
 
 ## Code Quality Standards

@@ -19,8 +19,21 @@ AIDA (Agentic Intelligence Digital Assistant) is a conversational, agentic opera
 ### Three-Repo Ecosystem
 
 1. **`claude-personal-assistant`** (this repo) - Public framework with templates, personalities, and installation scripts
+   - Installs to `~/.aida/`
+   - **Standalone**: Works without dotfiles
+   - Core AI functionality
+
 2. **`dotfiles`** - Public configuration templates with generic shell configs and AIDA templates
+   - Managed with GNU Stow
+   - **Standalone**: Works without AIDA (shell/git/vim configs)
+   - **Optional**: Can integrate with AIDA if `~/.aida/` exists
+   - **Recommended entry point** for most users
+
 3. **`dotfiles-private`** - Private configurations with secrets and API keys (not public)
+   - Overlays dotfiles and/or AIDA
+   - Not standalone
+
+**Architecture**: See [docs/architecture/dotfiles-integration.md](docs/architecture/dotfiles-integration.md) for complete integration details.
 
 ## Architecture
 
@@ -146,10 +159,17 @@ pre-commit run markdownlint --files path/to/file.md
 
 ## Current State
 
-**Early development** - The repository currently contains planning documentation. The implementation of install scripts, templates, personalities, and agent systems is pending.
+**Active development** - v0.1.1 released with foundational installation script and testing infrastructure.
+
+**Installation flows**:
+
+- **AIDA standalone**: Works without dotfiles
+- **Dotfiles-first** (recommended): Dotfiles optionally install AIDA
+- **Either order works**: Install AIDA or dotfiles first, integrate later
 
 When implementing features, maintain the separation between:
 
-- Public shareable framework (this repo)
-- User-generated configuration (~/.claude/)
-- Private sensitive data (dotfiles-private repo)
+- Public shareable framework (this repo) - standalone AIDA
+- Public dotfiles (shell/git/vim) - optional AIDA integration
+- User-generated configuration (~/.claude/) - created by AIDA install
+- Private sensitive data (dotfiles-private repo) - overlays both
