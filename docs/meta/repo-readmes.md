@@ -74,20 +74,24 @@ cd ~/.aida
 ## Installation Options
 
 ### Normal Install (For Users)
+
 ```bash
 ./install.sh
 ```
+
 Creates `~/.claude/` with your personal configuration.
 
 ### Dev Mode (For Contributors)
+
 ```bash
 ./install.sh --dev
 ```
+
 Symlinks `~/.aida/` to your development directory for live editing.
 
 ## Directory Structure
 
-```
+```text
 ~/.aida/                    # Framework (installed from this repo)
 ├── templates/             # Shareable templates
 │   ├── knowledge/
@@ -124,23 +128,27 @@ Switch anytime: `aida personality jarvis`
 ## Features
 
 ### Knowledge Management
+
 - System structure documentation
 - Procedures and workflows
 - Project tracking
 - Personal preferences
 
 ### Memory System
+
 - Current context tracking
 - Decision history
 - Activity logs
 - Persistent state across conversations
 
 ### Agents
+
 - **Secretary** - Daily workflow management
 - **File Manager** - Intelligent organization
 - **Dev Assistant** - Coding help
 
 ### Obsidian Integration
+
 - Daily note templates
 - Project tracking
 - Dashboard views
@@ -150,9 +158,9 @@ Switch anytime: `aida personality jarvis`
 
 AIDA works through natural conversation with Claude:
 
-```
+```text
 You: "What should I focus on today?"
-AIDA: "Good morning. Project Alpha is at 80%, 
+AIDA: "Good morning. Project Alpha is at 80%,
        Project Beta needs attention..."
 
 You: "Clean up my downloads"
@@ -238,7 +246,6 @@ MIT License - See LICENSE file
 ---
 
 **Created with the vision of making Claude a true personal assistant for digital life.**
-```
 
 ---
 
@@ -279,7 +286,7 @@ Managed with **GNU Stow** for clean, organized, symlink-based installation.
 
 ## Structure
 
-```
+```text
 dotfiles/
 ├── shell/
 │   └── .zshrc              # Sources .zshrc.local for private configs
@@ -292,7 +299,7 @@ dotfiles/
 │           └── *.template  # Knowledge base templates
 ├── scripts/
 │   └── bin/
-│       └── *.sh           # Useful utility scripts
+│       └──*.sh           # Useful utility scripts
 └── vim/
     └── .vimrc             # Vim configuration
 ```
@@ -348,26 +355,31 @@ stow scripts  # Install utility scripts
 ## Packages
 
 ### Shell
+
 - `.zshrc` - Zsh configuration
 - Sources `.zshrc.local` for private configurations
 - Generic aliases and PATH setup
 
 ### Git
+
 - `.gitconfig` - Git configuration template
 - `.gitignore_global` - Global gitignore patterns
 - Replace placeholders with your information
 
 ### AIDA
+
 - `CLAUDE.md.template` - AIDA configuration template
 - `.claude/` templates - Knowledge base structure
 - Integrates with [claude-personal-assistant](https://github.com/you/claude-personal-assistant)
 
 ### Scripts
+
 - `bin/` - Utility scripts
 - Generic helpers and tools
 - Nothing machine-specific
 
 ### Vim
+
 - `.vimrc` - Vim configuration
 - Basic setup, extend as needed
 
@@ -500,7 +512,6 @@ MIT License - Feel free to use and adapt!
 ---
 
 **These are templates - customize for your own use!**
-```
 
 ---
 
@@ -545,7 +556,7 @@ This is my personal layer in a three-repository ecosystem:
 
 ## Structure
 
-```
+```text
 dotfiles-private/
 ├── shell/
 │   └── .zshrc.local        # Private shell config (sourced by public .zshrc)
@@ -602,30 +613,35 @@ Private configs will override public templates where they conflict.
 ## What's in Here
 
 ### Shell (`.zshrc.local`)
+
 - Environment variables with secrets
 - Work-specific aliases
 - Company SSH shortcuts
 - Private functions
 
 ### Git (`.gitconfig`)
+
 - Real name and email
 - GPG signing key
 - Work-specific configuration
 - Private aliases
 
 ### AIDA Configuration
+
 - **Personality**: JARVIS (snarky British AI)
 - **Knowledge Base**: My actual system, projects, procedures
 - **Memory**: Current project states, decisions, history
 - **Agents**: Customized secretary, file manager, dev assistant
 
 ### Secrets
+
 - Anthropic API key
 - GitHub tokens
 - AWS credentials
 - Work API keys
 
 ### SSH
+
 - Personal SSH config
 - Jump hosts
 - Key paths
@@ -676,6 +692,7 @@ This repo contains my actual AIDA configuration:
 **Personality**: JARVIS (snarky British AI)
 
 **Current Projects** (as of last update):
+
 - [Your actual projects here]
 
 **System**: macOS with custom folder structure
@@ -729,6 +746,7 @@ Even in private repo, some things shouldn't be tracked:
 ## Backup
 
 This repo is critical - ensure backups:
+
 - GitHub private repo (primary)
 - Local Time Machine
 - Encrypted external drive (quarterly)
@@ -764,8 +782,7 @@ cd ~/dotfiles-private && stow */
 
 ---
 
-**⚠️ Keep this repository PRIVATE! ⚠️**
-```
+### ⚠️ Keep this repository PRIVATE! ⚠️
 
 ---
 

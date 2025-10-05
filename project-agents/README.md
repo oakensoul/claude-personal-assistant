@@ -69,6 +69,7 @@ jarvis agent install react
 ```
 
 This will:
+
 1. Copy the React agent CLAUDE.md to your project directory
 2. Merge with existing project CLAUDE.md if present
 3. Make Claude aware of React-specific patterns and practices
@@ -77,11 +78,11 @@ This will:
 
 Once installed, Claude will automatically understand the tech stack when you work in that directory:
 
-```
+```text
 You: "How should I structure this authentication component?"
 
 Claude: [Reads project CLAUDE.md with React agent]
-        "For this React project, I recommend creating a custom 
+        "For this React project, I recommend creating a custom
         useAuth hook to manage authentication state..."
 ```
 
@@ -127,7 +128,7 @@ Removes the agent from the project.
 
 Each agent is a CLAUDE.md file with this structure:
 
-```markdown
+```text
 # [Technology] Project Agent
 
 ## Project Type: [Type]
@@ -265,27 +266,28 @@ jarvis agent update react
 
 ## FAQ
 
-**Q: Can I have multiple agents in one project?**  
+**Q: Can I have multiple agents in one project?**
 A: Yes! Full-stack projects often need frontend + backend agents.
 
-**Q: Do agents conflict with each other?**  
+**Q: Do agents conflict with each other?**
 A: No, agents are designed to work together. Claude merges their guidance.
 
-**Q: Can I customize an installed agent?**  
+**Q: Can I customize an installed agent?**
 A: Yes! Edit the project's CLAUDE.md to add your specific preferences.
 
-**Q: Are agents required?**  
+**Q: Are agents required?**
 A: No, they're optional. AIDE works fine without them, but agents provide tech-specific guidance.
 
-**Q: How do agents differ from the main AIDE config?**  
+**Q: How do agents differ from the main AIDE config?**
 A: Main AIDE config (~/CLAUDE.md) is for life management. Project agents are for code/tech guidance.
 
-**Q: Can I create private agents for my company?**  
+**Q: Can I create private agents for my company?**
 A: Yes! Create custom agents in your private dotfiles repo.
 
 ## Roadmap
 
 **Coming Soon:**
+
 - More framework agents (Angular, Ember, etc.)
 - Database-specific agents (PostgreSQL, MongoDB, etc.)
 - Cloud platform agents (AWS, GCP, Azure)
@@ -293,6 +295,7 @@ A: Yes! Create custom agents in your private dotfiles repo.
 - Language-specific linters and formatters guidance
 
 **Future:**
+
 - Agent marketplace
 - Community-contributed agents
 - Agent discovery tool
@@ -301,6 +304,7 @@ A: Yes! Create custom agents in your private dotfiles repo.
 ## Support
 
 Questions about project agents?
+
 - Check [Project Agents Documentation](../docs/project-agents/)
 - Ask in GitHub Discussions
 - Create an issue

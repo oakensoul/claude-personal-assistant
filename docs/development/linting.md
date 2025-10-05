@@ -15,26 +15,31 @@ AIDA uses automated linting to ensure code quality and consistency across YAML c
 ## Tools Used
 
 ### yamllint
+
 - **What:** YAML syntax and style checker
 - **Validates:** Issue templates, agent configs, personality files, CI workflows
 - **Config:** `.yamllint`
 
 ### ShellCheck
+
 - **What:** Shell script analysis tool
 - **Validates:** install.sh, CLI tools, helper scripts
 - **Config:** `.shellcheckrc`
 
 ### markdownlint
+
 - **What:** Markdown formatting and style checker
 - **Validates:** Documentation, README files
 - **Config:** `.markdownlint.json`
 
 ### gitleaks
+
 - **What:** Secret and credential detection tool
 - **Validates:** Prevents committing API keys, passwords, tokens, and other secrets
 - **Config:** Built-in rules (no config file needed)
 
 ### pre-commit
+
 - **What:** Git hook framework that runs linters before commits
 - **Config:** `.pre-commit-config.yaml`
 
@@ -66,6 +71,7 @@ pre-commit install
 If you want to run linters manually without pre-commit:
 
 **Install yamllint:**
+
 ```bash
 # macOS
 brew install yamllint
@@ -75,6 +81,7 @@ pip install yamllint
 ```
 
 **Install shellcheck:**
+
 ```bash
 # macOS
 brew install shellcheck
@@ -84,11 +91,13 @@ apt-get install shellcheck
 ```
 
 **Install markdownlint:**
+
 ```bash
 npm install -g markdownlint-cli
 ```
 
 **Install gitleaks:**
+
 ```bash
 # macOS
 brew install gitleaks
@@ -112,6 +121,7 @@ git commit -m "feat: add new feature"
 ```
 
 **Bypass (not recommended):**
+
 ```bash
 git commit --no-verify -m "skip linting"
 ```
@@ -119,11 +129,13 @@ git commit --no-verify -m "skip linting"
 ### Manual Linting
 
 **Run all linters:**
+
 ```bash
 pre-commit run --all-files
 ```
 
 **Run specific linter:**
+
 ```bash
 # YAML only
 yamllint .
@@ -139,6 +151,7 @@ gitleaks detect --verbose
 ```
 
 **Run on specific files:**
+
 ```bash
 yamllint .github/ISSUE_TEMPLATE/bug-report.yml
 shellcheck install.sh
@@ -164,6 +177,7 @@ markdownlint --fix **/*.md
 Linting runs automatically on every PR via `.github/workflows/lint.yml`:
 
 **Jobs:**
+
 1. **yaml-lint** - Validates all YAML files
 2. **shellcheck** - Validates all shell scripts
 3. **markdown-lint** - Validates all markdown files
@@ -175,11 +189,13 @@ Linting runs automatically on every PR via `.github/workflows/lint.yml`:
 ### Viewing Results
 
 **In PR:**
+
 - GitHub shows ✅ or ❌ next to "Lint" check
 - Click "Details" to see which files failed
 - Fix issues and push to update PR
 
 **Locally:**
+
 ```bash
 # See what would fail in CI
 pre-commit run --all-files
@@ -190,6 +206,7 @@ pre-commit run --all-files
 ### yamllint (.yamllint)
 
 **Key rules:**
+
 - Max line length: 120 characters (warning)
 - Indentation: 2 spaces
 - Allow both single/double quotes
@@ -197,11 +214,13 @@ pre-commit run --all-files
 - Unix line endings (LF)
 
 **Ignored paths:**
+
 - `.github/workflows/` (handled by GitHub's validator)
 - `node_modules/`
 - `.venv/`
 
 **Customize:**
+
 ```yaml
 # .yamllint
 rules:
@@ -212,6 +231,7 @@ rules:
 ### ShellCheck (.shellcheckrc)
 
 **Key settings:**
+
 - Shell dialect: bash
 - Severity: warning (not style suggestions)
 - Disabled warnings:
@@ -220,6 +240,7 @@ rules:
   - SC1090/SC1091 (can't follow source)
 
 **Customize:**
+
 ```bash
 # .shellcheckrc
 disable=SC2086  # Disable specific warning
@@ -229,11 +250,13 @@ severity=info    # Show more suggestions
 ### markdownlint (.markdownlint.json)
 
 **Disabled rules:**
+
 - MD013 (line length) - Allow long lines
 - MD033 (HTML) - Allow HTML in markdown
 - MD041 (first line heading) - Not required
 
 **Customize:**
+
 ```json
 {
   "MD013": { "line_length": 100 }
@@ -243,6 +266,7 @@ severity=info    # Show more suggestions
 ### Pre-commit (.pre-commit-config.yaml)
 
 **Hooks included:**
+
 - trailing-whitespace
 - end-of-file-fixer
 - check-yaml
@@ -256,6 +280,7 @@ severity=info    # Show more suggestions
 - markdownlint
 
 **Add new hooks:**
+
 ```yaml
 repos:
   - repo: https://github.com/example/new-linter
@@ -271,11 +296,13 @@ repos:
 **Error:** `yamllint....................................................Failed`
 
 **Solution:**
+
 1. See which file failed: `pre-commit run --all-files`
 2. Fix the issue manually
 3. Re-commit
 
 **Quick fix:**
+
 ```bash
 # Auto-fix what can be fixed
 pre-commit run --all-files
@@ -293,6 +320,7 @@ git commit -m "fix: resolve linting issues"
 **Error:** `SC2086: Double quote to prevent globbing`
 
 **Solution:**
+
 ```bash
 # Before (warning)
 echo $variable
@@ -302,6 +330,7 @@ echo "$variable"
 ```
 
 **Common fixes:**
+
 - Quote variables: `"$var"`
 - Quote arrays: `"${array[@]}"`
 - Check file exists: `[[ -f "$file" ]]`
@@ -311,12 +340,14 @@ echo "$variable"
 **Error:** `[error] wrong indentation: expected 2 but found 4`
 
 **Solution:**
+
 - AIDA uses 2-space indentation
 - Check for tabs (should be spaces)
 - Use editor auto-format
 
 **Quick fix in VSCode:**
-```
+
+```text
 Cmd+Shift+P → "Format Document"
 ```
 
@@ -325,8 +356,10 @@ Cmd+Shift+P → "Format Document"
 **Error:** `MD051: Link fragments should be valid`
 
 **Solution:**
+
 - Fix broken links
 - Or disable check if intentional:
+
 ```json
 {
   "MD051": false
@@ -338,19 +371,23 @@ Cmd+Shift+P → "Format Document"
 **Error:** `gitleaks....................................................Failed`
 
 **Solution:**
+
 1. Verify it's actually a false positive (not a real secret)
 2. Add to `.gitleaksignore` file:
-```
+
+```text
 # False positive: example API key in documentation
 docs/examples/api-example.md:12
 ```
 
 **Common false positives:**
+
 - Example code with placeholder tokens
 - Public test keys
 - Hash values that look like secrets
 
 **Never ignore real secrets!** If gitleaks finds an actual secret:
+
 1. Remove it from the file
 2. Rotate the credential immediately
 3. Use environment variables or secret management instead
@@ -360,11 +397,13 @@ docs/examples/api-example.md:12
 ### Before Committing
 
 ✅ **DO:**
+
 - Run `pre-commit run --all-files` on large changes
 - Fix linting issues before requesting review
 - Add `.shellcheckrc` exceptions with comments explaining why
 
 ❌ **DON'T:**
+
 - Use `--no-verify` to bypass linting (creates tech debt)
 - Disable linting rules without documenting why
 - Commit files with known linting errors
@@ -372,6 +411,7 @@ docs/examples/api-example.md:12
 ### Writing Shell Scripts
 
 **Use shellcheck directives:**
+
 ```bash
 #!/usr/bin/env bash
 
@@ -385,6 +425,7 @@ source ./config.sh
 ### Writing YAML
 
 **Follow conventions:**
+
 ```yaml
 # Good - 2 space indentation, quoted strings
 name: Example
@@ -404,11 +445,13 @@ options:
 ### Updating Linting Rules
 
 **When to update:**
+
 - Rule is too strict for AIDA's use case
 - Rule blocks valid patterns
 - Project conventions change
 
 **How to update:**
+
 1. Edit config file (`.yamllint`, `.shellcheckrc`, etc.)
 2. Document reason in comments
 3. Run `pre-commit run --all-files` to test
@@ -419,12 +462,14 @@ options:
 ### Pre-commit not running
 
 **Check installation:**
+
 ```bash
 pre-commit --version
 ls .git/hooks/pre-commit
 ```
 
 **Reinstall:**
+
 ```bash
 pre-commit install
 ```
@@ -434,6 +479,7 @@ pre-commit install
 **Likely cause:** Different versions of linters
 
 **Solution:**
+
 ```bash
 # Update pre-commit hooks to match CI
 pre-commit autoupdate
@@ -445,6 +491,7 @@ pre-commit run --all-files
 ### Too many linting errors on existing files
 
 **Solution:** Fix incrementally
+
 ```bash
 # Only lint staged files
 pre-commit run
@@ -458,12 +505,14 @@ git add path/to/file.yml
 ## Resources
 
 **Documentation:**
+
 - [yamllint docs](https://yamllint.readthedocs.io/)
 - [ShellCheck wiki](https://www.shellcheck.net/wiki/)
 - [markdownlint rules](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md)
 - [pre-commit hooks](https://pre-commit.com/hooks.html)
 
 **Quick reference:**
+
 ```bash
 # List all available linters
 pre-commit run --help
@@ -481,6 +530,7 @@ pre-commit uninstall
 ## Contributing
 
 When contributing to AIDA:
+
 1. ✅ Install pre-commit hooks
 2. ✅ Ensure linting passes before pushing
 3. ✅ Fix any CI linting failures promptly

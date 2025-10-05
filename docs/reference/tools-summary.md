@@ -15,11 +15,13 @@ Save this as a checklist when setting up AIDE.
 ## ✅ Installation Checklist
 
 ### Required (Must Have)
-- [ ] **Git** - `git --version` 
+
+- [ ] **Git** - `git --version`
 - [ ] **Bash/Zsh** - `echo $SHELL`
 - [ ] **Terminal** - Built-in terminal app
 
 ### Highly Recommended
+
 - [ ] **GitHub CLI** - `gh --version`
 - [ ] **Claude Code** - `claude --version` (use official installer, NOT Homebrew!)
 - [ ] **MCP Servers** - Essential extensions for Claude Desktop
@@ -31,6 +33,7 @@ Save this as a checklist when setting up AIDE.
 - [ ] **Obsidian** - For knowledge management
 
 ### Recommended Enhancements
+
 - [ ] **Starship** - Beautiful prompt (`starship --version`)
 - [ ] **GNU Stow** - For dotfiles (`stow --version`)
 - [ ] **Better Terminal** - iTerm2 (Mac), Windows Terminal (Windows)
@@ -62,9 +65,10 @@ npm install -g @modelcontextprotocol/server-filesystem \
 ## 💡 Claude Configuration Quick Setup
 
 ### Custom Instructions
+
 Add to Claude's custom instructions:
 
-```
+```text
 I use AIDE (Agentic Intelligence Digital Assistant).
 My assistant: JARVIS
 Config: ~/CLAUDE.md and ~/.claude/
@@ -75,17 +79,20 @@ Use JARVIS personality (snarky but helpful).
 ### Common Statuslines
 
 **Daily Work:**
-```
+
+```text
 /statusline Working on [Project]. Focus: [goals]. JARVIS mode.
 ```
 
 **Deep Focus:**
-```
+
+```text
 /statusline Deep work on [task]. Minimal chat, direct solutions.
 ```
 
 **End of Day:**
-```
+
+```text
 /statusline End of day wrap-up. Review accomplishments, prepare tomorrow.
 ```
 
@@ -122,6 +129,7 @@ stow --version && echo "✅ Stow" || echo "⚠️  Stow (optional)"
 ## 📚 Full Documentation
 
 See [Prerequisites & Recommended Tools](docs/user-guide/prerequisites.md) for:
+
 - Detailed installation instructions for each tool
 - Platform-specific guidance
 - Advanced configuration
@@ -134,18 +142,21 @@ See [Prerequisites & Recommended Tools](docs/user-guide/prerequisites.md) for:
 Once tools are installed:
 
 1. **Install AIDA**:
+
    ```bash
    git clone https://github.com/you/claude-personal-assistant ~/.aida
    cd ~/.aida && ./install.sh
    ```
 
 2. **Authenticate tools**:
+
    ```bash
    gh auth login
    claude auth login
    ```
 
 3. **Set up dotfiles** (optional):
+
    ```bash
    git clone git@github.com:you/dotfiles.git ~/dotfiles
    cd ~/dotfiles && stow */

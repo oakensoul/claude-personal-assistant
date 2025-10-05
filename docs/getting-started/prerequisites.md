@@ -20,7 +20,7 @@ These are **absolutely required** for AIDA to work:
 
 ### 1. Git
 
-**What it is**: Version control system  
+**What it is**: Version control system
 **Why you need it**: Clone AIDE, manage your dotfiles, track changes
 
 **Installation:**
@@ -43,33 +43,37 @@ sudo apt install git
 ```
 
 **Verify:**
-```bash
+
+```text
 git --version
 # Should show: git version 2.x.x or higher
 ```
 
 ### 2. Bash or Zsh
 
-**What it is**: Shell environment  
+**What it is**: Shell environment
 **Why you need it**: AIDE uses bash scripts
 
 **Check what you have:**
-```bash
+
+```text
 echo $SHELL
 # Should show: /bin/bash or /bin/zsh
 ```
 
 **Notes:**
+
 - macOS: Zsh is default (works perfectly)
 - Linux: Usually bash (works perfectly)
 - Windows: Use WSL (provides bash)
 
 ### 3. A Terminal
 
-**What it is**: Command-line interface  
+**What it is**: Command-line interface
 **Why you need it**: Run AIDE commands
 
 **You already have one:**
+
 - macOS: Terminal.app (built-in)
 - Linux: GNOME Terminal, Konsole, etc. (built-in)
 - Windows: Windows Terminal (recommended for WSL)
@@ -82,7 +86,7 @@ These make AIDE **much better**:
 
 ### 1. GitHub CLI (gh)
 
-**What it is**: GitHub command-line tool  
+**What it is**: GitHub command-line tool
 **Why you need it**: Manage repos, issues, PRs from terminal
 
 **Installation:**
@@ -104,17 +108,20 @@ sudo apt install gh
 ```
 
 **Setup:**
+
 ```bash
 gh auth login
 # Follow prompts to authenticate
 ```
 
 **Verify:**
-```bash
+
+```text
 gh --version
 ```
 
 **Usage with AIDE:**
+
 ```bash
 # Create issues from roadmap tasks
 gh issue create --title "Implement install.sh" --body "..."
@@ -128,7 +135,7 @@ gh repo clone yourusername/dotfiles
 
 ### 2. Claude Code
 
-**What it is**: Anthropic's CLI tool for agentic coding  
+**What it is**: Anthropic's CLI tool for agentic coding
 **Why you need it**: Best way to use Claude with AIDE
 
 **Installation:**
@@ -143,7 +150,8 @@ curl -fsSL https://claude.ai/install.sh | sh
 **Important**: Don't use Homebrew for Claude Code - use the official installer
 
 **Setup:**
-```bash
+
+```text
 # Login with your Anthropic account
 claude auth login
 
@@ -152,6 +160,7 @@ claude --version
 ```
 
 **Using with AIDE:**
+
 ```bash
 # Work in your project with AIDE context
 cd ~/Development/personal/my-project/
@@ -162,12 +171,13 @@ claude "Help me implement the authentication flow"
 
 ### 3. A Good Code Editor
 
-**What it is**: IDE or text editor  
+**What it is**: IDE or text editor
 **Why you need it**: Edit your AIDE configs, dotfiles, and code
 
 **Recommended Options:**
 
 **VS Code** (Most popular):
+
 ```bash
 # macOS
 brew install --cask visual-studio-code
@@ -179,11 +189,13 @@ sudo snap install code --classic
 ```
 
 **Cursor** (AI-native, great with Claude):
+
 ```bash
 # Download from: https://cursor.sh/
 ```
 
 **Vim/Neovim** (Terminal-based):
+
 ```bash
 # macOS
 brew install neovim
@@ -196,10 +208,11 @@ sudo apt install neovim
 
 ### 4. Obsidian (For Knowledge Management)
 
-**What it is**: Markdown-based knowledge management  
+**What it is**: Markdown-based knowledge management
 **Why you need it**: AIDE integrates with Obsidian for daily notes and project tracking
 
 **Installation:**
+
 ```bash
 # macOS
 brew install --cask obsidian
@@ -208,16 +221,18 @@ brew install --cask obsidian
 ```
 
 **Setup with AIDE:**
+
 1. Create vault at `~/Knowledge/Obsidian-Vault/`
 2. AIDE will create daily note templates
 3. Use for project tracking and daily summaries
 
 ### 5. MCP Servers (Model Context Protocol)
 
-**What it is**: Extensions that give Claude real capabilities (filesystem, git, search, etc.)  
+**What it is**: Extensions that give Claude real capabilities (filesystem, git, search, etc.)
 **Why you need it**: Makes AIDE actually work with your files and tools
 
 **Essential MCP Servers:**
+
 - **Filesystem** - Claude can read/write files
 - **Git** - Claude can commit, push, pull
 - **GitHub** - Claude can create issues, PRs
@@ -225,6 +240,7 @@ brew install --cask obsidian
 - **Brave Search** - Web search capabilities
 
 **Quick Install:**
+
 ```bash
 npm install -g \
   @modelcontextprotocol/server-filesystem \
@@ -247,16 +263,19 @@ Make your terminal experience better:
 **macOS:**
 
 **iTerm2** (Most popular):
+
 ```bash
 brew install --cask iterm2
 ```
 
 **Warp** (AI-native terminal):
+
 ```bash
 brew install --cask warp
 ```
 
 **Alacritty** (Fast, minimal):
+
 ```bash
 brew install --cask alacritty
 ```
@@ -264,6 +283,7 @@ brew install --cask alacritty
 **Windows:**
 
 **Windows Terminal** (Essential for WSL):
+
 ```bash
 # Install from Microsoft Store
 # Or: winget install Microsoft.WindowsTerminal
@@ -272,16 +292,18 @@ brew install --cask alacritty
 **Linux:**
 
 Most built-in terminals are great, but consider:
+
 - **Alacritty** (fast and customizable)
 - **Kitty** (GPU-accelerated)
 - **WezTerm** (Rust-based, lots of features)
 
 ### 2. Starship Prompt
 
-**What it is**: Fast, customizable shell prompt  
+**What it is**: Fast, customizable shell prompt
 **Why it's great**: Shows git status, language versions, and more
 
 **Installation:**
+
 ```bash
 # macOS/Linux
 curl -sS https://starship.rs/install.sh | sh
@@ -291,6 +313,7 @@ brew install starship
 ```
 
 **Setup:**
+
 ```bash
 # Add to ~/.zshrc or ~/.bashrc
 echo 'eval "$(starship init zsh)"' >> ~/.zshrc
@@ -302,6 +325,7 @@ source ~/.zshrc  # or ~/.bashrc
 ```
 
 **Customize:**
+
 ```bash
 # Create config
 mkdir -p ~/.config
@@ -312,6 +336,7 @@ vim ~/.config/starship.toml
 ```
 
 **Recommended for AIDE:**
+
 - Shows git branch and status
 - Shows current directory
 - Fast and clean
@@ -319,15 +344,17 @@ vim ~/.config/starship.toml
 
 ### 3. Oh My Zsh (Alternative to Starship)
 
-**What it is**: Zsh configuration framework  
+**What it is**: Zsh configuration framework
 **Why it's great**: Plugins, themes, and productivity features
 
 **Installation:**
+
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
 **Recommended plugins:**
+
 ```bash
 # Edit ~/.zshrc
 plugins=(
@@ -343,10 +370,11 @@ plugins=(
 
 ### 4. GNU Stow (For Dotfiles)
 
-**What it is**: Symlink manager for dotfiles  
+**What it is**: Symlink manager for dotfiles
 **Why you need it**: Manage your dotfiles with AIDE
 
 **Installation:**
+
 ```bash
 # macOS
 brew install stow
@@ -359,6 +387,7 @@ sudo dnf install stow
 ```
 
 **Usage:**
+
 ```bash
 cd ~/dotfiles
 stow shell    # Symlinks shell configs
@@ -375,7 +404,7 @@ See [Dotfiles Integration](dotfiles-integration.md) for more.
 
 Add this to your Claude custom instructions for best AIDE experience:
 
-```markdown
+```text
 # AIDE System
 
 I use AIDE (Agentic Intelligence Digital Assistant) to manage my digital life.
@@ -389,12 +418,12 @@ When I'm working on my computer:
 3. Check ~/.claude/memory/context.md for current state
 4. If in a project directory, check for project-specific CLAUDE.md
 
-**Commands**: 
+**Commands**:
 I use commands like "jarvis-start-day" or "jarvis cleanup downloads"
 These are conversational triggers, not shell scripts.
 
 **Personality**:
-Be helpful but slightly snarky (JARVIS style). 
+Be helpful but slightly snarky (JARVIS style).
 Example: "Your Downloads folder has 73 files. Again."
 ```
 
@@ -403,62 +432,71 @@ Example: "Your Downloads folder has 73 files. Again."
 Use `/statusline` in Claude to set context for your session. Here are recommended templates:
 
 #### Daily Work Session
-```
-/statusline Working on [Project Name]. Current status: [brief status]. 
-Today's focus: [main goals]. Blockers: [any issues]. 
+
+```text
+/statusline Working on [Project Name]. Current status: [brief status].
+Today's focus: [main goals]. Blockers: [any issues].
 Use JARVIS personality (snarky but helpful).
 ```
 
 Example:
-```
-/statusline Working on Project Alpha. Current status: API integration 80% complete. 
-Today's focus: finish testing and deploy to staging. No blockers. 
+
+```text
+/statusline Working on Project Alpha. Current status: API integration 80% complete.
+Today's focus: finish testing and deploy to staging. No blockers.
 Use JARVIS personality.
 ```
 
 #### Deep Focus / Coding
-```
-/statusline Deep work session on [specific task]. 
-Minimize conversation, focus on implementation. 
+
+```text
+/statusline Deep work session on [specific task].
+Minimize conversation, focus on implementation.
 If I'm stuck, be direct with solutions. JARVIS mode: helpful, less snark.
 ```
 
 #### Planning / Architecture
-```
-/statusline Architecture planning for [project/feature]. 
-Be thorough, ask clarifying questions, suggest alternatives. 
+
+```text
+/statusline Architecture planning for [project/feature].
+Be thorough, ask clarifying questions, suggest alternatives.
 Help me think through tradeoffs. Full JARVIS personality welcome.
 ```
 
 #### End of Day
-```
-/statusline End of day wrap-up. 
-Review what I accomplished, update project statuses, 
+
+```text
+/statusline End of day wrap-up.
+Review what I accomplished, update project statuses,
 prepare tomorrow's priorities. JARVIS: time for your usual assessment.
 ```
 
 #### Learning / Exploration
-```
-/statusline Learning [technology/concept]. 
-I need clear explanations with examples. 
+
+```text
+/statusline Learning [technology/concept].
+I need clear explanations with examples.
 Be encouraging but still keep the JARVIS edge.
 ```
 
 #### Quick Task
-```
-/statusline Quick task: [specific thing]. 
-I just need this done fast and correctly. 
+
+```text
+/statusline Quick task: [specific thing].
+I just need this done fast and correctly.
 Minimal explanation, maximum efficiency.
 ```
 
 #### Using AIDE Commands
-```
-/statusline Using AIDE system. I'll use commands like 'jarvis-[action]'. 
-Read ~/CLAUDE.md and ~/.claude/ for context. 
+
+```text
+/statusline Using AIDE system. I'll use commands like 'jarvis-[action]'.
+Read ~/CLAUDE.md and ~/.claude/ for context.
 Execute procedures from ~/.claude/knowledge/procedures.md.
 ```
 
 **Pro Tip**: Save statuslines you use often:
+
 ```bash
 # Add to your AIDE procedures
 vim ~/.claude/knowledge/statuslines.md
@@ -469,30 +507,35 @@ vim ~/.claude/knowledge/statuslines.md
 ## Optional But Nice
 
 ### fzf (Fuzzy Finder)
+
 ```bash
 brew install fzf
 # Adds amazing command history search
 ```
 
 ### bat (Better cat)
+
 ```bash
 brew install bat
 alias cat="bat"  # Add to ~/.zshrc
 ```
 
 ### exa (Better ls)
+
 ```bash
 brew install exa
 alias ls="exa"  # Add to ~/.zshrc
 ```
 
 ### ripgrep (Better grep)
+
 ```bash
 brew install ripgrep
 # Much faster searching
 ```
 
 ### tldr (Simplified man pages)
+
 ```bash
 brew install tldr
 # Better than man pages for quick reference
@@ -504,7 +547,7 @@ brew install tldr
 
 After installing, verify everything works:
 
-```bash
+```text
 # Required
 ✓ git --version
 ✓ bash --version  # or zsh --version
@@ -542,31 +585,31 @@ echo "🚀 Installing AIDE prerequisites..."
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
     echo "📦 Installing via Homebrew..."
-    
+
     # Install Homebrew if needed
     if ! command -v brew &> /dev/null; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
-    
+
     # Install tools
     brew install git gh stow starship fzf bat exa ripgrep tldr
     brew install --cask visual-studio-code iterm2 obsidian
-    
+
     # Install Claude Code (official installer, not Homebrew)
     curl -fsSL https://claude.ai/install.sh | sh
-    
+
 elif [[ -f /etc/debian_version ]]; then
     # Ubuntu/Debian
     echo "📦 Installing via apt..."
     sudo apt update
     sudo apt install -y git gh stow curl
-    
+
     # Starship
     curl -sS https://starship.rs/install.sh | sh
-    
+
     # Claude Code
     curl -fsSL https://claude.ai/install.sh | sh
-    
+
 else
     echo "⚠️  Unsupported OS. Install tools manually."
     exit 1
@@ -584,12 +627,14 @@ echo "  3. Install AIDE: git clone https://github.com/you/claude-personal-assist
 ## Getting Help
 
 **If installation fails:**
+
 1. Check [Troubleshooting](troubleshooting.md)
 2. Check tool-specific docs
 3. Ask in GitHub Discussions
 4. Create an issue
 
 **Useful commands:**
+
 ```bash
 # Check what's installed
 which git gh claude code

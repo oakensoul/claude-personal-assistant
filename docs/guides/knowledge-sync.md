@@ -21,6 +21,7 @@ The Knowledge Sync system helps you build a comprehensive personal knowledge bas
 ### The Problem
 
 You work on many projects and repositories:
+
 - Each has valuable docs, patterns, solutions
 - You want to remember these learnings
 - But they contain corporate data, internal URLs, PII
@@ -28,7 +29,7 @@ You work on many projects and repositories:
 
 ### The Solution
 
-```
+```text
 You: "jarvis-sync-knowledge"
 
 Claude:
@@ -55,6 +56,7 @@ jarvis-sync-knowledge
 ### What It Does
 
 **1. Discovery Phase:**
+
 - Scans for documentation:
   - `README.md`, `DOCS/`, `docs/`
   - Architecture decision records (ADRs)
@@ -64,6 +66,7 @@ jarvis-sync-knowledge
   - Wiki pages (if available)
 
 **2. Analysis Phase:**
+
 - Identifies valuable knowledge:
   - Architecture patterns
   - Technical decisions
@@ -74,6 +77,7 @@ jarvis-sync-knowledge
   - Testing strategies
 
 **3. Scrubbing Phase:**
+
 - Removes sensitive information:
   - Company names and internal URLs
   - Employee names and contact info
@@ -85,6 +89,7 @@ jarvis-sync-knowledge
   - IP addresses and hostnames
 
 **4. Transformation Phase:**
+
 - Converts to your PKM format:
   - Obsidian markdown format
   - Adds tags and metadata
@@ -93,6 +98,7 @@ jarvis-sync-knowledge
   - Adds "Source" attribution (sanitized)
 
 **5. Storage Phase:**
+
 - Saves to your PKM:
   - `~/Knowledge/Obsidian-Vault/Tech-Knowledge/`
   - Organized by topic/technology
@@ -103,7 +109,7 @@ jarvis-sync-knowledge
 
 ## Configuration
 
-### In `~/.claude/knowledge/procedures.md`:
+### In `~/.claude/knowledge/procedures.md`
 
 ```markdown
 ## jarvis-sync-knowledge
@@ -113,7 +119,8 @@ jarvis-sync-knowledge
 **Procedure**:
 
 1. **Discovery** - Scan project for knowledge artifacts:
-   ```
+
+   ```text
    Find:
    - README.md, CONTRIBUTING.md
    - docs/, documentation/, wiki/
@@ -124,6 +131,7 @@ jarvis-sync-knowledge
    ```
 
 2. **Categorization** - Identify knowledge types:
+
    - Architecture & Design
    - Technical Patterns
    - Problem-Solution pairs
@@ -133,8 +141,9 @@ jarvis-sync-knowledge
    - Security Practices
 
 3. **Scrubbing** - Remove sensitive information:
-   
+
    **Always Scrub:**
+
    - Company name → [COMPANY]
    - Employee names → [DEVELOPER], [TEAM]
    - Email addresses → [EMAIL]
@@ -144,8 +153,9 @@ jarvis-sync-knowledge
    - Specific IP addresses → [IP]
    - Internal tool names → [TOOL]
    - Proprietary algorithms → [IMPLEMENTATION]
-   
+
    **Preserve:**
+
    - Technology names (React, PostgreSQL, etc.)
    - Open source library names
    - Public documentation links
@@ -154,6 +164,7 @@ jarvis-sync-knowledge
    - Code patterns (if non-proprietary)
 
 4. **Transform** - Convert to PKM format:
+
    ```markdown
    ---
    title: [Topic] - [Pattern/Solution]
@@ -161,48 +172,50 @@ jarvis-sync-knowledge
    source: [Sanitized project description]
    date: YYYY-MM-DD
    ---
-   
+
    # [Topic]
-   
+
    ## Context
    [What problem this solves]
-   
+
    ## Pattern/Solution
    [The approach, sanitized]
-   
+
    ## Implementation Notes
    [Key points, sanitized]
-   
+
    ## Related
    [[Other relevant notes]]
    ```
 
 5. **Save** - Store in PKM:
+
    - Determine category (e.g., Backend Patterns, React Patterns, DevOps)
    - Save to appropriate folder
    - Update index notes
    - Create backlinks
 
 6. **Report**:
-   ```
+
+   ```text
    Synced knowledge from [Project]:
    - 3 architecture patterns
    - 5 problem-solution pairs
    - 2 setup procedures
    - 1 performance optimization
-   
+
    Saved to: ~/Knowledge/Obsidian-Vault/Tech-Knowledge/
    - Backend-Patterns/api-rate-limiting.md
    - React-Patterns/server-components.md
    - ...
-   
+
    Scrubbed: 15 company references, 8 internal URLs, 3 names
    ```
 
 **Safety Check**:
+
 Before saving, ask user:
 "Ready to sync? Review scrubbed content? (y/n/review)"
-```
 
 ---
 
@@ -211,16 +224,18 @@ Before saving, ask user:
 ### Corporate Information
 
 **Scrub:**
-```
+
+```text
 Acme Corp → [COMPANY]
 acme.internal → [INTERNAL]
 api.acme.com → [API_ENDPOINT]
 John Smith, Senior Engineer → [TEAM_MEMBER]
-john.smith@acme.com → [EMAIL]
+<john.smith@acme.com> → [EMAIL]
 ```
 
 **Keep:**
-```
+
+```text
 This API uses REST
 Built with Node.js and Express
 Deployed on AWS
@@ -230,22 +245,25 @@ Uses PostgreSQL 14
 ### URLs and Endpoints
 
 **Scrub:**
-```
-https://internal.company.com/docs → [INTERNAL_DOCS]
-https://jira.company.com/PROJECT-123 → [TICKET_SYSTEM]
+
+```text
+<https://internal.company.com/docs> → [INTERNAL_DOCS]
+<https://jira.company.com/PROJECT-123> → [TICKET_SYSTEM]
 ssh://git@internal-git.company.com → [INTERNAL_GIT]
 ```
 
 **Keep:**
-```
-https://docs.aws.amazon.com/...
-https://reactjs.org/docs/...
-https://github.com/public-org/public-repo
+
+```text
+<https://docs.aws.amazon.com/>...
+<https://reactjs.org/docs/>...
+<https://github.com/public-org/public-repo>
 ```
 
 ### Code Examples
 
 **Scrub proprietary business logic:**
+
 ```javascript
 // BEFORE (proprietary)
 function calculateAcmeRevenue(customer) {
@@ -260,6 +278,7 @@ function calculateMetric(data) {
 ```
 
 **Keep general patterns:**
+
 ```javascript
 // Pattern: Rate limiting with Redis
 const rateLimit = require('express-rate-limit');
@@ -275,6 +294,7 @@ const limiter = rateLimit({
 ### Names and Identifiers
 
 **Scrub:**
+
 - Employee names
 - Customer names
 - Project codenames
@@ -282,6 +302,7 @@ const limiter = rateLimit({
 - Service names (if proprietary)
 
 **Keep:**
+
 - Role descriptions ("the backend team")
 - Generic terms ("the client", "the service")
 - Technology names
@@ -292,7 +313,7 @@ const limiter = rateLimit({
 
 ### Folder Structure
 
-```
+```text
 ~/Knowledge/Obsidian-Vault/
 ├── Tech-Knowledge/
 │   ├── Backend-Patterns/
@@ -320,7 +341,7 @@ const limiter = rateLimit({
 
 ### Note Template
 
-```markdown
+````markdown
 ---
 title: Rate Limiting with Redis
 tags: [backend, api, redis, rate-limiting, performance]
@@ -391,10 +412,10 @@ app.use('/api/', limiter);
 
 ---
 
-**Source**: Learned from [COMPANY] API project  
-**Sanitized**: 2025-10-04  
+**Source**: Learned from [COMPANY] API project
+**Sanitized**: 2025-10-04
 **Validated**: Works in production-scale applications
-```
+````
 
 ---
 
@@ -426,13 +447,13 @@ profiles:
     scrub_names: true
     scrub_internal_urls: true
     preserve_architecture: true
-    
+
   open-source:
     scrub_company: false
     scrub_names: false
     scrub_internal_urls: true
     preserve_all: true
-  
+
   learning:
     scrub_company: true
     scrub_names: true
@@ -440,6 +461,7 @@ profiles:
 ```
 
 **Usage:**
+
 ```bash
 jarvis-sync-knowledge --profile=work
 jarvis-sync-knowledge --profile=open-source
@@ -449,7 +471,7 @@ jarvis-sync-knowledge --profile=open-source
 
 If knowledge already exists:
 
-```
+```text
 Found existing note: "API Rate Limiting"
 
 Options:
@@ -468,11 +490,13 @@ Choose: _
 ### Before Syncing
 
 **Review the project:**
+
 - Is this work/proprietary or open source?
 - What information is sensitive?
 - What can be safely extracted?
 
 **Check your employment agreement:**
+
 - Some companies restrict taking any work-related knowledge
 - When in doubt, be more conservative with scrubbing
 - Consider whether the pattern is truly public/common knowledge
@@ -480,6 +504,7 @@ Choose: _
 ### During Sync
 
 **Review scrubbed content:**
+
 ```bash
 jarvis-sync-knowledge --review
 # Shows side-by-side: original vs scrubbed
@@ -487,6 +512,7 @@ jarvis-sync-knowledge --review
 ```
 
 **Err on the side of caution:**
+
 - When unsure, scrub it
 - Better to lose some context than leak sensitive data
 - You can always add back non-sensitive details later
@@ -494,6 +520,7 @@ jarvis-sync-knowledge --review
 ### After Sync
 
 **Audit occasionally:**
+
 ```bash
 jarvis-audit-knowledge --check-sensitive
 # Scans your PKM for patterns that might be sensitive:
@@ -503,6 +530,7 @@ jarvis-audit-knowledge --check-sensitive
 ```
 
 **Keep PKM private:**
+
 - Your Obsidian vault should be in a private repo
 - Don't share your entire PKM publicly
 - Individual notes can be shared if reviewed
@@ -515,7 +543,7 @@ jarvis-audit-knowledge --check-sensitive
 
 When finishing a project:
 
-```
+```text
 You: "jarvis-project-complete ProjectAlpha"
 
 Claude:
@@ -543,7 +571,7 @@ Every Sunday:
 
 ### Memory Integration
 
-```
+```text
 jarvis-sync-knowledge also updates memory:
 
 ~/.claude/memory/context.md:
@@ -559,7 +587,7 @@ jarvis-sync-knowledge also updates memory:
 
 ### Workflow 1: End of Project
 
-```
+```text
 You: "Just finished the API refactor project"
 
 jarvis: "Nice work! Want to preserve learnings for your PKM?"
@@ -567,21 +595,21 @@ jarvis: "Nice work! Want to preserve learnings for your PKM?"
 You: "Yes"
 
 jarvis: "Scanning project for valuable knowledge..."
-        
+
         Found:
         - API design patterns (new)
         - Rate limiting implementation (update existing)
         - Error handling approach (new)
         - Testing strategy (new)
-        
+
         Scrubbing company references...
-        
+
         Preview:
         1. API Design: RESTful patterns for [SERVICE_TYPE]
         2. Rate Limiting: Redis-backed distributed limiting
         3. Error Handling: Consistent error response format
         4. Testing: Integration test patterns
-        
+
         Looks good? (y/n/review)
 
 You: "y"
@@ -590,28 +618,28 @@ jarvis: "✅ Synced to Tech-Knowledge/
         - Backend-Patterns/api-design-rest.md
         - Backend-Patterns/rate-limiting-redis.md
         - Testing/integration-test-patterns.md
-        
+
         Updated index and created backlinks.
         Your PKM now has 237 notes."
 ```
 
 ### Workflow 2: Learning from Open Source
 
-```
+```text
 You: "Just read through the Next.js codebase, lots of good patterns"
 
 jarvis-sync-knowledge --profile=open-source
 
 jarvis: "Scanning Next.js source for patterns..."
-        
+
         Found valuable patterns:
         - Server Components architecture
         - Build optimization techniques
         - Route handling
         - Caching strategies
-        
+
         No scrubbing needed (open source).
-        
+
         Synced to Frontend-Patterns/:
         - nextjs-server-components.md
         - nextjs-build-optimization.md
@@ -620,7 +648,7 @@ jarvis: "Scanning Next.js source for patterns..."
 
 ### Workflow 3: Solving a Problem
 
-```
+```text
 You: "Just figured out how to fix that memory leak"
 
 jarvis: "Great! Want to document this for future reference?"
@@ -629,18 +657,18 @@ You: "Yes, but it's in our proprietary code"
 
 jarvis-sync-knowledge --extract-pattern
 
-jarvis: "I'll extract just the problem-solving approach, 
+jarvis: "I'll extract just the problem-solving approach,
         not the specific implementation.
-        
+
         Creating note:
         Title: Debugging Memory Leaks in [FRAMEWORK]
-        
+
         Pattern:
         1. Used heap snapshots to identify growth
         2. Tracked object retention
         3. Found event listeners not being cleaned up
         4. Solution: useEffect cleanup functions
-        
+
         Saved to Problem-Solutions/debugging-memory-leaks.md"
 ```
 
@@ -655,7 +683,7 @@ jarvis: "I'll extract just the problem-solving approach,
 ```yaml
 sync:
   default_profile: work
-  
+
   scrubbing:
     company_name: "[COMPANY]"
     internal_domain_pattern: "*.company.com"
@@ -664,19 +692,19 @@ sync:
       - emails: true
       - api_keys: true
       - customer_data: true
-    
+
   pkm:
     base_path: "~/Knowledge/Obsidian-Vault/Tech-Knowledge"
     create_backlinks: true
     update_index: true
     add_metadata: true
-  
+
   extraction:
     include_code_examples: true
     max_code_length: 50  # lines
     include_architecture_diagrams: true
     include_problem_solutions: true
-  
+
   safety:
     dry_run_by_default: false
     require_review: true  # Show preview before saving
@@ -688,18 +716,21 @@ sync:
 ## Roadmap
 
 ### Phase 2: Basic Implementation
+
 - [ ] Implement jarvis-sync-knowledge command
 - [ ] Basic scrubbing rules
 - [ ] Simple PKM storage
 - [ ] Manual review process
 
 ### Phase 3: Enhanced Features
+
 - [ ] Automatic scrubbing profiles
 - [ ] Intelligent pattern extraction
 - [ ] Conflict resolution
 - [ ] Knowledge audit tools
 
 ### Phase 4: Advanced
+
 - [ ] AI-powered scrubbing (detect sensitive patterns)
 - [ ] Knowledge graph building
 - [ ] Automatic categorization
@@ -713,12 +744,14 @@ sync:
 ### What's Legal?
 
 **Generally OK to extract:**
+
 - Common design patterns
 - General problem-solving approaches
 - Technology-agnostic learnings
 - Public knowledge (from open source)
 
 **Generally NOT OK:**
+
 - Proprietary algorithms
 - Business logic specific to your employer
 - Customer data
@@ -728,6 +761,7 @@ sync:
 ### Best Practice
 
 **When in doubt:**
+
 1. Extract the **pattern**, not the **implementation**
 2. Make it **generic**, not **specific**
 3. Ask yourself: "Could I have learned this from public sources?"
@@ -736,6 +770,7 @@ sync:
 ### Your Responsibility
 
 AIDE helps you scrub technical identifiers, but **you** are responsible for:
+
 - Understanding your employment agreement
 - Knowing what's proprietary vs public knowledge
 - Making the final call on what to preserve

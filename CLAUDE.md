@@ -34,21 +34,25 @@ AIDA (Agentic Intelligence Digital Assistant) is a conversational, agentic opera
 ### Key Components
 
 **Personalities System** (`personalities/`)
+
 - Pre-built personality definitions (JARVIS, Alfred, FRIDAY, Sage, Drill Sergeant)
 - YAML-based configuration defining tone, responses, and behaviors
 - Switchable at runtime
 
 **Templates** (`templates/`)
+
 - `knowledge/` - System structure documentation, procedures, workflows, project tracking
 - `agents/` - Agent definitions (Secretary, File Manager, Dev Assistant)
 - `workflows/` - Reusable workflow templates
 
-**Memory System**
+### Memory System
+
 - Persistent state across conversations
 - Current context tracking, decision history, activity logs
 - Enables continuity in multi-session workflows
 
-**Integration Points**
+### Integration Points
+
 - Obsidian: Daily notes, project tracking, dashboard views with automatic updates
 - GNU Stow: Manages dotfiles integration
 - Git: Version control for configurations
@@ -56,12 +60,14 @@ AIDA (Agentic Intelligence Digital Assistant) is a conversational, agentic opera
 ## Development Commands
 
 ### Installation
+
 ```bash
 ./install.sh          # Normal install (creates ~/.claude/)
 ./install.sh --dev    # Dev mode (symlinks for live editing)
 ```
 
 ### CLI Commands (planned)
+
 ```bash
 aida status          # System status
 aida personality     # Manage personality
@@ -83,6 +89,7 @@ aida help            # Show help
 **Early development** - The repository currently contains planning documentation. The implementation of install scripts, templates, personalities, and agent systems is pending.
 
 When implementing features, maintain the separation between:
+
 - Public shareable framework (this repo)
 - User-generated configuration (~/.claude/)
 - Private sensitive data (dotfiles-private repo)

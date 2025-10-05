@@ -16,6 +16,7 @@ audience: "developers"
 **Last Updated**: 2025-10-04
 
 This document contains:
+
 1. [Development Roadmap](#development-roadmap) - Phased plan with specific tasks
 2. [Development Guide](#development-guide) - How to develop AIDA
 3. [Contributing Guidelines](#contributing-guidelines) - How to contribute
@@ -44,15 +45,17 @@ This document contains:
 **Timeline**: 2-3 weeks
 
 **Core Features:**
+
 - ✅ Basic installation script
 - ✅ One personality (JARVIS)
 - ✅ Essential templates
 - ✅ Simple CLI tool
 - ✅ Basic command system
 
-#### Tasks:
+#### Tasks
 
 ##### 1.1 Project Setup
+
 - [ ] **Initialize Repository Structure**
   - Create all directories as per ARCHITECTURE.md
   - Create docs/ structure (architecture, user-guide, developer-guide, project-agents, examples)
@@ -267,7 +270,7 @@ This document contains:
 
 **Timeline**: 2-3 weeks
 
-#### Tasks:
+#### Tasks
 
 ##### 2.1 Complete Personality System
 
@@ -575,7 +578,7 @@ This document contains:
 
 **Timeline**: 2-3 weeks
 
-#### Tasks:
+#### Tasks
 
 ##### 3.1 Advanced CLI
 
@@ -708,7 +711,7 @@ This document contains:
 
 **Timeline**: Ongoing
 
-#### Potential Features:
+#### Potential Features
 
 - [ ] **Additional Project Agents**
   - TypeScript agent
@@ -767,7 +770,7 @@ This document contains:
   - Task managers
   - Other tools
 
-**Phase 4 is flexible and driven by user feedback**
+Phase 4 is flexible and driven by user feedback.
 
 ---
 
@@ -807,6 +810,7 @@ git checkout -b feature/my-feature
 See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for complete structure.
 
 Key directories:
+
 - `templates/` - All template files
 - `personalities/` - Personality definitions
 - `workflows/` - Optional automation scripts
@@ -815,6 +819,7 @@ Key directories:
 #### Development Workflow
 
 1. **Create a branch**
+
    ```bash
    git checkout -b feature/your-feature
    ```
@@ -834,6 +839,7 @@ Key directories:
    - Update this ROADMAP if relevant
 
 5. **Commit and push**
+
    ```bash
    git add .
    git commit -m "Add feature: description"
@@ -865,6 +871,7 @@ jarvis help
 #### Test Checklist
 
 Before submitting PR:
+
 - [ ] Installation works (both normal and dev mode)
 - [ ] All commands function correctly
 - [ ] Templates generate properly
@@ -1007,24 +1014,28 @@ We welcome contributions! Here's how:
 ### Types of Contributions
 
 #### Bug Fixes
+
 - Fix installation issues
 - Fix command bugs
 - Fix template errors
 - Improve error messages
 
 #### Features
+
 - New personalities
 - New commands
 - New templates
 - New integrations
 
 #### Documentation
+
 - Improve README
 - Add examples
 - Fix typos
 - Clarify instructions
 
 #### Testing
+
 - Test on different systems
 - Report issues
 - Suggest improvements
@@ -1042,13 +1053,14 @@ We welcome contributions! Here's how:
    - Test with different personalities
 
 3. **Write clear commit messages**
-   ```
+
+   ```text
    Add feature: support for custom aliases
-   
+
    - Add alias system to CLI
    - Update config to store aliases
    - Document in README
-   
+
    Closes #123
    ```
 
@@ -1080,6 +1092,7 @@ We welcome contributions! Here's how:
 ### Recognition
 
 Contributors will be:
+
 - Listed in CONTRIBUTORS.md
 - Mentioned in release notes
 - Thanked publicly
@@ -1126,6 +1139,7 @@ These are great for first-time contributors:
 ### Priority Tasks for v0.1.0
 
 **Must Have** (blocking release):
+
 1. install.sh - Basic installation
 2. CLAUDE.md.template - Main config
 3. JARVIS personality - At least one personality
@@ -1147,24 +1161,28 @@ These are great for first-time contributors:
 
 These can be worked on simultaneously:
 
-**Stream A: Installation**
+### Stream A: Installation
+
 - install.sh development
 - Directory creation
 - Template copying
 - CLI generation
 
-**Stream B: Templates**
+### Stream B: Templates
+
 - CLAUDE.md.template
 - Knowledge templates
 - Memory templates
 - Agent templates
 
-**Stream C: Personalities**
+### Stream C: Personalities
+
 - JARVIS personality
 - Other personalities
 - Personality switching
 
-**Stream D: Documentation**
+### Stream D: Documentation
+
 - README improvements
 - Architecture doc
 - Examples and tutorials
@@ -1174,21 +1192,25 @@ These can be worked on simultaneously:
 ## Release Schedule
 
 ### v0.1.0 (MVP)
+
 - **Target**: 2-3 weeks from now
 - **Focus**: Basic working installation
 - **Blocker**: Must have all "Must Have" tasks
 
 ### v0.2.0 (Core Features)
+
 - **Target**: 4-6 weeks from v0.1.0
 - **Focus**: Complete personality system, full agents
 - **Blocker**: Must have all personalities working
 
 ### v0.3.0 (Polish)
+
 - **Target**: 6-8 weeks from v0.2.0
 - **Focus**: Refinement and advanced features
 - **Blocker**: User feedback addressed
 
 ### v0.4.0+ (Advanced)
+
 - **Target**: TBD
 - **Focus**: Driven by community needs
 - **Blocker**: None - ongoing development
@@ -1198,6 +1220,7 @@ These can be worked on simultaneously:
 ## Success Metrics
 
 ### v0.1.0 Success Criteria
+
 - [ ] 10+ successful installations
 - [ ] Basic commands work reliably
 - [ ] Installation takes < 5 minutes
@@ -1205,6 +1228,7 @@ These can be worked on simultaneously:
 - [ ] Documentation is understandable
 
 ### v0.2.0 Success Criteria
+
 - [ ] All 5 personalities work
 - [ ] All commands documented
 - [ ] Obsidian integration works
@@ -1212,6 +1236,7 @@ These can be worked on simultaneously:
 - [ ] Positive user feedback
 
 ### v0.3.0 Success Criteria
+
 - [ ] Advanced features adopted
 - [ ] Multi-machine sync works
 - [ ] Performance is good

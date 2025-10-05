@@ -23,7 +23,7 @@ Extract learnings from projects into your PKM while automatically scrubbing sens
 
 ## The Solution
 
-```
+```bash
 cd ~/Development/work/my-project/
 jarvis-sync-knowledge
 
@@ -35,6 +35,7 @@ jarvis-sync-knowledge
 ## What Gets Synced
 
 ✅ **Preserved:**
+
 - Architecture patterns
 - Technical solutions
 - Problem-solving approaches
@@ -43,6 +44,7 @@ jarvis-sync-knowledge
 - Best practices
 
 ❌ **Scrubbed:**
+
 - Company names → `[COMPANY]`
 - Employee names → `[DEVELOPER]`
 - Internal URLs → `[INTERNAL]`
@@ -57,6 +59,7 @@ jarvis-sync-knowledge
 ### Example 1: API Pattern
 
 **Before (in project):**
+
 ```javascript
 // Acme Corp rate limiting for api.acme.com
 function rateLimit() {
@@ -68,6 +71,7 @@ function rateLimit() {
 ```
 
 **After (in PKM):**
+
 ```javascript
 // Rate limiting pattern
 function rateLimit() {
@@ -81,13 +85,15 @@ function rateLimit() {
 ### Example 2: Architecture Decision
 
 **Before:**
+
 ```markdown
-We chose PostgreSQL for the Acme customer database 
-because John Smith found that MongoDB couldn't handle 
+We chose PostgreSQL for the Acme customer database
+because John Smith found that MongoDB couldn't handle
 our complex customer relationships with GlobalMegaCorp.
 ```
 
 **After:**
+
 ```markdown
 Chose PostgreSQL over MongoDB for this use case because:
 - Complex relational data model
@@ -100,7 +106,8 @@ Chose PostgreSQL over MongoDB for this use case because:
 ## Common Use Cases
 
 ### 1. End of Project
-```
+
+```bash
 You: "Project complete, let's preserve learnings"
 jarvis-sync-knowledge
 
@@ -109,7 +116,8 @@ jarvis-sync-knowledge
 ```
 
 ### 2. Solved Tricky Problem
-```
+
+```bash
 You: "Just fixed that memory leak"
 jarvis-sync-knowledge --extract-pattern
 
@@ -118,7 +126,8 @@ jarvis-sync-knowledge --extract-pattern
 ```
 
 ### 3. Learning from Open Source
-```
+
+```bash
 You: "Studied Next.js codebase"
 jarvis-sync-knowledge --profile=open-source
 
@@ -127,7 +136,8 @@ jarvis-sync-knowledge --profile=open-source
 ```
 
 ### 4. Weekly Review
-```
+
+```bash
 You: "Review this week's work"
 jarvis-sync-knowledge --week
 
@@ -141,11 +151,13 @@ jarvis-sync-knowledge --week
 ## Commands
 
 ### Basic
+
 ```bash
 jarvis-sync-knowledge              # Sync current project
 ```
 
 ### With Options
+
 ```bash
 jarvis-sync-knowledge --dry-run    # Preview what would sync
 jarvis-sync-knowledge --review     # Review before saving
@@ -153,6 +165,7 @@ jarvis-sync-knowledge --profile=work  # Use work scrubbing profile
 ```
 
 ### Selective
+
 ```bash
 jarvis-sync-knowledge --topics="api,caching"  # Only specific topics
 jarvis-sync-knowledge --files="docs/api.md"   # Only specific files
@@ -162,7 +175,7 @@ jarvis-sync-knowledge --files="docs/api.md"   # Only specific files
 
 ## PKM Structure
 
-```
+```text
 ~/Knowledge/Obsidian-Vault/Tech-Knowledge/
 ├── Backend-Patterns/
 │   ├── api-design.md
@@ -219,6 +232,7 @@ sync:
 ⚠️ **Your Responsibility:**
 
 This tool helps scrub identifiers, but **you** must:
+
 - Understand your employment agreement
 - Know what's proprietary vs public knowledge
 - Make the final call on what to preserve

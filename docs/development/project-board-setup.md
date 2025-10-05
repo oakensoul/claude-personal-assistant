@@ -15,6 +15,7 @@ This document describes the setup and usage of the AIDA Development GitHub Proje
 ## Overview
 
 The AIDA Development project uses GitHub Projects (v2) with a Kanban-style workflow across two board views:
+
 - **Triage** - Issue intake and evaluation
 - **Backlog** - Development workflow and execution
 
@@ -23,6 +24,7 @@ The project tracks issues across multiple repositories in the AIDA ecosystem.
 ## Why GitHub Projects?
 
 **Benefits:**
+
 - Cross-repository tracking (framework + dotfiles + private configs)
 - Custom fields for AIDA-specific categorization
 - Multiple views on the same data
@@ -30,6 +32,7 @@ The project tracks issues across multiple repositories in the AIDA ecosystem.
 - Visual workflow management
 
 **vs Alternatives:**
+
 - Simple GitHub Issues - No cross-repo, limited organization
 - External tools (Jira, Linear) - Adds complexity, costs money
 - GitHub Projects Classic - Limited features, deprecated
@@ -39,21 +42,25 @@ The project tracks issues across multiple repositories in the AIDA ecosystem.
 ### Two-View Workflow
 
 **Triage Board** - Issue Evaluation
-```
+
+```text
 Parking Lot → Triage → Ready → Won't Fix/Duplicate/Invalid
 ```
 
 Purpose: Evaluate new issues, decide if/when to work on them
+
 - New issues start in **Triage** (auto-added)
 - Review and refine
 - Outcome: Advance to **Ready** or close with resolution
 
 **Backlog Board** - Development Execution
-```
+
+```text
 Ready → Prioritized → In Progress → In Review → Done
 ```
 
 Purpose: Execute prioritized work and ship features
+
 - Issues enter at **Ready** (from Triage)
 - Clear workflow progression
 - Ends at **Done** (completed work)
@@ -61,6 +68,7 @@ Purpose: Execute prioritized work and ship features
 ### Handoff Point: "Ready"
 
 **Ready** appears in both boards - it's the handoff from evaluation to execution:
+
 - Exits Triage board when requirements are complete
 - Enters Backlog board ready for prioritization
 
@@ -71,6 +79,7 @@ Purpose: Execute prioritized work and ship features
 Categorizes what kind of work the issue represents.
 
 **Values:**
+
 | Type | Description | Use When |
 |------|-------------|----------|
 | Defect | Issue in released code | Production bug affecting users |
@@ -88,6 +97,7 @@ Categorizes what kind of work the issue represents.
 Indicates urgency and importance.
 
 **Values:**
+
 | Priority | Description | Response Time |
 |----------|-------------|---------------|
 | P0 | Critical/Blocking | Drop everything |
@@ -96,6 +106,7 @@ Indicates urgency and importance.
 | P3 | Low priority | Nice to have |
 
 **Prioritization Framework:**
+
 - P0: Blocks users, security issues, data loss
 - P1: Important features, significant bugs, deadline-driven
 - P2: Normal development work
@@ -106,6 +117,7 @@ Indicates urgency and importance.
 Estimates effort required.
 
 **Values:**
+
 | Complexity | Time Estimate | Description |
 |------------|---------------|-------------|
 | XS | 1-2 hours | Quick fix or small change |
@@ -121,6 +133,7 @@ Estimates effort required.
 Groups issues into releases. See [ROADMAP.md](./ROADMAP.md) for detailed milestone information.
 
 **Active Milestones:**
+
 - 0.1.0 - Foundation (Oct 2025)
 - 0.2.0 - Core Features (Nov 2025)
 - 0.3.0 - Enhanced Memory & Agents (Dec 2025)
@@ -135,6 +148,7 @@ Groups issues into releases. See [ROADMAP.md](./ROADMAP.md) for detailed milesto
 Tracks workflow state and resolution.
 
 **Workflow States:**
+
 | Status | Description | Board | Next Step |
 |--------|-------------|-------|-----------|
 | Parking Lot | Ideas for future consideration | Triage | Move to Triage when ready to evaluate |
@@ -145,6 +159,7 @@ Tracks workflow state and resolution.
 | In Review | Awaiting review or deployment | Backlog | Get reviewed, test, deploy |
 
 **Resolution States:**
+
 | Status | Description | When to Use |
 |--------|-------------|-------------|
 | Done | Completed successfully | Feature shipped, bug fixed |
@@ -155,6 +170,7 @@ Tracks workflow state and resolution.
 ### Sub-issues Progress (Built-in)
 
 Automatically tracks completion of sub-tasks.
+
 - Shows progress bar: "2 of 5 tasks complete"
 - Use for breaking down large features
 - Sub-issues are created as normal issues, linked via tasklist
@@ -217,22 +233,26 @@ Automatically tracks completion of sub-tasks.
 ### Development Workflow
 
 **Ready → Prioritized:**
+
 - Review Ready column
 - Decide what to work on next
 - Move to Prioritized (creates queue)
 
 **Prioritized → In Progress:**
+
 - Pick top item from Prioritized
 - Start work
 - Move to In Progress
 
 **In Progress → In Review:**
+
 - Development complete
 - Create PR (link to issue)
 - Move to In Review
 - Request review or deploy
 
 **In Review → Done:**
+
 - Review approved / deployment successful
 - Move to Done
 - Close issue in GitHub
@@ -245,12 +265,14 @@ Automatically tracks completion of sub-tasks.
 1. Create parent issue (e.g., "Personality Builder")
 2. Create sub-issues (e.g., "Create questionnaire", "Design YAML schema")
 3. Link via tasklist in parent:
+
    ```markdown
    ## Sub-tasks
    - [ ] #16 Create questionnaire
    - [ ] #17 Design YAML schema
    - [ ] #18 Implement preview mode
    ```
+
 4. Track progress at both levels
 5. Close parent when all sub-issues complete
 
@@ -261,11 +283,13 @@ Automatically tracks completion of sub-tasks.
 ### Default Views
 
 **Triage** (Board)
+
 - Group by: Status
 - Columns: Parking Lot | Triage | Ready | Won't Fix | Duplicate | Invalid
 - Purpose: Issue evaluation
 
 **Backlog** (Board)
+
 - Group by: Status
 - Columns: Ready | Prioritized | In Progress | In Review | Done
 - Purpose: Development execution
@@ -275,16 +299,19 @@ Automatically tracks completion of sub-tasks.
 You can create additional views for different perspectives:
 
 **By Priority** (Board)
+
 - Group by: Priority
 - Columns: P0 | P1 | P2 | P3
 - Purpose: See urgent work
 
 **By Milestone** (Board)
+
 - Group by: Milestone
 - Columns: 0.1.0 | 0.2.0 | 0.3.0 | etc.
 - Purpose: See release grouping
 
 **All Issues** (Table)
+
 - Layout: Table
 - All fields visible
 - Purpose: Detailed management, filtering, bulk editing
@@ -292,7 +319,8 @@ You can create additional views for different perspectives:
 ### Filtering
 
 **Common filters:**
-```
+
+```text
 # Only P0 and P1 issues
 priority:P0,P1
 
@@ -317,6 +345,7 @@ type:Feature complexity:L,XL
 **GitHub labels are separate from project custom fields.**
 
 We use minimal labels for:
+
 - `good-first-issue` - Shows up in GitHub contributor discovery
 - `help-wanted` - Seeking community help
 - `breaking-change` - For changelog automation
@@ -348,6 +377,7 @@ We use minimal labels for:
 ### Using with AIDA
 
 **Future AIDA features could:**
+
 - Auto-suggest Type based on issue content
 - Auto-estimate Complexity based on description
 - Auto-assign to Milestone based on priority and dependencies
@@ -357,6 +387,7 @@ We use minimal labels for:
 - Learn prioritization patterns
 
 **For now, include agent mentions in issue descriptions:**
+
 ```markdown
 ## Agents to Invoke
 @shell-script-specialist - For install.sh work
@@ -369,6 +400,7 @@ We use minimal labels for:
 ### Issue Not Auto-Added
 
 **Check:**
+
 - Is repository linked to project?
 - Is auto-add workflow enabled?
 - Is filter `is:issue` configured correctly?
@@ -379,12 +411,14 @@ We use minimal labels for:
 **Closed issues are archived after 2 weeks.**
 
 **To view:**
+
 - Project → Filters → "Show archived items"
 - Or search repo issues directly
 
 ### Too Many Sub-issues Cluttering Board
 
 **Options:**
+
 - Filter to hide sub-issues (no built-in filter, would need labels)
 - Manually don't add sub-issues to project (skip auto-add)
 - Accept granular tracking (recommended)
@@ -392,6 +426,7 @@ We use minimal labels for:
 ### Status Not Updating
 
 **Remember:**
+
 - Status is project-level custom field
 - Closing issue in GitHub doesn't auto-update Status
 - You set Status manually, THEN close issue
@@ -399,6 +434,7 @@ We use minimal labels for:
 ## Future Enhancements
 
 **Planned improvements:**
+
 - Issue templates (auto-fill Type, Priority)
 - More automation workflows
 - GitHub Actions integration
@@ -409,6 +445,7 @@ We use minimal labels for:
 ## Contributing
 
 When contributing to AIDA:
+
 1. Create or claim an issue
 2. Comment to let others know you're working on it
 3. Create PR linked to issue

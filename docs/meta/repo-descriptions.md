@@ -13,12 +13,14 @@ audience: "developers"
 ## For: `dotfiles` (Public)
 
 ### Short Description
-```
+
+```text
 Personal configuration files and templates for macOS, featuring AIDA integration (Claude personal assistant system)
 ```
 
 ### Topics/Tags
-```
+
+```text
 dotfiles
 macos
 shell
@@ -32,7 +34,8 @@ templates
 ```
 
 ### About Section
-```
+
+```text
 My personal dotfiles and configuration templates, designed to work with GNU Stow. Includes shell configs, git setup, AIDA (Claude personal assistant) templates, and useful scripts. These serve as base configurations that can be extended with private overrides. Works in conjunction with claude-personal-assistant framework.
 ```
 
@@ -41,12 +44,14 @@ My personal dotfiles and configuration templates, designed to work with GNU Stow
 ## For: `dotfiles-private` (Private)
 
 ### Short Description
-```
+
+```text
 Private configuration overrides and secrets for my dotfiles setup
 ```
 
 ### Topics/Tags
-```
+
+```text
 dotfiles
 private
 configuration
@@ -55,7 +60,8 @@ stow
 ```
 
 ### About Section
-```
+
+```text
 Private repository containing personal configurations, secrets, and overrides that extend my public dotfiles. Includes actual AIDA configurations, API keys, work-specific settings, and private scripts. Stows on top of public dotfiles to provide complete personalized environment.
 ```
 

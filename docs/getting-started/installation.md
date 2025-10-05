@@ -38,51 +38,60 @@ touch update.sh
 Copy these files into the repository:
 
 ### Main README
+
 Already exists - the user-facing README.md at root
 
 ### Documentation Index
+
 ```bash
 # Copy docs/README.md artifact to:
 # ~/Development/personal/claude-personal-assistant/docs/README.md
 ```
 
 ### Architecture Documentation
+
 ```bash
 # Copy ARCHITECTURE.md artifact to:
 # ~/Development/personal/claude-personal-assistant/docs/architecture/ARCHITECTURE.md
 ```
 
 ### Development Roadmap
+
 ```bash
 # Copy ROADMAP.md artifact to:
 # ~/Development/personal/claude-personal-assistant/docs/developer-guide/ROADMAP.md
 ```
 
 ### Project Agents Overview
+
 ```bash
 # Copy project-agents/README.md artifact to:
 # ~/Development/personal/claude-personal-assistant/project-agents/README.md
 ```
 
 ### Platform Support Guide
+
 ```bash
 # Copy Platform Support Guide artifact to:
 # ~/Development/personal/claude-personal-assistant/docs/user-guide/platform-support.md
 ```
 
 ### Prerequisites & Tools Guide
+
 ```bash
 # Copy Prerequisites & Recommended Tools artifact to:
 # ~/Development/personal/claude-personal-assistant/docs/user-guide/prerequisites.md
 ```
 
 ### MCP Servers Guide
+
 ```bash
 # Copy MCP Servers for AIDE artifact to:
 # ~/Development/personal/claude-personal-assistant/docs/user-guide/mcp-servers.md
 ```
 
 ### Knowledge Sync Guide
+
 ```bash
 # Copy Knowledge Sync System artifact to:
 # ~/Development/personal/claude-personal-assistant/docs/user-guide/knowledge-sync.md
@@ -165,7 +174,7 @@ These will be filled in during development:
 # User guide placeholders
 touch docs/user-guide/{getting-started,prerequisites,mcp-servers,installation,platform-support,daily-workflows,commands,knowledge-sync,personalities,customization,obsidian-integration,dotfiles-integration,claude-configuration,troubleshooting,faq}.md
 
-# Developer guide placeholders  
+# Developer guide placeholders
 touch docs/developer-guide/{CONTRIBUTING,development-setup,adding-features,testing,code-style}.md
 
 # Architecture docs placeholders
@@ -192,7 +201,8 @@ tree -L 3 -I 'node_modules|.git'
 ```
 
 Should show:
-```
+
+```text
 .
 ├── LICENSE
 ├── README.md
@@ -255,4 +265,4 @@ git commit -m "Implement basic install.sh"
 
 ---
 
-**Repository structure is ready! Time to build AIDE! 🚀**
+Repository structure is ready! Time to build AIDE! 🚀

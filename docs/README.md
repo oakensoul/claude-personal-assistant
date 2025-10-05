@@ -15,26 +15,31 @@ Welcome to the AIDA documentation! This guide will help you get started, underst
 ## Quick Navigation
 
 **New to AIDA?** Start here:
+
 - [Prerequisites](getting-started/prerequisites.md) - Required and recommended tools
 - [Platform Support](getting-started/platform-support.md) - macOS, Linux, Windows/WSL
 - [Installation](getting-started/installation.md) - Complete installation guide
 
 **Using AIDA:**
+
 - [MCP Servers Guide](guides/mcp-servers.md) - Essential Claude extensions
 - [Knowledge Sync](guides/knowledge-sync.md) - Extract learnings to your PKM safely
 - [Knowledge Sync Quick Reference](reference/knowledge-sync-quickref.md) - Quick command reference
 
 **Understanding AIDA:**
+
 - [Architecture](architecture/ARCHITECTURE.md) - Complete system architecture
 - [Requirements](reference/requirements.md) - Detailed requirements document
 - [Project Agents](../project-agents/README.md) - Tech stack-specific agents
 
 **For Developers:**
+
 - [Development Roadmap](development/ROADMAP.md) - What we're building
 - [Tools Summary](reference/tools-summary.md) - Quick tools checklist
 - [Token Usage Guide](reference/token-usage.md) - Claude plans and costs
 
 **Meta/Reference:**
+
 - [Repository Descriptions](meta/repo-descriptions.md) - GitHub repo metadata
 - [Repository READMEs](meta/repo-readmes.md) - README templates
 
@@ -42,7 +47,7 @@ Welcome to the AIDA documentation! This guide will help you get started, underst
 
 ## Documentation Structure
 
-```
+```text
 docs/
 ├── getting-started/       # New user onboarding
 │   ├── prerequisites.md   # Required & recommended tools
@@ -95,14 +100,17 @@ docs/
 ## Key Concepts
 
 ### AIDA Framework
+
 AIDA (Agentic Intelligence Digital Assistant) is a conversational operating system for managing digital life through Claude AI. Unlike traditional dotfiles, AIDA provides natural language interface to projects, files, tasks, and workflows.
 
 ### Three-Repo Ecosystem
+
 - **claude-personal-assistant** (this repo) - Public framework
 - **dotfiles** - Public configuration templates
 - **dotfiles-private** - Private personal configurations
 
 ### Core Components
+
 - **Knowledge Base** - Static documentation about your system
 - **Memory System** - Dynamic current state and history
 - **Personality System** - How your assistant communicates
@@ -114,12 +122,14 @@ AIDA (Agentic Intelligence Digital Assistant) is a conversational operating syst
 ## Documentation Standards
 
 ### Writing Style
+
 - **Clear and concise** - Get to the point quickly
 - **Examples first** - Show, don't just tell
 - **Actionable** - Users should know what to do next
 - **Tested** - All commands and examples verified
 
 ### Document Format
+
 - Use `#` for page title (one per page)
 - Use `##` for major sections
 - Use `###` for subsections
@@ -133,12 +143,14 @@ AIDA (Agentic Intelligence Digital Assistant) is a conversational operating syst
 We welcome documentation contributions!
 
 **How to contribute:**
+
 1. Fix typos and errors
 2. Add examples and clarifications
 3. Create new guides for features
 4. Improve navigation
 
 **Before submitting:**
+
 - Test all commands
 - Check all links work
 - Follow style guide
@@ -151,6 +163,7 @@ See [ROADMAP.md](development/ROADMAP.md) for contribution guidelines.
 ## Getting Help
 
 Can't find what you need?
+
 - Check this index for the right document
 - Search within docs (most editors have search)
 - Check [GitHub Issues](https://github.com/yourusername/claude-personal-assistant/issues)
@@ -163,12 +176,14 @@ Can't find what you need?
 ### Keeping Docs Updated
 
 When you change AIDA:
+
 - Update relevant user guides
 - Update architecture if structure changed
 - Update roadmap if priorities changed
 - Update examples if affected
 
 ### Review Schedule
+
 - **Getting Started**: Review quarterly
 - **Architecture**: Update with major changes
 - **Development**: Update with process changes

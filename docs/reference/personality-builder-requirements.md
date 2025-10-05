@@ -124,7 +124,7 @@ Instead of maintaining 50+ pre-built personalities, AIDE will feature an interac
 
 ### 4.1 Installation Flow
 
-```
+```text
 ┌─────────────────────────────────────┐
 │   AIDE Installation Started         │
 │   ./install.sh                      │
@@ -172,7 +172,7 @@ Instead of maintaining 50+ pre-built personalities, AIDE will feature an interac
 
 ### 4.2 Modification Flow
 
-```
+```text
 aide personality modify
          │
          ▼
@@ -227,6 +227,7 @@ aide personality modify
 ### 4.3 Default Behavior if Skipped
 
 **FR-17**: If user skips personality setup:
+
 - System installs with JARVIS preset (professional, balanced, widely appealing)
 - User can run `aide personality setup` anytime later
 - Daily prompts (first 3 days): "Want to personalize your assistant? Run: aide personality setup"
@@ -238,6 +239,7 @@ aide personality modify
 ### 5.1 Preset Selection Criteria
 
 Each preset personality must:
+
 - Cover a distinct archetype with clear use case
 - Have coherent, well-defined traits across all dimensions
 - Appeal to a broad user segment
@@ -253,6 +255,7 @@ Each preset personality must:
 **Tone**: Professional, intelligent, subtly humorous
 
 **Key Traits**:
+
 ```yaml
 assistant:
   name: "JARVIS"
@@ -280,7 +283,8 @@ responses:
 ```
 
 **Sample Interaction**:
-```
+
+```text
 User: "Good morning"
 JARVIS: "Good morning, sir. I've reviewed your schedule and priorities.
 You have three active projects requiring attention today. Project Alpha's
@@ -300,6 +304,7 @@ documentation from Project Beta. I found it at
 ```
 
 **When to Choose JARVIS**:
+
 - You're a professional who values efficiency
 - You appreciate subtle wit without excessive chattiness
 - You want clear, intelligent responses without fluff
@@ -314,6 +319,7 @@ documentation from Project Beta. I found it at
 **Tone**: Respectful, traditional, genuinely caring
 
 **Key Traits**:
+
 ```yaml
 assistant:
   name: "Alfred"
@@ -341,7 +347,8 @@ responses:
 ```
 
 **Sample Interaction**:
-```
+
+```text
 User: "Good morning"
 Alfred: "Good morning, Master Oakensoul. I trust you slept well. I've
 prepared your daily overview: three active projects, two pending
@@ -362,6 +369,7 @@ find the others more manageable."
 ```
 
 **When to Choose Alfred**:
+
 - You appreciate traditional courtesy and respect
 - You want supportive, caring assistance
 - You value dignity and proper behavior
@@ -376,6 +384,7 @@ find the others more manageable."
 **Tone**: Enthusiastic, casual, genuinely excited to help
 
 **Key Traits**:
+
 ```yaml
 assistant:
   name: "FRIDAY"
@@ -403,7 +412,8 @@ responses:
 ```
 
 **Sample Interaction**:
-```
+
+```text
 User: "Good morning"
 FRIDAY: "Good morning, Oakensoul! ☀️ Ready to make today awesome?
 I've checked your projects—looks like Alpha is the hot priority today.
@@ -424,6 +434,7 @@ earned it!"
 ```
 
 **When to Choose FRIDAY**:
+
 - You want an upbeat, energetic assistant
 - You respond well to enthusiasm and encouragement
 - You prefer casual, friendly communication
@@ -438,6 +449,7 @@ earned it!"
 **Tone**: Calm, philosophical, mindful
 
 **Key Traits**:
+
 ```yaml
 assistant:
   name: "Sage"
@@ -465,7 +477,8 @@ responses:
 ```
 
 **Sample Interaction**:
-```
+
+```text
 User: "Good morning"
 Sage: "Good morning, friend. A new day brings new possibilities.
 I see three projects seeking your attention today. Rather than rushing,
@@ -487,6 +500,7 @@ makes this task challenging right now?"
 ```
 
 **When to Choose Sage**:
+
 - You value mindfulness and intentional living
 - You want calm, thoughtful responses
 - You appreciate philosophical perspectives
@@ -501,6 +515,7 @@ makes this task challenging right now?"
 **Tone**: Direct, demanding, intensely focused on results
 
 **Key Traits**:
+
 ```yaml
 assistant:
   name: "Sergeant"
@@ -528,7 +543,8 @@ responses:
 ```
 
 **Sample Interaction**:
-```
+
+```text
 User: "Good morning"
 Sergeant: "Morning, recruit. Three projects, three deadlines. Project
 Alpha is critical and due in 48 hours. Your Downloads folder is a mess—
@@ -547,6 +563,7 @@ thing and execute. Now."
 ```
 
 **When to Choose Drill Sergeant**:
+
 - You respond well to tough love and direct feedback
 - You want accountability without coddling
 - You prefer minimal words and maximum action
@@ -556,7 +573,7 @@ thing and execute. Now."
 
 ### 5.3 Preset Selection Menu
 
-```
+```text
 🤖 Choose Your Assistant Personality
 
 AIDE can adapt different personalities to match your preferences.
@@ -614,7 +631,7 @@ Your choice (1-7): _
 **Type**: Free text with validation
 **Required**: Yes (default: "Assistant")
 
-```
+```text
 🤖 Let's Build Your Custom Personality
 
 Q1: What should I call your assistant?
@@ -629,6 +646,7 @@ Enter name (or press Enter for "Assistant"): _
 ```
 
 **Validation**:
+
 - 1-20 characters
 - Alphanumeric + spaces/hyphens
 - No special characters or emojis
@@ -641,7 +659,7 @@ Enter name (or press Enter for "Assistant"): _
 **Type**: Multiple choice
 **Required**: Yes
 
-```
+```text
 Q2: How should {assistant_name} address you?
 
 1. By name only → "Good morning, Alex"
@@ -654,7 +672,8 @@ Your choice (1-5): _
 ```
 
 **Follow-up** (if option 1, 2, or 3):
-```
+
+```text
 What should I call you? _
 ```
 
@@ -666,7 +685,7 @@ What should I call you? _
 **Type**: Multiple choice with examples
 **Required**: Yes
 
-```
+```text
 Q3: How formal should {assistant_name} be?
 
 1. Very Formal - Traditional and respectful
@@ -694,7 +713,7 @@ Your choice (1-4): _
 **Type**: Multiple choice with examples
 **Required**: Yes
 
-```
+```text
 Q4: How much detail should {assistant_name} provide?
 
 1. Minimal - Shortest possible responses
@@ -735,7 +754,7 @@ Your choice (1-5): _
 **Type**: Multiple choice
 **Required**: Yes
 
-```
+```text
 Q5: What tone should {assistant_name} have?
 
 1. Professional - Competent and business-like
@@ -759,7 +778,7 @@ Your choice (1-7): _
 **Type**: Multiple choice
 **Required**: Yes
 
-```
+```text
 Q6: How much humor should {assistant_name} use?
 
 1. None - Always serious and professional
@@ -780,7 +799,7 @@ Your choice (1-4): _
 **Type**: Multiple choice with examples
 **Required**: Yes
 
-```
+```text
 Q7: How should {assistant_name} motivate you?
 
 1. Rational - Logical reasoning
@@ -814,7 +833,7 @@ Your choice (1-6): _
 **Type**: Multiple choice
 **Required**: Yes
 
-```
+```text
 Q8: Should {assistant_name} use emojis?
 
 1. Never - No emojis ever
@@ -835,7 +854,7 @@ Your choice (1-4): _
 **Type**: Multiple choice
 **Required**: No (can skip)
 
-```
+```text
 Q9: How should {assistant_name} greet you?
 
 1. Time-aware - "Good morning/afternoon/evening"
@@ -849,7 +868,8 @@ Your choice (1-6, or press Enter to skip): _
 ```
 
 **If custom selected**:
-```
+
+```text
 Enter custom greeting template (use {user.name} for your name): _
 ```
 
@@ -863,7 +883,7 @@ Enter custom greeting template (use {user.name} for your name): _
 **Type**: Multiple choice
 **Required**: No (can skip)
 
-```
+```text
 Q10: How should {assistant_name} respond when you procrastinate?
 
 1. Gentle reminder - "I notice {task} has been pending. Want to address it?"
@@ -886,7 +906,7 @@ Your choice (1-6, or press Enter to skip): _
 **Type**: Multiple choice
 **Required**: No (can skip)
 
-```
+```text
 Q11: How should {assistant_name} handle messy folders?
 
 1. Gentle suggestion - "{folder} has {count} files. Would you like to organize?"
@@ -909,7 +929,7 @@ Your choice (1-6, or press Enter to skip): _
 **Type**: Yes/No
 **Required**: No (can skip)
 
-```
+```text
 Q12: Should {assistant_name} adjust behavior based on time of day?
 
 This enables variations like:
@@ -922,7 +942,8 @@ Enable time-based variations? (y/n, or press Enter to skip): _
 ```
 
 **If yes**:
-```
+
+```text
 Define work hours (default 9-17): _
 ```
 
@@ -934,7 +955,7 @@ Define work hours (default 9-17): _
 
 After all questions:
 
-```
+```text
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🤖 Personality Summary
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -966,7 +987,7 @@ Your choice (1-4): _
 
 If user selects "Preview sample responses":
 
-```
+```text
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🎭 Preview: How SPARK Will Respond
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1157,6 +1178,7 @@ templates:
 All response fields are **strings** that may contain template variables:
 
 **Template Variables**:
+
 - `{user.name}` - User's name
 - `{assistant.name}` - Assistant's name
 - `{task}` - Task name/description
@@ -1169,6 +1191,7 @@ All response fields are **strings** that may contain template variables:
 - `{time_context}` - Time-based context
 
 **Standard Response Fields**:
+
 - `greeting_morning`, `greeting_afternoon`, `greeting_evening`, `greeting_night`
 - `task_complete`, `task_started`, `task_blocked`
 - `procrastination`
@@ -1247,17 +1270,19 @@ INCOHERENT_COMBINATIONS = [
 ### 8.2 Dependencies
 
 **Required**:
+
 - `bash` 4.0+ or `zsh`
 - `yq` or `yj` (YAML processing)
 - `sed`, `awk` (text processing)
 
 **Optional**:
+
 - `dialog` or `whiptail` (enhanced UI)
 - `figlet` (ASCII art banners)
 
 ### 8.3 File Locations
 
-```
+```text
 ~/.aide/
 ├── config/
 │   ├── personality.yaml          # Active personality config
@@ -1426,6 +1451,7 @@ validate_personality() {
 **Scope**: Basic functionality
 
 **Deliverables**:
+
 - ✅ 5 preset personalities (YAML files)
 - ✅ Basic personality-builder.sh script
 - ✅ 8 core questions (skip advanced features)
@@ -1435,6 +1461,7 @@ validate_personality() {
 - ✅ Integration with install.sh
 
 **Success Criteria**:
+
 - User can choose preset or create custom during installation
 - Generated YAML is valid and complete
 - Personality persists across sessions
@@ -1446,6 +1473,7 @@ validate_personality() {
 **Scope**: Full questionnaire + advanced features
 
 **Deliverables**:
+
 - ✅ All 12 questions implemented
 - ✅ Enhanced preview (5 scenarios)
 - ✅ Granular modification (change individual traits)
@@ -1455,6 +1483,7 @@ validate_personality() {
 - ✅ Improved validation and error handling
 
 **Success Criteria**:
+
 - Complete questionnaire flow
 - Preview accurately reflects configuration
 - Users can modify without starting over
@@ -1466,6 +1495,7 @@ validate_personality() {
 **Scope**: UX improvements + edge cases
 
 **Deliverables**:
+
 - ✅ Enhanced UI (dialog/whiptail if available)
 - ✅ Coherence validation warnings
 - ✅ Personality comparison tool
@@ -1474,6 +1504,7 @@ validate_personality() {
 - ✅ A/B testing between personalities
 
 **Success Criteria**:
+
 - Professional, polished experience
 - Handles all edge cases gracefully
 - Community can share personalities
@@ -1485,7 +1516,7 @@ validate_personality() {
 
 ### 10.1 Complete Custom Build Session
 
-```bash
+```text
 $ aide personality setup
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1665,7 +1696,7 @@ SPARK is ready! Try saying: aide status
 
 ### 10.2 Preset Selection Session
 
-```bash
+```text
 $ aide personality setup
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1730,7 +1761,7 @@ What should we tackle first?"
 
 ### 10.3 Modification Session
 
-```bash
+```text
 $ aide personality modify
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1806,7 +1837,7 @@ Changes saved! SPARK's personality has been updated.
 
 ### 10.4 Export/Import Session
 
-```bash
+```text
 # Export
 $ aide personality export work-mode
 
@@ -1928,6 +1959,7 @@ compiled_templates:
 ### 11.1 Unit Tests
 
 **Test Coverage**:
+
 - ✅ YAML generation from all question paths
 - ✅ Validation of all enum values
 - ✅ Required field validation
@@ -1939,6 +1971,7 @@ compiled_templates:
 ### 11.2 Integration Tests
 
 **Test Scenarios**:
+
 - ✅ Complete custom build flow (all questions answered)
 - ✅ Preset selection flow
 - ✅ Modification flow (change individual traits)
@@ -1952,6 +1985,7 @@ compiled_templates:
 ### 11.3 User Acceptance Testing
 
 **Test Cases**:
+
 - ✅ New user completes setup in under 5 minutes
 - ✅ Preview accurately represents final personality
 - ✅ Users understand all questions
@@ -1963,6 +1997,7 @@ compiled_templates:
 ### 11.4 Edge Cases
 
 **Handle Gracefully**:
+
 - User exits mid-questionnaire (save progress?)
 - Invalid YAML in manual edits (validate, show errors)
 - Conflicting trait combinations (warn but allow)
@@ -1977,26 +2012,31 @@ compiled_templates:
 ### 12.1 Phase 4: Advanced Features (v0.5.0+)
 
 **Learning Mode**:
+
 - Track user interactions
 - Suggest personality adjustments based on usage
 - "Your responses tend to be longer than your 'concise' setting. Want to adjust?"
 
 **Context-Aware Personalities**:
+
 - Work mode vs personal mode
 - Project-specific personality overrides
 - Meeting mode (more formal) vs solo time (casual)
 
 **Community Sharing**:
+
 - Public personality repository
 - Rating and reviews
 - Curated collections
 - Remix existing personalities
 
 **Voice/Speech Integration**:
+
 - Text-to-speech using personality tone
 - Voice command personality switching
 
 **Multi-Language Support**:
+
 - Translate questionnaire
 - Localized personality traits
 - Cultural adaptation
@@ -2004,16 +2044,19 @@ compiled_templates:
 ### 12.2 Advanced Customization
 
 **Custom Response Templates**:
+
 - Full template editor
 - Conditional logic in templates
 - Variables and expressions
 
 **Personality Profiles**:
+
 - Multiple personalities per user
 - Schedule-based switching
 - Context-triggered switching
 
 **A/B Testing**:
+
 - Compare two personalities side-by-side
 - Track which one works better
 - Hybrid/merge personalities
@@ -2021,12 +2064,14 @@ compiled_templates:
 ### 12.3 Analytics and Insights
 
 **Usage Tracking**:
+
 - Which personality traits are most popular
 - Common customizations
 - Modification patterns
 - User satisfaction metrics
 
 **Personality Recommendations**:
+
 - Based on user behavior
 - Based on similar users
 - Based on task types
@@ -2114,4 +2159,4 @@ For users upgrading from old static personalities to new builder system:
 
 ---
 
-**End of Document**
+End of Document

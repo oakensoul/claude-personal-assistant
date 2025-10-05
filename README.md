@@ -10,7 +10,7 @@ audience: "users"
 
 # Claude Personal Assistant (AIDA)
 
-**Agentic Intelligence Digital Assistant**
+## Agentic Intelligence Digital Assistant
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/oakensoul/claude-personal-assistant/releases/tag/v0.1.0)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](LICENSE)
@@ -43,6 +43,7 @@ This project is part of a three-repository ecosystem:
 ## What is AIDA?
 
 AIDA turns Claude into your personal assistant for:
+
 - 📊 Project tracking and workflow management
 - 🗂️ Intelligent file organization
 - 📝 Daily note-taking and summaries
@@ -72,6 +73,7 @@ cd ~/.aida
 This is the initial foundational release of AIDA framework. See [CHANGELOG.md](docs/CHANGELOG.md) for full details.
 
 **Highlights:**
+
 - **Project Infrastructure**: Complete linting setup with yamllint, shellcheck, markdownlint, and gitleaks secret detection
 - **Development Agents**: Six specialized agents for framework development (shell scripting, UX design, security, configuration, integration, QA)
 - **Product Management**: AIDA product manager agent with comprehensive product strategy and roadmap capabilities
@@ -81,20 +83,24 @@ This is the initial foundational release of AIDA framework. See [CHANGELOG.md](d
 ## Installation Options
 
 ### Normal Install (For Users)
+
 ```bash
 ./install.sh
 ```
+
 Creates `~/.claude/` with your personal configuration.
 
 ### Dev Mode (For Contributors)
+
 ```bash
 ./install.sh --dev
 ```
+
 Symlinks `~/.aida/` to your development directory for live editing.
 
 ## Directory Structure
 
-```
+```text
 ~/.aida/                    # Framework (installed from this repo)
 ├── templates/             # Shareable templates
 │   ├── knowledge/
@@ -131,23 +137,27 @@ Switch anytime: `aida personality jarvis`
 ## Features
 
 ### Knowledge Management
+
 - System structure documentation
 - Procedures and workflows
 - Project tracking
 - Personal preferences
 
 ### Memory System
+
 - Current context tracking
 - Decision history
 - Activity logs
 - Persistent state across conversations
 
 ### Agents
+
 - **Secretary** - Daily workflow management
 - **File Manager** - Intelligent organization
 - **Dev Assistant** - Coding help
 
 ### Obsidian Integration
+
 - Daily note templates
 - Project tracking
 - Dashboard views
@@ -157,7 +167,7 @@ Switch anytime: `aida personality jarvis`
 
 AIDA works through natural conversation with Claude:
 
-```
+```text
 You: "What should I focus on today?"
 AIDA: "Good morning. Project Alpha is at 80%,
        Project Beta needs attention..."
