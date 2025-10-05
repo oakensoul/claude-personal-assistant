@@ -54,4 +54,4 @@ repos:
     hooks:
       - id: markdownlint
         name: Lint markdown files
-        args: [--fix, --disable, MD013, MD033, MD041]
+        args: [--config, .markdownlint.json]
