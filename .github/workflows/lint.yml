@@ -28,13 +28,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check for shell scripts
+        id: check_scripts
+        run: |
+          if find . -type f \( -name "*.sh" -o -name "*.bash" \) -not -path "*/node_modules/*" -not -path "*/.venv/*" | grep -q .; then
+            echo "has_scripts=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_scripts=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run ShellCheck
+        if: steps.check_scripts.outputs.has_scripts == 'true'
         uses: ludeeus/action-shellcheck@master
         with:
           severity: warning
           scandir: '.'
           ignore_paths: node_modules .venv
           check_together: 'yes'
+
+      - name: Skip ShellCheck
+        if: steps.check_scripts.outputs.has_scripts == 'false'
+        run: echo "No shell scripts found, skipping ShellCheck"
 
   markdown-lint:
     name: Markdown Lint
