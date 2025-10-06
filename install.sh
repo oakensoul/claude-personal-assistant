@@ -22,12 +22,26 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SCRIPT_DIR
 
-# Color codes for output
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[1;33m'
-readonly BLUE='\033[0;34m'
-readonly NC='\033[0m' # No Color
+# Source shared utilities from installer-common library
+readonly INSTALLER_COMMON="${SCRIPT_DIR}/lib/installer-common"
+
+# shellcheck source=lib/installer-common/colors.sh
+source "${INSTALLER_COMMON}/colors.sh" || {
+    echo "Error: Failed to source colors.sh from ${INSTALLER_COMMON}"
+    exit 1
+}
+
+# shellcheck source=lib/installer-common/logging.sh
+source "${INSTALLER_COMMON}/logging.sh" || {
+    echo "Error: Failed to source logging.sh from ${INSTALLER_COMMON}"
+    exit 1
+}
+
+# shellcheck source=lib/installer-common/validation.sh
+source "${INSTALLER_COMMON}/validation.sh" || {
+    echo "Error: Failed to source validation.sh from ${INSTALLER_COMMON}"
+    exit 1
+}
 
 # Script version
 VERSION_FILE="${SCRIPT_DIR}/VERSION"
@@ -35,7 +49,7 @@ if [[ -f "$VERSION_FILE" ]]; then
     VERSION="$(cat "$VERSION_FILE")"
     readonly VERSION
 else
-    echo -e "${RED}Error:${NC} VERSION file not found at $VERSION_FILE"
+    print_message "error" "VERSION file not found at $VERSION_FILE"
     exit 1
 fi
 
@@ -95,83 +109,6 @@ EOF
 }
 
 #######################################
-# Print formatted message
-# Arguments:
-#   $1 - Message type (info, success, warning, error)
-#   $2 - Message text
-# Outputs:
-#   Writes formatted message to stdout/stderr
-#######################################
-print_message() {
-    local type="$1"
-    local message="$2"
-
-    case "$type" in
-        info)
-            echo -e "${BLUE}ℹ${NC} ${message}"
-            ;;
-        success)
-            echo -e "${GREEN}✓${NC} ${message}"
-            ;;
-        warning)
-            echo -e "${YELLOW}⚠${NC} ${message}"
-            ;;
-        error)
-            echo -e "${RED}✗${NC} ${message}" >&2
-            ;;
-        *)
-            echo "${message}"
-            ;;
-    esac
-}
-
-#######################################
-# Validate system dependencies
-# Globals:
-#   None
-# Arguments:
-#   None
-# Returns:
-#   0 on success, 1 on failure
-# Outputs:
-#   Writes validation status to stdout/stderr
-#######################################
-validate_dependencies() {
-    print_message "info" "Validating system dependencies..."
-
-    local errors=0
-
-    # Check bash version (require >= 4.0)
-    if [[ "${BASH_VERSINFO[0]}" -lt 4 ]]; then
-        print_message "error" "Bash version 4.0 or higher is required (found ${BASH_VERSION})"
-        errors=$((errors + 1))
-    else
-        print_message "success" "Bash version ${BASH_VERSION}"
-    fi
-
-    # Check for required commands
-    local required_commands=("git" "mkdir" "chmod" "ln" "rsync" "date" "mv" "find")
-    for cmd in "${required_commands[@]}"; do
-        if ! command -v "$cmd" &> /dev/null; then
-            print_message "error" "Required command not found: $cmd"
-            errors=$((errors + 1))
-        fi
-    done
-
-    if [[ $errors -eq 0 ]]; then
-        print_message "success" "All dependencies validated"
-    fi
-
-    # Check write permissions to home directory
-    if [[ ! -w "${HOME}" ]]; then
-        print_message "error" "No write permission to home directory: ${HOME}"
-        errors=$((errors + 1))
-    fi
-
-    return "$errors"
-}
-
-#######################################
 # Prompt user for assistant name with validation
 # Globals:
 #   ASSISTANT_NAME
@@ -208,7 +145,10 @@ prompt_assistant_name() {
             continue
         fi
 
-        if [[ "$name" != "${name,,}" ]]; then
+        # Convert to lowercase for comparison (Bash 3.2 compatible)
+        local name_lower
+        name_lower=$(echo "$name" | tr '[:upper:]' '[:lower:]')
+        if [[ "$name" != "$name_lower" ]]; then
             print_message "warning" "Name must be lowercase"
             continue
         fi
@@ -427,7 +367,7 @@ personality: "${PERSONALITY}"
 last_updated: "$(date +%Y-%m-%d)"
 ---
 
-# ${ASSISTANT_NAME^^} - Your AIDA Assistant
+# $(echo "$ASSISTANT_NAME" | tr '[:lower:]' '[:upper:]') - Your AIDA Assistant
 
 Welcome! I'm ${ASSISTANT_NAME}, your Agentic Intelligence Digital Assistant.
 

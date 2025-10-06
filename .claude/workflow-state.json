@@ -1,0 +1,10 @@
+{
+  "active_issue": {
+    "number": 33,
+    "title": "Support dotfiles installer integration - shared installer-common library and VERSION file",
+    "branch": "milestone-v0.1/task/33-installer-common-version",
+    "started_at": "2025-10-06T20:00:00Z",
+    "analysis_complete": true,
+    "milestone": "0.1.0 - Foundation"
+  }
+}
