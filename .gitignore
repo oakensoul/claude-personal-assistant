@@ -16,8 +16,9 @@ node_modules/
 .claude/settings.local.json
 .claude/workflow-config.json
 
-# Issue tracking (in-progress)
+# Issue tracking (in-progress and drafts)
 .github/issues/in-progress/
+.github/issues/drafts/
 
 # Time tracking logs
 .time-tracking/*.md
