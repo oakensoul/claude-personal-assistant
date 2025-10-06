@@ -16,6 +16,7 @@ Expert analysis Q&A session conducted during `/expert-analysis` workflow.
 **Question**: Should dotfiles bundle a fallback copy of installer-common utilities?
 
 **Options**:
+
 - A: Hard dependency (dotfiles requires AIDA pre-installed)
 - B: Bundle fallback utilities (dotfiles can install standalone)
 - C: Defer to v0.2.0
@@ -25,6 +26,7 @@ Expert analysis Q&A session conducted during `/expert-analysis` workflow.
 **Rationale**: "There's really no reason to use my 'dotfiles' project if you're not using AIDA. There are lots of great options out there." - User decision aligns with recommended approach for v0.1.2 (simpler implementation, clear dependency model).
 
 **Impact**:
+
 - Dotfiles installer will require AIDA to be installed first
 - Installation order: AIDA → dotfiles → dotfiles-private
 - Clear error message if AIDA missing with installation instructions
@@ -37,6 +39,7 @@ Expert analysis Q&A session conducted during `/expert-analysis` workflow.
 **Question**: Should we require realpath (via Homebrew) or provide fallback?
 
 **Options**:
+
 - A: Require realpath (fail with clear error + brew install instructions)
 - B: Python fallback (use Python's os.path.realpath)
 - C: Pure Bash fallback
@@ -46,6 +49,7 @@ Expert analysis Q&A session conducted during `/expert-analysis` workflow.
 **Rationale**: "That's probably fine, but what about on Windows? My guess is that installing dotfiles, will have a list of required things that need to be installed when you install it or before you install it."
 
 **Implementation**:
+
 - Document realpath as prerequisite
 - Fail with clear error message if missing
 - Provide installation instructions:
@@ -62,6 +66,7 @@ Expert analysis Q&A session conducted during `/expert-analysis` workflow.
 **Question**: How verbose should error messages be?
 
 **Options**:
+
 - A: Generic to user, detailed to secure log file (~/.aida/logs/)
 - B: Detailed to user (may expose system info)
 - C: Minimal (just "Error occurred")
@@ -71,6 +76,7 @@ Expert analysis Q&A session conducted during `/expert-analysis` workflow.
 **Rationale**: "This is fine, as long as we have it well documented where the logs are. Our users are going to be highly technical, so having access to the logs isn't something that is going to be a risk."
 
 **Implementation**:
+
 - User-facing messages: Generic, actionable (e.g., "Version mismatch. See logs for details.")
 - Log file: Detailed error messages, stack traces, system info
 - Log location: `~/.aida/logs/install.log` (permissions: 600)
@@ -78,6 +84,7 @@ Expert analysis Q&A session conducted during `/expert-analysis` workflow.
 - Path scrubbing: Replace `/Users/username/` with `~/` in user-facing messages
 
 **Documentation Requirements**:
+
 - Add "Troubleshooting" section to lib/installer-common/README.md
 - Document log location and format
 - Provide examples of how to read logs for debugging

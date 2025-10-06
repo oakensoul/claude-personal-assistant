@@ -29,11 +29,13 @@ The dotfiles installer needs to source shared utilities and check version compat
 ## Context
 
 The dotfiles installer architecture uses an "inverted template" approach where:
+
 - User's actual configs live in `~/dotfiles-private/` (stowed to `~/`)
 - AIDA dotfiles provides templates at `~/dotfiles/` (NOT stowed)
 - User configs source AIDA templates
 
 The installer needs to:
+
 - Clone AIDA framework to `~/.aida/`
 - Source utilities from `~/.aida/lib/installer-common/`
 - Check AIDA version compatibility via `~/.aida/VERSION`
@@ -51,6 +53,7 @@ The installer needs to:
 ```
 
 **Purpose**:
+
 - Single source of truth for AIDA version
 - Read by dotfiles installer for compatibility checks
 - Used in release tagging
@@ -82,6 +85,7 @@ lib/
 ```
 
 **Purpose**:
+
 - Shared utilities for both AIDA and dotfiles installers
 - Sourced by dotfiles installer at `~/.aida/lib/installer-common/`
 - Single source of truth for common installer code
@@ -150,6 +154,7 @@ AIDA_VERSION=$(cat "${AIDA_PATH}/VERSION")
 ## Technical Details
 
 **Version Compatibility**:
+
 - Dotfiles specifies required AIDA version range in `.aida-version`
 - Installer clones specific AIDA tag (e.g., `v0.1.0`)
 - Checks `VERSION` file after clone to verify
@@ -163,6 +168,7 @@ RECOMMENDED_VERSION="v0.1.0"
 ```
 
 **No Circular Dependency**:
+
 - AIDA installer does NOT depend on dotfiles
 - Dotfiles installer DOES depend on AIDA
 - Clean one-way dependency
@@ -230,12 +236,14 @@ This is the ONLY hard dependency between AIDA and dotfiles for v0.1.0. Once this
 Created `lib/installer-common/` library with reusable shell utilities for AIDA and dotfiles installers:
 
 **New Files**:
+
 - `lib/installer-common/colors.sh` (117 lines) - Terminal color utilities with NO_COLOR support
 - `lib/installer-common/logging.sh` (120 lines) - Structured logging to ~/.aida/logs/install.log with path scrubbing
 - `lib/installer-common/validation.sh` (305 lines) - Input validation and security controls (Phase 1)
 - `lib/installer-common/README.md` (418 lines) - Comprehensive API documentation and integration guide
 
 **Modified Files**:
+
 - `install.sh` - Refactored to source utilities from lib/installer-common/ (+26 insertions, -86 deletions)
 
 **Total**: +986 insertions, -86 deletions across 5 files
@@ -243,6 +251,7 @@ Created `lib/installer-common/` library with reusable shell utilities for AIDA a
 ### Implementation Details
 
 **Security Features (Phase 1)**:
+
 - Input sanitization with allowlist validation (versions, paths, filenames)
 - Path canonicalization using realpath (reject .. traversal)
 - File permission validation (reject world-writable files)
@@ -250,12 +259,14 @@ Created `lib/installer-common/` library with reusable shell utilities for AIDA a
 - Secure logging with path scrubbing (replaces /Users/username/ with ~/)
 
 **Bash 3.2 Compatibility**:
+
 - Replaced `${var,,}` with `$(echo "$var" | tr '[:upper:]' '[:lower:]')`
 - Replaced `${var^^}` with `$(echo "$var" | tr '[:lower:]' '[:upper:]')`
 - Updated Bash version requirement from 4.0+ to 3.2+ (macOS default)
 - Platform-specific stat syntax (macOS BSD vs Linux GNU)
 
 **Quality Assurance**:
+
 - All files pass shellcheck validation (zero warnings)
 - Tested on macOS Bash 3.2.57 (default macOS shell)
 - Installation script loads utilities correctly

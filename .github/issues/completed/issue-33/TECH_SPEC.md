@@ -906,6 +906,7 @@ fi
 1. **Platform detection** ✓
    - Detect $OSTYPE, use appropriate syntax
    - Example:
+
      ```bash
      if [[ "$OSTYPE" == "darwin"* ]]; then
          perms=$(stat -f "%Lp" "$file")  # BSD stat (macOS)
@@ -930,7 +931,7 @@ fi
 
 ### Recommended Spikes
 
-**Spike 1: macOS Bash 3.2 Compatibility**
+#### Spike 1: macOS Bash 3.2 Compatibility
 
 - **Goal**: Verify all Bash 3.2 replacements work correctly
 - **Approach**:
@@ -942,7 +943,7 @@ fi
 - **Time box**: 1 hour
 - **Success criteria**: install.sh runs successfully on Bash 3.2.57
 
-**Spike 2: Dev Mode Symlink Behavior**
+#### Spike 2: Dev Mode Symlink Behavior
 
 - **Goal**: Verify sourcing works when ~/.aida/ is symlink to repo
 - **Approach**:
