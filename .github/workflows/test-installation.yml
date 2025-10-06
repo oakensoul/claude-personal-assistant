@@ -21,6 +21,10 @@ on:
       - '.github/workflows/test-installation.yml'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 env:
   # Test inputs for automated installation
   TEST_ASSISTANT_NAME: "testassistant"
