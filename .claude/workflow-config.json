@@ -58,6 +58,42 @@
           "to": "Done"
         }
       }
+    },
+    "expert_analysis": {
+      "enabled": true,
+      "product_manager": {
+        "agent": "product-manager",
+        "philosophy": "engineering-led-user-first",
+        "prioritization": "wsjf",
+        "communication": "concise",
+        "domain": ["Developer Tools", "System Utilities"],
+        "patterns": ["dogfooding", "open source", "privacy-focused"]
+      },
+      "tech_lead": {
+        "agent": "tech-lead",
+        "philosophy": "pragmatic-innovative-perfectionist",
+        "tech_stack": ["bash", "shell", "git", "docker", "github-actions"],
+        "architecture": ["modular", "plugin"],
+        "code_review_priorities": ["maintainability", "security", "consistency", "documentation", "performance", "test-coverage"]
+      },
+      "agents": {
+        "product": [
+          "configuration-specialist",
+          "integration-specialist",
+          "privacy-security-auditor",
+          "shell-systems-ux-designer"
+        ],
+        "technical": [
+          "shell-script-specialist",
+          "devops-engineer",
+          "qa-engineer",
+          "privacy-security-auditor",
+          "integration-specialist",
+          "configuration-specialist"
+        ]
+      },
+      "qa_mode": "interactive",
+      "document_format": "concise"
     }
   }
 }
