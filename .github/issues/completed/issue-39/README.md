@@ -4,7 +4,7 @@ title: "Add workflow commands to templates folder for user customization"
 status: "COMPLETED"
 created: "2025-10-07"
 completed: "2025-10-07"
-pr: ""
+pr: "40"
 actual_effort: 1
 estimated_effort: 1
 ---
@@ -103,7 +103,8 @@ None yet
 
 ## Related Links
 
-- [GitHub Issue](https://github.com/oakensoul/claude-personal-assistant/issues/39)
+- [GitHub Issue #39](https://github.com/oakensoul/claude-personal-assistant/issues/39)
+- [Pull Request #40](https://github.com/oakensoul/claude-personal-assistant/pull/40)
 - [Project Board](https://github.com/oakensoul/claude-personal-assistant/projects)
 
 ## Notes
@@ -113,7 +114,7 @@ Add your work notes here...
 ## Resolution
 
 **Completed**: 2025-10-07
-**Pull Request**: # (will be filled after creation)
+**Pull Request**: #40
 
 ### Changes Made
 
