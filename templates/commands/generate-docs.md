@@ -1,6 +1,7 @@
 ---
 name: generate-docs
 description: Generate documentation for features, APIs, or components with intelligent scope detection and delegation to technical-writer agent
+model: sonnet[1m]
 args:
   --branch:
     description: Scope documentation to current branch changes only
