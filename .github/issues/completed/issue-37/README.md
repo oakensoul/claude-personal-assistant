@@ -6,7 +6,7 @@ created: "2025-10-06 14:14:00"
 completed: "2025-10-07"
 estimated_effort: 1
 actual_effort: 4.5
-pr: ""
+pr: "38"
 ---
 
 # Issue #37: Archive global agents and commands to templates folder
@@ -227,7 +227,7 @@ done
 ## Resolution
 
 **Completed**: 2025-10-07
-**Pull Request**: (will be filled after creation)
+**Pull Request**: #38
 
 ### Changes Made
 
