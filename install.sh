@@ -419,10 +419,11 @@ copy_command_templates() {
             return 1
         fi
 
-        # Verify no unsubstituted template variables remain
-        if grep -qE '\{\{[A-Z_]+\}\}' "${target}"; then
-            print_message "error" "Unresolved template variables in ${cmd_name}"
-            grep -E '\{\{[A-Z_]+\}\}' "${target}"
+        # Verify install-time template variables were substituted
+        # Note: Runtime variables like {{PROJECT_ROOT}} and {{timestamp}} are intentionally preserved
+        if grep -qE '\{\{(AIDA_HOME|CLAUDE_CONFIG_DIR|HOME)\}\}' "${target}"; then
+            print_message "error" "Unresolved install-time template variables in ${cmd_name}"
+            grep -E '\{\{(AIDA_HOME|CLAUDE_CONFIG_DIR|HOME)\}\}' "${target}"
             return 1
         fi
 
