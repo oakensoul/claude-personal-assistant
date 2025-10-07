@@ -11,7 +11,7 @@ estimated_effort: 1
 
 # Issue #39: Add workflow commands to templates folder for user customization
 
-**Status**: OPEN
+**Status**: COMPLETED
 **Labels**:
 **Milestone**: 0.1.0 - Foundation
 **Assignees**: oakensoul
@@ -92,7 +92,7 @@ None yet
 
 ---
 **Type**: chore
-**Estimated Effort**: 1 hours
+**Estimated Effort**: 1 hour
 **Draft Slug**: add-workflow-commands-to-templates-folder-for-user-customization
 
 ## Work Tracking

@@ -92,49 +92,133 @@ Document templates provide standardized formats for project artifacts:
 - **PRD_TEMPLATE.md**: Product Requirements Document template
 - **TECH_SPEC_TEMPLATE.md**: Technical Specification template
 
-## Runtime Variable Substitution
+## Variable Substitution
 
-Templates use **runtime variables** that are resolved by Claude Code when the templates are processed. This design decision (Q3 2025) ensures templates remain privacy-safe and platform-agnostic.
+Templates use a **hybrid variable substitution strategy** with two types of variables that are processed at different times. This ensures templates remain privacy-safe, platform-agnostic, and context-aware.
 
-### Supported Variables
+### Two Types of Variables
 
-| Variable | Description | Example Resolution |
-|----------|-------------|-------------------|
-| `${CLAUDE_CONFIG_DIR}` | User's Claude configuration directory | `~/.claude` |
-| `${PROJECT_ROOT}` | Current project root directory | `/path/to/project` |
-| `${AIDA_HOME}` | AIDA installation directory | `~/.aida` |
-| `${USER}` | Current username | `user` |
-| `${HOME}` | User's home directory | `${HOME}` or `~` |
-| `~` | Home directory shorthand | `${HOME}` or `~` |
+#### 1. Install-Time Variables (`{{VAR}}`)
 
-### Variable Usage Examples
+These variables are substituted by `sed` during installation (`./install.sh`). They are replaced with actual values when templates are copied from `templates/` to `~/.claude/`.
 
-**In agent definitions:**
+**Syntax:** `{{VAR_NAME}}`
 
-```markdown
-Reference the knowledge base at `~/${CLAUDE_CONFIG_DIR}/agents/tech-lead/knowledge/`
-```
+**Supported variables:**
 
-**In commands:**
+| Variable | Description | Example Value |
+|----------|-------------|---------------|
+| `{{AIDA_HOME}}` | AIDA installation directory | `/Users/username/.aida` |
+| `{{CLAUDE_CONFIG_DIR}}` | Claude configuration directory | `/Users/username/.claude` |
+| `{{HOME}}` | User's home directory | `/Users/username` |
 
-```markdown
-Create agent file at `${CLAUDE_CONFIG_DIR}/agents/{name}.md`
-```
+**When to use:** For user-specific paths that are fixed at installation and don't change.
 
-**In file paths:**
+**Example in template:**
 
 ```markdown
-Templates are installed from `${AIDA_HOME}/templates/`
+Reference the knowledge base at `{{CLAUDE_CONFIG_DIR}}/knowledge/`
 ```
 
-### Why Runtime Variables?
+**After installation:**
 
-Runtime variable substitution provides several benefits:
+```markdown
+Reference the knowledge base at `/Users/username/.claude/knowledge/`
+```
 
-1. **Privacy Safety**: No hardcoded user paths or usernames in version control
-2. **Platform Agnostic**: Works across different operating systems and user environments
-3. **Flexibility**: Users can customize installation locations
-4. **Maintainability**: Single source of truth with dynamic resolution
+#### 2. Runtime Variables (`${VAR}`)
+
+These variables use standard bash syntax and are resolved by Claude Code when commands execute. They remain as variables in the installed files.
+
+**Syntax:** `${VAR_NAME}` or `$(command)`
+
+**Supported variables:**
+
+| Variable | Description | Resolved At Runtime |
+|----------|-------------|---------------------|
+| `${PROJECT_ROOT}` | Current project root directory | `/path/to/current/project` |
+| `${GIT_ROOT}` | Git repository root | `/path/to/git/repo` |
+| `$(date +%Y-%m-%d)` | Command substitution | Current date |
+| Any bash variable | Standard bash variables | Environment-specific |
+
+**When to use:** For context-specific values that change based on where/when the command runs.
+
+**Example in template and installed file:**
+
+```markdown
+Create documentation at `${PROJECT_ROOT}/docs/README.md`
+```
+
+**This remains unchanged after installation and resolves when the command executes.**
+
+### Why Two Types?
+
+This hybrid approach provides:
+
+1. **Privacy Safety**: Templates contain no hardcoded user paths
+2. **Platform Agnostic**: Works across different operating systems
+3. **User Customization**: Fixed paths are set once at installation
+4. **Context Awareness**: Runtime variables adapt to current project/environment
+5. **Flexibility**: Best of both worlds - fixed user config + dynamic context
+
+### Variable Usage Guidelines
+
+**Use install-time variables (`{{VAR}}`) for:**
+
+- User home directory paths
+- AIDA installation location
+- Claude configuration directory
+- Paths that never change after installation
+
+**Use runtime variables (`${VAR}`) for:**
+
+- Project-specific paths
+- Git repository locations
+- Dynamic timestamps or dates
+- Environment-dependent values
+- Paths that change based on context
+
+**Examples:**
+
+```markdown
+# ✓ CORRECT: Install-time for user config
+Read agent config from `{{CLAUDE_CONFIG_DIR}}/agents/tech-lead.md`
+
+# ✓ CORRECT: Runtime for project path
+Create file at `${PROJECT_ROOT}/docs/architecture.md`
+
+# ✓ CORRECT: Mixed usage
+Copy template from `{{AIDA_HOME}}/templates/` to `${PROJECT_ROOT}/docs/`
+
+# ✗ WRONG: Hardcoded path
+Read config from `/Users/oakensoul/.claude/agents/tech-lead.md`
+
+# ✗ WRONG: Using runtime syntax for user paths in templates
+Read config from `${CLAUDE_CONFIG_DIR}/agents/tech-lead.md`
+```
+
+### Installation Processing
+
+During `./install.sh`:
+
+1. **Template files** in `templates/` contain both `{{VAR}}` and `${VAR}` syntax
+2. **Install-time variables** (`{{VAR}}`) are replaced by `sed` with actual paths
+3. **Runtime variables** (`${VAR}`) are preserved as-is in installed files
+4. **Installed files** in `~/.claude/` have concrete user paths + runtime variables
+
+Example transformation:
+
+**Before (template):**
+
+```markdown
+Read from `{{CLAUDE_CONFIG_DIR}}/knowledge/` and write to `${PROJECT_ROOT}/docs/`
+```
+
+**After (installed):**
+
+```markdown
+Read from `/Users/username/.claude/knowledge/` and write to `${PROJECT_ROOT}/docs/`
+```
 
 ## Installation Flow
 
@@ -382,13 +466,15 @@ git commit -m "feat(templates): add {command-name} command template"
 
 ### Fixing Validation Issues
 
-1. **Replace hardcoded paths** with variables:
-   - Hardcoded paths → `${CLAUDE_CONFIG_DIR}/`
-   - `~/.aida/` → `${AIDA_HOME}/`
-   - `/path/to/project/` → `${PROJECT_ROOT}/`
+1. **Replace hardcoded paths** with appropriate variables:
+   - User config paths → `{{CLAUDE_CONFIG_DIR}}/` (install-time)
+   - AIDA installation → `{{AIDA_HOME}}/` (install-time)
+   - User home directory → `{{HOME}}/` (install-time)
+   - Project paths → `${PROJECT_ROOT}/` (runtime)
+   - Git repository paths → `${GIT_ROOT}` (runtime)
 
 2. **Remove or generify usernames**:
-   - Specific usernames → `${USER}` or generic placeholder
+   - Specific usernames → `{{USER}}` or generic placeholder
    - Use `{username}` for examples
 
 3. **Use example emails**:
@@ -398,6 +484,11 @@ git commit -m "feat(templates): add {command-name} command template"
 4. **Replace credentials** with placeholders:
    - `api_key: abc123...` → `api_key: {your-api-key}`
    - `token: real_token` → `token: ${API_TOKEN}`
+
+**Remember:** Choose the right variable type based on when the value should be resolved:
+
+- **Install-time (`{{VAR}}`)**: User-specific paths that are fixed at installation
+- **Runtime (`${VAR}`)**: Context-specific values that change per execution
 
 ## Template Standards
 

@@ -49,13 +49,62 @@ Command documentation and instructions for Claude...
 - **description**: Brief description shown in command lists
 - **args**: Optional arguments the command accepts (can be empty `{}`)
 
-### Runtime Variables
+### Variable Substitution
 
-Commands can reference these variables which are resolved by Claude at runtime:
+Commands support two types of variable substitution with different timing:
 
-- `${CLAUDE_CONFIG_DIR}`: User's Claude configuration directory (`~/.claude/`)
-- `${PROJECT_ROOT}`: Current project root directory
-- `${AIDA_HOME}`: AIDA installation directory (`~/.aida/`)
+#### Install-Time Variables
+
+These variables use `{{VAR}}` syntax and are substituted by `sed` during installation. They are replaced with actual values when commands are installed to `~/.claude/commands/`.
+
+**Install-time variables:**
+
+- `{{AIDA_HOME}}`: Replaced with AIDA installation directory (e.g., `/Users/username/.aida`)
+- `{{CLAUDE_CONFIG_DIR}}`: Replaced with Claude config directory (e.g., `/Users/username/.claude`)
+- `{{HOME}}`: Replaced with user's home directory (e.g., `/Users/username`)
+
+**When to use:** For paths that are fixed at installation and don't change between command invocations.
+
+**Example in template:**
+
+```markdown
+Reference the knowledge base at `{{CLAUDE_CONFIG_DIR}}/knowledge/`
+```
+
+**After installation (in ~/.claude/commands/):**
+
+```markdown
+Reference the knowledge base at `/Users/username/.claude/knowledge/`
+```
+
+#### Runtime Variables
+
+These variables use standard bash `${VAR}` or `$(command)` syntax and are resolved when the command executes. They remain as variables in the installed command files.
+
+**Runtime variables:**
+
+- `${PROJECT_ROOT}`: Current project root directory (resolved at runtime)
+- `${GIT_ROOT}`: Git repository root (resolved at runtime)
+- `$(command)`: Shell command substitution (executed at runtime)
+
+**When to use:** For paths that change based on context (which project you're in, current directory, etc.)
+
+**Example in template and installed file:**
+
+```markdown
+Create file at `${PROJECT_ROOT}/docs/README.md`
+```
+
+**This stays the same after installation and resolves when Claude executes the command.**
+
+#### Why Two Types?
+
+This hybrid approach provides:
+
+- **Install-time substitution:** User-specific paths that don't change (home, config directories)
+- **Runtime substitution:** Context-specific values that change per invocation (project paths, timestamps)
+- **Privacy:** Templates remain generic with no hardcoded user paths
+- **Flexibility:** Commands adapt to both user environment and execution context
 
 ## Available Commands
 
