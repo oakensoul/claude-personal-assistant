@@ -55,3 +55,14 @@ repos:
       - id: markdownlint
         name: Lint markdown files
         args: [--config, .markdownlint.json]
+
+  # Local project-specific checks
+  - repo: local
+    hooks:
+      - id: validate-templates
+        name: Validate template privacy
+        description: Check templates for hardcoded paths, usernames, and credentials
+        entry: scripts/validate-templates.sh --quiet
+        language: script
+        files: ^templates/.*\.md$
+        pass_filenames: false
