@@ -15,6 +15,51 @@ All notable changes to the AIDA framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2025-10-07
+
+### Added
+
+#### Template System
+
+- **Command Templates**: Archived 8 core commands to `templates/commands/` with runtime variable substitution:
+  - create-agent, create-command, create-issue, expert-analysis
+  - generate-docs, publish-issue, track-time, workflow-init
+  - All hardcoded paths replaced with `${CLAUDE_CONFIG_DIR}`, `${PROJECT_ROOT}`, `${AIDA_HOME}`
+
+- **Agent Templates**: Archived 6 core agents to `templates/agents/` with knowledge structures:
+  - claude-agent-manager, code-reviewer, devops-engineer
+  - product-manager, tech-lead, technical-writer
+  - Each includes knowledge directory with privacy-safe placeholders (core-concepts/, patterns/, decisions/)
+
+- **Privacy Validation Infrastructure**:
+  - `scripts/validate-templates.sh` - Comprehensive privacy validation script
+  - Pre-commit hook for automated template privacy checking
+  - Detects hardcoded paths, usernames, credentials, email addresses
+  - CI/CD integration with proper exit codes
+
+### Documentation
+
+- **Template Documentation**: Comprehensive README files (56KB total):
+  - `templates/README.md` (16KB) - Template system overview, runtime variables, installation flow
+  - `templates/commands/README.md` (15KB) - All 8 commands documented with examples
+  - `templates/agents/README.md` (25KB) - All 6 agents, two-tier knowledge system explained
+  - `scripts/README.md` (4.8KB) - Privacy validation script usage
+
+- **Expert Analysis Documentation**: Added documentation for `/expert-analysis` command workflow
+
+### Changed
+
+- **CI/CD**: Added template privacy validation to pre-commit hooks
+- **Workflow**: Added context cleanup option to `/cleanup-main` command
+- **Cleanup**: Removed extraneous template file, maintained consistent structure
+
+### Technical Details
+
+- **Runtime Variable Resolution**: Templates use `${VAR}` syntax, resolved by Claude at runtime (no .template extensions)
+- **Privacy-Safe**: All templates pass comprehensive privacy validation
+- **Quality**: All markdown files pass linting, shellcheck passes with zero warnings
+- **Structure**: Templates mirror `~/.claude/` installation structure
+
 ## [0.1.1] - 2025-10-05
 
 ### Added
