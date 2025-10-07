@@ -318,5 +318,6 @@ Successfully archived Phase 1 of agents and commands to version-controlled templ
 
 ## Related Links
 
-- [GitHub Issue](https://github.com/oakensoul/claude-personal-assistant/issues/37)
+- [GitHub Issue #37](https://github.com/oakensoul/claude-personal-assistant/issues/37)
+- [Pull Request #38](https://github.com/oakensoul/claude-personal-assistant/pull/38)
 - [Project Board](https://github.com/oakensoul/claude-personal-assistant/projects)
