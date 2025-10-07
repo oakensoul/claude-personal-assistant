@@ -40,11 +40,11 @@ readonly APPROVED_VARS=(
 )
 
 # Approved template variables for install-time substitution
+# Note: Runtime variables like PROJECT_ROOT use ${VAR} syntax, not {{VAR}}
 readonly APPROVED_TEMPLATE_VARS=(
   'AIDA_HOME'
   'CLAUDE_CONFIG_DIR'
   'HOME'
-  'PROJECT_ROOT'
 )
 
 # Color codes for output (disable if not a tty)

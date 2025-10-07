@@ -55,7 +55,7 @@ Execute the following steps systematically. Each step must complete successfully
 
 ```bash
 # Check .claude/workflow-state.json for active issue
-cat {{PROJECT_ROOT}}/.claude/workflow-state.json
+cat ${PROJECT_ROOT}/.claude/workflow-state.json
 ```
 
 **Expected Structure**:
@@ -82,7 +82,7 @@ cat {{PROJECT_ROOT}}/.claude/workflow-state.json
 
 ```bash
 # Ensure current branch matches active issue branch
-git -C {{PROJECT_ROOT}} branch --show-current
+git -C ${PROJECT_ROOT} branch --show-current
 ```
 
 **Validation**:
@@ -356,7 +356,7 @@ EOF
 
 ```bash
 # Check if approval is required
-cat {{PROJECT_ROOT}}/.claude/workflow-config.json | jq -r '.workflow.implementation.require_approval'
+cat ${PROJECT_ROOT}/.claude/workflow-config.json | jq -r '.workflow.implementation.require_approval'
 ```
 
 **If `require_approval` is `true`**:
@@ -452,7 +452,7 @@ Choice [Y/N/E]: _
 
 ```bash
 # Create .implementation-state.json
-cat > "{{PROJECT_ROOT}}/.implementation-state.json" << 'EOF'
+cat > "${PROJECT_ROOT}/.implementation-state.json" << 'EOF'
 {
   "issue_number": {{issue_number}},
   "milestone": "{{milestone}}",
@@ -571,7 +571,7 @@ todos:
 
 ```bash
 # Check for agent file
-ls -la "{{CLAUDE_CONFIG_DIR}}/agents/{{agent_name}}.md"
+ls -la "${CLAUDE_CONFIG_DIR}/agents/{{agent_name}}.md"
 ```
 
 **If agent exists**:
@@ -579,7 +579,7 @@ ls -la "{{CLAUDE_CONFIG_DIR}}/agents/{{agent_name}}.md"
 1. **Load agent instructions**:
 
    ```bash
-   cat "{{CLAUDE_CONFIG_DIR}}/agents/{{agent_name}}.md"
+   cat "${CLAUDE_CONFIG_DIR}/agents/{{agent_name}}.md"
    ```
 
 2. **Prepare agent context**:
@@ -640,7 +640,7 @@ Display interactive fallback prompt:
 
 Task: {{task_title}}
 Assigned Agent: {{agent_name}}
-Agent Path: {{CLAUDE_CONFIG_DIR}}/agents/{{agent_name}}.md
+Agent Path: ${CLAUDE_CONFIG_DIR}/agents/{{agent_name}}.md
 
 The assigned agent doesn't exist. How would you like to proceed?
 
@@ -763,7 +763,7 @@ Check `workflow-config.json` for default behavior:
 **Check configuration**:
 
 ```bash
-cat {{PROJECT_ROOT}}/.claude/workflow-config.json | jq -r '.workflow.implementation.quality_checks'
+cat ${PROJECT_ROOT}/.claude/workflow-config.json | jq -r '.workflow.implementation.quality_checks'
 ```
 
 **Expected**:
@@ -782,7 +782,7 @@ cat {{PROJECT_ROOT}}/.claude/workflow-config.json | jq -r '.workflow.implementat
 
 ```bash
 # Run pre-commit on affected files
-cd {{PROJECT_ROOT}}
+cd ${PROJECT_ROOT}
 git add {{files_affected}}
 pre-commit run --files {{files_affected}}
 ```
@@ -798,7 +798,7 @@ pre-commit run --files {{files_affected}}
 
 ```bash
 # Run project tests
-cd {{PROJECT_ROOT}}
+cd ${PROJECT_ROOT}
 npm test 2>&1 || pytest || go test ./... || true
 ```
 
@@ -811,7 +811,7 @@ npm test 2>&1 || pytest || go test ./... || true
 
 ```bash
 # Run build if applicable
-cd {{PROJECT_ROOT}}
+cd ${PROJECT_ROOT}
 npm run build 2>&1 || make build || go build || true
 ```
 
@@ -830,7 +830,7 @@ npm run build 2>&1 || make build || go build || true
 
 ```bash
 # Get auto-commit setting
-cat {{PROJECT_ROOT}}/.claude/workflow-config.json | jq -r '.workflow.implementation.auto_commit'
+cat ${PROJECT_ROOT}/.claude/workflow-config.json | jq -r '.workflow.implementation.auto_commit'
 ```
 
 **If `auto_commit` is `true`** (or command arg `--auto-commit=true`):
@@ -838,7 +838,7 @@ cat {{PROJECT_ROOT}}/.claude/workflow-config.json | jq -r '.workflow.implementat
 1. **Stage changes**:
 
    ```bash
-   cd {{PROJECT_ROOT}}
+   cd ${PROJECT_ROOT}
    git add {{files_affected}}
    ```
 
@@ -938,7 +938,7 @@ jq -r '.tasks[] | select(.status == "pending") | .id' .implementation-state.json
 
 ```bash
 # Run pre-commit on all changed files
-cd {{PROJECT_ROOT}}
+cd ${PROJECT_ROOT}
 git diff --name-only HEAD $(git merge-base HEAD origin/main) > changed_files.txt
 pre-commit run --files $(cat changed_files.txt)
 ```
@@ -954,7 +954,7 @@ pre-commit run --files $(cat changed_files.txt)
 
 ```bash
 # Run complete test suite
-cd {{PROJECT_ROOT}}
+cd ${PROJECT_ROOT}
 npm test || pytest || go test ./... || make test
 ```
 
@@ -968,7 +968,7 @@ npm test || pytest || go test ./... || make test
 
 ```bash
 # Verify project builds successfully
-cd {{PROJECT_ROOT}}
+cd ${PROJECT_ROOT}
 npm run build || make build || go build
 ```
 
@@ -982,7 +982,7 @@ npm run build || make build || go build
 
 ```bash
 # Check working tree status
-cd {{PROJECT_ROOT}}
+cd ${PROJECT_ROOT}
 git status --porcelain
 ```
 
@@ -1153,7 +1153,7 @@ No follow-up issues identified.
 
 ```bash
 # Stage all changes including new/modified files
-cd {{PROJECT_ROOT}}
+cd ${PROJECT_ROOT}
 git add -A
 
 # Show status
@@ -1164,8 +1164,8 @@ git status
 
 ```bash
 # Mark implementation as complete
-jq '.active_issue.implementation_complete = true | .active_issue.implementation_completed_at = "{{timestamp}}"' {{PROJECT_ROOT}}/.claude/workflow-state.json > {{PROJECT_ROOT}}/.claude/workflow-state.json.tmp
-mv {{PROJECT_ROOT}}/.claude/workflow-state.json.tmp {{PROJECT_ROOT}}/.claude/workflow-state.json
+jq '.active_issue.implementation_complete = true | .active_issue.implementation_completed_at = "{{timestamp}}"' ${PROJECT_ROOT}/.claude/workflow-state.json > ${PROJECT_ROOT}/.claude/workflow-state.json.tmp
+mv ${PROJECT_ROOT}/.claude/workflow-state.json.tmp ${PROJECT_ROOT}/.claude/workflow-state.json
 ```
 
 ---
@@ -1236,7 +1236,7 @@ DOCUMENTATION:
 
 ```bash
 # Archive implementation state
-cd {{PROJECT_ROOT}}
+cd ${PROJECT_ROOT}
 mv .implementation-state.json "$ANALYSIS_DIR/implementation-state-$(date +%s).json"
 
 # Clean up temporary files
@@ -1270,7 +1270,7 @@ todos: []
 
 ```bash
 # Check for state file
-test -f "{{PROJECT_ROOT}}/.implementation-state.json"
+test -f "${PROJECT_ROOT}/.implementation-state.json"
 ```
 
 **If state file exists**:
@@ -1278,7 +1278,7 @@ test -f "{{PROJECT_ROOT}}/.implementation-state.json"
 1. **Load state**:
 
    ```bash
-   cat {{PROJECT_ROOT}}/.implementation-state.json
+   cat ${PROJECT_ROOT}/.implementation-state.json
    ```
 
 2. **Display resume prompt**:
@@ -1434,7 +1434,7 @@ jq empty .implementation-state.json 2>&1
 
 ### workflow-config.json Structure
 
-**Location**: `{{PROJECT_ROOT}}/.claude/workflow-config.json`
+**Location**: `${PROJECT_ROOT}/.claude/workflow-config.json`
 
 **Expected Structure**:
 
@@ -1715,7 +1715,7 @@ jq empty .implementation-state.json 2>&1
 
 ### File Locations
 
-- **Project Root**: `{{PROJECT_ROOT}}`
+- **Project Root**: `${PROJECT_ROOT}`
 - **Analysis Dir**: `.github/issues/in-progress/issue-{{number}}/`
 - **State File**: `.implementation-state.json` (project root)
 - **Workflow State**: `.claude/workflow-state.json`
