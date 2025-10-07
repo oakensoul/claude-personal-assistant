@@ -420,6 +420,11 @@ Automates the pull request creation process including atomic commits, versioning
          ---
          ```
 
+       - **Also update the markdown body status field** (if it exists):
+         - Find line starting with `**Status**:` in the README body
+         - Update from `**Status**: OPEN` to `**Status**: COMPLETED`
+         - This ensures frontmatter and body stay in sync
+
     b. **Add Resolution Section**:
        - Add **Resolution** section before the closing:
 
