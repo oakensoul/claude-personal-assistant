@@ -62,7 +62,7 @@ repos:
       - id: validate-templates
         name: Validate template privacy
         description: Check templates for hardcoded paths, usernames, and credentials
-        entry: scripts/validate-templates.sh --quiet
+        entry: scripts/validate-templates.sh
         language: script
         files: ^templates/.*\.md$
         pass_filenames: false
