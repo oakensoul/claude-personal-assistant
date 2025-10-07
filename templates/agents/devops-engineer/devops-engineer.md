@@ -703,7 +703,7 @@ git checkout v${previous_version}
 
 ## Getting Help
 
-- [GitHub Issues](https://github.com/oakensoul/claude-personal-assistant/issues)
+- [GitHub Issues](${PROJECT_REPO_URL}/issues)
 - [Documentation](https://aide.dev/docs)
 - [Discord Community](https://discord.gg/aide)
 

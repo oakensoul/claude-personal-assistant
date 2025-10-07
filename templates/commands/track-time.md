@@ -103,7 +103,7 @@ Log development time with automatic context detection from git commits and GitHu
    - Format branch name: `time-tracking/{developer}/{date}`
      - {developer}: git user.name lowercased, spaces replaced with hyphens
      - {date}: YYYY-MM-DD format from step 3
-     - Example: `time-tracking/oakensoul/2025-10-03`
+     - Example: `time-tracking/john-smith/2025-10-03`
    - Check if branch exists: `git rev-parse --verify time-tracking/{developer}/{date} 2>/dev/null`
    - If branch exists:
      - Checkout existing branch: `git checkout time-tracking/{developer}/{date}`
