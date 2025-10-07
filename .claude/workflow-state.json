@@ -1,9 +1,9 @@
 {
   "active_issue": {
-    "number": 37,
-    "title": "Archive global agents and commands to templates folder",
-    "branch": "milestone-v0.1/task/37-archive-global-agents-and-commands",
-    "started_at": "2025-10-06T14:14:00Z",
+    "number": 39,
+    "title": "Add workflow commands to templates folder for user customization",
+    "branch": "milestone-v0.1.0/chore/39-add-workflow-commands-to-templates-folder",
+    "started_at": "2025-10-07T00:00:00Z",
     "analysis_complete": true,
     "milestone": "0.1.0 - Foundation"
   }

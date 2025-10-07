@@ -39,6 +39,14 @@ readonly APPROVED_VARS=(
   '~'
 )
 
+# Approved template variables for install-time substitution
+readonly APPROVED_TEMPLATE_VARS=(
+  'AIDA_HOME'
+  'CLAUDE_CONFIG_DIR'
+  'HOME'
+  'PROJECT_ROOT'
+)
+
 # Color codes for output (disable if not a tty)
 if [[ -t 1 ]]; then
   readonly RED='\033[0;31m'
@@ -311,6 +319,53 @@ check_learned_patterns() {
   done < "$file"
 }
 
+# Check template variable syntax in command templates
+check_template_variables() {
+  local file="$1"
+  local line_num=0
+
+  # Only check files in templates/commands/ directory
+  if [[ "${file}" != *"/templates/commands/"* ]]; then
+    return 0
+  fi
+
+  while IFS= read -r line; do
+    ((line_num++))
+
+    # Skip empty lines and comments
+    [[ -z "${line}" || "${line}" =~ ^[[:space:]]*# ]] && continue
+
+    # Check for {{VAR}} template variables
+    if echo "${line}" | grep -qE '\{\{[A-Z_]+\}\}'; then
+      # Extract all template variables from this line
+      local vars
+      vars=$(echo "${line}" | grep -oE '\{\{[A-Z_]+\}\}')
+
+      # Check each variable against approved list
+      while IFS= read -r var; do
+        # Remove {{ and }}
+        local var_name
+        var_name=$(echo "${var}" | sed 's/{{//g; s/}}//g')
+
+        # Check if variable is approved
+        local approved=false
+        for approved_var in "${APPROVED_TEMPLATE_VARS[@]}"; do
+          if [[ "${var_name}" == "${approved_var}" ]]; then
+            approved=true
+            break
+          fi
+        done
+
+        if [[ "${approved}" == "false" ]]; then
+          log_error "${file}" "${line_num}" \
+            "Unknown template variable: ${var}" \
+            "Only approved variables are allowed: $(printf "{{%s}} " "${APPROVED_TEMPLATE_VARS[@]}")"
+        fi
+      done <<< "${vars}"
+    fi
+  done < "$file"
+}
+
 # Validate a single template file
 validate_file() {
   local file="$1"
@@ -323,6 +378,7 @@ validate_file() {
   check_emails "$file"
   check_credentials "$file"
   check_learned_patterns "$file"
+  check_template_variables "$file"
 }
 
 # Find and validate all template files
