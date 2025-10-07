@@ -1,6 +1,7 @@
 ---
 name: implement
 description: Orchestrates implementation of issue requirements through automated task breakdown, agent delegation, and quality validation
+model: sonnet[1m]
 args:
   skip-analysis:
     description: "Skip loading analysis documents and create plan directly from issue (default: false)"
