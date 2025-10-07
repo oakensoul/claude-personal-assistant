@@ -12,7 +12,7 @@ audience: "users"
 
 ## Agentic Intelligence Digital Assistant
 
-[![Version](https://img.shields.io/badge/version-0.1.1-blue.svg)](https://github.com/oakensoul/claude-personal-assistant/releases/tag/v0.1.1)
+[![Version](https://img.shields.io/badge/version-0.1.3-blue.svg)](https://github.com/oakensoul/claude-personal-assistant/releases/tag/v0.1.3)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](LICENSE)
 
 A conversational, agentic operating system for managing digital life through Claude AI. Unlike traditional dotfiles (shell configurations), AIDA provides a natural language interface to manage projects, files, tasks, and daily workflows.
@@ -80,6 +80,13 @@ See [Installation Flows](#installation-flows) for detailed comparison.
 
 ## Recent Changes
 
+### [0.1.3] - 2025-10-07
+
+- **Workflow Command Templates**: Added 4 core workflow commands as customizable templates (cleanup-main, implement, open-pr, start-work)
+- **Template Variable Substitution**: Install-time variable substitution system with sed-based processing
+- **Enhanced Validation**: Template variable validation added to privacy validation script
+- **Quality Improvements**: Fixed all markdown linting errors across 4 large command template files
+
 ### [0.1.2] - 2025-10-07
 
 - **Template System**: Archived 8 core commands and 6 core agents to `templates/` with runtime variable substitution
@@ -93,13 +100,6 @@ See [Installation Flows](#installation-flows) for detailed comparison.
 - **Testing Infrastructure**: Comprehensive cross-platform testing with 4 Docker environments and GitHub Actions CI/CD
 - **Enhanced Workflows**: Added 5 reviewer strategies including GitHub Copilot support
 - **Quality Improvements**: Fixed yamllint strict mode for consistency between local and CI validation
-
-### [0.1.0] - 2025-10-04
-
-- **Project Infrastructure**: Complete linting setup with yamllint, shellcheck, markdownlint, and gitleaks
-- **Development Agents**: Six specialized agents for framework development
-- **Product Management**: AIDA product manager agent with comprehensive capabilities
-- **GitHub Integration**: Issue forms, PR templates, and automated workflows
 
 See [CHANGELOG.md](docs/CHANGELOG.md) for complete version history.
 
