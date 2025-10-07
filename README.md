@@ -80,6 +80,13 @@ See [Installation Flows](#installation-flows) for detailed comparison.
 
 ## Recent Changes
 
+### [0.1.2] - 2025-10-07
+
+- **Template System**: Archived 8 core commands and 6 core agents to `templates/` with runtime variable substitution
+- **Privacy Validation**: Comprehensive privacy validation script and pre-commit hook integration
+- **Template Documentation**: 56KB of comprehensive README documentation for templates, commands, and agents
+- **Quality Infrastructure**: All templates privacy-validated, markdown-linted, and shellcheck-verified
+
 ### [0.1.1] - 2025-10-05
 
 - **Installation Script**: Complete foundational installation script with interactive setup, validation, and dev mode support

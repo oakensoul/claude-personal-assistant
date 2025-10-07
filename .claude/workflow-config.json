@@ -94,6 +94,10 @@
       },
       "qa_mode": "interactive",
       "document_format": "concise"
+    },
+    "cleanup": {
+      "clear_context_after": true,
+      "compact_instead_of_clear": false
     }
   }
 }
