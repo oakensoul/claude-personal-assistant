@@ -68,13 +68,22 @@ Privacy validation script for AIDA template files.
 
 **Approved Variables**:
 
-Templates should use these runtime variables instead of hardcoded paths:
+Templates should use variables instead of hardcoded paths. AIDA supports two types:
 
-- `${CLAUDE_CONFIG_DIR}` - User's Claude configuration directory (~/.claude)
-- `${AIDA_HOME}` - AIDA installation directory (~/.aida)
+**Install-time variables** (`{{VAR}}` - substituted during installation):
+
+- `{{AIDA_HOME}}` - AIDA installation directory (~/.aida)
+- `{{CLAUDE_CONFIG_DIR}}` - User's Claude configuration directory (~/.claude)
+- `{{HOME}}` - User's home directory
+
+**Runtime variables** (`${VAR}` - resolved when commands execute):
+
 - `${PROJECT_ROOT}` - Current project root
+- `${GIT_ROOT}` - Git repository root
 - `${USER}` - Current user
-- `${HOME}` or `~` - Home directory
+- `${HOME}` or `~` - Home directory (when used in runtime context)
+
+See [templates/README.md](../templates/README.md) for complete variable documentation.
 
 **Example Output**:
 
@@ -83,11 +92,11 @@ Validating templates for privacy issues...
 
 ✗ templates/commands/create-issue.md:42
   Found hardcoded path: /Users/oakensoul/.claude
-  Suggestion: Replace with ${CLAUDE_CONFIG_DIR}
+  Suggestion: Replace with {{CLAUDE_CONFIG_DIR}} (install-time variable)
 
 ✗ templates/agents/tech-lead/tech-lead.md:156
   Found username: oakensoul
-  Suggestion: Use generic placeholder or ${USER}
+  Suggestion: Use generic placeholder or {{USER}}
 
 ✗ FAILED: 2 privacy issue(s) found
 

@@ -345,6 +345,97 @@ create_directories() {
 }
 
 #######################################
+# Copy command templates with variable substitution
+# Globals:
+#   SCRIPT_DIR, AIDA_DIR, CLAUDE_DIR, HOME, DEV_MODE
+# Arguments:
+#   None
+# Returns:
+#   0 on success, 1 on failure
+# Outputs:
+#   Writes status messages to stdout
+#######################################
+copy_command_templates() {
+    local template_dir="${SCRIPT_DIR}/templates/commands"
+    local install_dir="${CLAUDE_DIR}/commands"
+    local backup_timestamp
+    backup_timestamp=$(date +%Y%m%d_%H%M%S)
+
+    print_message "info" "Installing command templates..."
+
+    # Ensure target directory exists
+    mkdir -p "${install_dir}"
+
+    # Dev mode: symlink templates directory
+    if [[ "$DEV_MODE" == true ]]; then
+        print_message "info" "Dev mode: symlinking commands for live editing..."
+        if [[ -d "${install_dir}" ]] && [[ ! -L "${install_dir}" ]]; then
+            # Backup existing directory before replacing with symlink
+            local dev_backup="${install_dir}.backup.${backup_timestamp}"
+            mv "${install_dir}" "${dev_backup}"
+            print_message "warning" "Backed up existing commands to ${dev_backup}"
+        fi
+        # Remove existing symlink if present
+        rm -rf "${install_dir}"
+        # Create symlink to template directory
+        ln -s "${template_dir}" "${install_dir}"
+        print_message "success" "Commands symlinked (dev mode)"
+        echo ""
+        return 0
+    fi
+
+    # Normal mode: copy templates with variable substitution
+    print_message "info" "Processing command templates with variable substitution..."
+
+    # Process each template file
+    for template in "${template_dir}"/*.md; do
+        # Skip if no templates found
+        [[ -e "${template}" ]] || continue
+
+        local cmd_name
+        cmd_name=$(basename "${template}")
+        local target="${install_dir}/${cmd_name}"
+
+        # Backup existing file if it exists
+        if [[ -f "${target}" ]]; then
+            local backup_dir="${CLAUDE_DIR}/commands/.backups/${backup_timestamp}"
+            mkdir -p "${backup_dir}"
+            cp -p "${target}" "${backup_dir}/${cmd_name}"
+            print_message "info" "Backed up: ${cmd_name}"
+        fi
+
+        # Substitute variables using sed
+        # Note: {{VAR}} patterns are for install-time substitution
+        # ${VAR} patterns in templates are preserved for runtime bash resolution
+        sed -e "s|{{AIDA_HOME}}|${AIDA_DIR}|g" \
+            -e "s|{{CLAUDE_CONFIG_DIR}}|${CLAUDE_DIR}|g" \
+            -e "s|{{HOME}}|${HOME}|g" \
+            "${template}" > "${target}"
+
+        # Validate output (check file was created and not empty)
+        if [[ ! -s "${target}" ]]; then
+            print_message "error" "Template substitution failed for ${cmd_name}"
+            rm -f "${target}"
+            return 1
+        fi
+
+        # Verify install-time template variables were substituted
+        # Note: Runtime variables like {{PROJECT_ROOT}} and {{timestamp}} are intentionally preserved
+        if grep -qE '\{\{(AIDA_HOME|CLAUDE_CONFIG_DIR|HOME)\}\}' "${target}"; then
+            print_message "error" "Unresolved install-time template variables in ${cmd_name}"
+            grep -E '\{\{(AIDA_HOME|CLAUDE_CONFIG_DIR|HOME)\}\}' "${target}"
+            return 1
+        fi
+
+        # Set restrictive permissions (600) for installed commands
+        chmod 600 "${target}"
+    done
+
+    print_message "success" "Command templates installed"
+    echo ""
+}
+
+#######################################
 # Generate main CLAUDE.md entry point
 # Globals:
 #   CLAUDE_MD, ASSISTANT_NAME, PERSONALITY
@@ -521,6 +612,7 @@ main() {
 
     check_existing_install
     create_directories
+    copy_command_templates
     generate_claude_md
 
     display_summary

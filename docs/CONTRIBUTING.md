@@ -322,6 +322,110 @@ validate_input() {
 pre-commit run yamllint --all-files
 ```
 
+### Template Variables
+
+**Two types of variable substitution:**
+
+AIDA templates use a hybrid variable substitution strategy with two distinct variable formats that are processed at different times:
+
+#### Install-Time Variables (`{{VAR}}`)
+
+Variables using double-brace syntax are substituted during installation by `sed`.
+
+**Syntax:** `{{VAR_NAME}}`
+
+**When to use:**
+
+- User home directory paths
+- AIDA installation location
+- Claude configuration directory
+- Any path that is fixed at installation time
+
+**Approved variables:**
+
+- `{{AIDA_HOME}}` - AIDA installation directory (e.g., `/Users/username/.aida`)
+- `{{CLAUDE_CONFIG_DIR}}` - Claude config directory (e.g., `/Users/username/.claude`)
+- `{{HOME}}` - User's home directory (e.g., `/Users/username`)
+
+**Example:**
+
+```markdown
+<!-- In template file -->
+Read agent config from `{{CLAUDE_CONFIG_DIR}}/agents/tech-lead.md`
+
+<!-- After installation -->
+Read agent config from `/Users/username/.claude/agents/tech-lead.md`
+```
+
+#### Runtime Variables (`${VAR}`)
+
+Variables using bash syntax are preserved in installed files and resolved when commands execute.
+
+**Syntax:** `${VAR_NAME}` or `$(command)`
+
+**When to use:**
+
+- Project-specific paths that change based on context
+- Dynamic values (timestamps, dates)
+- Environment-dependent values
+- Git repository locations
+
+**Common variables:**
+
+- `${PROJECT_ROOT}` - Current project directory
+- `${GIT_ROOT}` - Git repository root
+- `$(date +%Y-%m-%d)` - Current date
+- Any standard bash variable
+
+**Example:**
+
+```markdown
+<!-- In template and installed file (same) -->
+Create file at `${PROJECT_ROOT}/docs/README.md`
+```
+
+#### Guidelines
+
+**✓ DO:**
+
+```markdown
+# Install-time for user paths
+{{CLAUDE_CONFIG_DIR}}/knowledge/
+
+# Runtime for project paths
+${PROJECT_ROOT}/docs/
+
+# Mixed usage
+Copy from `{{AIDA_HOME}}/templates/` to `${PROJECT_ROOT}/`
+```
+
+**✗ DON'T:**
+
+```markdown
+# Hardcoded paths
+/Users/oakensoul/.claude/
+
+# Wrong syntax for templates
+${CLAUDE_CONFIG_DIR}/  # Should be {{CLAUDE_CONFIG_DIR}}
+```
+
+**Why two types?**
+
+- **Privacy**: No hardcoded user paths in version control
+- **Flexibility**: User paths set once, project paths adapt to context
+- **Platform agnostic**: Works across different systems and environments
+
+**Validation:**
+
+Template variables are validated by `scripts/validate-templates.sh`:
+
+```bash
+# Validate templates before commit
+./scripts/validate-templates.sh --verbose
+```
+
+See [templates/README.md](../templates/README.md) for complete variable substitution documentation.
+
 ## Markdown Standards
 
 **Required for consistency:** All markdown files should pass markdownlint pre-commit hooks. Writing markdown correctly from the start helps keep our codebase clean and saves everyone time!
