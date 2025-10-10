@@ -515,7 +515,84 @@ Automates the pull request creation process including atomic commits, versioning
       Bumps version to X.Y.Z (milestone: v{X.Y})
       ```
 
-    - Determine labels from issue labels (enhancement, bug, documentation) and add version label (patch, minor, major)
+    - **Determine Labels from Issue and Configuration**:
+
+      a. **Fetch Issue Labels**:
+         ```bash
+         # Get issue labels
+         ISSUE_LABELS=$(gh issue view {issue-id} --json labels --jq '.labels[].name')
+
+         # Extract issue type (enhancement, bug, documentation, etc.)
+         ISSUE_TYPE=$(echo "$ISSUE_LABELS" | grep -E 'enhancement|bug|documentation|breaking-change|chore|refactor|test|performance' | head -1)
+
+         # Extract build override if exists
+         BUILD_OVERRIDE=$(echo "$ISSUE_LABELS" | grep 'build-override:' || echo "")
+         ```
+
+      b. **Validate Configuration**:
+         ```bash
+         # Check workflow-config.json exists
+         if [ ! -f "$HOME/.claude/config/workflow-config.json" ]; then
+           echo "Error: workflow-config.json not found at $HOME/.claude/config/"
+           echo "Run /workflow-init first to set up configuration"
+           exit 1
+         fi
+
+         # Validate issue type is present
+         if [ -z "$ISSUE_TYPE" ]; then
+           echo "Error: No issue type label found on issue #{issue-id}"
+           echo ""
+           echo "Please add one of these labels to the issue:"
+           echo "  enhancement, bug, documentation, breaking-change,"
+           echo "  chore, refactor, test, performance"
+           echo ""
+           echo "Then run /open-pr again."
+           exit 1
+         fi
+         ```
+
+      c. **Determine Version Label**:
+         ```bash
+         # Read version label from workflow-config.json
+         VERSION_LABEL=$(jq -r ".github.labels.issue_to_pr_mapping.\"$ISSUE_TYPE\".version" "$HOME/.claude/config/workflow-config.json")
+
+         if [ -z "$VERSION_LABEL" ] || [ "$VERSION_LABEL" = "null" ]; then
+           echo "Error: Unknown issue type '$ISSUE_TYPE'"
+           echo "Expected: enhancement, bug, documentation, breaking-change, chore, refactor, test, performance"
+           exit 1
+         fi
+         ```
+
+      d. **Determine Build Label**:
+         ```bash
+         # Check for build override first (highest priority)
+         if [ -n "$BUILD_OVERRIDE" ]; then
+           # Convert build-override:X to build:X
+           BUILD_LABEL=$(echo "$BUILD_OVERRIDE" | sed 's/build-override:/build:/')
+           echo "Using build override from issue: $BUILD_LABEL"
+         else
+           # Use default from workflow-config.json
+           BUILD_LABEL=$(jq -r ".github.labels.issue_to_pr_mapping.\"$ISSUE_TYPE\".build" "$HOME/.claude/config/workflow-config.json")
+           echo "Using default build label for $ISSUE_TYPE: $BUILD_LABEL"
+         fi
+
+         # TODO (Phase 2): Add multi-domain detection logic here
+         # For now, user must manually add build-override:full to issue if multi-domain
+         # Planned: Analyze changed files to detect if >1 domain affected → force build:full
+         ```
+
+      e. **Log Label Application**:
+         ```bash
+         echo ""
+         echo "Label Application Log:"
+         echo "  Issue: #{issue-id}"
+         echo "  Issue Type: $ISSUE_TYPE"
+         echo "  Build Override: ${BUILD_OVERRIDE:-none}"
+         echo "  Version Label: $VERSION_LABEL"
+         echo "  Build Label: $BUILD_LABEL"
+         echo "  All PR Labels: $VERSION_LABEL, $BUILD_LABEL, $ISSUE_TYPE"
+         echo ""
+         ```
 
     - Invoke `devops-engineer` subagent to push and create PR:
 
@@ -524,9 +601,9 @@ Automates the pull request creation process including atomic commits, versioning
       - Current branch: {branch-name}
       - PR title: {generated-title}
       - PR body: {generated-body}
-      - Labels: {labels-list}
+      - Labels: {version-label},{build-label},{issue-type}
       - Issue number: {issue-id}
-      - Workflow config: Read .claude/workflow-config.json for reviewers.strategy
+      - Workflow config: Read $HOME/.claude/config/workflow-config.json for reviewers.strategy
 
       Tasks:
       1. Push branch with tracking: git push -u origin <branch-name>
@@ -539,12 +616,17 @@ Automates the pull request creation process including atomic commits, versioning
            * "round-robin": Select next reviewer from pull_requests.reviewers.team array
            * "auto": Skip reviewer assignment (let GitHub auto-assign)
            * If config missing: Default to "none"
-      3. Create PR with appropriate reviewer flags:
-         - No reviewers: gh pr create --title "{title}" --body "{body}" --assignee @me --label {labels}
-         - With reviewers: gh pr create --title "{title}" --body "{body}" --assignee @me --reviewer {reviewer-list} --label {labels}
+      3. Create PR with BOTH version and build labels:
+         - No reviewers: gh pr create --title "{title}" --body "{body}" --assignee @me --label "{version-label},{build-label},{issue-type}"
+         - With reviewers: gh pr create --title "{title}" --body "{body}" --assignee @me --reviewer {reviewer-list} --label "{version-label},{build-label},{issue-type}"
+         - Important: Apply ALL THREE labels simultaneously: version:*, build:*, and issue type
       4. Capture and return PR number from output
+      5. Log success:
+         ```
+         ✓ PR created with labels: {version-label}, {build-label}, {issue-type}
+         ```
 
-      Return: PR number, PR URL, reviewers assigned (or "none"/"auto")
+      Return: PR number, PR URL, reviewers assigned (or "none"/"auto"), labels applied
       ```
 
     - If push or PR creation fails, display error and halt
@@ -571,7 +653,95 @@ Automates the pull request creation process including atomic commits, versioning
 
     - If update fails, display warning but continue (PR is already created)
 
-14. **REMOVED** - Functionality moved to step 13
+14. **Update GitHub Project Status**:
+    - Update the PR status to "In progress" in the GitHub Project board:
+
+      ```bash
+      # Get project information from workflow-config.json
+      PROJECT_NAME=$(jq -r '.workflow.github.project.name' /Users/rob/.claude/workflow-config.json)
+
+      # Update PR to "In progress" status
+      gh pr edit {pr-number} --add-project "$PROJECT_NAME"
+
+      # Set status to "In progress"
+      # Note: GitHub CLI doesn't directly support project status updates via command line
+      # Use GitHub API to update project item status
+
+      # Get the project ID and item ID for this PR
+      PROJECT_DATA=$(gh api graphql -f query='
+        query($owner: String!, $repo: String!, $pr_number: Int!) {
+          repository(owner: $owner, name: $repo) {
+            pullRequest(number: $pr_number) {
+              projectItems(first: 10) {
+                nodes {
+                  id
+                  project {
+                    id
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+      ' -f owner="BetterPool" -f repo="dbt-splash-prod-v2" -F pr_number={pr-number})
+
+      # Extract the project item ID for our project
+      ITEM_ID=$(echo "$PROJECT_DATA" | jq -r '.data.repository.pullRequest.projectItems.nodes[] | select(.project.title == "'"$PROJECT_NAME"'") | .id')
+
+      # Get the project ID
+      PROJECT_ID=$(echo "$PROJECT_DATA" | jq -r '.data.repository.pullRequest.projectItems.nodes[] | select(.project.title == "'"$PROJECT_NAME"'") | .project.id')
+
+      # Get the status field ID for the project
+      FIELD_DATA=$(gh api graphql -f query='
+        query($project_id: ID!) {
+          node(id: $project_id) {
+            ... on ProjectV2 {
+              fields(first: 20) {
+                nodes {
+                  ... on ProjectV2SingleSelectField {
+                    id
+                    name
+                    options {
+                      id
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ' -f project_id="$PROJECT_ID")
+
+      # Extract status field ID and "In progress" option ID
+      STATUS_FIELD_ID=$(echo "$FIELD_DATA" | jq -r '.data.node.fields.nodes[] | select(.name == "Status") | .id')
+      IN_PROGRESS_OPTION_ID=$(echo "$FIELD_DATA" | jq -r '.data.node.fields.nodes[] | select(.name == "Status") | .options[] | select(.name == "In progress") | .id')
+
+      # Update the project item status to "In progress"
+      gh api graphql -f query='
+        mutation($project_id: ID!, $item_id: ID!, $field_id: ID!, $option_id: String!) {
+          updateProjectV2ItemFieldValue(
+            input: {
+              projectId: $project_id
+              itemId: $item_id
+              fieldId: $field_id
+              value: {
+                singleSelectOptionId: $option_id
+              }
+            }
+          ) {
+            projectV2Item {
+              id
+            }
+          }
+        }
+      ' -f project_id="$PROJECT_ID" -f item_id="$ITEM_ID" -f field_id="$STATUS_FIELD_ID" -f option_id="$IN_PROGRESS_OPTION_ID"
+
+      echo "✓ Updated PR #{pr-number} to 'In progress' in GitHub Project"
+      ```
+
+    - If project update fails, display warning but continue (PR is already created)
 
 15. **Confirm Success**:
     - Display summary:
@@ -583,6 +753,11 @@ Automates the pull request creation process including atomic commits, versioning
       Branch: {branch-name}
       Version: X.Y.Z → Y.Y.Z
       PR: #{pr-number} - {pr-url}
+
+      Labels Applied:
+        - Version: {version-label}
+        - Build: {build-label}
+        - Type: {issue-type}
 
       Commits created: {count}
       Files changed: {count}
@@ -709,6 +884,9 @@ You can always override the strategy with the `--reviewers` parameter:
 - **Milestone mismatch**: Ask user which milestone to use
 - **Merge conflicts**: Halt and require manual resolution
 - **Version bump conflicts**: Prompt user for correct version
+- **Missing workflow-config.json**: Display error and suggest running /workflow-init
+- **No issue type label**: Display error and list expected issue type labels
+- **Unknown issue type**: Display error if issue type not in configuration mapping
 
 ### Time-Tracking Branch Errors
 
@@ -764,6 +942,13 @@ You can always override the strategy with the `--reviewers` parameter:
 - `--reviewers` parameter always overrides workflow-config.json strategy
 - "query" strategy is most flexible - prompts at PR creation time
 - "list" strategy useful for small teams or always including bots like github-copilot[bot]
+- **Dual-Label System**: PRs receive BOTH `version:*` and `build:*` labels based on issue type
+  - Version labels: `version:major`, `version:minor`, `version:patch`
+  - Build labels: `build:full`, `build:domain`, `build:surgical`, `build:validation`
+  - Issue type determines defaults via `workflow-config.json`
+  - `build-override:*` labels on issues override default build labels
+  - Multi-domain detection (Phase 2) will auto-upgrade to `build:full`
+  - Label mappings stored in `$HOME/.claude/config/workflow-config.json`
 - **Integration with `/create-issue`**: If `estimated_effort` exists in frontmatter (from `/create-issue`), uses it as default when prompting for actual time spent
 - **Time-Tracking Branch Special Handling**: Branches starting with `time-tracking/` bypass the full feature workflow and use a simplified process:
   - No issue number or milestone required

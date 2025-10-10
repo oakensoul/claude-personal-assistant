@@ -11,6 +11,8 @@ args:
 
 Publishes local issue drafts to GitHub. Reads draft metadata, creates GitHub issues, and removes local drafts on success.
 
+**Agent Invocation**: This command invokes the `product-manager` agent to validate issue content, ensure proper formatting, and handle the publishing workflow.
+
 ## Usage
 
 ```bash
@@ -155,8 +157,13 @@ For each draft in list:
 
     - Display: `✓ Published: {title} → Issue #{number}`
     - Store issue number and URL
-    - Delete draft folder: `rm -rf {draft-folder}`
-    - Verify deletion successful
+    - Archive draft folder:
+      ```bash
+      mkdir -p .github/issues/published/{milestone}/
+      mv {draft-folder} .github/issues/published/{milestone}/{slug}/
+      ```
+    - Verify archive successful
+    - Display: `  Archived draft to: .github/issues/published/{milestone}/{slug}/`
 
     **On failure**:
 
@@ -261,6 +268,8 @@ Next Steps:
 - `/create-issue` - Create local draft (prerequisite for this command)
 - `/start-work <issue-id>` - Start work on published issue
 - `/workflow-init` - Configure workflow (creates gitignore for drafts/)
+
+**Primary Agent**: `product-manager`
 
 ## Integration Notes
 

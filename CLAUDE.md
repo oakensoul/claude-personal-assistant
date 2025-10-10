@@ -72,11 +72,25 @@ AIDA (Agentic Intelligence Digital Assistant) is a conversational, agentic opera
 
 ## Development Commands
 
-### Installation
+### Installation and Testing
 
 ```bash
-./install.sh          # Normal install (creates ~/.claude/)
-./install.sh --dev    # Dev mode (symlinks for live editing)
+# Installation
+./install.sh                    # Normal install (creates ~/.claude/)
+./install.sh --dev              # Dev mode (symlinks for live editing)
+./install.sh --help             # Show usage and options
+
+# Setup development environment
+pre-commit install              # Install pre-commit hooks
+
+# Testing
+pre-commit run --all-files      # Run all quality checks (shellcheck, yamllint, markdownlint)
+./scripts/validate-templates.sh --verbose  # Validate template variables and privacy
+
+# Testing installation across platforms (Docker-based)
+./.github/testing/test-install.sh              # All platforms
+./.github/testing/test-install.sh --env ubuntu-22  # Specific environment
+./.github/testing/test-install.sh --verbose    # Detailed output
 ```
 
 ### CLI Commands (planned)
@@ -88,6 +102,17 @@ aida knowledge       # View knowledge base
 aida memory          # View memory
 aida help            # Show help
 ```
+
+### Custom Slash Commands
+
+This repository provides workflow commands (when installed). Common commands include:
+
+- `/start-work` - Begin work on a GitHub issue (creates branch, updates issue tracking)
+- `/implement` - Implement planned features with auto-commit after each task
+- `/open-pr` - Create pull request with version bumping and changelog updates
+- `/cleanup-main` - Post-merge cleanup (update main, delete branch, restore stash)
+
+See `templates/commands/` for all available workflow templates.
 
 ## Design Principles
 
@@ -148,6 +173,7 @@ pre-commit run markdownlint --files path/to/file.md
 - Use `readonly` for constants
 - Validate all user input
 - Include comprehensive comments
+- Source shared utilities from `lib/installer-common/` library
 
 ### YAML Guidelines
 
@@ -155,21 +181,77 @@ pre-commit run markdownlint --files path/to/file.md
 - Use 2-space indentation
 - No document-start markers (`---`) in docker-compose.yml
 
+### Template Variable Substitution
+
+**Two types of variables for privacy and flexibility:**
+
+**Install-time variables** (`{{VAR}}`) - Substituted during installation:
+
+- `{{AIDA_HOME}}` - AIDA installation directory
+- `{{CLAUDE_CONFIG_DIR}}` - Claude config directory
+- `{{HOME}}` - User's home directory
+
+**Runtime variables** (`${VAR}`) - Resolved when commands execute:
+
+- `${PROJECT_ROOT}` - Current project directory
+- `${GIT_ROOT}` - Git repository root
+- `$(date)` - Dynamic bash expressions
+
+**Example:**
+
+```markdown
+# Install-time for user paths
+{{CLAUDE_CONFIG_DIR}}/knowledge/
+
+# Runtime for project paths
+${PROJECT_ROOT}/docs/
+```
+
 **Full standards**: See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
-## Current State
+## Multi-Repo Coordination
 
-**Active development** - v0.1.1 released with foundational installation script and testing infrastructure.
+AIDA is part of a three-repository ecosystem. Understanding how they interact is critical for development.
 
-**Installation flows**:
+### The Three Repositories
 
-- **AIDA standalone**: Works without dotfiles
+**1. claude-personal-assistant (this repo)** - Core AIDA framework
+
+- **Location**: `~/.aida/`
+- **Standalone**: Yes - works without dotfiles
+- **Provides**: AI assistant, personalities, agents, templates
+
+**2. dotfiles (public)** - Base shell/git/vim configurations
+
+- **Location**: `~/dotfiles/` → stowed to `~/`
+- **Standalone**: Yes - works without AIDA
+- **Provides**: Shell configs, git configs, AIDA integration templates
+
+**3. dotfiles-private** - Personal overrides with secrets
+
+- **Location**: `~/dotfiles-private/` → stowed to `~/`
+- **Standalone**: No - overlays dotfiles and/or AIDA
+- **Provides**: API keys, secrets, personal customizations
+
+### Installation Flows
+
+**Test all flows when implementing features:**
+
+- **AIDA standalone**: Install AIDA only (works without dotfiles)
 - **Dotfiles-first** (recommended): Dotfiles optionally install AIDA
 - **Either order works**: Install AIDA or dotfiles first, integrate later
 
+### Repository Boundaries
+
 When implementing features, maintain the separation between:
 
-- Public shareable framework (this repo) - standalone AIDA
-- Public dotfiles (shell/git/vim) - optional AIDA integration
-- User-generated configuration (~/.claude/) - created by AIDA install
-- Private sensitive data (dotfiles-private repo) - overlays both
+- **Public shareable framework** (this repo) - standalone AIDA
+- **Public dotfiles** (shell/git/vim) - optional AIDA integration
+- **User-generated configuration** (`~/.claude/`) - created by AIDA install
+- **Private sensitive data** (dotfiles-private repo) - overlays both
+
+See [docs/architecture/dotfiles-integration.md](docs/architecture/dotfiles-integration.md) for complete details.
+
+## Current State
+
+**Active development** - v0.1.3 released with workflow command templates and variable substitution system.

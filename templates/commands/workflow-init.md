@@ -1,6 +1,7 @@
 ---
 name: workflow-init
 description: Initialize workflow configuration for a project with interactive setup
+model: sonnet[1m+]
 args: {}
 ---
 
@@ -623,6 +624,21 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 - Write configuration to `${CLAUDE_CONFIG_DIR}/workflow-config.json`
 - Format JSON with 2-space indentation for readability
 
+12.1. **GitHub Configuration**:
+
+The workflow-config.json now includes a comprehensive GitHub configuration section:
+
+- **Label Architecture**: 26 labels for version control and build strategies
+- **Issue → PR Mapping**: Automatic label application based on issue type
+- **Build Logic**: Multi-domain detection and override support
+- **Project Configuration**: Status values and board views
+
+For complete label taxonomy and usage guidelines, see:
+- `docs/development/LABELS.md` - Label reference guide
+- `.github/GITHUB_SETUP_GUIDE.md` - Manual setup instructions
+
+**Next Step**: After workflow-init completes, run `/github-init` to set up GitHub repository with labels and automations.
+
 13. **Optional: Add to .gitignore**:
     - Check if `.gitignore` exists in project root
     - Ask: "Add workflow directories to .gitignore? [Y/n]"
@@ -726,7 +742,17 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 
       Next Steps:
       1. Review configuration: cat ${CLAUDE_CONFIG_DIR}/workflow-config.json
-      2. Test workflow commands:
+
+      2. Set up GitHub repository (RECOMMENDED):
+         /github-init
+
+         This will:
+         • Create all 26 GitHub labels
+         • Set up project board automations
+         • Configure verification cache
+         • Guide through manual setup steps
+
+      3. Test workflow commands:
          /create-issue        - Create a GitHub issue
          /start-work <id>     - Start work on an issue
          {If Expert Analysis enabled:}
@@ -735,7 +761,7 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
          /track-time 2h       - Log development time
          /open-pr             - Create pull request
 
-      3. Customize further if needed:
+      4. Customize further if needed:
          {editor} ${CLAUDE_CONFIG_DIR}/workflow-config.json
 
       Documentation: {path-to-README-if-exists}

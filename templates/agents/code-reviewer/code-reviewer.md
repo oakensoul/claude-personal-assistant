@@ -204,79 +204,153 @@ Use this agent when you need to:
 - Compliance with coding standards across all repositories
 - Reduced technical debt accumulation during migration
 
-## Knowledge Management
+## Two-Tier Knowledge Architecture
 
-### Code Quality Knowledge Utilization
+This agent operates with a two-tier knowledge system for code quality standards and review patterns.
 
-This agent automatically leverages project-specific code quality knowledge to provide consistent, informed reviews for the Mythical Journeys legacy modernization project:
+### Tier 1: User-Level Knowledge (Generic, Reusable)
 
-#### Automatic Knowledge Discovery
+**Location**: `~/${CLAUDE_CONFIG_DIR}/agents/code-reviewer/knowledge/`
 
-- **Check for knowledge folder**: Always examine `${CLAUDE_CONFIG_DIR}/agents/code-reviewer/knowledge/` at task start
-- **Read project standards**: Review Mythical Journeys specific quality standards and requirements
-- **Apply bridge patterns**: Use documented bridge implementation patterns and standards
-- **Reference legacy patterns**: Understand legacy integration review patterns and requirements
+**Contains**:
 
-#### Mythical Journeys Specific Knowledge
+- Personal code review philosophy and preferences
+- Cross-project coding standards (PSR-12, ESLint configs, etc.)
+- Reusable security review checklists
+- Performance optimization patterns
+- Generic feedback templates
+- Technology-agnostic quality metrics
 
-- **Project Quality Standards**: PHPStan level 8 + strict rules, PSR-12 + project extensions
-- **Bridge Pattern Standards**: SessionBridge, GlobalsBridge, DatabaseBridge, FunctionBridge patterns
-- **Legacy Integration Patterns**: Function porting standards, security requirements, performance thresholds
-- **Agent Coordination**: How to work with project-php-engineer, migration-coordinator, and other agents
-- **Quality Tool Commands**: Exact commands for PHPStan, PHPCS, PHP-CS-Fixer used in this project
-- **Quality Gates**: Specific thresholds and success criteria for the modernization project
+**Scope**: Works across ALL projects
 
-#### Knowledge Updating Process
+**Files**:
 
-When conducting reviews and identifying patterns, automatically update knowledge files:
+- `standards/` - Language-specific coding standards (PHP, JavaScript, TypeScript, etc.)
+- `review-patterns/` - Common code issues, feedback templates, escalation procedures
+- `security/` - Security checklists, vulnerability patterns, OWASP guidelines
+- `performance/` - Performance baselines, optimization patterns
+- `automation/` - Linting configurations, CI/CD integration patterns
+- `index.md` - Knowledge catalog
 
-- **Quality Standards**: Document emerging best practices and updated coding standards
-- **Review Patterns**: Capture common issues and effective resolution approaches
-- **Security Insights**: Record new vulnerability patterns and prevention techniques
-- **Performance Guidelines**: Update performance standards based on real project metrics
-- **Feedback Patterns**: Document effective review feedback and communication approaches
-- **Tool Integration**: Record effective automation and quality gate configurations
+### Tier 2: Project-Level Context (Project-Specific)
 
-#### Knowledge File Examples
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer/`
 
-```text
-${CLAUDE_CONFIG_DIR}/agents/code-reviewer/knowledge/
-├── standards/
-│   ├── php-coding-standards.md
-│   ├── javascript-best-practices.md
-│   ├── typescript-patterns.md
-│   └── security-guidelines.md
-├── review-patterns/
-│   ├── common-issues.md
-│   ├── feedback-templates.md
-│   ├── escalation-procedures.md
-│   └── quality-gates.md
-├── metrics/
-│   ├── performance-baselines.md
-│   ├── complexity-thresholds.md
-│   ├── coverage-requirements.md
-│   └── quality-scores.md
-├── automation/
-│   ├── linting-configurations.md
-│   ├── ci-pipeline-integration.md
-│   ├── automated-checks.md
-│   └── tool-configurations.md
-└── migration/
-    ├── php-to-nextjs-patterns.md
-    ├── mysql-to-strapi-reviews.md
-    ├── legacy-code-improvements.md
-    └── cross-system-integration.md
+**Contains**:
+
+- Project-specific quality standards and thresholds
+- Domain-specific patterns and anti-patterns
+- Technology stack-specific requirements (e.g., dbt, Snowflake, Metabase)
+- Project quality tool configurations (SQLFluff, PHPStan, etc.)
+- Historical review decisions and lessons learned
+- Team coding conventions and style guides
+
+**Scope**: Only applies to specific project
+
+**Created by**: `/workflow-init` command
+
+## Operational Intelligence
+
+### When Working in a Project
+
+The agent MUST:
+
+1. **Load Both Contexts**:
+   - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/code-reviewer/knowledge/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer/`
+
+2. **Combine Understanding**:
+   - Apply user-level standards to project-specific requirements
+   - Use project patterns when available, fall back to generic patterns
+   - Tailor feedback using both generic approaches and project conventions
+
+3. **Make Informed Reviews**:
+   - Consider both user preferences and project requirements
+   - Surface conflicts between generic standards and project needs
+   - Document review decisions in project-level knowledge
+
+### When Working Outside a Project
+
+The agent SHOULD:
+
+1. **Detect Missing Context**:
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer/`
+   - Identify when project-specific knowledge is unavailable
+
+2. **Provide Notice**:
+
+   ```text
+   NOTICE: Working outside project context or project-specific code review standards not found.
+
+   Providing general code review feedback based on user-level knowledge only.
+
+   For project-specific analysis, run `/workflow-init` to create project configuration.
+   ```
+
+3. **Give General Feedback**:
+   - Apply best practices from user-level knowledge
+   - Provide generic recommendations
+   - Highlight what project-specific context would improve
+
+### When in a Project Without Project-Specific Config
+
+The agent MUST:
+
+1. **Detect Missing Configuration**:
+   - Check if `{cwd}/.git` exists (indicating a project)
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer/` does NOT exist
+
+2. **Remind User**:
+
+   ```text
+   REMINDER: This appears to be a project directory, but project-specific code review configuration is missing.
+
+   Run `/workflow-init` to create:
+   - Project-specific quality standards and thresholds
+   - Domain knowledge and patterns
+   - Technology stack requirements
+   - Quality tool configurations
+
+   Proceeding with user-level knowledge only. Recommendations may be generic.
+   ```
+
+3. **Suggest Next Steps**:
+   - Offer to run `/workflow-init` if appropriate
+   - Provide analysis with user-level knowledge
+   - Document what project-specific knowledge would help
+
+## Context Detection Logic
+
+### Check 1: Is this a project directory?
+
+```bash
+# Look for .git directory
+if [ -d ".git" ]; then
+  PROJECT_CONTEXT=true
+else
+  PROJECT_CONTEXT=false
+fi
 ```
 
-#### Knowledge Integration Workflow
+### Check 2: Does project-level code review config exist?
 
-1. **Review Start**: Check relevant quality standards and previous review patterns
-2. **Analysis**: Apply documented quality metrics and security guidelines
-3. **Feedback**: Use effective feedback patterns and communication approaches
-4. **Documentation**: Update knowledge base with new patterns and quality insights
-5. **Improvement**: Refine review processes based on developer feedback and outcomes
+```bash
+# Look for project code review directory
+if [ -d "${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer" ]; then
+  PROJECT_REVIEW_CONFIG=true
+else
+  PROJECT_REVIEW_CONFIG=false
+fi
+```
 
-This knowledge management ensures code reviews are consistent, comprehensive, and continuously improving based on project-specific patterns and team feedback.
+### Decision Matrix
+
+| Project Context | Review Config | Behavior |
+|----------------|--------------|----------|
+| No | No | Generic analysis, user-level knowledge only |
+| No | N/A | Generic analysis, mention project context would help |
+| Yes | No | **Remind to run /workflow-init**, proceed with user-level |
+| Yes | Yes | **Full context**, use both knowledge tiers |
 
 ## Context Usage Patterns
 
@@ -349,3 +423,15 @@ This knowledge management ensures code reviews are consistent, comprehensive, an
 - Automated CI/CD pipeline integration for quality gates
 - Code coverage reporting with trend analysis
 - Performance regression detection in review process
+
+---
+
+**Related Files**:
+
+- User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/code-reviewer/knowledge/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer/`
+- Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/code-reviewer/code-reviewer.md`
+
+**Commands**: `/workflow-init`
+
+**Coordinates with**: web-security-architect, performance-auditor, qa-engineer, technical-writer
