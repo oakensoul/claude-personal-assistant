@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5] - 2025-10-15
+
+### Fixed
+
+- workflow-init command now creates agents in correct `.claude/agents-global/` directory (not `.claude/agents/`)
+- workflow-init now creates `index.md` files (not `instructions.md`) for two-tier architecture
+- publish-issue command updated to move (not delete) published drafts to `.github/issues/published/`
+
+### Documentation
+
+- Added "Directory Safety" best practice to command writing guidelines
+- Added best practices section to implement command documenting directory safety
+- Updated commands README with directory safety guidelines
+
 ## [0.1.4] - 2025-10-10
 
 ### Added

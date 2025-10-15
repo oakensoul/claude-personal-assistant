@@ -1740,4 +1740,13 @@ When implementation is complete:
 
 ---
 
+## Best Practices
+
+- **Directory Safety**: All bash operations use `cd ${PROJECT_ROOT}` to ensure commands execute from project root, preventing directory confusion
+- **Atomic Commits**: Each task completion can trigger an automatic commit, maintaining clear history
+- **State Preservation**: Implementation state is saved after each task, allowing safe interruption and resumption
+- **Quality Focus**: Built-in quality checks ensure changes meet standards before considering task complete
+
+---
+
 **Implementation Orchestrator**: Task execution complete. Awaiting next command.

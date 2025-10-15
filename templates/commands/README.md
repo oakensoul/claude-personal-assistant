@@ -493,6 +493,10 @@ Command instructions for Claude...
 4. **Idempotency**: Design commands to be safely re-runnable
 5. **Validation**: Check prerequisites before executing
 6. **Documentation**: Include examples and usage notes
+7. **Directory Safety**: Always return to project root after operations
+   - Use `cd ${PROJECT_ROOT}` after any directory changes
+   - Alternatively, use absolute paths to avoid directory changes
+   - Example: `cd ${PROJECT_ROOT} && git add .` instead of `cd subdir && git add .`
 
 ### Command Naming
 
