@@ -1,6 +1,6 @@
 ---
 name: publish-issue
-description: Publishes local issue drafts to GitHub and removes them from drafts/
+description: Publishes local issue drafts to GitHub and moves them to published/ for historical reference
 args:
   slugs:
     description: "One or more slugs to publish, or --milestone X.Y, or --all"
@@ -9,9 +9,7 @@ args:
 
 # Publish Issue Command
 
-Publishes local issue drafts to GitHub. Reads draft metadata, creates GitHub issues, and removes local drafts on success.
-
-**Agent Invocation**: This command invokes the `product-manager` agent to validate issue content, ensure proper formatting, and handle the publishing workflow.
+Publishes local issue drafts to GitHub. Reads draft metadata, creates GitHub issues, and moves local drafts to `.github/issues/published/` on success.
 
 ## Usage
 
@@ -157,19 +155,26 @@ For each draft in list:
 
     - Display: `✓ Published: {title} → Issue #{number}`
     - Store issue number and URL
-    - Archive draft folder:
+    - Move draft to published folder:
       ```bash
+      # Create published directory structure
       mkdir -p .github/issues/published/{milestone}/
-      mv {draft-folder} .github/issues/published/{milestone}/{slug}/
+
+      # Move draft folder
+      mv {draft-folder} .github/issues/published/{milestone}/{type}-{slug}/
+
+      # Update README.md status and add GitHub URL
+      sed -i '' 's/status: DRAFT/status: PUBLISHED/' .github/issues/published/{milestone}/{type}-{slug}/README.md
+      echo -e "\n---\n\n**GitHub Issue**: {issue-url}" >> .github/issues/published/{milestone}/{type}-{slug}/README.md
       ```
-    - Verify archive successful
-    - Display: `  Archived draft to: .github/issues/published/{milestone}/{slug}/`
+    - Verify move successful
+    - Display: `  Moved draft to: .github/issues/published/{milestone}/{type}-{slug}/`
 
     **On failure**:
 
     - Display: `✗ Failed to publish: {title}`
     - Show error message from `gh issue create`
-    - DO NOT delete draft folder (preserve for retry)
+    - DO NOT delete or move draft folder (preserve for retry)
     - Continue with next draft
 
 ### 7. Display Summary
@@ -213,7 +218,7 @@ Next Steps:
 
 # Output:
 # ✓ Published: Add Dark Mode Support → Issue #42
-# Draft removed from: .github/issues/drafts/milestone-v0.1/feature-add-dark-mode/
+# Moved draft to: .github/issues/published/milestone-v0.1/feature-add-dark-mode/
 ```text
 
 ### Publish Multiple Drafts
@@ -252,24 +257,48 @@ Next Steps:
 - **Permission error**: Display error about GitHub token permissions
 - **Partial failure**: Display which succeeded and which failed, preserve failed drafts
 
+## Directory Structure
+
+**Before publishing**:
+```
+.github/issues/drafts/milestone-v0.1/
+├── feature-add-dark-mode/
+│   └── README.md (status: DRAFT)
+└── bug-fix-login/
+    └── README.md (status: DRAFT)
+```
+
+**After publishing**:
+```
+.github/issues/published/milestone-v0.1/
+├── feature-add-dark-mode/
+│   └── README.md (status: PUBLISHED, includes GitHub URL)
+└── bug-fix-login/
+    └── README.md (status: PUBLISHED, includes GitHub URL)
+```
+
+**Git tracking**:
+- `.github/issues/drafts/` - Gitignored (local only)
+- `.github/issues/published/` - Committed to repo (shared history)
+
 ## Notes
 
-- **Drafts deleted on success**: Once published, local draft is removed
-- **Failures preserved**: If publish fails, draft remains for retry
+- **Drafts moved on success**: Once published, local draft is moved to `.github/issues/published/` for historical reference
+- **Status updated**: README.md status changes from "DRAFT" to "PUBLISHED" with GitHub issue URL appended
+- **Failures preserved**: If publish fails, draft remains in `drafts/` for retry
 - **Idempotent-ish**: Re-running publishes only remaining drafts
 - **Atomic per-draft**: Each draft publishes independently
 - **Batch operations**: Use `--milestone` or `--all` for efficiency
 - **Validation before publish**: Checks milestone exists before attempting
 - **Safe to retry**: Failed publishes can be retried without duplicates
-- **Preserves history**: GitHub issues become permanent record
+- **Preserves history**: Both GitHub issues and local published drafts maintain permanent record
+- **Team visibility**: Published folder should be committed so team can see what was created
 
 ## Related Commands
 
 - `/create-issue` - Create local draft (prerequisite for this command)
 - `/start-work <issue-id>` - Start work on published issue
 - `/workflow-init` - Configure workflow (creates gitignore for drafts/)
-
-**Primary Agent**: `product-manager`
 
 ## Integration Notes
 
