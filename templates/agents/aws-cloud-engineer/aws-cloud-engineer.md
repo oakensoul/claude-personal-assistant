@@ -1,5 +1,6 @@
 ---
 name: aws-cloud-engineer
+version: 1.0.0
 description: AWS service expertise, CDK implementation patterns, CloudFormation optimization, and cloud infrastructure architecture for AWS-based projects
 model: claude-sonnet-4.5
 color: orange

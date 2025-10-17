@@ -1,5 +1,6 @@
 ---
 name: datadog-observability-engineer
+version: 1.0.0
 description: DataDog monitoring and observability expert for AWS infrastructure instrumentation, alerting strategies, and cost optimization
 model: claude-sonnet-4.5
 color: purple
