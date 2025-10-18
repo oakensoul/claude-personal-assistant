@@ -1,6 +1,7 @@
 ---
 name: workflow-init
 description: Initialize workflow configuration for a project with interactive setup
+model: sonnet[1m+]
 args: {}
 ---
 
@@ -329,7 +330,7 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 
        📋 Part 2: This Project's Specific Requirements
        ===============================================
-       Location: {project-path}/${CLAUDE_CONFIG_DIR}/agents/product-manager/
+       Location: {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/
        Scope: Applies ONLY to this project
 
        ```
@@ -363,15 +364,15 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 
      - Ask: "THIS PROJECT'S specific PM instructions (optional):"
        - Example: "AIDA uses AGPL-3.0 license, semantic versioning required, developer experience is paramount"
-       - Display: "Creating project-specific PM config at {project-path}/${CLAUDE_CONFIG_DIR}/agents/product-manager/"
-       - Create `{project-path}/${CLAUDE_CONFIG_DIR}/agents/product-manager/instructions.md`
+       - Display: "Creating project-specific PM config at {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/"
+       - Create `{project-path}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/index.md`
 
      - Display:
 
        ```
        ✓ Product Manager configured:
-         - Personal philosophy: ~/${CLAUDE_CONFIG_DIR}/agents/product-manager/ (all projects)
-         - Project requirements: {project-path}/${CLAUDE_CONFIG_DIR}/agents/product-manager/ (this project only)
+         - Global agent: ~/${CLAUDE_CONFIG_DIR}/agents/product-manager/ (reusable across all projects)
+         - Project context: {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/ (this project only)
        ```
 
 10. **Configure Tech Lead** (NEW):
@@ -491,7 +492,7 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 
         ⚙️  Part 2: This Project's Specific Requirements
         ===============================================
-        Location: {project-path}/${CLAUDE_CONFIG_DIR}/agents/tech-lead/
+        Location: {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/tech-lead/
         Scope: Applies ONLY to this project
 
         ```
@@ -503,15 +504,15 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 
       - Ask: "THIS PROJECT'S specific technical guidelines (optional):"
         - Example: "All shell scripts must pass shellcheck, use bash 3.2+ for macOS compatibility, container-based testing required"
-        - Display: "Creating project-specific Tech Lead config at {project-path}/${CLAUDE_CONFIG_DIR}/agents/tech-lead/"
-        - Create `{project-path}/${CLAUDE_CONFIG_DIR}/agents/tech-lead/instructions.md`
+        - Display: "Creating project-specific Tech Lead config at {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/tech-lead/"
+        - Create `{project-path}/${CLAUDE_CONFIG_DIR}/agents-global/tech-lead/index.md`
 
       - Display:
 
         ```
         ✓ Tech Lead configured:
-          - Personal philosophy: ~/${CLAUDE_CONFIG_DIR}/agents/tech-lead/ (all projects)
-          - Project requirements: {project-path}/${CLAUDE_CONFIG_DIR}/agents/tech-lead/ (this project only)
+          - Global agent: ~/${CLAUDE_CONFIG_DIR}/agents/tech-lead/ (reusable across all projects)
+          - Project context: {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/tech-lead/ (this project only)
         ```
 
 11. **Configure Expert Analysis** (NEW):
@@ -623,6 +624,21 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 - Write configuration to `${CLAUDE_CONFIG_DIR}/workflow-config.json`
 - Format JSON with 2-space indentation for readability
 
+12.1. **GitHub Configuration**:
+
+The workflow-config.json now includes a comprehensive GitHub configuration section:
+
+- **Label Architecture**: 26 labels for version control and build strategies
+- **Issue → PR Mapping**: Automatic label application based on issue type
+- **Build Logic**: Multi-domain detection and override support
+- **Project Configuration**: Status values and board views
+
+For complete label taxonomy and usage guidelines, see:
+- `docs/development/LABELS.md` - Label reference guide
+- `.github/GITHUB_SETUP_GUIDE.md` - Manual setup instructions
+
+**Next Step**: After workflow-init completes, run `/github-init` to set up GitHub repository with labels and automations.
+
 13. **Optional: Add to .gitignore**:
     - Check if `.gitignore` exists in project root
     - Ask: "Add workflow directories to .gitignore? [Y/n]"
@@ -726,7 +742,17 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 
       Next Steps:
       1. Review configuration: cat ${CLAUDE_CONFIG_DIR}/workflow-config.json
-      2. Test workflow commands:
+
+      2. Set up GitHub repository (RECOMMENDED):
+         /github-init
+
+         This will:
+         • Create all 26 GitHub labels
+         • Set up project board automations
+         • Configure verification cache
+         • Guide through manual setup steps
+
+      3. Test workflow commands:
          /create-issue        - Create a GitHub issue
          /start-work <id>     - Start work on an issue
          {If Expert Analysis enabled:}
@@ -735,7 +761,7 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
          /track-time 2h       - Log development time
          /open-pr             - Create pull request
 
-      3. Customize further if needed:
+      4. Customize further if needed:
          {editor} ${CLAUDE_CONFIG_DIR}/workflow-config.json
 
       Documentation: {path-to-README-if-exists}

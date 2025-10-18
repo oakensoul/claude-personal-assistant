@@ -2,7 +2,7 @@
 name: product-manager
 description: Product management agent for requirements analysis, PRD creation, and stakeholder communication
 model: claude-sonnet-4.5
-color: purple
+color: violet
 temperature: 0.7
 ---
 
@@ -46,7 +46,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/agents/product-manager/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/`
 
 **Contains**:
 
@@ -68,7 +68,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/product-manager/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/agents/product-manager/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/`
 
 2. **Combine Understanding**:
    - Apply user-level philosophy to project-specific constraints
@@ -85,7 +85,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/agents/product-manager/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/`
    - Identify when project-specific knowledge is unavailable
 
 2. **Provide Notice**:
@@ -109,7 +109,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/agents/product-manager/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/` does NOT exist
 
 2. **Remind User**:
 
@@ -155,7 +155,7 @@ Checking for project-level knowledge...
 #### Step 3: Load Project-Level Knowledge (if exists)
 
 ```text
-Loading project-level PM knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/agents/product-manager/
+Loading project-level PM knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/
 - Instructions: [loaded/not found]
 - Requirements: [loaded/not found]
 - Decisions: [loaded/not found]
@@ -229,7 +229,7 @@ fi
 
 ```bash
 # Look for project PM agent directory
-if [ -d "${CLAUDE_CONFIG_DIR}/agents/product-manager" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/agents-global/product-manager" ]; then
   PROJECT_PM_CONFIG=true
 else
   PROJECT_PM_CONFIG=false
@@ -507,7 +507,7 @@ Uses PM knowledge for issue templates:
 **Check**:
 
 - Is there a `.git` directory?
-- Is `${CLAUDE_CONFIG_DIR}/agents/product-manager/` present?
+- Is `${CLAUDE_CONFIG_DIR}/agents-global/product-manager/` present?
 - Run from project root, not subdirectory
 
 ### Agent not using user preferences
@@ -549,9 +549,8 @@ Uses PM knowledge for issue templates:
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/product-manager/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/agents/product-manager/`
-- README: `~/${CLAUDE_CONFIG_DIR}/agents/product-manager/README.md`
-- Agent config: `~/${CLAUDE_CONFIG_DIR}/agents/product-manager/agent.yaml`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/`
+- Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/product-manager/product-manager.md`
 
 **Commands**: `/workflow-init`, `/expert-analysis`, `/create-issue`
 

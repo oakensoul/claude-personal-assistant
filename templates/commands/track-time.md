@@ -20,6 +20,8 @@ args:
 
 Log development time with automatic context detection from git commits and GitHub issues. Automatically creates and checks out a time-tracking branch for the session.
 
+**Agent Invocation**: This command invokes the `product-manager` agent to analyze work activity, allocate time across issues, compare against estimates, and maintain time tracking records.
+
 ## Instructions
 
 1. **Check for duration argument**:
@@ -259,3 +261,5 @@ Log development time with automatic context detection from git commits and GitHu
 - **Automatic branching**: Creates/checks out `time-tracking/{developer}/{date}` branch for isolating time tracking commits
 - Branch creation is non-blocking - if it fails, time tracking continues on the current branch
 - Multiple time entries for the same date will use the same time-tracking branch
+
+**Primary Agent**: `product-manager`

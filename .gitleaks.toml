@@ -1,0 +1,23 @@
+# Gitleaks configuration for AIDA
+# Documentation: https://github.com/gitleaks/gitleaks
+
+title = "gitleaks config"
+
+# Allowlist paths that contain example/documentation API keys
+[allowlist]
+description = "Allowlist documentation files with example API keys"
+paths = [
+    # Agent knowledge bases with API security examples
+    '''templates/agents/security-engineer/knowledge/core-concepts/api-security-patterns\.md''',
+    '''templates/agents/metabase-engineer/knowledge/core-concepts/metabase-architecture\.md''',
+    '''.claude/agents-global/qa-engineer/index\.md''',
+    '''.claude/agents-global/privacy-security-auditor/index\.md''',
+]
+
+# Allowlist specific regexes for example API keys
+regexes = [
+    # Example API keys in documentation (clearly marked as examples)
+    '''mb_[a-zA-Z0-9]{20,}''',           # Metabase example session tokens
+    '''sk_test_[a-zA-Z0-9]{20,}''',      # Stripe test keys
+    '''api_key:\s*sk-test-[a-zA-Z0-9-]+''', # Example API keys
+]
