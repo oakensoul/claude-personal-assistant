@@ -132,7 +132,8 @@ Manage active production incidents with automated runbook execution, escalation 
 **If severity/description not provided, gather interactively:**
 
 1. **Classify Severity** - Ask user:
-   ```
+
+   ```text
    What is the incident severity?
 
    P0 - Critical Outage (platform down, all pipelines halted)
@@ -144,7 +145,8 @@ Manage active production incidents with automated runbook execution, escalation 
    ```
 
 2. **Gather Incident Details** - Ask user:
-   ```
+
+   ```text
    Describe the incident:
    - What is not working or incorrect?
    - When did this start?
@@ -169,6 +171,7 @@ Manage active production incidents with automated runbook execution, escalation 
 #### Available Runbooks
 
 **dbt Build Failure Runbook:**
+
 - Symptoms: "dbt run failing", "model compilation error", "circular dependency"
 - Diagnostics:
   1. Check recent git commits in dbt project
@@ -178,6 +181,7 @@ Manage active production incidents with automated runbook execution, escalation 
 - Route to: `data-engineer` + `snowflake-sql-expert`
 
 **Snowflake Warehouse Timeout Runbook:**
+
 - Symptoms: "warehouse timeout", "query timeout", "warehouse suspended"
 - Diagnostics:
   1. Check Snowflake warehouse status
@@ -187,6 +191,7 @@ Manage active production incidents with automated runbook execution, escalation 
 - Route to: `cost-optimization-agent` + `snowflake-sql-expert`
 
 **Metabase Dashboard Outage Runbook:**
+
 - Symptoms: "dashboard not loading", "metabase error", "query timeout"
 - Diagnostics:
   1. Check Metabase application status
@@ -196,6 +201,7 @@ Manage active production incidents with automated runbook execution, escalation 
 - Route to: `bi-platform-engineer` + `metabase-expert`
 
 **Data Quality Incident Runbook:**
+
 - Symptoms: "incorrect data", "missing records", "duplicate records", "wrong calculations"
 - Diagnostics:
   1. Identify affected models and tables
@@ -206,6 +212,7 @@ Manage active production incidents with automated runbook execution, escalation 
 - Route to: `data-engineer` + `architect` + `quality-assurance-expert`
 
 **Airbyte Sync Failure Runbook:**
+
 - Symptoms: "airbyte sync failed", "source connection error", "replication delayed"
 - Diagnostics:
   1. Check Airbyte connection status
@@ -215,6 +222,7 @@ Manage active production incidents with automated runbook execution, escalation 
 - Route to: `data-engineer`
 
 **Security Incident Runbook:**
+
 - Symptoms: "unauthorized access", "data exposure", "permission error"
 - Diagnostics:
   1. Identify scope of potential exposure
@@ -224,7 +232,8 @@ Manage active production incidents with automated runbook execution, escalation 
 - Route to: `security-engineer-agent` + `data-governance-agent`
 
 **Display Selected Runbook:**
-```
+
+```text
 ✓ Runbook Selected: Data Quality Incident - Duplicate Records
 
 Diagnostic Steps:
@@ -241,28 +250,32 @@ Routing to specialist agents for resolution...
 **Route to specialist agents based on incident type:**
 
 **For dbt failures:**
-```
+
+```text
 Invoking specialist agents:
 - data-engineer: Analyze model logic and dependencies
 - snowflake-sql-expert: Optimize query performance and syntax
 ```
 
 **For warehouse issues:**
-```
+
+```text
 Invoking specialist agents:
 - cost-optimization-agent: Analyze warehouse sizing and costs
 - snowflake-sql-expert: Identify problematic queries
 ```
 
 **For dashboard outages:**
-```
+
+```text
 Invoking specialist agents:
 - bi-platform-engineer: Diagnose Metabase application issues
 - metabase-expert: Optimize dashboard queries
 ```
 
 **For data quality:**
-```
+
+```text
 Invoking specialist agents:
 - data-engineer: Investigate data pipeline logic
 - architect: Validate dimensional model design
@@ -270,6 +283,7 @@ Invoking specialist agents:
 ```
 
 **Resolution Actions:**
+
 - Execute recommended fixes
 - Validate resolution with tests
 - Document root cause
@@ -278,6 +292,7 @@ Invoking specialist agents:
 ### Phase 4: Communication & Postmortem (10-30 minutes)
 
 **1. Generate Incident Timeline:**
+
 ```yaml
 Incident_Timeline:
   - "14:30 UTC - Incident declared (P1)"
@@ -289,11 +304,13 @@ Incident_Timeline:
 ```
 
 **2. Communicate Resolution:**
+
 - Display resolution summary
 - Provide stakeholder notification template (don't send automatically)
 - Suggest follow-up actions
 
 **3. Postmortem (P0/P1 only):**
+
 - For P0/P1 incidents, create postmortem document
 - Include:
   - Incident summary
@@ -305,6 +322,7 @@ Incident_Timeline:
 - Save to: `.incidents/postmortems/INC-YYYY-MM-DD-NNN-postmortem.md`
 
 **4. Archive Incident:**
+
 - Move incident file from `.incidents/active/` to `.incidents/resolved/`
 - Update SLA compliance tracking
 - Record learnings for runbook improvements
@@ -417,7 +435,8 @@ Incident_File_Moved:
 ### P0 - Critical Outage
 
 **Initial Notification:**
-```
+
+```text
 🚨🚨🚨 [P0 CRITICAL] Snowflake Warehouse Suspended - All Data Pipelines Halted
 
 Status: INVESTIGATING - ALL HANDS
@@ -442,7 +461,8 @@ DO NOT attempt manual queries until further notice.
 ```
 
 **Resolution Notification:**
-```
+
+```text
 ✅ [RESOLVED] Snowflake Warehouse Suspended
 
 Duration: 1 hour 15 minutes
@@ -462,7 +482,8 @@ Prevention: Implementing automated credit monitoring and query governance
 ### P1 - Major Impact
 
 **Initial Notification:**
-```
+
+```text
 🚨 [P1 INCIDENT] Wallet Balance Calculations Incorrect
 
 Status: INVESTIGATING
@@ -487,7 +508,8 @@ Current Actions:
 ```
 
 **Progress Update:**
-```
+
+```text
 📊 [UPDATE] Wallet Balance Calculations - Root Cause Identified
 
 Status: MITIGATING
@@ -504,7 +526,8 @@ Next Update: 15 minutes
 ```
 
 **Resolution Notification:**
-```
+
+```text
 ✅ [RESOLVED] Wallet Balance Calculations Incorrect
 
 Duration: 55 minutes
@@ -528,7 +551,8 @@ Prevention: Schema change monitoring + duplicate detection tests added
 ### P2 - Moderate Impact
 
 **Initial Notification:**
-```
+
+```text
 ⚠️ [P2 INCIDENT] Metabase Dashboards Loading Slowly
 
 Status: INVESTIGATING
@@ -548,7 +572,8 @@ Updates: Every 30 minutes in #incidents
 ```
 
 **Resolution Notification:**
-```
+
+```text
 ✅ [RESOLVED] Metabase Dashboards Loading Slowly
 
 Duration: 1 hour 20 minutes
@@ -569,7 +594,8 @@ Follow-up: Scheduled index review for all dimension tables
 ### P3 - Minor Issue
 
 **Notification:**
-```
+
+```text
 ℹ️ [P3 ISSUE] Analytics Mart Refresh Delayed
 
 Status: TRACKING
@@ -647,7 +673,7 @@ Scheduled: 2025-10-08 10:00 AM
 
 The command will create and maintain:
 
-```
+```text
 .incidents/
 ├── active/                          # Currently active incidents
 │   └── INC-YYYY-MM-DD-NNN.md
@@ -669,12 +695,14 @@ The command will create and maintain:
 ## Success Criteria
 
 **Incident Declaration:**
+
 - ✓ Severity correctly classified
 - ✓ Incident ID generated and file created
 - ✓ Stakeholder notification template provided
 - ✓ SLA timer started
 
 **Resolution:**
+
 - ✓ Root cause identified and documented
 - ✓ Fix applied and validated
 - ✓ All affected systems tested
@@ -683,6 +711,7 @@ The command will create and maintain:
 - ✓ Prevention measures documented
 
 **Communication:**
+
 - ✓ Clear, concise incident descriptions
 - ✓ Regular status updates (per severity SLA)
 - ✓ Resolution summary with learnings
@@ -691,7 +720,8 @@ The command will create and maintain:
 ## Error Handling
 
 **Invalid Severity:**
-```
+
+```text
 ❌ Invalid severity level: "P5"
 Valid levels: P0, P1, P2, P3
 
@@ -704,7 +734,8 @@ Please specify a valid severity level.
 ```
 
 **Missing Incident Description:**
-```
+
+```text
 Please provide an incident description:
 - What is not working or incorrect?
 - When did this start?
@@ -712,7 +743,8 @@ Please provide an incident description:
 ```
 
 **Runbook Not Found:**
-```
+
+```text
 ⚠️ No exact runbook match for this incident type.
 Using generic incident response workflow.
 
@@ -944,6 +976,7 @@ Incident File: .incidents/active/INC-2025-10-07-003.md
 ---
 
 **Related Commands:**
+
 - `/start-work` - Resume work after incident resolution
 - `/create-issue` - Create follow-up tickets for prevention measures
 - `/expert-analysis` - Deep-dive analysis for complex root causes

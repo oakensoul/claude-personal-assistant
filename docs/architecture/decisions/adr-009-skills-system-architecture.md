@@ -15,6 +15,7 @@ AIDA agents need access to specific technical patterns and implementation knowle
 - Multiple agents need framework-specific knowledge (React patterns, API design, dbt strategies)
 
 We need to decide:
+
 - How to organize reusable technical knowledge
 - How skills differ from agent knowledge
 - Where skills live in the filesystem
@@ -22,6 +23,7 @@ We need to decide:
 - Whether skills should have two-tier architecture (user + project)
 
 Without a skills system, we risk:
+
 - Duplicating same knowledge across multiple agents
 - Inconsistent patterns across different implementations
 - Difficulty updating shared knowledge
@@ -43,10 +45,12 @@ Without a skills system, we risk:
 **Description**: Keep all knowledge in agent knowledge bases
 
 **Pros**:
+
 - Simple (one knowledge location per agent)
 - No new concepts to learn
 
 **Cons**:
+
 - Duplicates HIPAA knowledge across 4+ agents
 - Duplicates testing patterns across engineers
 - Hard to keep patterns consistent
@@ -69,11 +73,13 @@ Without a skills system, we risk:
 ```
 
 **Pros**:
+
 - Single source of truth
 - No duplication
 - Easy to update
 
 **Cons**:
+
 - No project-specific skills
 - All-or-nothing (can't have project overrides)
 - Doesn't fit two-tier philosophy
@@ -109,6 +115,7 @@ Project-Level (project-specific):
 ```
 
 **Pros**:
+
 - Reusability (user-level shared across projects)
 - Project-specific patterns (project-level)
 - Consistent with two-tier agent architecture
@@ -116,6 +123,7 @@ Project-Level (project-specific):
 - Easy to promote project skills to user skills
 
 **Cons**:
+
 - Two locations to check
 - More complex than single location
 
@@ -134,10 +142,12 @@ Project-Level (project-specific):
 ```
 
 **Pros**:
+
 - Colocated with agent
 - Clear ownership
 
 **Cons**:
+
 - Skills can't be shared across agents (defeats purpose)
 - Duplicates skills across multiple agents
 - Unclear which agent "owns" a skill
@@ -174,6 +184,7 @@ Project-Level (project-specific):
 ### Consequences
 
 **Positive**:
+
 - Technical patterns defined once, reused everywhere
 - Consistent implementations across agents
 - Easy to update patterns (change once, applies everywhere)
@@ -182,6 +193,7 @@ Project-Level (project-specific):
 - Clear mental model (same as agent two-tier architecture)
 
 **Negative**:
+
 - Two locations to check (user + project)
   - **Mitigation**: Agents automatically check both, transparent to user
 - New concept to learn (what goes in skills vs agent knowledge)
@@ -190,6 +202,7 @@ Project-Level (project-specific):
   - **Mitigation**: Predefined category structure
 
 **Neutral**:
+
 - Skills are markdown files (same as agent knowledge)
 - Skills loaded on-demand by agents
 - Skills can reference other skills
@@ -254,7 +267,7 @@ Project-Level (project-specific):
 
 ### Skill Directory Structure
 
-```
+```text
 ~/.claude/skills/                      (User-level, generic)
 ├── compliance/
 │   ├── hipaa-compliance/
@@ -393,6 +406,7 @@ Practical examples of using this skill
 ### How Agents Use Skills
 
 **Automatic Loading** (agents specify in instructions):
+
 ```markdown
 # product-engineer Instructions
 
@@ -425,32 +439,32 @@ Project skill: {project}/.claude/skills/acme-ui-library/
 
 ### Skill Categories
 
-**compliance/**
+#### compliance/
 
 - Regulatory compliance (HIPAA, GDPR, PCI, SOC2)
 - Used by: governance-analyst, compliance-analyst, all engineers
 
-**testing/**
+#### testing/
 
 - Testing frameworks and patterns
 - Used by: quality-analyst (defines scenarios), all engineers (implement tests)
 
-**frameworks/**
+#### frameworks/
 
 - Frontend/backend framework patterns
 - Used by: product-engineer, platform-engineer, api-engineer
 
-**api/**
+#### api/
 
 - API design and documentation
 - Used by: api-engineer, platform-engineer, product-engineer
 
-**data-engineering/**
+#### data-engineering/
 
 - Data pipeline patterns
 - Used by: data-engineer, sql-expert
 
-**infrastructure/**
+#### infrastructure/
 
 - Infrastructure as code patterns
 - Used by: aws-cloud-engineer, devops-engineer, platform-engineer
@@ -514,11 +528,13 @@ cp -r ~/.claude/skills/category/pattern {project}/.claude/skills/
 ## Migration Plan
 
 ### Phase 1: Create Skills Directory Structure
+
 - [ ] Create `~/.claude/skills/` with category structure
 - [ ] Create `templates/skills/` with example skills
 - [ ] Document skill creation guidelines
 
 ### Phase 2: Create Initial Skills
+
 - [ ] Compliance: hipaa-compliance, gdpr-compliance, pci-compliance
 - [ ] Testing: pytest-patterns, playwright-automation, k6-performance
 - [ ] Frameworks: react-patterns, nextjs-setup
@@ -526,11 +542,13 @@ cp -r ~/.claude/skills/category/pattern {project}/.claude/skills/
 - [ ] Data: dbt-incremental-strategy
 
 ### Phase 3: Update Agents to Reference Skills
+
 - [ ] Update agent instructions to list skills they use
 - [ ] Remove duplicated knowledge from agents
 - [ ] Point agents to skills instead
 
 ### Phase 4: Document and Validate
+
 - [ ] Create skill development guide
 - [ ] Create examples showing skills in use
 - [ ] Validate agents successfully use skills

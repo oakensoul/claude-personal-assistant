@@ -25,16 +25,16 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 **Purpose**: Consistent formatting and style across all files
 
 - [ ] **markdown-style-guide** 🔥 **CRITICAL**
-    - Used by: technical-writer, ALL agents (everyone writes markdown)
-    - Why: Pass markdownlint, consistent docs across AIDA system
-    - Files: formatting-rules, lists-and-spacing, code-blocks, headings-and-structure, links-and-references, tables, frontmatter, common-mistakes-md032-md031-md040
-    - **Priority**: PHASE 1 - Foundation
+  - Used by: technical-writer, ALL agents (everyone writes markdown)
+  - Why: Pass markdownlint, consistent docs across AIDA system
+  - Files: formatting-rules, lists-and-spacing, code-blocks, headings-and-structure, links-and-references, tables, frontmatter, common-mistakes-md032-md031-md040
+  - **Priority**: PHASE 1 - Foundation
 
 - [ ] **frontmatter-patterns** 🔥 **CRITICAL**
-    - Used by: technical-writer, ALL agents creating markdown files
-    - Why: AIDA requires frontmatter on all markdown docs
-    - Files: required-fields, optional-fields, categories, tags, validation, examples
-    - **Priority**: PHASE 1 - Foundation
+  - Used by: technical-writer, ALL agents creating markdown files
+  - Why: AIDA requires frontmatter on all markdown docs
+  - Files: required-fields, optional-fields, categories, tags, validation, examples
+  - **Priority**: PHASE 1 - Foundation
 
 - [ ] **yaml-style-guide**
   - Used by: ALL engineers (docker-compose, GitHub Actions, dbt, configs)
@@ -1205,6 +1205,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 ### Phase 1 Skills (22 total)
 
 **meta/** (5 skills) - 🔥 CRITICAL
+
 - [ ] claude-code-setup
 - [ ] agent-development
 - [ ] command-development
@@ -1212,6 +1213,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] anthropic-api
 
 **style-guides/** (8 skills) - 🔥 CRITICAL
+
 - [ ] markdown-style-guide (agents write markdown constantly!)
 - [ ] frontmatter-patterns (required for all AIDA markdown)
 - [ ] yaml-style-guide
@@ -1222,6 +1224,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] naming-conventions
 
 **technical-writing/** (9 skills)
+
 - [ ] technical-writing-principles
 - [ ] diagramming-patterns
 - [ ] api-documentation
@@ -1245,6 +1248,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 ### Phase 2 Skills (75 total)
 
 **bash-unix/** (7 skills) - 🔥 AGENTS STRUGGLE HERE
+
 - [ ] bash-scripting
 - [ ] macos-cli
 - [ ] unix-utilities
@@ -1254,12 +1258,14 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] process-management
 
 **cli-tools/** (4 skills) - 🔥 USED DAILY
+
 - [ ] git-workflows
 - [ ] gh-cli
 - [ ] aws-cli
 - [ ] docker-cli
 
 **testing/** (8 skills) - 🔥 CONSTANT USE
+
 - [ ] pytest-patterns ✅
 - [ ] playwright-automation
 - [ ] jest-testing
@@ -1270,6 +1276,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] cypress-automation
 
 **frameworks/** (12 skills) - 🔥 CORE DEVELOPMENT
+
 - [ ] react-patterns
 - [ ] nextjs-setup
 - [ ] typescript-config
@@ -1283,6 +1290,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] php-laravel
 
 **databases/** (8 skills) - 🔥 DATA WORK
+
 - [ ] snowsql (agents struggle!)
 - [ ] snowflake-patterns
 - [ ] snowflake-optimization
@@ -1293,6 +1301,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] database-design
 
 **data-engineering/** (9 skills) - 🔥 CORE DATA WORK
+
 - [ ] dbt-incremental-strategy
 - [ ] dbt-modeling-patterns
 - [ ] kimball-dimensional-modeling
@@ -1304,6 +1313,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] fivetran-setup
 
 **infrastructure/** (6 skills) - 🔥 AWS/CDK WORK
+
 - [ ] cdk-patterns
 - [ ] github-actions-workflows
 - [ ] terraform-modules
@@ -1313,6 +1323,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] rds-patterns
 
 **observability/** (5 skills) - 🔥 MONITORING
+
 - [ ] datadog-instrumentation
 - [ ] logging-patterns
 - [ ] metrics-patterns
@@ -1320,6 +1331,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] alerting-strategies
 
 **api/** (8 skills) - 🔥 API DEVELOPMENT
+
 - [ ] api-design
 - [ ] openapi-spec
 - [ ] graphql-schema
@@ -1330,6 +1342,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] rate-limiting
 
 **foundations/** (15 skills) - 🔥 FUNDAMENTAL CONCEPTS
+
 - [ ] authentication-technologies
 - [ ] session-management
 - [ ] payment-fundamentals
@@ -1357,6 +1370,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 ### Phase 3 Skills (68 total)
 
 **compliance/** (6 skills) - Project-specific
+
 - [ ] hipaa-compliance ✅
 - [ ] gdpr-compliance
 - [ ] pci-compliance
@@ -1365,6 +1379,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] ccpa-compliance
 
 **security/** (20 skills) - Comprehensive security
+
 - [ ] encryption-patterns
 - [ ] secret-management
 - [ ] penetration-testing
@@ -1387,12 +1402,14 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] path-traversal-prevention
 
 **bi/** (4 skills) - Business intelligence
+
 - [ ] data-visualization 🔥 (Important for storytelling!)
 - [ ] metabase-patterns
 - [ ] dashboard-design
 - [ ] sql-for-analytics
 
 **marketing-tech/** (7 skills) - Marketing automation
+
 - [ ] braze-integration
 - [ ] beehiiv-patterns
 - [ ] mailchimp-api
@@ -1402,58 +1419,68 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 - [ ] intercom-patterns
 
 **analytics/** (4 skills) - Product analytics
+
 - [ ] google-analytics
 - [ ] mixpanel-integration
 - [ ] amplitude-patterns
 - [ ] segment-tracking
 
 **payment-processing/** (4 skills) - E-commerce
+
 - [ ] stripe-integration
 - [ ] shopify-integration
 - [ ] payment-patterns
 - [ ] subscription-billing
 
 **cms-content/** (4 skills) - Content management
+
 - [ ] wordpress-patterns
 - [ ] contentful-cms
 - [ ] strapi-cms
 - [ ] sanity-patterns
 
 **communication/** (4 skills) - Team tools
+
 - [ ] slack-integration
 - [ ] discord-bots
 - [ ] email-automation
 - [ ] notification-patterns
 
 **project-management/** (3 skills) - Issue tracking
+
 - [ ] github-projects
 - [ ] jira-patterns
 - [ ] confluence-patterns
 
 **methodologies/** (3 skills) - Process
+
 - [ ] scrum-ceremonies
 - [ ] kanban-patterns
 - [ ] agile-estimation
 
 **architecture/** (4 skills) - Advanced architecture
+
 - [ ] c4-modeling
 - [ ] architecture-patterns
 - [ ] technology-evaluation
 - [ ] capacity-planning
 
 **leadership/** (4 skills) - Technical leadership
+
 - [ ] technical-debt-management
 - [ ] engineering-standards
 - [ ] mentoring-patterns
 - [ ] code-review-patterns
 
 **integrations/** (4 skills) - Tool integrations
+
 - [ ] mcp-server-development 🔥 (AIDA-specific!)
 - [ ] obsidian-integration
 - [ ] stow-patterns
 - [ ] git-hooks
 
 **cli-ux/** (4 skills) - CLI design
+
 - [ ] cli-ux-design
 - [ ] help-documentation
 - [ ] autocomplete-patterns

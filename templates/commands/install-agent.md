@@ -74,6 +74,7 @@ AGENTS_GLOBAL_DIR="${CLAUDE_PROJECT_CONFIG}/agents-global"
 ```
 
 **Validation:**
+
 - If not in a recognizable project type, warn but allow installation
 - Create `.claude/` directory if it doesn't exist
 - All project-level agent configs will be created in `${AGENTS_GLOBAL_DIR}/{agent}/`
@@ -136,9 +137,11 @@ Scan `~/.claude/agents/` for agents with two-tier architecture:
 For the selected agent(s):
 
 **Check if already installed**:
+
 - Look for `.claude/agents-global/{agent}/index.md` in the current project directory
 
 **If exists**:
+
 - Read `agent_version` from frontmatter
 - Compare with version in `~/.claude/agents/{agent}/{agent}.md`
 - Determine status:
@@ -147,6 +150,7 @@ For the selected agent(s):
   - **Unknown**: No version in agent definition
 
 **Prompt user**:
+
 ```text
 Agent '{agent}' is already installed in this project.
 
@@ -163,6 +167,7 @@ Choice [u/r/s/c]:
 ```
 
 **If upgrading**:
+
 - Backup existing index.md to `index.md.backup.{timestamp}`
 - Regenerate with latest knowledge
 - Update `agent_version` in frontmatter
@@ -174,6 +179,7 @@ Choice [u/r/s/c]:
 Run intelligent project scanning to understand context:
 
 **dbt Project Detection**:
+
 ```bash
 # Check for dbt project
 if [ -f "dbt_project.yml" ]; then
@@ -190,6 +196,7 @@ fi
 ```
 
 **AWS/CDK Project Detection**:
+
 ```bash
 # Check for CDK project
 if [ -f "cdk.json" ]; then
@@ -207,6 +214,7 @@ fi
 ```
 
 **Software Project Detection**:
+
 ```bash
 # Node.js/JavaScript
 if [ -f "package.json" ]; then
@@ -226,6 +234,7 @@ fi
 ```
 
 **Scan Documentation**:
+
 ```bash
 # Look for relevant documentation
 ARCHITECTURE_DOCS=$(find docs -name "*architecture*" -o -name "*design*" 2>/dev/null)
@@ -233,6 +242,7 @@ README_FILES=$(find . -maxdepth 2 -name "README.md" -o -name "readme.md" 2>/dev/
 ```
 
 **Technology Stack Detection**:
+
 ```bash
 # Detect tools and frameworks
 [ -f ".sqlfluff" ] && TECH_STACK+=("sqlfluff")
@@ -245,9 +255,10 @@ README_FILES=$(find . -maxdepth 2 -name "README.md" -o -name "readme.md" 2>/dev/
 
 **Agent-Specific Knowledge Generation**:
 
-#### For `data-engineer`:
+#### For data-engineer
 
 **If dbt project detected**:
+
 ```markdown
 ---
 title: "Data Engineer - {Project Name} Configuration"
@@ -301,13 +312,17 @@ Project-specific pipeline architecture, orchestration, source systems, and dbt c
 ## dbt Configuration
 
 ### Target Environments
+
 **Detected from profiles.yml**:
+
 ```yaml
 {paste-relevant-profiles-config}
 ```
 
 ### Project Structure
+
 **Detected from dbt_project.yml**:
+
 - Project name: {dbt-project-name}
 - Models directory: {models-path}
 - {other-relevant-config}
@@ -315,6 +330,7 @@ Project-specific pipeline architecture, orchestration, source systems, and dbt c
 ### Tagging Strategy
 
 **TODO**: Document your tagging strategy for selective builds
+
 - Domain tags (finance, marketing, etc.)
 - Layer tags (staging, intermediate, marts)
 - Build frequency tags (critical, standard, batch)
@@ -325,6 +341,7 @@ Project-specific pipeline architecture, orchestration, source systems, and dbt c
 {list-files-found-in-docs/}
 
 **Configuration Files**:
+
 - dbt project: `dbt_project.yml`
 - profiles: `profiles.yml`
 - workflows: `.github/workflows/` {or-other-orchestration}
@@ -333,9 +350,13 @@ Project-specific pipeline architecture, orchestration, source systems, and dbt c
 
 - **sql-expert**: {platform} SQL optimization, dbt model query tuning
 - **system-architect**: Dimensional modeling, layering architecture
+
+```text
+(End of dbt project template)
 ```
 
 **If NOT dbt project**:
+
 ```markdown
 # Data Engineer - {Project Name}
 
@@ -373,9 +394,10 @@ To enable data-engineer agent for this project, please document:
 Update this file with project-specific information to enable context-aware assistance.
 ```
 
-#### For `sql-expert`:
+### sql-expert
 
 **If dbt project with .sqlfluff**:
+
 ```markdown
 ---
 title: "SQL Expert - {Project Name} Configuration"
@@ -415,6 +437,7 @@ Project-specific SQL standards, platform configuration, and performance benchmar
 ### CTE Naming Conventions
 
 **TODO**: Document your CTE naming patterns:
+
 - `base_*` - Initial CTEs pulling from sources
 - `renamed` - Column renaming layer
 - `filtered` - WHERE clause filters
@@ -425,6 +448,7 @@ Project-specific SQL standards, platform configuration, and performance benchmar
 ### SQL Formatting Standards
 
 **TODO**: Document project-specific SQL standards:
+
 - Column naming conventions
 - Date/timestamp handling
 - Business terminology preferences
@@ -434,6 +458,7 @@ Project-specific SQL standards, platform configuration, and performance benchmar
 ### Query Performance Targets
 
 **TODO**: Define your performance SLAs:
+
 - Critical queries (dashboards): < {X} seconds
 - Standard queries (reports): < {X} seconds
 - Heavy analytics: < {X} minutes
@@ -444,11 +469,16 @@ Project-specific SQL standards, platform configuration, and performance benchmar
 {list-relevant-docs}
 
 **Configuration Files**:
+
 - SQLFluff config: `.sqlfluff`
 - dbt project: `dbt_project.yml` {if-exists}
+
+```text
+(End of sql-expert with sqlfluff template)
 ```
 
 **If NO .sqlfluff**:
+
 ```markdown
 # SQL Expert - {Project Name}
 
@@ -466,9 +496,10 @@ Project-specific SQL standards, platform configuration, and performance benchmar
 Update this file with project-specific information to enable context-aware assistance.
 ```
 
-#### For `aws-cloud-engineer`:
+### aws-cloud-engineer
 
 **If CDK project detected**:
+
 ```markdown
 ---
 title: "AWS Cloud Engineer - {Project Name} Configuration"
@@ -528,6 +559,7 @@ Project-specific AWS infrastructure, CDK stacks, and resource configurations.
 ```
 
 **If NO CDK**:
+
 ```markdown
 # AWS Cloud Engineer - {Project Name}
 
@@ -541,9 +573,10 @@ This project does not appear to use AWS CDK.
 Update this file to enable aws-cloud-engineer agent for this project.
 ```
 
-#### For `system-architect`:
+#### For system-architect
 
 **Always create**:
+
 ```markdown
 ---
 title: "System Architect - {Project Name} Configuration"
@@ -579,7 +612,8 @@ Project-specific architectural context and documentation pointers.
 ## Architecture Documentation
 
 **Recommended Structure**:
-```
+
+```text
 docs/architecture/
 ├── c4-system-context.md      # System context diagram
 ├── c4-container.md            # Container diagram
@@ -597,6 +631,7 @@ docs/architecture/
 {list-existing-architecture-docs}
 
 **TODO**: Create missing architecture documentation:
+
 - [ ] C4 system context diagram
 - [ ] C4 container diagram
 - [ ] Architecture Decision Records (ADRs)
@@ -606,11 +641,13 @@ docs/architecture/
 ## Integration Points
 
 **TODO**: Document external system integrations:
+
 - {System Name}: {Purpose} via {Protocol/Method}
 
 ## Non-Functional Requirements
 
 **TODO**: Define NFRs for this project:
+
 - **Scalability**: {targets}
 - **Performance**: {SLAs}
 - **Security**: {requirements}
@@ -620,18 +657,24 @@ docs/architecture/
 ## Architecture References
 
 **Documentation**:
+
 - Architecture docs: `docs/architecture/` {if-exists}
 - README: `README.md`
 
 **Related Agents**:
+
 - **tech-lead**: Implementation standards
 - **data-engineer**: Pipeline architecture (if data project)
 - **aws-cloud-engineer**: Cloud infrastructure (if AWS project)
+
+```text
+(End of system-architect template)
 ```
 
-#### For `datadog-observability-engineer`:
+### datadog-observability-engineer
 
 **Create monitoring configuration template**:
+
 ```markdown
 ---
 title: "DataDog Observability Engineer - {Project Name} Configuration"
@@ -721,6 +764,7 @@ Project-specific DataDog monitoring configuration and observability patterns.
 ### 6. Create Project-Level Configuration
 
 **Create directory structure**:
+
 ```bash
 # Create in current project directory
 mkdir -p ".claude/agents-global/{agent}"
@@ -728,12 +772,14 @@ mkdir -p ".claude/agents-global/{agent}/knowledge" # Optional, for future use
 ```
 
 **Write index.md**:
+
 - Use agent-specific template generated in step 5
 - Include frontmatter with version tracking
 - Populate with detected project information
 - Add placeholders for manual updates
 
 **Set permissions**:
+
 ```bash
 chmod 644 ".claude/agents-global/{agent}/index.md"
 ```
@@ -741,6 +787,7 @@ chmod 644 ".claude/agents-global/{agent}/index.md"
 ### 7. Display Installation Summary
 
 **Success message**:
+
 ```text
 ✓ Installed {agent} agent for project: {project-name}
 
@@ -775,6 +822,7 @@ The {agent} agent is now aware of your project context!
 ```
 
 **If installing multiple agents**:
+
 ```text
 ✓ Installed 3 agents for project: {project-name}
 
@@ -794,6 +842,7 @@ Next steps: Review and update TODO sections in each index.md
 ### data-engineer Scanner
 
 **Files to scan**:
+
 - `dbt_project.yml` - Project name, model paths, vars
 - `profiles.yml` - Target environments, warehouse config
 - `.github/workflows/` - Orchestration patterns
@@ -802,6 +851,7 @@ Next steps: Review and update TODO sections in each index.md
 - `docs/` - Pipeline documentation
 
 **Extract**:
+
 - dbt project name
 - Target environments (prod, dev, build)
 - Orchestration tool and workflow count
@@ -811,12 +861,14 @@ Next steps: Review and update TODO sections in each index.md
 ### sql-expert Scanner
 
 **Files to scan**:
+
 - `.sqlfluff` - Dialect, formatting rules
 - `profiles.yml` - Database platform
 - `dbt_project.yml` - dbt integration
 - Database connection strings in code
 
 **Extract**:
+
 - SQL platform (Snowflake, PostgreSQL, BigQuery, Redshift)
 - SQLFluff configuration
 - Formatting standards (indentation, keywords case)
@@ -825,6 +877,7 @@ Next steps: Review and update TODO sections in each index.md
 ### aws-cloud-engineer Scanner
 
 **Files to scan**:
+
 - `cdk.json` - CDK app entry point
 - `lib/*-stack.ts` - CDK stack files
 - `template.yaml` - CloudFormation templates
@@ -832,6 +885,7 @@ Next steps: Review and update TODO sections in each index.md
 - `docs/architecture/` - Infrastructure docs
 
 **Extract**:
+
 - CDK app configuration
 - Stack names and purposes
 - AWS services in use
@@ -840,6 +894,7 @@ Next steps: Review and update TODO sections in each index.md
 ### system-architect Scanner
 
 **Files to scan**:
+
 - `docs/architecture/` - Existing architecture docs
 - `README.md` - Project overview
 - `dbt_project.yml` - If data project
@@ -847,6 +902,7 @@ Next steps: Review and update TODO sections in each index.md
 - Technology markers (frameworks, languages)
 
 **Extract**:
+
 - Project type (software, data, hybrid)
 - Technology stack
 - Existing architecture documentation
@@ -855,12 +911,14 @@ Next steps: Review and update TODO sections in each index.md
 ### datadog-observability-engineer Scanner
 
 **Files to scan**:
+
 - `lib/*-stack.ts` - Infrastructure code (Lambda, ECS)
 - `serverless.yml` - Serverless framework
 - `docker-compose.yml` - Services to monitor
 - `.github/workflows/` - CI/CD monitoring points
 
 **Extract**:
+
 - Services/components to monitor
 - Infrastructure type (Lambda, ECS, EC2, containers)
 - Existing monitoring configuration
@@ -870,6 +928,7 @@ Next steps: Review and update TODO sections in each index.md
 ### Agent Definition Frontmatter
 
 **User-level agent** (`~/.claude/agents/{agent}/{agent}.md`):
+
 ```yaml
 ---
 name: agent-name
@@ -882,6 +941,7 @@ temperature: 0.7
 ```
 
 **Version format**: `MAJOR.MINOR.PATCH` (semantic versioning)
+
 - **MAJOR**: Breaking changes to agent capabilities or interface
 - **MINOR**: New features, enhanced knowledge, backward-compatible
 - **PATCH**: Bug fixes, documentation updates, minor improvements
@@ -889,6 +949,7 @@ temperature: 0.7
 ### Project Configuration Frontmatter
 
 **Project-level index** (`.claude/agents-global/{agent}/index.md` in current project):
+
 ```yaml
 ---
 title: "{Agent Name} - {Project Name} Configuration"
@@ -902,6 +963,7 @@ scope: "project-only"
 ```
 
 **Tracking**:
+
 - `agent_version` tracks which version of the agent was used to generate this config
 - Compare with current agent version to detect upgrades available
 - Backup old config before upgrading to preserve manual customizations
@@ -909,6 +971,7 @@ scope: "project-only"
 ## Error Handling
 
 **Agent not found**:
+
 ```text
 ERROR: Agent '{agent}' not found.
 
@@ -922,6 +985,7 @@ Run: /install-agent list
 ```
 
 **Agent is not two-tier**:
+
 ```text
 ERROR: Agent '{agent}' does not support two-tier architecture.
 
@@ -935,6 +999,7 @@ Two-tier agents available:
 ```
 
 **Not in a project directory**:
+
 ```text
 ERROR: Not in a project directory.
 
@@ -948,6 +1013,7 @@ To install an agent:
 ```
 
 **Project config directory doesn't exist**:
+
 ```text
 WARNING: Project Claude config directory does not exist.
 
@@ -958,6 +1024,7 @@ This directory will contain project-specific agent configurations.
 ```
 
 **Installation failed**:
+
 ```text
 ERROR: Failed to install {agent} agent.
 
@@ -999,17 +1066,20 @@ Please resolve the issue and try again.
 ## Future Enhancements
 
 **Upgrade Management** (future `/upgrade-agent` command):
+
 - Detect when agent version in `~/.claude/agents/` > project version
 - Show changelog between versions
 - Safely upgrade project configuration
 - Preserve manual customizations
 
 **Knowledge Sync** (future enhancement):
+
 - Sync project knowledge back to user-level patterns
 - Identify reusable patterns from project-specific work
 - Build knowledge base over time
 
 **Validation** (future enhancement):
+
 - Validate that TODOs are completed
 - Check for stale agent configurations
 - Suggest updates when project structure changes
@@ -1023,9 +1093,8 @@ Please resolve the issue and try again.
 - **Preserves manual work**: Backups existing config before regenerating
 - **Idempotent**: Can be run multiple times safely (prompts for action)
 
----
-
 **Related Files**:
+
 - User-level agents: `~/.claude/agents/{agent}/{agent}.md` (shared across all projects)
 - Project-level config: `.claude/agents-global/{agent}/index.md` (in current project directory)
 
