@@ -192,6 +192,7 @@ Total Storage GB = Active Storage + Time Travel + Fail-Safe
 ### Example 1: Daily dbt Build Cost
 
 **Scenario**:
+
 - Medium warehouse (4 credits/hour)
 - dbt build runs every 15 minutes (96 runs/day)
 - Average run time: 3 minutes
@@ -214,6 +215,7 @@ Monthly cost (@ $2.50/credit) = $1,440
 ### Example 2: Storage Cost Analysis
 
 **Scenario**:
+
 - 2 TB active data
 - 7-day time travel retention
 - ~100 GB data changes daily
@@ -243,6 +245,7 @@ Monthly Cost = 2.8 TB × $40 = $112 (savings: $24/month = 18%)
 ### Example 3: Warehouse Idle Time Cost
 
 **Scenario**:
+
 - Large warehouse (8 credits/hour)
 - Used for 2 hours/day actual query execution
 - Auto-suspend set to 10 minutes (600 seconds)

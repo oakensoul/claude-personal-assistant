@@ -16,7 +16,7 @@ last_updated: "2025-10-07"
 
 | Technique | Reversible | Use Case | Example |
 |-----------|------------|----------|---------|
-| **Static Masking** | No | Dev/test environments | john.doe@example.com → user***@example.com |
+| **Static Masking** | No | Dev/test environments | `john.doe@example.com` → `user***@example.com` |
 | **Dynamic Masking (DDM)** | Yes (with privilege) | Production role-based access | Mask based on current_role() |
 | **Tokenization** | Yes (with key) | Payment data | 4111-1111-1111-1111 → tok_abc123 |
 | **Pseudonymization** | Yes (with key) | Analytics with traceability | user_id=12345 → hash_xyz789 |

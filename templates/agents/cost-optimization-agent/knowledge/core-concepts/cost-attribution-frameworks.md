@@ -35,6 +35,7 @@ Cost attribution enables organizations to allocate Snowflake costs to specific t
 **Approach**: Dedicate warehouses to specific teams/projects.
 
 **Implementation**:
+
 ```sql
 -- Create team-specific warehouses
 CREATE WAREHOUSE finance_team_wh
@@ -53,6 +54,7 @@ GRANT USAGE ON WAREHOUSE analytics_team_wh TO ROLE analytics_engineer;
 ```
 
 **Cost Attribution Query**:
+
 ```sql
 SELECT
     warehouse_name,
@@ -83,6 +85,7 @@ ORDER BY total_credits DESC;
 **Approach**: Tag Snowflake objects (warehouses, databases, tables) with cost center metadata.
 
 **Implementation**:
+
 ```sql
 -- Create cost attribution tags
 CREATE TAG cost_center;
@@ -103,6 +106,7 @@ ALTER SCHEMA PROD.FINANCE_STAGING SET TAG project_id = 'finance_dwh';
 ```
 
 **Cost Attribution Query**:
+
 ```sql
 SELECT
     w.warehouse_name,
@@ -137,6 +141,7 @@ ORDER BY total_credits DESC;
 **Approach**: Attribute costs based on actual query execution and user activity.
 
 **Implementation**:
+
 ```sql
 -- Cost by user (approximate)
 WITH user_query_costs AS (
@@ -244,6 +249,7 @@ ORDER BY total_credits DESC;
 **Use Case**: Early-stage cost awareness, building cost culture.
 
 **Implementation**:
+
 - Monthly cost reports by team
 - Dashboard showing team usage trends
 - No budget enforcement
@@ -265,6 +271,7 @@ Top Cost Driver: Daily mart refreshes (60% of compute)
 **Use Case**: Mature organizations with established cost centers.
 
 **Implementation**:
+
 ```sql
 -- Monthly chargeback calculation
 WITH monthly_costs AS (
@@ -291,6 +298,7 @@ FROM monthly_costs;
 **Use Case**: Simplify billing, encourage/discourage certain behaviors.
 
 **Example Rate Card**:
+
 ```yaml
 Compute:
   X-Small_Warehouse: $5/hour (vs $2.50 actual)
@@ -358,19 +366,19 @@ ALTER WAREHOUSE finance_analyst_wh SET RESOURCE_MONITOR = finance_team_monitor;
 
 ### Attribution Challenges
 
-**Challenge 1: Shared Warehouses**
+#### Challenge 1: Shared Warehouses
 
 - **Solution**: Proportional allocation based on query execution time by user/team
 
-**Challenge 2: Serverless Features**
+#### Challenge 2: Serverless Features
 
 - **Solution**: Tag databases/tables to attribute clustering, materialized view costs
 
-**Challenge 3: Development vs Production**
+#### Challenge 3: Development vs Production
 
 - **Solution**: Separate warehouses/databases by environment, tag accordingly
 
-**Challenge 4: Historical Data**
+#### Challenge 4: Historical Data
 
 - **Solution**: Tag changes not retroactive; document tag migration dates
 
@@ -403,6 +411,7 @@ ALTER WAREHOUSE finance_analyst_wh SET RESOURCE_MONITOR = finance_team_monitor;
 ## Example: dbt-splash-prod-v2 Attribution
 
 **Warehouse Mapping**:
+
 ```yaml
 DBT_PROD_CRITICAL_WH:
   cost_center: data_engineering

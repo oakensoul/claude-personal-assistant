@@ -21,14 +21,14 @@ Understanding Snowflake's architecture is critical for writing efficient SQL que
 
 Snowflake automatically divides tables into immutable micro-partitions (50-500 MB compressed):
 
-**Key Characteristics:**
+### Key Characteristics
 
 - Automatic partitioning based on data ingestion order
 - Cannot be manually controlled or modified
 - Contain metadata (min/max values, distinct counts, NULL counts)
 - Enable efficient partition pruning during query execution
 
-**Optimization Strategy:**
+### Optimization Strategy
 
 ```sql
 -- ✅ GOOD: Filter on clustered/ordered columns for partition pruning
@@ -53,14 +53,14 @@ where user_state = 'CA'  -- Scans all partitions
 
 Improve query performance by organizing micro-partitions based on frequently filtered columns:
 
-**When to Use Clustering:**
+### When to Use Clustering
 
 - Large tables (multi-TB scale)
 - Frequent filtering on specific columns
 - Time-series data with date-based queries
 - High-cardinality columns used in WHERE/JOIN clauses
 
-**Project Example:**
+### Project Example
 
 ```sql
 -- models/dwh/core/finance/fct_wallet_transactions.sql
@@ -80,7 +80,7 @@ Improve query performance by organizing micro-partitions based on frequently fil
 }}
 ```
 
-**Clustering Best Practices:**
+### Clustering Best Practices
 
 1. Cluster on 1-4 columns maximum
 2. Put lowest cardinality column first (e.g., date before user_id)
@@ -91,21 +91,21 @@ Improve query performance by organizing micro-partitions based on frequently fil
 
 ### Three-Layer Architecture
 
-**1. Cloud Services Layer:**
+#### 1. Cloud Services Layer
 
 - Query compilation and optimization
 - Metadata management
 - Authentication and access control
 - Query plan generation
 
-**2. Compute Layer (Virtual Warehouses):**
+#### 2. Compute Layer (Virtual Warehouses)
 
 - Query execution
 - Independently scalable (XS to 6XL)
 - Auto-suspend and auto-resume
 - Charged per-second (minimum 60 seconds)
 
-**3. Storage Layer:**
+#### 3. Storage Layer
 
 - Columnar storage with micro-partitions
 - Automatic compression
@@ -113,26 +113,26 @@ Improve query performance by organizing micro-partitions based on frequently fil
 
 ### Query Optimization Process
 
-**Step 1: Parsing & Compilation**
+#### Step 1: Parsing & Compilation
 
 ```sql
 -- Snowflake compiles dbt-generated SQL with Jinja templates resolved
 -- {{ ref() }} becomes fully-qualified table references
 ```
 
-**Step 2: Query Rewrite**
+#### Step 2: Query Rewrite
 
 - Predicate pushdown (move filters closer to data)
 - Join reordering (optimize join sequence)
 - CTE inlining or materialization decisions
 
-**Step 3: Execution Plan Generation**
+#### Step 3: Execution Plan Generation
 
 - Determine partition pruning strategy
 - Select join algorithms (hash join, nested loop, merge join)
 - Plan parallelization across compute nodes
 
-**Step 4: Execution**
+#### Step 4: Execution
 
 - Parallel query execution across warehouse nodes
 - Results caching (24-hour result cache)
@@ -282,19 +282,19 @@ select * from source_data
 
 ### Project-Specific Warehouse Strategy
 
-**High-Frequency Builds (15-20 min cycles):**
+#### High-Frequency Builds (15-20 min cycles)
 
 - Warehouse: MEDIUM or LARGE
 - Models: tag:critical:true
 - Auto-suspend: 1 minute
 
-**Medium-Frequency Builds (2 hour cycles):**
+#### Medium-Frequency Builds (2 hour cycles)
 
 - Warehouse: SMALL or MEDIUM
 - Models: tag:layer:intermediate, tag:layer:marts
 - Auto-suspend: 5 minutes
 
-**Daily Full Builds:**
+#### Daily Full Builds
 
 - Warehouse: LARGE or X-LARGE
 - Models: All models, including tag:volume:high
@@ -311,30 +311,31 @@ select * from source_data
 
 ### Key Metrics to Monitor
 
-**1. Query Duration:**
+#### 1. Query Duration
 
 - Total execution time
 - Compilation time (should be <5% of total)
 - Execution time breakdown by operator
 
-**2. Bytes Scanned:**
+#### 2. Bytes Scanned
 
 - Partition pruning effectiveness
 - Column selection efficiency
 - Compare to table size for scan percentage
 
-**3. Spillage:**
+#### 3. Spillage
 
 - Disk spillage indicates insufficient memory
 - Consider larger warehouse or query optimization
 - Common causes: Large joins, window functions on unsorted data
 
-**4. Remote Disk I/O:**
+#### 4. Remote Disk I/O
 
 - Data not cached in warehouse SSD
 - Indicates cold start or new data access pattern
 
 ### Example Query Profile Analysis
+
 ```sql
 -- Check clustering effectiveness
 select system$clustering_information('PROD.FINANCE.FCT_WALLET_TRANSACTIONS', '(TRANSACTION_DATE, USER_ID)');
@@ -381,21 +382,22 @@ Snowflake caches query results for 24 hours:
 ## Project Integration
 
 ### dbt Model Optimization
+
 Apply these patterns when writing dbt models:
 
-**Staging Layer:**
+#### Staging Layer
 
 - Minimal transformations
 - Explicit column selection
 - Simple type casting and renaming
 
-**Core Layer (Facts & Dimensions):**
+#### Core Layer (Facts & Dimensions)
 
 - Incremental materialization for large fact tables
 - Clustering keys on frequently filtered columns
 - Efficient window functions with QUALIFY
 
-**Marts Layer:**
+#### Marts Layer
 
 - Pre-aggregated for BI tool performance
 - Table materialization for small result sets
@@ -414,7 +416,7 @@ tags:
 
 ## Summary
 
-**Key Takeaways:**
+### Key Takeaways
 
 1. Understand micro-partitions and enable partition pruning through filtering
 2. Use clustering keys for large tables with clear access patterns
@@ -423,7 +425,7 @@ tags:
 5. Monitor query profiles to identify optimization opportunities
 6. Leverage incremental models and result caching for cost efficiency
 
-**Next Steps:**
+### Next Steps
 
 - Review patterns/window-function-optimization.md for QUALIFY usage
 - Check decisions/performance-anti-patterns.md to avoid common pitfalls

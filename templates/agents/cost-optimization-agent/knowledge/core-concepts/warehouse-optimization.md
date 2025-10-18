@@ -23,6 +23,7 @@ Snowflake warehouses are clusters of compute resources that execute queries. Opt
 ### Warehouse Properties
 
 **Key Configuration Settings**:
+
 - **Size**: X-Small to 4X-Large (compute power and cost)
 - **Auto-Suspend**: Idle timeout before automatic shutdown
 - **Auto-Resume**: Automatically start when query submitted
@@ -33,7 +34,7 @@ Snowflake warehouses are clusters of compute resources that execute queries. Opt
 
 ### Size Selection Decision Tree
 
-```
+```text
 1. What is query complexity?
    - Simple aggregations, filters → Start X-Small/Small
    - Complex joins, window functions → Start Medium/Large
@@ -73,12 +74,14 @@ Snowflake warehouses are clusters of compute resources that execute queries. Opt
 ### Sizing Performance Characteristics
 
 **Doubling Warehouse Size**:
+
 - **Doubles cost** (credits/hour)
 - **Roughly halves execution time** for compute-bound queries
 - **Limited benefit** for I/O-bound or network-bound queries
 - **Diminishing returns** beyond certain size for small datasets
 
 **Example**:
+
 - Query on Medium (4 credits/hour): 10 minutes = 0.67 credits
 - Same query on Large (8 credits/hour): ~5 minutes = 0.67 credits
 - **Same cost**, faster result (if compute-bound)
@@ -114,12 +117,14 @@ Snowflake warehouses are clusters of compute resources that execute queries. Opt
 **Tradeoff Analysis**:
 
 **Shorter Auto-Suspend (60 seconds)**:
+
 - ✅ Minimizes idle time cost
 - ✅ Prevents accidental "left on" scenarios
 - ❌ More frequent cold starts (cache loss)
 - ❌ Slight delay for query resume (~5-10 seconds)
 
 **Longer Auto-Suspend (600 seconds)**:
+
 - ✅ Maintains query result cache
 - ✅ Fewer cold starts for interactive users
 - ❌ Higher idle time cost if user leaves
@@ -130,6 +135,7 @@ Snowflake warehouses are clusters of compute resources that execute queries. Opt
 ### Auto-Resume Configuration
 
 **Always Enable Auto-Resume**:
+
 - Queries automatically start suspended warehouses
 - No manual intervention required
 - Slight delay (5-10 seconds) for warehouse startup
@@ -146,11 +152,13 @@ ALTER WAREHOUSE my_warehouse SET
 ### When to Use Multi-Cluster
 
 **Problem**: Single warehouse has limited concurrency
+
 - Queries queue when all compute slots busy
 - User-facing dashboards become slow during peak times
 - Cannot scale vertically (size) due to cost
 
 **Solution**: Multi-cluster warehouse
+
 - Dynamically adds clusters during high concurrency
 - Automatically scales down when demand drops
 - Maintains performance SLAs for interactive workloads
@@ -158,10 +166,12 @@ ALTER WAREHOUSE my_warehouse SET
 ### Multi-Cluster Configuration
 
 **Min/Max Clusters**:
+
 - **Min Clusters**: Always-running clusters (default 1)
 - **Max Clusters**: Maximum clusters during peak (set based on budget/peak load)
 
 **Scaling Policy**:
+
 1. **Standard** (default): Aggressively starts clusters when queue forms
 2. **Economy**: Waits to fully utilize existing clusters before adding
 
@@ -180,13 +190,15 @@ WITH
 ### Multi-Cluster Cost Analysis
 
 **Example**:
+
 - Small warehouse (2 credits/hour)
 - Min: 1 cluster, Max: 4 clusters
 - Peak hours: 8 hours/day, 4 clusters running
 - Off-peak: 16 hours/day, 1 cluster running (@ 50% utilization)
 
 **Calculation**:
-```
+
+```text
 Peak cost = 8 hours × 4 clusters × 2 credits/hour = 64 credits/day
 Off-peak cost = 16 hours × 1 cluster × 2 credits/hour × 0.5 = 16 credits/day
 Total daily cost = 64 + 16 = 80 credits
@@ -194,7 +206,8 @@ Monthly cost = 80 × 30 = 2,400 credits @ $2.50 = $6,000/month
 ```
 
 **Alternative (Single Large Warehouse)**:
-```
+
+```text
 Large warehouse = 8 credits/hour
 Running 24 hours (auto-suspend not useful for constant queries)
 Daily cost = 24 × 8 = 192 credits
@@ -208,6 +221,7 @@ Monthly cost = 192 × 30 = 5,760 credits @ $2.50 = $14,400/month
 ### Warehouse Optimization Signals
 
 **Indicators to Upsize**:
+
 - **Queue Load > 10**: Queries consistently waiting
 - **Execution Time Variance**: Same query varies wildly
 - **Resource Monitor Alerts**: Hitting credit limits due to long-running queries
@@ -229,6 +243,7 @@ ORDER BY max_queue_load DESC;
 ```
 
 **Indicators to Downsize**:
+
 - **Low Concurrency**: avg_running < 1 consistently
 - **High Idle Time**: > 20% of metered time is idle
 - **Small Query Execution**: Queries finish in < 1 second
@@ -264,6 +279,7 @@ ORDER BY avg_daily_credits DESC;
 ### Query Acceleration Service
 
 **What is Query Acceleration?**
+
 - Serverless compute that offloads query portions to elastic resources
 - Helps with unpredictable workload spikes
 - Can be more cost-effective than maintaining large warehouse
@@ -305,6 +321,7 @@ ORDER BY 1, 2 DESC;
 ### Workload Separation Strategy
 
 **Why Separate Warehouses?**
+
 - **Cost Attribution**: Track costs by team/workload
 - **Priority Management**: Critical workloads not blocked by ad-hoc
 - **Resource Guarantees**: SLA-driven sizing per workload
@@ -375,11 +392,13 @@ ORDER BY total_credits DESC;
 ### Result Caching
 
 **Snowflake Result Cache**:
+
 - Automatic 24-hour cache for identical queries
 - Zero compute cost for cache hits
 - Invalidated when underlying data changes
 
 **Optimization**:
+
 - Encourage dashboard query standardization (same SQL = cache hit)
 - Use query result reuse for repeated reports
 - Consider scheduled query warming for critical dashboards
@@ -387,11 +406,13 @@ ORDER BY total_credits DESC;
 ### Warehouse Warming
 
 **Cold Start Cost**:
+
 - First query after warehouse start is slower (no cache)
 - Data must be loaded into warehouse cache
 - Subsequent queries benefit from warm cache
 
 **Warming Strategy**:
+
 ```sql
 -- Schedule warming query before peak hours
 -- Run at 8:00 AM daily to warm cache for business hours
@@ -402,6 +423,7 @@ SELECT COUNT(*) FROM critical_dimension_table;
 ### Statement Queuing
 
 **Query Queue Management**:
+
 - Snowflake queues queries when warehouse at capacity
 - Statement Queue Timeout: Maximum wait time before failure
 - Statement Timeout: Maximum execution time
@@ -477,18 +499,21 @@ ORDER BY total_credits DESC, idle_percentage DESC;
 ## Best Practices Summary
 
 ### Sizing Best Practices
+
 1. **Start small**, upsize based on actual performance metrics
 2. **Measure before optimizing** - use ACCOUNT_USAGE data
 3. **Separate workloads** by warehouse for cost attribution and optimization
 4. **Use multi-cluster** for concurrency, not single large warehouse
 
 ### Configuration Best Practices
+
 1. **Auto-suspend 60 seconds** for most warehouses (adjust for UX if needed)
 2. **Always enable auto-resume** for convenience
 3. **Statement timeouts** to prevent runaway queries
 4. **Resource monitors** on all production warehouses
 
 ### Monitoring Best Practices
+
 1. **Weekly reviews** of credit consumption and warehouse utilization
 2. **Alert on queue load > 10** (indicates need for scaling)
 3. **Track idle time percentage** (should be < 10%)

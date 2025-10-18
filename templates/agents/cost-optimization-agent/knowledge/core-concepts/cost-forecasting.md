@@ -14,9 +14,13 @@ Cost forecasting enables proactive budget management and capacity planning for S
 ## Forecasting Methods
 
 ### 1. Simple Linear Trend
+
 ### 2. Moving Average
+
 ### 3. Seasonal Decomposition
+
 ### 4. Regression-Based Forecasting
+
 ### 5. Budget Variance Analysis
 
 ## SQL Implementation Templates
@@ -30,6 +34,7 @@ Cost forecasting enables proactive budget management and capacity planning for S
 ---
 
 **Note**: This is a placeholder. Full content to be added including:
+
 - Trend analysis SQL queries
 - Seasonal pattern detection
 - Confidence intervals for forecasts

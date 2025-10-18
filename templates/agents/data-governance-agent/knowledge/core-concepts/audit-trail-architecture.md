@@ -49,30 +49,30 @@ Audit trails provide evidence of compliance with regulatory requirements (GDPR, 
 
 ### The 5 W's of Audit Logging
 
-**Who**: User or service account performing the action
+#### Who: User or service account performing the action
 
 - User name, role name, authentication method
 - Session ID for tracing multi-step operations
 
-**What**: Action performed
+#### What: Action performed
 
 - Query type (SELECT, INSERT, UPDATE, DELETE, GRANT, REVOKE)
 - SQL text (full query for forensics)
 - Objects accessed (database, schema, table, column)
 
-**When**: Timestamp of the action
+#### When: Timestamp of the action
 
 - UTC timestamp with millisecond precision
 - Session start/end times
 - Duration of long-running queries
 
-**Where**: System and location
+#### Where: System and location
 
 - Database, schema, table, column
 - Warehouse used for compute
 - Client IP address, application name
 
-**Why**: Business justification (optional but recommended)
+#### Why: Business justification (optional but recommended)
 
 - Ticket ID or approval reference
 - Business purpose (analytics, reporting, data science)
@@ -266,7 +266,7 @@ grant select on future tables in schema prod.audit to role compliance_analyst;
 
 ### Audit Log Staging Models
 
-**dbt Staging Model: stg_snowflake__query_history**
+#### dbt Staging Model: stg_snowflake__query_history
 
 ```sql
 -- models/dwh/staging/audit/stg_snowflake__query_history.sql
@@ -328,7 +328,7 @@ where start_time > (select max(start_time) from {{ this }})
 {% endif %}
 ```
 
-**dbt Staging Model: stg_snowflake__access_history**
+#### dbt Staging Model: stg_snowflake__access_history
 
 ```sql
 -- models/dwh/staging/audit/stg_snowflake__access_history.sql
@@ -382,7 +382,7 @@ from base_objects
 
 ### Audit Fact Table
 
-**Fact Table: fct_data_access**
+#### Fact Table: fct_data_access
 
 ```sql
 -- models/dwh/core/audit/fct_data_access.sql
@@ -525,7 +525,7 @@ order by pii_queries desc;
 
 ### Real-Time Alerts
 
-**Alert 1: Unusual PII Access Volume**
+#### Alert 1: Unusual PII Access Volume
 
 ```sql
 -- Alert if user accesses >1000 rows of PII in single query
@@ -543,7 +543,7 @@ where pii_accessed_flag = true
 order by rows_produced desc;
 ```
 
-**Alert 2: Failed Login Attempts (Brute Force)**
+#### Alert 2: Failed Login Attempts (Brute Force)
 
 ```sql
 -- Alert if >5 failed logins from same IP in 10 minutes
@@ -561,7 +561,7 @@ having count(*) >= 5
 order by failed_attempts desc;
 ```
 
-**Alert 3: Privilege Escalation**
+#### Alert 3: Privilege Escalation
 
 ```sql
 -- Alert on grants to sensitive tables
@@ -628,7 +628,7 @@ order by created_on desc;
 
 When user requests data deletion (GDPR Right to Erasure):
 
-**Step 1: Log the Request**
+### Step 1: Log the Request
 
 ```sql
 insert into prod.audit.data_subject_requests (
@@ -638,7 +638,7 @@ insert into prod.audit.data_subject_requests (
 );
 ```
 
-**Step 2: Execute Deletion and Log**
+### Step 2: Execute Deletion and Log
 
 ```sql
 begin transaction;
@@ -665,7 +665,7 @@ where user_id = 12345 and request_type = 'ERASURE';
 commit;
 ```
 
-**Step 3: Generate Audit Report**
+### Step 3: Generate Audit Report
 
 ```sql
 -- Confirm deletion and provide audit trail

@@ -217,6 +217,7 @@ LIMIT 50;
    - Identify bottleneck operator (JOIN, AGG, SCAN)
 
 2. **Check Execution Plan**:
+
    ```sql
    EXPLAIN USING TEXT
    <your expensive query>;
@@ -235,6 +236,7 @@ LIMIT 50;
 #### Pattern 1: Add Missing Filters
 
 **Before**:
+
 ```sql
 SELECT *
 FROM large_fact_table
@@ -242,6 +244,7 @@ WHERE metric > 100;  -- Non-clustered column
 ```
 
 **After**:
+
 ```sql
 SELECT *
 FROM large_fact_table
@@ -252,6 +255,7 @@ WHERE date_column >= '2024-01-01'  -- Clustered column
 #### Pattern 2: Specify Columns (Avoid SELECT *)
 
 **Before**:
+
 ```sql
 SELECT *
 FROM fact_transactions ft
@@ -259,6 +263,7 @@ JOIN dim_user du ON ft.user_id = du.user_id;
 ```
 
 **After**:
+
 ```sql
 SELECT
     ft.transaction_id,
@@ -275,6 +280,7 @@ JOIN dim_user du ON ft.user_id = du.user_id;
 #### Pattern 3: Filter Early in CTEs
 
 **Before**:
+
 ```sql
 WITH all_data AS (
     SELECT * FROM large_table
@@ -286,6 +292,7 @@ SELECT * FROM filtered;
 ```
 
 **After**:
+
 ```sql
 WITH filtered AS (
     SELECT * FROM large_table WHERE date_column >= '2024-01-01'
@@ -296,6 +303,7 @@ SELECT * FROM filtered;
 #### Pattern 4: Optimize Window Functions
 
 **Before**:
+
 ```sql
 SELECT
     *,
@@ -305,6 +313,7 @@ WHERE rn = 1;  -- Incorrect: WHERE after window function
 ```
 
 **After**:
+
 ```sql
 SELECT *
 FROM (
@@ -319,6 +328,7 @@ WHERE rn = 1;  -- Correct: Subquery pattern
 ```
 
 **Or use QUALIFY (Snowflake-specific)**:
+
 ```sql
 SELECT
     event_id,
@@ -331,6 +341,7 @@ QUALIFY ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at DESC) = 1;
 #### Pattern 5: Leverage Clustering Keys
 
 **Identify Candidates**:
+
 ```sql
 -- Check clustering depth (higher = worse clustering)
 SELECT
@@ -347,6 +358,7 @@ ORDER BY average_depth DESC;
 ```
 
 **Add Clustering Key**:
+
 ```sql
 -- For fact tables with date filtering
 ALTER TABLE fct_wallet_transactions
@@ -358,6 +370,7 @@ CLUSTER BY (session_date, user_id);
 ```
 
 **Cost-Benefit Analysis**:
+
 - **Benefit**: Faster queries (pruning partitions)
 - **Cost**: Automatic clustering maintenance credits
 - **ROI**: Only cluster if query savings > maintenance cost
@@ -385,6 +398,7 @@ SELECT
 ```
 
 **Validate Results Match**:
+
 ```sql
 -- Ensure row count identical
 SELECT COUNT(*) FROM (<original query>);
@@ -494,7 +508,8 @@ LIMIT 100;
 ### Optimization ROI
 
 **Impact Formula**:
-```
+
+```text
 Daily Savings (credits) =
     (Original Execution Seconds - Optimized Execution Seconds)
     × Daily Query Count
@@ -504,13 +519,14 @@ Annual Savings ($) = Daily Savings × 365 × ($/Credit)
 ```
 
 **Example**:
+
 - Original: 60 seconds per query
 - Optimized: 10 seconds per query (83% improvement)
 - Frequency: 100 queries/day
 - Warehouse: Medium (4 credits/hour)
 - Credit cost: $2.50
 
-```
+```text
 Daily Savings = (60 - 10) × 100 × (4 ÷ 3600) = 5.56 credits/day
 Annual Savings = 5.56 × 365 × $2.50 = $5,073
 ```

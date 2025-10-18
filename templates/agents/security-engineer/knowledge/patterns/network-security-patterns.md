@@ -9,7 +9,7 @@ last_updated: "2025-10-07"
 
 ## VPC Architecture for Data Platform
 
-```
+```text
                     ┌─────────────────────────────────────┐
                     │  VPC (10.0.0.0/16)                  │
                     │                                     │
@@ -44,7 +44,7 @@ last_updated: "2025-10-07"
 
 ## Security Group Patterns
 
-```bash
+```json
 # Metabase Security Group
 {
   "GroupName": "metabase-app",

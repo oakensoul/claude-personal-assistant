@@ -10,6 +10,7 @@ last_updated: "2025-10-07"
 ## Network Security
 
 ### IP Allowlisting
+
 ```sql
 -- Create network policy for production access (corporate VPN only)
 CREATE NETWORK POLICY CORP_VPN_ONLY
@@ -24,6 +25,7 @@ ALTER USER dbt_cloud_prod SET NETWORK_POLICY = '';
 ```
 
 ### MFA Enforcement
+
 ```sql
 -- Require MFA for all users (Duo Security integration)
 ALTER USER john.doe SET EXT_AUTHN_DUO = TRUE;
@@ -33,7 +35,8 @@ ALTER ACCOUNT SET SAML_IDENTITY_PROVIDER = '<Okta SAML config>';
 ## Access Control
 
 ### Recommended Role Hierarchy
-```
+
+```text
 ACCOUNTADMIN (break-glass only, 2-3 users)
   └── SECURITYADMIN (security team, 3-5 users)
         └── SYSADMIN (data engineers, 5-10 users)
@@ -44,6 +47,7 @@ ACCOUNTADMIN (break-glass only, 2-3 users)
 ```
 
 ### Data Masking for PII
+
 ```sql
 CREATE MASKING POLICY MASK_EMAIL AS (val STRING) RETURNS STRING ->
   CASE

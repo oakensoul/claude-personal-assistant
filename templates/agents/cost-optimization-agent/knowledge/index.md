@@ -26,6 +26,7 @@ This knowledge base provides comprehensive guidance for Snowflake cost managemen
 ## Knowledge Organization
 
 ### Core Concepts (4 files)
+
 Foundational knowledge about Snowflake cost models and optimization principles:
 
 - **snowflake-cost-model.md** - Compute vs storage pricing, credit consumption, cost drivers
@@ -34,6 +35,7 @@ Foundational knowledge about Snowflake cost models and optimization principles:
 - **cost-forecasting.md** - Trend analysis, predictive models, budget planning
 
 ### Patterns (4 files)
+
 Reusable patterns and SQL templates for cost management:
 
 - **expensive-query-detection.md** - Monitoring, alerting, optimization workflows
@@ -42,6 +44,7 @@ Reusable patterns and SQL templates for cost management:
 - **cost-allocation-tagging.md** - Resource tagging, cost attribution, chargeback
 
 ### Decisions (3 files)
+
 Documented standards and decision frameworks:
 
 - **warehouse-sizing-standards.md** - Default sizes by workload, scaling triggers
@@ -49,6 +52,7 @@ Documented standards and decision frameworks:
 - **materialization-thresholds.md** - When to materialize vs compute on-demand
 
 ### Reference (3 files)
+
 Quick reference materials and checklists:
 
 - **snowflake-cost-queries.md** - ACCOUNT_USAGE query library, cost analysis SQL
@@ -60,6 +64,7 @@ Quick reference materials and checklists:
 ### Common Cost Analysis Queries
 
 **Daily Credit Consumption**:
+
 ```sql
 SELECT
     DATE_TRUNC('day', start_time) AS usage_date,
@@ -72,6 +77,7 @@ ORDER BY 1 DESC, 3 DESC;
 ```
 
 **Most Expensive Queries**:
+
 ```sql
 SELECT
     query_id,
@@ -85,6 +91,7 @@ LIMIT 50;
 ```
 
 **Storage Breakdown**:
+
 ```sql
 SELECT
     table_catalog,
@@ -118,17 +125,20 @@ ORDER BY SUM(active_bytes + time_travel_bytes + failsafe_bytes) DESC;
 ### Cost Optimization Checklist
 
 **Weekly**:
+
 - [ ] Review top 10 most expensive queries
 - [ ] Check warehouse idle time percentages
 - [ ] Validate auto-suspend configurations
 
 **Monthly**:
+
 - [ ] Analyze monthly credit consumption vs budget
 - [ ] Review table storage costs (top 50 tables)
 - [ ] Evaluate materialization strategy ROI
 - [ ] Update cost forecasts for next quarter
 
 **Quarterly**:
+
 - [ ] Comprehensive warehouse sizing review
 - [ ] Storage retention policy optimization
 - [ ] Cost attribution accuracy validation
@@ -139,6 +149,7 @@ ORDER BY SUM(active_bytes + time_travel_bytes + failsafe_bytes) DESC;
 ### dbt Cost Optimization
 
 **Tagging for Cost Attribution**:
+
 ```yaml
 # models/dwh/core/finance/fct_wallet_transactions.sql
 {{
@@ -152,6 +163,7 @@ ORDER BY SUM(active_bytes + time_travel_bytes + failsafe_bytes) DESC;
 ```
 
 **Materialization Strategy**:
+
 ```yaml
 # High-frequency, high-volume → Incremental (reduce recomputation)
 {{ config(materialized='incremental', unique_key='transaction_key') }}
@@ -166,6 +178,7 @@ ORDER BY SUM(active_bytes + time_travel_bytes + failsafe_bytes) DESC;
 ### Warehouse Assignments
 
 **Recommended Warehouse Mapping**:
+
 - `DBT_DEV_WH` (Small): Development builds, exclude high-volume models
 - `DBT_PROD_WH` (Medium): Production critical models (tag:critical:true)
 - `DBT_PROD_HEAVY_WH` (Large): High-volume segment data (tag:volume:high)
@@ -174,6 +187,7 @@ ORDER BY SUM(active_bytes + time_travel_bytes + failsafe_bytes) DESC;
 ### Cost Monitoring Integration
 
 **Resource Monitor Example**:
+
 ```sql
 CREATE RESOURCE MONITOR dbt_prod_monitor
 WITH CREDIT_QUOTA = 5000
@@ -189,17 +203,20 @@ ALTER WAREHOUSE DBT_PROD_WH SET RESOURCE_MONITOR = dbt_prod_monitor;
 ## External Resources
 
 ### Snowflake Documentation
+
 - [Snowflake Pricing](https://www.snowflake.com/pricing/)
 - [Understanding Compute Cost](https://docs.snowflake.com/en/user-guide/cost-understanding-compute)
 - [Resource Monitors](https://docs.snowflake.com/en/user-guide/resource-monitors)
 - [Warehouse Considerations](https://docs.snowflake.com/en/user-guide/warehouses-considerations)
 
 ### Cost Optimization Guides
+
 - [Cost Management Best Practices](https://www.snowflake.com/blog/cost-management-best-practices/)
 - [Query Performance Optimization](https://docs.snowflake.com/en/user-guide/query-performance)
 - [Storage Cost Optimization](https://docs.snowflake.com/en/user-guide/tables-storage-considerations)
 
 ### Analytics & Monitoring
+
 - [ACCOUNT_USAGE Views Reference](https://docs.snowflake.com/en/sql-reference/account-usage)
 - [Query Profile Analysis](https://docs.snowflake.com/en/user-guide/ui-query-profile)
 
@@ -217,12 +234,14 @@ ALTER WAREHOUSE DBT_PROD_WH SET RESOURCE_MONITOR = dbt_prod_monitor;
 ### Knowledge Base Maintenance
 
 **Update Triggers**:
+
 - Snowflake pricing changes → Update **core-concepts/snowflake-cost-model.md**
 - New cost optimization discovered → Document in **patterns/**
 - Warehouse sizing adjustments → Update **decisions/warehouse-sizing-standards.md**
 - Monthly cost reviews → Add learnings to **decisions/**
 
 **Quality Standards**:
+
 - All SQL examples must be tested against ACCOUNT_USAGE schema
 - Cost calculations should include pricing assumptions ($/credit)
 - Patterns should include ROI analysis where applicable

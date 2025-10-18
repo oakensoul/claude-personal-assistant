@@ -17,12 +17,14 @@ Comprehensive guide to threat modeling methodologies (STRIDE), attack trees, and
 ## Threat Modeling Fundamentals
 
 ### Goals of Threat Modeling
+
 1. **Identify threats** before they become vulnerabilities
 2. **Prioritize security controls** based on risk
 3. **Design secure architecture** from the ground up
 4. **Communicate security risks** to stakeholders
 
 ### Threat Modeling Process
+
 1. **Define Security Objectives**: What are we protecting? (confidentiality, integrity, availability)
 2. **Create Architecture Diagram**: Data flows, trust boundaries, entry points
 3. **Identify Threats**: Use STRIDE methodology
@@ -50,75 +52,99 @@ STRIDE is a threat classification framework developed by Microsoft for identifyi
 #### Component: Snowflake Data Warehouse
 
 **Spoofing Threats**:
+
 - Attacker uses stolen username/password to access production data
 - Service account credentials leaked in GitHub repository
-- **Mitigations**:
-  - MFA required for all human users
-  - OAuth 2.0 for service accounts (dbt Cloud, Airbyte)
-  - Network policies (IP allowlisting)
-  - Secrets stored in AWS Secrets Manager (not code)
+
+**Mitigations**:
+
+- MFA required for all human users
+- OAuth 2.0 for service accounts (dbt Cloud, Airbyte)
+- Network policies (IP allowlisting)
+- Secrets stored in AWS Secrets Manager (not code)
 
 **Tampering Threats**:
+
 - Attacker modifies data in Snowflake tables (e.g., alters financial transactions)
 - SQL injection in dbt models or Metabase queries
-- **Mitigations**:
-  - Audit logging (`SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY`)
-  - Read-only roles for analysts (`SELECT` only, no `INSERT/UPDATE/DELETE`)
-  - Parameterized queries (no dynamic SQL with user input)
-  - Version control for dbt models (Git audit trail)
+
+**Mitigations**:
+
+- Audit logging (`SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY`)
+- Read-only roles for analysts (`SELECT` only, no `INSERT/UPDATE/DELETE`)
+- Parameterized queries (no dynamic SQL with user input)
+- Version control for dbt models (Git audit trail)
 
 **Repudiation Threats**:
+
 - User deletes sensitive data and claims they didn't
 - Admin changes permissions without audit trail
-- **Mitigations**:
-  - Immutable audit logs (`ACCOUNT_USAGE` views with 1-year retention)
-  - CloudTrail logging for AWS KMS key access
-  - Snowflake access history for table-level auditing
+
+**Mitigations**:
+
+- Immutable audit logs (`ACCOUNT_USAGE` views with 1-year retention)
+- CloudTrail logging for AWS KMS key access
+- Snowflake access history for table-level auditing
 
 **Information Disclosure Threats**:
+
 - PII exposed to unauthorized users (email, phone, SSN)
 - Financial data accessible by non-finance teams
-- **Mitigations**:
-  - Data masking policies for PII columns
-  - RBAC with least privilege (finance analysts can't see operations data)
-  - Encryption at-rest (Tri-Secret Secure with AWS KMS)
-  - TLS 1.2+ for all data in transit
+
+**Mitigations**:
+
+- Data masking policies for PII columns
+- RBAC with least privilege (finance analysts can't see operations data)
+- Encryption at-rest (Tri-Secret Secure with AWS KMS)
+- TLS 1.2+ for all data in transit
 
 **Denial of Service Threats**:
+
 - Runaway query consumes all warehouse credits
 - Attacker floods API with authentication attempts
-- **Mitigations**:
-  - Resource monitors with credit quotas (suspend at 90%)
-  - Query timeout limits (max 1 hour)
-  - Statement timeout (30 minutes for long-running queries)
-  - Rate limiting on Snowflake API endpoints
+
+**Mitigations**:
+
+- Resource monitors with credit quotas (suspend at 90%)
+- Query timeout limits (max 1 hour)
+- Statement timeout (30 minutes for long-running queries)
+- Rate limiting on Snowflake API endpoints
 
 **Elevation of Privilege Threats**:
+
 - Analyst grants themselves `SYSADMIN` role
 - SQL injection escalates to `ACCOUNTADMIN`
-- **Mitigations**:
-  - Role grants audited (`SHOW GRANTS` reviewed quarterly)
-  - `BLOCKED_ROLES_LIST` in OAuth integration (prevent ACCOUNTADMIN via OAuth)
-  - Separation of duties (grant/revoke requires SECURITYADMIN)
+
+**Mitigations**:
+
+- Role grants audited (`SHOW GRANTS` reviewed quarterly)
+- `BLOCKED_ROLES_LIST` in OAuth integration (prevent ACCOUNTADMIN via OAuth)
+- Separation of duties (grant/revoke requires SECURITYADMIN)
 
 #### Component: Metabase BI Platform
 
 **Spoofing**: Attacker impersonates executive to view sensitive dashboards
+
 - **Mitigation**: SAML SSO with Okta, MFA required
 
 **Tampering**: Attacker modifies dashboard query to return unauthorized data
+
 - **Mitigation**: Dashboard queries stored in PostgreSQL with audit log, version control
 
 **Repudiation**: User claims they didn't access PII dashboard
+
 - **Mitigation**: Metabase audit log tracks all dashboard views
 
 **Information Disclosure**: Public dashboard link exposes sensitive financial data
+
 - **Mitigation**: Dashboard collections require authentication, no public links for sensitive data
 
 **Denial of Service**: Complex query locks Snowflake warehouse
+
 - **Mitigation**: Query timeout (10 minutes), warehouse auto-suspend after 5 minutes idle
 
 **Elevation of Privilege**: Analyst grants themselves "Data Engineer" permissions
+
 - **Mitigation**: Group membership managed by Okta (not Metabase), SSO group sync
 
 ## Attack Trees
@@ -127,7 +153,7 @@ Attack trees model the paths an attacker might take to compromise a system.
 
 ### Example: Unauthorized Access to Snowflake Production Data
 
-```
+```text
 Goal: Access sensitive financial data in PROD.FINANCE schema
 
 OR
@@ -167,9 +193,11 @@ OR
 ## Risk Assessment
 
 ### Risk Calculation
-**Risk Score = Likelihood × Impact**
+
+Risk Score = Likelihood × Impact
 
 **Likelihood Scale (1-5)**:
+
 - 1 = Rare (once every 5+ years)
 - 2 = Unlikely (once every 2-5 years)
 - 3 = Possible (once every 1-2 years)
@@ -177,6 +205,7 @@ OR
 - 5 = Almost Certain (multiple times per year)
 
 **Impact Scale (1-5)**:
+
 - 1 = Negligible (no data loss, <1 hour downtime)
 - 2 = Minor (limited data exposure, <4 hours downtime)
 - 3 = Moderate (PII exposure for <100 users, <1 day downtime)
@@ -195,6 +224,7 @@ OR
 | TLS downgrade attack | 1 | 4 | 4 | Low | ✅ TLS 1.2+ enforced, HSTS enabled |
 
 **Priority Levels**:
+
 - **Critical** (Risk Score 20-25): Immediate action required (within 24 hours)
 - **High** (Risk Score 12-19): Address within 1 week
 - **Medium** (Risk Score 6-11): Address within 1 month
@@ -203,9 +233,11 @@ OR
 ## Threat Modeling for Common Scenarios
 
 ### Scenario 1: New dbt Model with PII
+
 **Question**: "We're creating a new dbt model that joins user PII (email, phone) with financial transactions. What security controls are needed?"
 
 **Threat Model**:
+
 1. **Information Disclosure**: PII accessible to unauthorized users
    - **Mitigation**: Model placed in `PROD.FINANCE` schema with `FINANCE_ANALYST` role required
    - **Mitigation**: Data masking policy on email/phone columns
@@ -218,9 +250,11 @@ OR
    - **Mitigation**: `ACCOUNT_USAGE.ACCESS_HISTORY` tracks all table access with user/role/timestamp
 
 ### Scenario 2: Metabase Dashboard for Executives
+
 **Question**: "Executives need a dashboard with real-time revenue data. How do we secure it?"
 
 **Threat Model**:
+
 1. **Spoofing**: Attacker impersonates executive to view dashboard
    - **Mitigation**: SAML SSO with Okta, MFA required, executive group membership
 
@@ -234,9 +268,11 @@ OR
    - **Mitigation**: Use pre-aggregated mart table (`MART_DAILY_REVENUE`), query timeout 10 minutes
 
 ### Scenario 3: Airbyte Integration with Third-Party API
+
 **Question**: "We're syncing data from Stripe API to Snowflake via Airbyte. What are the security risks?"
 
 **Threat Model**:
+
 1. **Spoofing**: Attacker impersonates Airbyte to access Stripe API
    - **Mitigation**: Stripe API key stored in AWS Secrets Manager, rotated every 90 days
 
@@ -252,16 +288,19 @@ OR
 ## Threat Modeling Tools
 
 ### Microsoft Threat Modeling Tool
+
 - Visual diagramming for architecture
 - Built-in STRIDE threat library
 - Generates threat report with mitigations
 
 ### OWASP Threat Dragon
+
 - Open-source web-based tool
 - STRIDE and other methodologies
 - Integrates with GitHub for version control
 
 ### Manual Threat Modeling Template
+
 ```markdown
 # Threat Model: [Component Name]
 

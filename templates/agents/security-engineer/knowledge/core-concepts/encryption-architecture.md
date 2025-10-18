@@ -33,6 +33,7 @@ Comprehensive guide to encryption strategies for data at-rest, in-transit, and k
 ## Data at Rest Encryption
 
 ### Snowflake Encryption
+
 Snowflake provides automatic encryption for all data stored in the platform.
 
 #### Standard Encryption

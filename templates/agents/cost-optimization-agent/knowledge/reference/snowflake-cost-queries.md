@@ -513,16 +513,19 @@ ORDER BY ABS(z_score) DESC;
 ## Notes
 
 ### Data Latency
+
 - `ACCOUNT_USAGE` views have 45-minute to 3-hour latency
 - For real-time data, use `INFORMATION_SCHEMA` views (limited history)
 - Storage metrics updated once per day
 
 ### Credit Cost Assumptions
+
 - Queries use `$2.50/credit` as placeholder
 - **Adjust based on your actual Snowflake contract pricing**
 - Pricing varies by region, cloud provider, and contract type
 
 ### Query Performance
+
 - `ACCOUNT_USAGE` queries can be expensive on large accounts
 - Add `LIMIT` clauses for exploratory analysis
 - Cache frequently-used results in tables for dashboards

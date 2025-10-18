@@ -100,22 +100,26 @@ References to official documentation and community resources.
 ### By Use Case
 
 **Creating a New Dashboard**:
+
 1. [yaml-specification-schema.md](core-concepts/yaml-specification-schema.md) - Schema reference
 2. [dashboard-layout-patterns.md](design-patterns/dashboard-layout-patterns.md) - Layout design
 3. [kpi-scorecard-patterns.md](design-patterns/kpi-scorecard-patterns.md) - KPI cards
 4. [api-dashboards.md](api-reference/api-dashboards.md) - API deployment
 
 **Optimizing Performance**:
+
 1. [query-performance-optimization.md](troubleshooting/query-performance-optimization.md) - Query tuning
 2. [dashboard-load-issues.md](troubleshooting/dashboard-load-issues.md) - Dashboard optimization
 3. [sql-expert-integration.md](integrations/sql-expert-integration.md) - Get SQL expert help
 
 **Setting Up CI/CD**:
+
 1. [python-deployment-scripts.md](deployment-automation/python-deployment-scripts.md) - Script development
 2. [cicd-pipeline-patterns.md](deployment-automation/cicd-pipeline-patterns.md) - Pipeline configuration
 3. [environment-configuration.md](deployment-automation/environment-configuration.md) - Environment setup
 
 **Troubleshooting Deployments**:
+
 1. [deployment-failures.md](troubleshooting/deployment-failures.md) - Failure diagnosis
 2. [common-api-errors.md](troubleshooting/common-api-errors.md) - API error resolution
 3. [rollback-strategies.md](deployment-automation/rollback-strategies.md) - Recovery procedures
