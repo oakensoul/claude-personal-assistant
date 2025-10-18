@@ -34,6 +34,7 @@ Optimize Snowflake warehouse configuration by analyzing utilization patterns, pr
 ### Phase 1: Utilization Data Collection
 
 1. **Task(subagent_type="cost-optimization-agent")** - Query warehouse metrics:
+
    - Average CPU and memory load
    - Queue load and query wait times
    - Query execution time trends
@@ -42,6 +43,7 @@ Optimize Snowflake warehouse configuration by analyzing utilization patterns, pr
    - Credit consumption by warehouse size
 
 2. **Queries to Execute**:
+
    ```sql
    -- Warehouse utilization metrics
    SELECT
@@ -79,18 +81,21 @@ Optimize Snowflake warehouse configuration by analyzing utilization patterns, pr
 **cost-optimization-agent** analyzes utilization patterns:
 
 1. **Sizing Health Assessment**:
+
    - **Underutilized** (< 50% avg load) → Downsize candidate
    - **Healthy** (50-80% avg load) → Well-sized
    - **Overloaded** (> 80% avg load) → Upsize candidate
    - **Queueing** (queries waiting) → Needs multi-cluster or larger size
 
 2. **Performance Bottleneck Identification**:
+
    - Query queue wait times
    - Execution time degradation trends
    - Concurrency ceiling reached
    - Memory spilling incidents
 
 3. **Efficiency Metrics**:
+
    - Credits per query executed
    - Idle time ratio
    - Auto-suspend effectiveness
@@ -101,18 +106,21 @@ Optimize Snowflake warehouse configuration by analyzing utilization patterns, pr
 For each sizing recommendation, calculate:
 
 1. **Current State**:
+
    - Warehouse size and cost (credits/hour)
    - Monthly credit consumption
    - Average monthly cost
    - Queries executed per day
 
 2. **Recommended State**:
+
    - New warehouse size
    - Projected credit consumption
    - Projected monthly cost
    - Expected performance impact
 
 3. **ROI Analysis**:
+
    - Monthly savings (or cost increase)
    - Performance gain/loss (% faster/slower)
    - Business impact assessment
@@ -124,18 +132,21 @@ For each sizing recommendation, calculate:
 #### 1. Size Recommendations
 
 **Upsize Scenarios**:
+
 - Current load > 80% consistently
 - Queue wait times > 1 minute
 - Peak concurrency exceeds capacity
 - Critical business queries slowing down
 
 **Downsize Scenarios**:
+
 - Current load < 50% consistently
 - No queueing observed
 - Idle time > 30%
 - Non-critical workloads with flexible SLAs
 
 **Sizing Options**:
+
 - XS → S (2x increase)
 - S → M (2x increase)
 - M → L (2x increase)
@@ -145,6 +156,7 @@ For each sizing recommendation, calculate:
 #### 2. Auto-Suspend Optimization
 
 **Recommendations Based on Idle Patterns**:
+
 - **High idle time (> 30%)**: Reduce auto-suspend from 10 min to 5 min or 3 min
 - **Moderate idle (15-30%)**: Reduce to 5 min
 - **Low idle (< 15%)**: Keep current setting or increase to reduce start/stop overhead
@@ -152,6 +164,7 @@ For each sizing recommendation, calculate:
 - **Production warehouses**: Balanced auto-suspend (5 min)
 
 **Considerations**:
+
 - Start/stop overhead (typically 3-5 seconds)
 - Query frequency patterns
 - Cost of idle credits vs resume overhead
@@ -159,12 +172,14 @@ For each sizing recommendation, calculate:
 #### 3. Multi-Cluster Recommendations
 
 **Enable Multi-Cluster When**:
+
 - High concurrency (> 10 concurrent queries)
 - Queueing observed during peak hours
 - Variable workload patterns (peak/off-peak)
 - Multiple user groups competing for resources
 
 **Configuration Options**:
+
 - **Min Clusters**: Start with 1 (or 2 for always-on production)
 - **Max Clusters**: Based on peak concurrency (typically 3-5)
 - **Scaling Policy**:
@@ -172,6 +187,7 @@ For each sizing recommendation, calculate:
   - **Economy**: Slower scale-up, cost-optimized (recommended for BI/analytics)
 
 **Cost Impact Example**:
+
 - Single LARGE warehouse: $4/hour
 - Multi-cluster (1-3 LARGE, Economy mode): $4-12/hour during peaks
 - Benefit: Eliminate queue wait times, improve user experience
@@ -181,6 +197,7 @@ For each sizing recommendation, calculate:
 **Task(subagent_type="snowflake-sql-expert")** - Identify expensive queries:
 
 1. **Top Queries by Cost**:
+
    ```sql
    SELECT
        query_text,
@@ -197,6 +214,7 @@ For each sizing recommendation, calculate:
    ```
 
 2. **Inefficient Query Patterns**:
+
    - Full table scans (no clustering or pruning)
    - Cartesian joins (missing join conditions)
    - Excessive data spilling to disk
@@ -204,6 +222,7 @@ For each sizing recommendation, calculate:
    - SELECT * without column pruning
 
 3. **Optimization Recommendations**:
+
    - Add clustering keys for range-filtered queries
    - Create materialized views for repeated aggregations
    - Optimize join order and conditions
@@ -215,33 +234,39 @@ For each sizing recommendation, calculate:
 Generate step-by-step implementation with risk assessment:
 
 #### Low-Risk Changes (Immediate Implementation)
+
 1. **Auto-Suspend Adjustments**:
    - Change requires seconds, no downtime
    - Monitor for 1 week to validate savings
    - Rollback if suspend/resume overhead > 5%
 
 2. **Query Result Caching**:
+
    - Enable USE_CACHED_RESULT = TRUE
    - No performance risk, immediate savings
 
 #### Medium-Risk Changes (Test First)
+
 1. **Warehouse Downsizing**:
    - Test during low-traffic period
    - Monitor query performance for 24 hours
    - Rollback if execution times increase > 20%
 
 2. **Multi-Cluster Enablement**:
+
    - Start with conservative settings (1-2 clusters)
    - Monitor cost and queueing for 1 week
    - Adjust max clusters based on actual usage
 
 #### High-Risk Changes (Architecture Review Required)
+
 1. **Major Size Changes** (> 2x upsize/downsize):
    - Coordinate with data engineering team
    - Test with representative workload
    - Have rollback plan ready
 
 2. **Query Rewrites & Clustering**:
+
    - Validate with snowflake-sql-expert agent
    - Test in development environment
    - Measure performance impact before production
@@ -382,6 +407,7 @@ Warehouse_Optimization_Report:
 ```
 
 **Expected Output**:
+
 - 30-day utilization trends and patterns
 - Sizing recommendation (upsize/downsize/no change)
 - Auto-suspend optimization (10 min → 5 min saves $120/month)
@@ -396,6 +422,7 @@ Warehouse_Optimization_Report:
 ```
 
 **Expected Output**:
+
 - Analyzes Metabase query patterns
 - Likely underutilized (45% avg load, 10% peak)
 - Recommends downsize from LARGE to MEDIUM
@@ -410,6 +437,7 @@ Warehouse_Optimization_Report:
 ```
 
 **Expected Output**:
+
 - Portfolio-wide warehouse optimization report
 - Identifies underutilized warehouses (downsize candidates)
 - Identifies overloaded warehouses (upsize or multi-cluster candidates)
@@ -428,14 +456,17 @@ Warehouse_Optimization_Report:
 ## Error Handling
 
 **Missing Permissions**:
+
 - Requires `ACCOUNTADMIN` or `MONITOR USAGE` role for account_usage views
 - Fallback: Use information_schema.warehouse_load_history (90-day limit)
 
 **Insufficient Data**:
+
 - If analysis_period > available data, use maximum available period
 - Warn user if < 7 days of data available (trends unreliable)
 
 **Warehouse Not Found**:
+
 - List all available warehouses for user to select
 - Suggest `--all` option to analyze entire portfolio
 

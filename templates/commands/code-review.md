@@ -89,7 +89,7 @@ Initializing review...
 
 **Based on scope, determine file list**:
 
-**Scope: all**
+#### Scope: all
 
 ```bash
 # Get all tracked files, exclude common non-code files
@@ -103,14 +103,14 @@ git -C ${PROJECT_ROOT} ls-files | grep -v -E '\.(md|txt|json|yaml|yml|lock|sum|m
 git -C ${PROJECT_ROOT} diff HEAD --name-only --diff-filter=ACMR
 ```
 
-**Scope: staged**
+#### Scope: staged
 
 ```bash
 # Get staged changes only
 git -C ${PROJECT_ROOT} diff --cached --name-only --diff-filter=ACMR
 ```
 
-**Scope: path**
+#### Scope: path
 
 ```bash
 # If path is directory, get all files recursively
@@ -442,19 +442,21 @@ references:
 6. Save findings to `{{review_dir}}/findings/`
 
 **IMPORTANT**:
+
 - Be thorough but avoid false positives
 - Provide specific, actionable recommendations
 - Include code examples for fixes
 - Consider the technology stack and framework best practices
 - Prioritize findings by severity and impact
 - Focus on real issues, not stylistic preferences (unless focus=quality)
-```
+
+```text
 
 ### Phase 3: Process Review Results
 
 **After code-reviewer agent completes**:
 
-#### 3.1 Collect Findings
+### 3.1 Collect Findings
 
 **Load findings from review directory**:
 
@@ -557,6 +559,7 @@ files_reviewed: {{file_count}}
 {{risk}}
 
 **Evidence**:
+
 ```{{language}}
 {{evidence}}
 ```
@@ -570,6 +573,7 @@ files_reviewed: {{file_count}}
 ```
 
 **References**:
+
 {{#each references}}
 - {{this}}
 {{/each}}
@@ -582,11 +586,14 @@ files_reviewed: {{file_count}}
 ### Immediate Priority (Critical)
 
 {{#if critical_count > 0}}
+
 {{#each critical_findings}}
 - [ ] {{title}} ({{file}}:{{line}})
   - **Action**: {{recommendation_summary}}
   - **Effort**: {{estimated_effort}}
+
 {{/each}}
+
 {{else}}
 No critical issues identified.
 {{/if}}
@@ -594,11 +601,14 @@ No critical issues identified.
 ### Short-Term Priority (High)
 
 {{#if high_count > 0}}
+
 {{#each high_findings}}
 - [ ] {{title}} ({{file}}:{{line}})
   - **Action**: {{recommendation_summary}}
   - **Effort**: {{estimated_effort}}
+
 {{/each}}
+
 {{else}}
 No high-priority issues identified.
 {{/if}}
@@ -629,6 +639,7 @@ No low-priority issues identified.
 **Frameworks**: {{frameworks}}
 
 **Review Timing**:
+
 - Started: {{start_time}}
 - Completed: {{end_time}}
 - Duration: {{duration}}
@@ -646,6 +657,7 @@ No low-priority issues identified.
 ---
 
 **Review Artifacts**:
+
 - Findings: `{{review_dir}}/findings/`
 - Reports: `{{review_dir}}/reports/`
 - Fixes: `{{review_dir}}/fixes/`

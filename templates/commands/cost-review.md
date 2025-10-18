@@ -19,6 +19,7 @@ Comprehensive monthly cost review workflow for analyzing Snowflake spend, tracki
 ## Purpose
 
 This command provides executive-level cost visibility and actionable optimization recommendations by:
+
 1. Breaking down costs by warehouse, team, domain, or query type
 2. Tracking budget compliance and variance analysis
 3. Identifying top expensive queries and optimization opportunities
@@ -47,6 +48,7 @@ This command provides executive-level cost visibility and actionable optimizatio
 ## Options
 
 ### Time Periods
+
 - `current-month` - Month-to-date analysis (default)
 - `last-month` - Previous calendar month
 - `last-7-days` - Rolling 7-day window
@@ -54,6 +56,7 @@ This command provides executive-level cost visibility and actionable optimizatio
 - `custom` - Specify custom date range (will prompt)
 
 ### Breakdown Dimensions
+
 - `warehouse` - Cost by warehouse (PROD_DBT, DEV, BI, etc.) [default]
 - `team` - Cost attribution by team tags
 - `domain` - Business domain (finance, contests, partners)
@@ -111,6 +114,7 @@ Query Snowflake ACCOUNT_USAGE for {period} cost data:
 ```
 
 **Expected Output:**
+
 - Daily credit consumption timeseries
 - Warehouse utilization metrics
 - Storage cost breakdown
@@ -122,6 +126,7 @@ Query Snowflake ACCOUNT_USAGE for {period} cost data:
 Analyze costs by selected breakdown dimension:
 
 #### Warehouse Breakdown (default)
+
 ```yaml
 For_Each_Warehouse:
   Metrics:
@@ -139,6 +144,7 @@ For_Each_Warehouse:
 ```
 
 #### Team Breakdown
+
 ```yaml
 Team_Attribution:
   Method: Warehouse tags, query comments, user patterns
@@ -155,6 +161,7 @@ Team_Attribution:
 ```
 
 #### Domain Breakdown
+
 ```yaml
 Business_Domain_Costs:
   Domains: [finance, contests, partners, shared]
@@ -170,6 +177,7 @@ Business_Domain_Costs:
 ```
 
 #### User Breakdown
+
 ```yaml
 Top_Users_by_Cost:
   Metrics:
@@ -185,6 +193,7 @@ Top_Users_by_Cost:
 ```
 
 #### Query Type Breakdown
+
 ```yaml
 Query_Type_Classification:
   Categories:
@@ -202,6 +211,7 @@ Query_Type_Classification:
 ### Phase 4: Budget Compliance Analysis
 
 1. **Budget Comparison**
+
    ```yaml
    Budget_Metrics:
      - Actual spend vs budgeted spend
@@ -216,6 +226,7 @@ Query_Type_Classification:
    - Calculate variance impact by dimension
 
 3. **Budget Alerts**
+
    ```yaml
    Alert_Criteria:
      🔴 CRITICAL: >95% budget consumed with >7 days remaining
@@ -270,6 +281,7 @@ Calculate total potential monthly savings across all opportunities.
 ```
 
 **Expected Output:**
+
 - Prioritized list of optimization recommendations
 - Estimated savings per recommendation
 - Implementation effort (low/medium/high)
@@ -278,6 +290,7 @@ Calculate total potential monthly savings across all opportunities.
 ### Phase 6: Forecast & Trending
 
 1. **Cost Trending Analysis**
+
    ```yaml
    Trending_Metrics:
      - Week-over-week change (amount and percentage)
@@ -287,6 +300,7 @@ Calculate total potential monthly savings across all opportunities.
    ```
 
 2. **Anomaly Detection**
+
    ```yaml
    Anomaly_Criteria:
      - Daily spend >2x average (spike)
@@ -302,6 +316,7 @@ Calculate total potential monthly savings across all opportunities.
    ```
 
 3. **Month-End Forecast**
+
    ```yaml
    Forecasting_Method:
      - Calculate average daily burn rate
@@ -395,6 +410,7 @@ Cost_Review_Executive_Summary:
    - Highlight key metrics and alerts
 
 2. **Save Report**
+
    ```bash
    # Save to project documentation
    File: docs/cost-analysis/cost-review-{YYYY-MM}.md
@@ -402,6 +418,7 @@ Cost_Review_Executive_Summary:
    ```
 
 3. **Generate Recommendations Document**
+
    ```bash
    # Detailed optimization plan
    File: docs/cost-analysis/optimization-recommendations-{YYYY-MM}.md
@@ -713,6 +730,7 @@ Cost_Review_Report:
 ---
 
 **Agent Invocations:**
+
 - `cost-optimization-agent` → Snowflake cost analysis and optimization recommendations
 - `data-engineer` → Query optimization guidance
 - `architect` → Data model efficiency review

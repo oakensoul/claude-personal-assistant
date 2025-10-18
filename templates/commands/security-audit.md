@@ -52,6 +52,7 @@ Perform comprehensive security audit of the data platform infrastructure, analyz
 ## Audit Scopes
 
 ### Platform Components
+
 - **snowflake** - Snowflake security (encryption, RBAC, network policies, MFA, audit trails)
 - **metabase** - Metabase API security, SSO configuration, row-level security, dashboard permissions
 - **airbyte** - Airbyte connection security, webhook security, credential management, encryption
@@ -59,6 +60,7 @@ Perform comprehensive security audit of the data platform infrastructure, analyz
 - **all** - Comprehensive cross-platform audit (default if no scope specified)
 
 ### Security Domains
+
 - **encryption** - Data at-rest encryption, in-transit encryption, key management, algorithm standards
 - **access-control** - RBAC/ABAC models, least privilege, MFA enforcement, identity management
 - **network** - VPC configuration, security groups, IP allowlisting, private endpoints, firewalls
@@ -66,6 +68,7 @@ Perform comprehensive security audit of the data platform infrastructure, analyz
 - **secrets** - Credential storage, secret rotation policies, Vault/Secrets Manager integration
 
 ### Compliance Frameworks
+
 - **SOC2** - SOC 2 Type II controls (access, encryption, monitoring, incident response)
 - **ISO27001** - ISO 27001 cryptography and access control standards
 - **GDPR** - GDPR Article 32 encryption and security requirements
@@ -77,12 +80,14 @@ Perform comprehensive security audit of the data platform infrastructure, analyz
 ### Phase 1: Initialize Audit Context
 
 1. **Parse Arguments & Determine Scope**
+
    - If `--comprehensive` flag: Set scope to all platforms + all domains + all frameworks
    - If `--scope` provided: Use specified scope (snowflake, metabase, etc.)
    - If `--framework` provided: Use specified framework (SOC2, ISO27001, etc.)
    - If no arguments: Default to comprehensive audit
    - Display audit plan:
-     ```
+
+     ```text
      🔒 Security Audit Initialized
      ==============================
      Scope: {scope}
@@ -104,6 +109,7 @@ Perform comprehensive security audit of the data platform infrastructure, analyz
    - If exists: Load custom thresholds, ignored findings, remediation tracking
    - If not exists: Use default configuration
    - Example config:
+
      ```json
      {
        "severity_thresholds": {
@@ -131,7 +137,7 @@ Perform comprehensive security audit of the data platform infrastructure, analyz
 
 Invoke **security-engineer** agent to inventory security controls:
 
-```
+```yaml
 Task(
   subagent_type="security-engineer",
   prompt="""
@@ -188,7 +194,7 @@ Task(
 
 Invoke **security-engineer** agent to perform STRIDE analysis for each component in scope:
 
-```
+```yaml
 Task(
   subagent_type="security-engineer",
   prompt="""
@@ -253,7 +259,7 @@ Task(
 
 If framework specified, invoke **security-engineer** agent to validate compliance controls:
 
-```
+```yaml
 Task(
   subagent_type="security-engineer",
   prompt="""
@@ -302,7 +308,7 @@ Task(
 
 Invoke **security-engineer** agent to scan for specific vulnerabilities:
 
-```
+```yaml
 Task(
   subagent_type="security-engineer",
   prompt="""
@@ -372,6 +378,7 @@ Task(
 Process all findings and calculate risk scores:
 
 1. **Calculate CVSS Scores**
+
    - For each vulnerability, compute CVSS 3.1 base score
    - Factors: Attack Vector, Attack Complexity, Privileges Required, User Interaction, Scope, Confidentiality Impact, Integrity Impact, Availability Impact
    - Map to severity:
@@ -667,7 +674,7 @@ Save executive summary to: `.security-audits/{YYYY-MM-DD}/reports/executive-summ
 
 Present audit results to user:
 
-```
+```text
 ✅ Security Audit Complete!
 ============================
 

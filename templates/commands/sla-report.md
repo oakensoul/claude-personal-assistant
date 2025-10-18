@@ -12,6 +12,7 @@ Comprehensive SLA monitoring and reporting for data platform service level agree
 ## Purpose
 
 Generate detailed SLA compliance reports including:
+
 1. SLA compliance tracking (data freshness, availability, accuracy)
 2. Error budget consumption analysis
 3. SLA breach detection and alerting
@@ -75,6 +76,7 @@ export:
 ## SLA Definitions
 
 ### Finance Data SLA (4-hour freshness)
+
 - **Target**: All finance data < 4 hours old
 - **Measurement**: Last refresh timestamp vs current time
 - **Error Budget**: 99.5% uptime (< 1.8 hours downtime/month)
@@ -82,6 +84,7 @@ export:
 - **Business Impact**: Finance team unable to reconcile daily transactions
 
 ### Executive Dashboard SLA (95% availability)
+
 - **Target**: Dashboards load successfully 95%+ of time
 - **Measurement**: HTTP 200 responses vs total requests
 - **Error Budget**: 5% failure rate (< 36 hours/month)
@@ -89,6 +92,7 @@ export:
 - **Business Impact**: Leadership unable to access key metrics
 
 ### Data Quality SLA (99% test pass rate)
+
 - **Target**: 99%+ dbt tests pass
 - **Measurement**: Passing tests / total tests
 - **Error Budget**: 1% test failures allowed
@@ -96,6 +100,7 @@ export:
 - **Business Impact**: Data accuracy concerns, audit risk
 
 ### Contest Data SLA (15-minute freshness)
+
 - **Target**: Contest results < 15 minutes old
 - **Measurement**: Event timestamp vs ingestion timestamp
 - **Error Budget**: 99.9% uptime (< 45 min downtime/month)
@@ -107,6 +112,7 @@ export:
 ### Phase 1: SLA Metric Collection
 
 1. **Initialize Reporting Context**
+
    ```yaml
    Collect_Parameters:
      - Reporting period (from args)
@@ -135,11 +141,13 @@ export:
    - Identify failing test patterns
 
    **Pipeline Performance Metrics**:
+
    - Query Snowflake query history
    - Calculate pipeline execution times
    - Identify performance degradation
 
 3. **Calculate SLA Compliance Percentages**
+
    ```yaml
    For_Each_SLA:
      Actual_Performance = successful_measurements / total_measurements
@@ -156,6 +164,7 @@ export:
 For each SLA, calculate error budget consumption:
 
 1. **Calculate Monthly Error Budget**
+
    ```yaml
    Error_Budget_Calculation:
      Budget_Allowance = (1 - SLA_Target) × Time_Period
@@ -175,6 +184,7 @@ For each SLA, calculate error budget consumption:
    ```
 
 2. **Calculate Consumed Budget**
+
    ```yaml
    Budget_Consumption:
      Consumed = Actual_Downtime / Total_Time_Period
@@ -188,6 +198,7 @@ For each SLA, calculate error budget consumption:
    ```
 
 3. **Project End-of-Period Status**
+
    ```yaml
    Forecasting:
      Current_Burn_Rate = Consumed / Days_Elapsed
@@ -204,6 +215,7 @@ For each SLA, calculate error budget consumption:
 ### Phase 3: Breach Detection
 
 1. **Identify SLA Breaches**
+
    ```yaml
    Breach_Detection:
      For_Each_Measurement:
@@ -217,6 +229,7 @@ For each SLA, calculate error budget consumption:
    ```
 
 2. **Classify Breach Severity**
+
    ```yaml
    Severity_Classification:
      P0_Critical:
@@ -236,6 +249,7 @@ For each SLA, calculate error budget consumption:
    ```
 
 3. **Link to Incident Reports**
+
    ```yaml
    Incident_Correlation:
      For_Each_Breach:
@@ -252,6 +266,7 @@ For each SLA, calculate error budget consumption:
    ```
 
 4. **Calculate Business Impact**
+
    ```yaml
    Impact_Analysis:
      For_Each_Breach:
@@ -266,6 +281,7 @@ For each SLA, calculate error budget consumption:
 ### Phase 4: Trend Analysis
 
 1. **Week-over-Week Compliance Trends**
+
    ```yaml
    WoW_Analysis:
      For_Each_SLA:
@@ -285,6 +301,7 @@ For each SLA, calculate error budget consumption:
    ```
 
 2. **Month-over-Month Error Budget Consumption**
+
    ```yaml
    MoM_Budget_Analysis:
      For_Each_SLA:
@@ -298,6 +315,7 @@ For each SLA, calculate error budget consumption:
    ```
 
 3. **Identify Degrading SLAs**
+
    ```yaml
    Degradation_Detection:
      For_Each_SLA:
@@ -315,6 +333,7 @@ For each SLA, calculate error budget consumption:
    ```
 
 4. **Forecast Breach Risk**
+
    ```yaml
    Breach_Forecasting:
      For_Each_SLA:
@@ -335,6 +354,7 @@ For each SLA, calculate error budget consumption:
 Generate reports based on requested format:
 
 #### Executive Format
+
 ```yaml
 Executive_Report:
   Summary:
@@ -358,6 +378,7 @@ Executive_Report:
 ```
 
 #### Technical Format
+
 ```yaml
 Technical_Report:
   Detailed_Metrics:
@@ -382,6 +403,7 @@ Technical_Report:
 ```
 
 #### Stakeholder Format
+
 ```yaml
 Stakeholder_Report:
   Domain_Specific:
@@ -660,11 +682,13 @@ SLA_Compliance_Report:
 ### Example 1: Weekly Finance SLA Review
 
 **Command:**
+
 ```bash
 /sla-report --period last-week --domain finance --format technical
 ```
 
 **Output:**
+
 ```yaml
 SLA_Compliance_Report:
   Period: "2025-09-30 to 2025-10-06"
@@ -746,11 +770,13 @@ SLA_Compliance_Report:
 ### Example 2: Executive Monthly Report
 
 **Command:**
+
 ```bash
 /sla-report --period last-month --format executive --export
 ```
 
 **Output:**
+
 ```yaml
 SLA_Compliance_Report:
   Period: "September 2025"
@@ -815,11 +841,13 @@ SLA_Compliance_Report:
 ### Example 3: Real-Time SLA Status
 
 **Command:**
+
 ```bash
 /sla-report --period today --all
 ```
 
 **Output:**
+
 ```yaml
 SLA_Compliance_Report:
   Period: "2025-10-07 (Real-Time)"
@@ -921,6 +949,7 @@ SLA_Compliance_Report:
 ## Error Handling
 
 ### Missing Data Sources
+
 ```yaml
 Error_Scenario: "Unable to query dbt logs"
 Fallback_Strategy:
@@ -931,6 +960,7 @@ Fallback_Strategy:
 ```
 
 ### Incomplete Historical Data
+
 ```yaml
 Error_Scenario: "Historical data unavailable for trend analysis"
 Mitigation:
@@ -941,6 +971,7 @@ Mitigation:
 ```
 
 ### Calculation Errors
+
 ```yaml
 Error_Scenario: "Error budget calculation fails"
 Handling:
@@ -953,18 +984,21 @@ Handling:
 ## Integration Points
 
 ### Incident Management
+
 - Link SLA breaches to incident database
 - Cross-reference breach IDs with incident IDs
 - Enrich breach reports with root cause analysis
 - Track post-incident review status
 
 ### Monitoring Systems
+
 - Query Metabase for dashboard uptime metrics
 - Query Snowflake for pipeline performance data
 - Query dbt logs for test results and freshness
 - Query alerting system for active incidents
 
 ### Reporting Infrastructure
+
 - Export reports to PDF for stakeholder distribution
 - Send email summaries to leadership
 - Post critical alerts to Slack
@@ -973,6 +1007,7 @@ Handling:
 ## Success Criteria
 
 Report successfully generated when:
+
 1. All SLA metrics collected and calculated
 2. Error budget analysis completed for each SLA
 3. Breach detection and classification performed

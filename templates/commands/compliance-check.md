@@ -27,12 +27,14 @@ args:
 ## Overview
 
 Validate regulatory compliance across:
+
 1. **GDPR** (General Data Protection Regulation) - EU data privacy
 2. **CCPA** (California Consumer Privacy Act) - California data privacy
 3. **SOC 2 Type II** (Security & Availability) - Trust service criteria
 4. **HIPAA** (Health Insurance Portability and Accountability Act) - Healthcare data protection
 
 Includes:
+
 - Data classification verification
 - PII detection and handling validation
 - Audit trail completeness
@@ -60,6 +62,7 @@ Includes:
 ### GDPR (General Data Protection Regulation)
 
 **Key Articles**:
+
 - **Article 6**: Lawful basis for processing (consent, contract, legal obligation)
 - **Article 15**: Right of access (data subject requests)
 - **Article 17**: Right to erasure ("right to be forgotten")
@@ -74,12 +77,14 @@ Includes:
 ### CCPA (California Consumer Privacy Act)
 
 **Consumer Rights**:
+
 - **Right to Know**: What personal information is collected and how it's used
 - **Right to Delete**: Request deletion of personal information
 - **Right to Opt-Out**: Opt-out of sale of personal information
 - **Right to Non-Discrimination**: No penalty for exercising privacy rights
 
 **Requirements**:
+
 - Privacy notice at collection
 - 12-month lookback for data access requests
 - 45-day response window for consumer requests
@@ -89,6 +94,7 @@ Includes:
 ### SOC 2 Type II
 
 **Trust Service Criteria**:
+
 - **Security (CC6)**: Logical and physical access controls
   - CC6.1: Access controls
   - CC6.6: Encryption of data at rest and in transit
@@ -104,11 +110,13 @@ Includes:
 ### HIPAA (Health Insurance Portability and Accountability Act)
 
 **Applicable if handling Protected Health Information (PHI)**:
+
 - **Privacy Rule**: PHI use and disclosure restrictions
 - **Security Rule**: Administrative, physical, technical safeguards
 - **Breach Notification Rule**: 60-day notification requirement
 
 **Requirements**:
+
 - Business Associate Agreements (BAAs)
 - Risk assessments
 - Encryption of PHI at rest and in transit
@@ -118,7 +126,8 @@ Includes:
 
 ### Phase 1: Data Discovery & Classification
 
-**Step 1: Invoke Security Engineer Agent**
+#### Step 1: Invoke Security Engineer Agent
+
 ```yaml
 Task:
   subagent_type: security-engineer
@@ -146,7 +155,8 @@ Task:
        - Access control validation
 ```
 
-**Step 2: Generate PII Inventory**
+#### Step 2: Generate PII Inventory
+
 ```yaml
 Expected_Output:
   PII_Inventory:
@@ -178,7 +188,8 @@ Expected_Output:
 
 #### GDPR Validation
 
-**Step 1: Lawful Basis Verification (Article 6)**
+#### Step 1: Lawful Basis Verification (Article 6)
+
 ```yaml
 Task:
   subagent_type: data-governance
@@ -200,7 +211,8 @@ Task:
     4. Generate lawful basis compliance matrix
 ```
 
-**Step 2: Privacy Rights Implementation (Articles 15, 17, 20)**
+#### Step 2: Privacy Rights Implementation (Articles 15, 17, 20)
+
 ```yaml
 Task:
   subagent_type: security-engineer
@@ -233,7 +245,8 @@ Task:
     3. Test export completeness
 ```
 
-**Step 3: Security Controls (Article 32)**
+#### Step 3: Security Controls (Article 32)
+
 ```yaml
 Task:
   subagent_type: security-engineer
@@ -260,7 +273,8 @@ Task:
     3. Validate MFA enforcement for admin accounts
 ```
 
-**Step 4: Breach Notification (Article 33)**
+#### Step 4: Breach Notification (Article 33)
+
 ```yaml
 Task:
   subagent_type: security-engineer
@@ -278,7 +292,8 @@ Task:
 
 #### CCPA Validation
 
-**Step 1: Consumer Rights Verification**
+#### Step 1: Consumer Rights Verification
+
 ```yaml
 Task:
   subagent_type: data-governance
@@ -310,7 +325,8 @@ Task:
 
 #### SOC 2 Type II Validation
 
-**Step 1: Security Controls (CC6)**
+#### Step 1: Security Controls (CC6)
+
 ```yaml
 Task:
   subagent_type: security-engineer
@@ -344,7 +360,8 @@ Task:
     3. Check incident response playbooks exist
 ```
 
-**Step 2: Organizational Controls**
+#### Step 2: Organizational Controls
+
 ```yaml
 Task:
   subagent_type: data-governance
@@ -376,7 +393,8 @@ Task:
 
 ### Phase 3: Audit Trail Verification
 
-**Step 1: Audit Log Completeness Check**
+#### Step 1: Audit Log Completeness Check
+
 ```yaml
 Task:
   subagent_type: security-engineer
@@ -413,7 +431,8 @@ Task:
     3. Test log search and filtering
 ```
 
-**Step 2: Audit Log Retention Validation**
+#### Step 2: Audit Log Retention Validation
+
 ```yaml
 SQL_Query: |
   -- Check Snowflake audit log retention
@@ -433,7 +452,8 @@ Expected:
 
 ### Phase 4: Data Subject Rights Testing
 
-**Step 1: Simulate GDPR Data Subject Access Request (DSAR)**
+#### Step 1: Simulate GDPR Data Subject Access Request (DSAR)
+
 ```yaml
 Task:
   subagent_type: security-engineer
@@ -467,7 +487,8 @@ Task:
     5. Cleanup test data
 ```
 
-**Step 2: Simulate Right to Erasure**
+#### Step 2: Simulate Right to Erasure
+
 ```yaml
 Task:
   subagent_type: security-engineer
@@ -500,7 +521,8 @@ Task:
        - Maximum: 30 days (GDPR requirement)
 ```
 
-**Step 3: Test Data Portability**
+#### Step 3: Test Data Portability
+
 ```yaml
 Task:
   subagent_type: data-engineer
@@ -523,7 +545,8 @@ Task:
 
 ### Phase 5: Gap Analysis & Remediation Planning
 
-**Step 1: Compliance Gap Identification**
+#### Step 1: Compliance Gap Identification
+
 ```yaml
 Task:
   subagent_type: data-governance
@@ -546,7 +569,8 @@ Task:
     - Monitoring: Is PII access monitored and alerted?
 ```
 
-**Step 2: Risk Prioritization**
+#### Step 2: Risk Prioritization
+
 ```yaml
 Risk_Matrix:
   High_Priority_Gaps:
@@ -571,7 +595,8 @@ Risk_Matrix:
       * No differential privacy for analytics
 ```
 
-**Step 3: Remediation Roadmap**
+#### Step 3: Remediation Roadmap
+
 ```yaml
 Remediation_Plan:
   Immediate_Actions:  # 0-30 days

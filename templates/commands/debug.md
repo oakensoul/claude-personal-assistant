@@ -23,11 +23,13 @@ Systematically debug production dbt/SQL/data pipeline failures by orchestrating 
 ### Phase 1: Error Analysis & Context Gathering
 
 **Automatic Error Detection:**
+
 - Parse error type: SQL syntax, schema change, resource limit, data quality, upstream failure
 - Gather context: dbt logs, Snowflake warehouse state, model dependencies, recent changes
 - Classify severity: P0 (platform down), P1 (critical data), P2 (degraded), P3 (minor)
 
 **Context Collection:**
+
 1. Check dbt logs for error messages and stack traces
 2. Review recent git commits affecting related models
 3. Examine model dependencies via lineage (`dbt ls --select +model+`)
@@ -37,6 +39,7 @@ Systematically debug production dbt/SQL/data pipeline failures by orchestrating 
 ### Phase 2: Agent Orchestration (Context-Aware)
 
 #### SQL Compilation Errors
+
 ```yaml
 Orchestration_Sequence:
   1. Task(subagent_type="snowflake-sql-expert")
@@ -56,6 +59,7 @@ Orchestration_Sequence:
 ```
 
 #### Schema Change Errors
+
 ```yaml
 Orchestration_Sequence:
   1. Task(subagent_type="architect")
@@ -75,6 +79,7 @@ Orchestration_Sequence:
 ```
 
 #### Resource/Performance Issues
+
 ```yaml
 Orchestration_Sequence:
   1. Task(subagent_type="cost-optimization-agent")
@@ -94,6 +99,7 @@ Orchestration_Sequence:
 ```
 
 #### Data Quality Issues
+
 ```yaml
 Orchestration_Sequence:
   1. Task(subagent_type="data-engineer")
@@ -113,6 +119,7 @@ Orchestration_Sequence:
 ```
 
 #### Upstream Pipeline Failures
+
 ```yaml
 Orchestration_Sequence:
   1. Task(subagent_type="data-pipeline-engineer")
@@ -133,6 +140,7 @@ Orchestration_Sequence:
 ### Phase 3: Incident Management (Auto-triggered for P0/P1)
 
 **P0 - Platform Down (Complete Outage):**
+
 ```yaml
 Incident_Protocol:
   1. Task(subagent_type="incident-manager-agent")
@@ -152,6 +160,7 @@ Incident_Protocol:
 ```
 
 **P1 - Critical Data Missing (Revenue/Compliance Impact):**
+
 ```yaml
 Incident_Protocol:
   1. Task(subagent_type="incident-manager-agent")
@@ -172,6 +181,7 @@ Incident_Protocol:
 ### Phase 4: Resolution & Postmortem
 
 **Resolution Report Generation:**
+
 ```yaml
 Report_Contents:
   Error_Summary:
@@ -197,6 +207,7 @@ Report_Contents:
 ```
 
 **Postmortem Creation (P0/P1 Only):**
+
 ```yaml
 Postmortem_Workflow:
   1. Task(subagent_type="product-manager")
@@ -218,6 +229,7 @@ Postmortem_Workflow:
 ```
 
 **Runbook Updates:**
+
 - Capture new failure patterns
 - Document resolution procedures
 - Update troubleshooting guides
@@ -543,22 +555,26 @@ Debug_Report:
 ### Common Error Signatures
 
 **SQL Compilation Errors:**
+
 - `Database 'X' does not exist` → Check `group:` tag and schema mapping
 - `Object 'Y' does not exist` → Check ref() dependencies and upstream builds
 - Blank lines around UNION → Remove whitespace before/after UNION ALL
 - `ambiguous column reference` → Qualify columns with table aliases
 
 **Schema Errors:**
+
 - `Invalid identifier 'Z'` → Column added/removed in source system
 - `Column count mismatch` → Upstream schema evolution in Airbyte/Fivetran
 - `Data type mismatch` → Source system changed column type
 
 **Resource Errors:**
+
 - `Warehouse timeout` → Check warehouse size, credit limits
 - `Out of memory` → Review query complexity, join strategies
 - `Query queueing` → Scale warehouse or reduce concurrency
 
 **Data Quality Errors:**
+
 - `Unique test failed` → Check grain definition, SCD logic
 - `Not null test failed` → Source data issue or missing default
 - `Referential integrity failed` → Orphaned records in fact tables
@@ -566,18 +582,21 @@ Debug_Report:
 ## Success Criteria
 
 **Effective Debugging:**
+
 - Root cause identified within 15 minutes (P1/P2)
 - Resolution applied with validation
 - Prevention measures documented
 - Runbooks updated with learnings
 
 **Incident Management (P0/P1):**
+
 - Incident declared within 5 minutes of detection
 - Stakeholders notified within 10 minutes
 - Postmortem created within 24 hours
 - Action items tracked to completion
 
 **Knowledge Capture:**
+
 - Debug report generated for all failures
 - Common patterns added to catalog
 - Runbooks enhanced with new procedures

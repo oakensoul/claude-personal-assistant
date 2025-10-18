@@ -44,6 +44,7 @@ Non-destructive verification mode:
 ### fix
 
 Auto-remediation mode:
+
 - Run all check mode verifications first
 - Auto-fix label colors and descriptions
 - Create missing labels
@@ -52,6 +53,7 @@ Auto-remediation mode:
 - Exit with status code (2=fixes applied, 0=no fixes needed)
 
 **Usage:**
+
 ```bash
 /github-sync fix
 ```
@@ -59,6 +61,7 @@ Auto-remediation mode:
 ### report
 
 Detailed analysis mode:
+
 - Generate comprehensive drift report
 - Show all differences in detail with full context
 - Suggest manual remediation steps
@@ -67,6 +70,7 @@ Detailed analysis mode:
 - Exit with status code (0=synced, 1=drift detected)
 
 **Usage:**
+
 ```bash
 /github-sync report
 ```
@@ -932,6 +936,7 @@ fi
 ## Agent Integration
 
 This command should be executed by the **devops-engineer** agent for:
+
 - Shell script execution
 - GitHub CLI operations
 - JSON manipulation with jq
@@ -947,16 +952,21 @@ This command should be executed by the **devops-engineer** agent for:
 ## Troubleshooting
 
 **Issue**: "gh: command not found"
+
 - **Fix**: Install GitHub CLI: `brew install gh`
 
 **Issue**: "jq: command not found"
+
 - **Fix**: Install jq: `brew install jq`
 
 **Issue**: Label creation fails with "already exists"
+
 - **Fix**: Use `--force` flag (already included in fix mode)
 
 **Issue**: Cache file permissions error
+
 - **Fix**: Ensure `.github/` directory is writable
 
 **Issue**: Report directory doesn't exist
+
 - **Fix**: Command auto-creates `.github/reports/` directory

@@ -34,76 +34,92 @@ Manage active production incidents with automated runbook execution, escalation 
 ## Severity Classification
 
 ### P0 - Critical Outage
+
 **Criteria:**
+
 - Platform completely down or unavailable
 - All data pipelines halted
 - Data warehouse inaccessible
 - Critical business operations blocked
 
 **Impact:**
+
 - Executive visibility required
 - Immediate escalation to leadership
 - All-hands response
 - SLA: 15-minute response time
 
 **Examples:**
+
 - Snowflake warehouse suspended, all dbt runs failing
 - Complete data platform outage
 - Security breach with data exposure
 - Production database corruption
 
 ### P1 - Major Impact
+
 **Criteria:**
+
 - Critical business data affected
 - Key dashboards incorrect or unavailable
 - Finance/compliance reporting impacted
 - Revenue calculation errors
 
 **Impact:**
+
 - Senior leadership notified
 - Cross-functional coordination required
 - Business operations degraded
 - SLA: 30-minute response time
 
 **Examples:**
+
 - Finance dashboard data incorrect (wrong revenue figures)
 - Wallet balances showing incorrect amounts
 - Critical dbt models failing (fct_wallet_transactions)
 - Compliance reporting data missing or wrong
 
 ### P2 - Moderate Impact
+
 **Criteria:**
+
 - Degraded performance but functional
 - Non-critical dashboards affected
 - Workarounds available
 - Limited user impact
 
 **Impact:**
+
 - Team notification
 - Standard escalation
 - Business can continue with workarounds
 - SLA: 2-hour response time
 
 **Examples:**
+
 - Metabase dashboards loading slowly (60s vs 10s)
 - Non-critical marts delayed (analytics marts)
 - Airbyte sync delays on low-priority sources
 - Development environment issues
 
 ### P3 - Minor Issue
+
 **Criteria:**
+
 - Low business impact
 - No immediate user impact
 - Can be scheduled for regular sprint
 - Documentation or quality improvements
 
 **Impact:**
+
 - No escalation required
 - Schedule for next sprint
 - Track as regular ticket
 - SLA: Next business day
 
 **Examples:**
+
 - Non-critical mart refresh delayed
 - Documentation gaps
 - Code quality improvements

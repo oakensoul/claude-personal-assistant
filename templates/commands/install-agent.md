@@ -85,11 +85,14 @@ AGENTS_GLOBAL_DIR="${CLAUDE_PROJECT_CONFIG}/agents-global"
 Scan `~/.claude/agents/` for agents with two-tier architecture:
 
 **Detection Criteria**:
+
+
 - Agent definition file exists: `~/.claude/agents/{agent}/{agent}.md`
 - Agent description or content mentions "two-tier" or "Tier: 2-tier"
 - Agent has user-level knowledge base: `~/.claude/agents/{agent}/knowledge/`
 
 **Known Two-Tier Agents**:
+
 - `data-engineer` - Data engineering, orchestration, dbt, ELT pipelines
 - `sql-expert` - SQL query optimization across multiple platforms
 - `aws-cloud-engineer` - AWS infrastructure, CDK, CloudFormation
@@ -101,12 +104,14 @@ Scan `~/.claude/agents/` for agents with two-tier architecture:
 ### 2. Parse Command Arguments
 
 **If no argument provided**:
+
 - Display interactive list of available agents (numbered)
 - Allow user to select by number or name
 - Option to install multiple agents (comma-separated)
 - Option to cancel
 
 **If `list` provided**:
+
 - Display table of available agents with:
   - Agent name
   - Version (from agent frontmatter)
@@ -115,12 +120,14 @@ Scan `~/.claude/agents/` for agents with two-tier architecture:
 - Exit after display
 
 **If `--all` provided**:
+
 - Install all detected two-tier agents
 - Show progress for each agent
 - Skip agents already installed (unless outdated)
 - Prompt for upgrade if version mismatch detected
 
 **If agent name provided**:
+
 - Validate agent exists and is two-tier
 - Check if already installed
 - Proceed with installation

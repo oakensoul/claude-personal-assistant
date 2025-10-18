@@ -54,7 +54,7 @@ This command invokes the **qa-engineer** agent to:
 
 ### STEP 1: Gather Context
 
-**1.1 Determine Scope**
+#### 1.1 Determine Scope
 
 Check the `scope` argument:
 
@@ -63,7 +63,7 @@ Check the `scope` argument:
 - If `scope=feature`: Prompt for feature details
 - If `scope=release`: Check for active milestone
 
-**1.2 Load Issue Details (if applicable)**
+#### 1.2 Load Issue Details (if applicable)
 
 ```bash
 # Load issue from GitHub or local drafts
@@ -75,7 +75,7 @@ gh issue view {{issue_number}} --json title,body,labels,milestone,assignees
 - `.github/issues/drafts/{{milestone}}/{{issue-number}}-*.md`
 - `.github/issues/published/{{milestone}}/{{issue-number}}-*.md`
 
-**1.3 Load Analysis Documents (if available)**
+#### 1.3 Load Analysis Documents (if available)
 
 ```bash
 # Check for analysis directory
@@ -91,7 +91,7 @@ test -f "$ANALYSIS_DIR/TECH_SPEC.md" && cat "$ANALYSIS_DIR/TECH_SPEC.md"
 test -f "$ANALYSIS_DIR/IMPLEMENTATION_SUMMARY.md" && cat "$ANALYSIS_DIR/IMPLEMENTATION_SUMMARY.md"
 ```
 
-**1.4 Interactive Prompts (if needed)**
+#### 1.4 Interactive Prompts (if needed)
 
 If scope is `feature` or information is missing:
 
@@ -128,7 +128,7 @@ Expected user workflow: _______________________
 
 ### STEP 2: Analyze Requirements
 
-**2.1 Extract Functional Requirements**
+#### 2.1 Extract Functional Requirements
 
 From issue/PRD/feature description:
 
@@ -137,14 +137,14 @@ From issue/PRD/feature description:
 - Determine success metrics
 - Identify edge cases
 
-**2.2 Identify System Components**
+#### 2.2 Identify System Components
 
 - List all files/scripts affected
 - Identify integration points
 - Map dependencies between components
 - Determine external dependencies
 
-**2.3 Determine Test Platforms**
+#### 2.3 Determine Test Platforms
 
 Based on project configuration and requirements:
 
@@ -154,7 +154,7 @@ Based on project configuration and requirements:
 - Docker environments
 - CI/CD environments
 
-**2.4 Risk Assessment**
+#### 2.4 Risk Assessment
 
 Identify high-risk areas:
 
@@ -169,7 +169,7 @@ Identify high-risk areas:
 
 ### STEP 3: Generate Test Matrix
 
-**3.1 Platform Combinations**
+#### 3.1 Platform Combinations
 
 Create test matrix for cross-platform validation:
 
@@ -180,7 +180,7 @@ Create test matrix for cross-platform validation:
 | Scenario 2    | Required  | Required     | Required     | N/A    | N/A      | Required | Required |
 ```
 
-**3.2 Test Coverage Matrix**
+#### 3.2 Test Coverage Matrix
 
 ```markdown
 | Component        | Unit Tests | Integration Tests | E2E Tests | Manual Tests | Priority |
@@ -203,7 +203,7 @@ Create test matrix for cross-platform validation:
 
 For each identified test scenario, create:
 
-**4.1 Test Case Template**
+#### 4.1 Test Case Template
 
 ```markdown
 ### Test Case TC-{{number}}: {{Test Title}}
@@ -257,7 +257,7 @@ For each identified test scenario, create:
 - Dependencies on other tests
 ```
 
-**4.2 Test Scenarios by Category**
+#### 4.2 Test Scenarios by Category
 
 **Happy Path Tests**:
 
@@ -303,7 +303,7 @@ For each identified test scenario, create:
 
 ### STEP 5: Create Test Plan Document
 
-**5.1 Generate Comprehensive Test Plan**
+#### 5.1 Generate Comprehensive Test Plan
 
 Create test plan at appropriate location:
 
@@ -313,7 +313,7 @@ Create test plan at appropriate location:
 
 **For releases**: `${PROJECT_ROOT}/.claude/test-plans/release-{{milestone}}-{{timestamp}}.md`
 
-**5.2 Test Plan Structure**
+#### 5.2 Test Plan Structure
 
 ```markdown
 ---
@@ -478,6 +478,7 @@ platforms: ["macOS", "Ubuntu 22.04", "Ubuntu 20.04", "Docker"]
 ### Happy Path Tests
 
 {{#each happy_path_tests}}
+
 #### TC-{{id}}: {{title}}
 
 **Objective**: {{objective}}
@@ -496,9 +497,10 @@ platforms: ["macOS", "Ubuntu 22.04", "Ubuntu 20.04", "Docker"]
 
 {{#each steps}}
 {{step_number}}. {{action}}
-   - Expected: {{expected}}
-   - Actual: [To be filled]
-   - Status: [ ] Pass [ ] Fail
+
+- Expected: {{expected}}
+- Actual: [To be filled]
+- Status: [ ] Pass [ ] Fail
 {{/each}}
 
 **Test Data**:
@@ -509,6 +511,7 @@ platforms: ["macOS", "Ubuntu 22.04", "Ubuntu 20.04", "Docker"]
 **Acceptance Criteria**:
 
 {{#each acceptance_criteria}}
+
 - [ ] {{criterion}}
 {{/each}}
 
@@ -522,6 +525,7 @@ platforms: ["macOS", "Ubuntu 22.04", "Ubuntu 20.04", "Docker"]
 ### Edge Case Tests
 
 {{#each edge_case_tests}}
+
 #### TC-{{id}}: {{title}}
 
 [Same structure as happy path tests]
@@ -530,6 +534,7 @@ platforms: ["macOS", "Ubuntu 22.04", "Ubuntu 20.04", "Docker"]
 ### Error Condition Tests
 
 {{#each error_tests}}
+
 #### TC-{{id}}: {{title}}
 
 **Objective**: Verify system handles {{error_type}} gracefully
@@ -558,6 +563,7 @@ platforms: ["macOS", "Ubuntu 22.04", "Ubuntu 20.04", "Docker"]
 ### Integration Tests
 
 {{#each integration_tests}}
+
 #### TC-{{id}}: {{title}}
 
 **Objective**: Validate {{component_a}} integrates with {{component_b}}
@@ -588,6 +594,7 @@ platforms: ["macOS", "Ubuntu 22.04", "Ubuntu 20.04", "Docker"]
 ### Regression Tests
 
 {{#each regression_tests}}
+
 #### TC-{{id}}: {{title}}
 
 **Objective**: Ensure {{functionality}} still works (regression for issue #{{original_issue}})
@@ -1010,7 +1017,8 @@ status: "{{pass|fail|partial}}"
 **Test Plan generated by qa-engineer agent**
 **Created**: {{timestamp}}
 **Status**: {{status}}
-```
+
+```text
 
 ---
 

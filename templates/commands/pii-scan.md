@@ -49,6 +49,7 @@ This command provides comprehensive data governance automation:
 ### Pattern-Based Detection (Regex)
 
 **Email Addresses**:
+
 ```regex
 Pattern: [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
 Examples: user@example.com, john.doe+tag@domain.co.uk
@@ -56,6 +57,7 @@ Confidence: 95% if pattern matches + column name contains "email"
 ```
 
 **Phone Numbers**:
+
 ```regex
 US_Pattern: ^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$
 International: ^\+?[1-9]\d{1,14}$
@@ -64,6 +66,7 @@ Confidence: 90% if pattern matches + column name contains "phone"
 ```
 
 **Social Security Numbers (SSN)**:
+
 ```regex
 Pattern: ^(?!000|666)[0-8][0-9]{2}-(?!00)[0-9]{2}-(?!0000)[0-9]{4}$
 Examples: 123-45-6789
@@ -71,6 +74,7 @@ Confidence: 99% (highly specific pattern)
 ```
 
 **Credit Card Numbers**:
+
 ```regex
 Pattern: ^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13})$
 Validation: Luhn algorithm checksum
@@ -79,6 +83,7 @@ Confidence: 95% with Luhn validation
 ```
 
 **IP Addresses**:
+
 ```regex
 IPv4: ^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$
 IPv6: ^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|...)$
@@ -87,6 +92,7 @@ Confidence: 85% (can be used for non-PII purposes)
 ```
 
 **Cryptocurrency Wallet Addresses**:
+
 ```regex
 Bitcoin: ^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$
 Ethereum: ^0x[a-fA-F0-9]{40}$
@@ -97,6 +103,7 @@ Confidence: 80% (blockchain context required)
 ### Column Name Heuristics
 
 **Direct Matches** (100% confidence if pattern also matches):
+
 - `email`, `email_address`, `user_email`, `customer_email`
 - `phone`, `phone_number`, `mobile`, `mobile_number`
 - `ssn`, `social_security_number`, `national_id`
@@ -105,6 +112,7 @@ Confidence: 80% (blockchain context required)
 - `passport`, `passport_number`, `drivers_license`
 
 **Pattern Matches** (80% confidence):
+
 - `*_email` → Email field
 - `*_phone` → Phone field
 - `*_ssn` → Social Security Number
@@ -113,10 +121,12 @@ Confidence: 80% (blockchain context required)
 - `wallet_*` → Cryptocurrency wallet
 
 **Financial Identifiers**:
+
 - `account_number`, `routing_number`, `iban`, `swift_code`
 - `bank_account`, `payment_method`, `billing_info`
 
 **Identity Fields**:
+
 - `first_name`, `last_name`, `full_name`, `legal_name`
 - `date_of_birth`, `dob`, `birth_date`
 - `gender`, `sex`, `ethnicity`, `race`
@@ -124,12 +134,14 @@ Confidence: 80% (blockchain context required)
 ### Sample-Based Analysis
 
 **Methodology**:
+
 1. Query first 1000 rows from table
 2. Apply pattern detection to actual data values
 3. Calculate PII confidence score (0-100%)
 4. Flag high-confidence matches (>80%)
 
 **Confidence Scoring Algorithm**:
+
 ```python
 confidence_score = (
     pattern_match_weight * 0.4 +
@@ -147,9 +159,14 @@ confidence_score = (
 ## Classification Taxonomy
 
 ### Level 1 - Public Data
+
 **Definition**: No PII or sensitive information
+
 **Access**: Broad access, no restrictions
+
 **Examples**:
+
+
 - Product catalogs
 - Public event schedules
 - Contest rules and descriptions
@@ -158,9 +175,14 @@ confidence_score = (
 **Snowflake Tag**: `classification:public`
 
 ### Level 2 - Internal Data
+
 **Definition**: Business data with no PII
+
 **Access**: Restricted to employees
+
 **Examples**:
+
+
 - Revenue aggregates (no user-level detail)
 - Contest performance metrics
 - Operational dashboards
@@ -169,9 +191,14 @@ confidence_score = (
 **Snowflake Tag**: `classification:internal`
 
 ### Level 3 - Sensitive Data
+
 **Definition**: Contains PII but not regulated
+
 **Access**: Role-based access controls required
+
 **Examples**:
+
+
 - User behavior analytics (pseudonymized)
 - Wallet balances (no payment methods)
 - Contest history (user-level)
@@ -180,9 +207,14 @@ confidence_score = (
 **Snowflake Tag**: `classification:sensitive`
 
 ### Level 4 - Regulated PII
+
 **Definition**: GDPR/CCPA protected data
+
 **Access**: Strict access controls + masking policies
+
 **Examples**:
+
+
 - Email addresses
 - Phone numbers
 - Payment methods (credit cards, bank accounts)
@@ -197,6 +229,7 @@ confidence_score = (
 ### Phase 1: Table Discovery
 
 **Interactive Mode**:
+
 ```yaml
 Assistant: "What would you like to scan for PII?"
 Options:
@@ -214,12 +247,14 @@ Assistant_Actions:
 ```
 
 **Steps**:
+
 1. Parse user input (table, schema pattern, domain filter, or --all)
 2. Query Snowflake `INFORMATION_SCHEMA.TABLES` and `INFORMATION_SCHEMA.COLUMNS`
 3. Build list of tables to scan
 4. Extract column metadata for each table
 
 **Example Snowflake Query**:
+
 ```sql
 -- Get all columns in finance_staging schema
 SELECT
@@ -236,6 +271,7 @@ ORDER BY table_schema, table_name, ordinal_position;
 ### Phase 2: PII Pattern Detection
 
 **Invoke Data Governance Agent**:
+
 ```yaml
 Task:
   subagent_type: "security-engineer"
@@ -254,12 +290,14 @@ Task:
 ```
 
 **Detection Steps**:
+
 1. **Column Name Analysis** - Check for PII keywords
 2. **Pattern Matching** - Apply regex to sample data
 3. **Confidence Scoring** - Calculate weighted confidence
 4. **High-Confidence Flagging** - Mark columns >80% confidence
 
 **Sample Data Query** (for each suspicious column):
+
 ```sql
 -- Get sample data for pattern matching
 SELECT
@@ -281,6 +319,7 @@ LIMIT 1000;
 ### Phase 3: Data Classification
 
 **Classification Decision Logic**:
+
 ```python
 def classify_column(pii_type, confidence_score):
     if pii_type is None:
@@ -310,6 +349,7 @@ def classify_column(pii_type, confidence_score):
 ```
 
 **Snowflake Tagging**:
+
 ```sql
 -- Apply classification tag to column
 ALTER TABLE staging.stg_new_users
@@ -327,6 +367,8 @@ SET TAG pii_type = 'email_address';
 **Masking Policy Templates**:
 
 **Email Masking (Partial)**:
+
+
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_email_partial AS (val STRING)
 RETURNS STRING ->
@@ -343,6 +385,7 @@ SET MASKING POLICY mask_email_partial;
 ```
 
 **Phone Number Masking (Full)**:
+
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_phone_full AS (val STRING)
 RETURNS STRING ->
@@ -359,6 +402,7 @@ SET MASKING POLICY mask_phone_full;
 ```
 
 **SSN Masking (Full)**:
+
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_ssn_full AS (val STRING)
 RETURNS STRING ->
@@ -370,6 +414,7 @@ COMMENT = 'Full SSN masking for GDPR/CCPA compliance';
 ```
 
 **Credit Card Masking (Partial - Last 4 Digits)**:
+
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_credit_card_partial AS (val STRING)
 RETURNS STRING ->
@@ -381,6 +426,7 @@ COMMENT = 'Credit card masking showing last 4 digits';
 ```
 
 **IP Address Masking (Partial)**:
+
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_ip_partial AS (val STRING)
 RETURNS STRING ->
@@ -392,6 +438,7 @@ COMMENT = 'IP address masking: 192.168.XXX.XXX';
 ```
 
 **Cryptocurrency Wallet Masking**:
+
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_wallet_partial AS (val STRING)
 RETURNS STRING ->
@@ -403,6 +450,7 @@ COMMENT = 'Crypto wallet masking: 0x742d***bEb';
 ```
 
 **Role-Based Access Matrix**:
+
 ```yaml
 Unmasked_Access_Roles:
   FINANCE_ADMIN:
@@ -432,6 +480,7 @@ Masked_Access_Roles:
 ### Phase 5: Compliance Validation
 
 **GDPR Requirements Check**:
+
 ```yaml
 GDPR_Article_32_Security:
   Requirement: "Encryption of personal data"
@@ -465,6 +514,7 @@ GDPR_Article_33_Breach:
 ```
 
 **CCPA Requirements Check**:
+
 ```yaml
 CCPA_Section_1798_100_Disclosure:
   Requirement: "Disclosure of PII collection to consumers"
@@ -492,6 +542,7 @@ CCPA_Section_1798_120_Opt_Out:
 ```
 
 **SOC 2 Data Classification Check**:
+
 ```yaml
 SOC2_CC6_7_Data_Classification:
   Requirement: "Data classification controls"
@@ -515,6 +566,7 @@ SOC2_CC7_2_System_Monitoring:
 ### Phase 6: Documentation Update
 
 **PII Inventory Catalog Update**:
+
 ```markdown
 # PII Inventory Catalog
 
@@ -549,6 +601,7 @@ SOC2_CC7_2_System_Monitoring:
 ```
 
 **Audit Trail Entry**:
+
 ```yaml
 PII_Scan_Audit_Log:
   Timestamp: 2025-10-07T14:32:15Z
@@ -826,11 +879,13 @@ PII_Scan_Report:
 ### Example 1: New Staging Table Scan
 
 **Command**:
+
 ```bash
 /pii-scan staging.stg_new_user_signups
 ```
 
 **User Interaction**:
+
 ```yaml
 Assistant: "Scanning staging.stg_new_user_signups for PII..."
 
@@ -878,11 +933,13 @@ Would you like me to:
 ### Example 2: Domain-Wide Scan
 
 **Command**:
+
 ```bash
 /pii-scan --all --domain finance
 ```
 
 **User Interaction**:
+
 ```yaml
 Assistant: "Scanning all tables in finance domain for PII..."
 
@@ -938,11 +995,13 @@ Would you like me to:
 ### Example 3: Airbyte Source Validation
 
 **Command**:
+
 ```bash
 /pii-scan staging.stg_airbyte_new_source_*
 ```
 
 **User Interaction**:
+
 ```yaml
 Assistant: "Scanning new Airbyte source tables for unexpected PII..."
 
@@ -999,6 +1058,7 @@ Would you like me to:
 ## Error Handling
 
 **Missing Snowflake Credentials**:
+
 ```yaml
 Error: "Snowflake connection failed"
 Action:
@@ -1008,6 +1068,7 @@ Action:
 ```
 
 **Table Not Found**:
+
 ```yaml
 Error: "Table 'staging.stg_nonexistent' does not exist"
 Action:
@@ -1017,6 +1078,7 @@ Action:
 ```
 
 **Insufficient Privileges**:
+
 ```yaml
 Error: "Insufficient privileges to apply masking policy"
 Action:
@@ -1026,6 +1088,7 @@ Action:
 ```
 
 **Sample Data Query Timeout**:
+
 ```yaml
 Error: "Query timeout on table with 100M+ rows"
 Action:
@@ -1035,6 +1098,7 @@ Action:
 ```
 
 **Free-Text PII Detection Ambiguity**:
+
 ```yaml
 Warning: "Free-text field 'notes' may contain PII but confidence low (45%)"
 Action:
@@ -1046,6 +1110,7 @@ Action:
 ## Integration with Existing Workflows
 
 **Post-Airbyte Sync**:
+
 ```bash
 # After new Airbyte source connection
 /pii-scan staging.stg_airbyte_new_source_*
@@ -1055,6 +1120,7 @@ Action:
 ```
 
 **Pre-Production Deployment**:
+
 ```bash
 # Before deploying new models to production
 /pii-scan dwh/staging/finance/*.sql
@@ -1065,6 +1131,7 @@ Action:
 ```
 
 **Quarterly Compliance Audit**:
+
 ```bash
 # Quarterly PII inventory review
 /pii-scan --all --domain finance

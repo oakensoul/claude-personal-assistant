@@ -26,25 +26,25 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 
 ### 📊 Data Pipeline Runbooks
 
-**1. dbt Build Failure**
+#### 1. dbt Build Failure
 
 - **Symptoms**: Failed dbt runs, compilation errors, dependency issues
 - **Time**: 15-30 minutes
 - **Access**: dbt Cloud, Snowflake query logs, Git history
 
-**2. dbt Test Failure**
+#### 2. dbt Test Failure
 
 - **Symptoms**: Data quality tests failing, uniqueness violations, referential integrity
 - **Time**: 20-45 minutes
 - **Access**: dbt test results, affected model data, lineage
 
-**3. Airbyte Sync Failure**
+#### 3. Airbyte Sync Failure
 
 - **Symptoms**: Source connectors failing, incomplete syncs, schema drift
 - **Time**: 15-40 minutes
 - **Access**: Airbyte UI, source system logs, connection credentials
 
-**4. Source Schema Change**
+#### 4. Source Schema Change
 
 - **Symptoms**: Upstream schema evolution breaking downstream models
 - **Time**: 30-60 minutes
@@ -52,19 +52,19 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 
 ### ❄️ Snowflake Runbooks
 
-**5. Snowflake Warehouse Timeout**
+#### 5. Snowflake Warehouse Timeout
 
 - **Symptoms**: Query timeouts, long-running queries, warehouse saturation
 - **Time**: 20-45 minutes
 - **Access**: Snowflake ACCOUNT_USAGE, query history, warehouse metrics
 
-**6. Snowflake Credit Exhaustion**
+#### 6. Snowflake Credit Exhaustion
 
 - **Symptoms**: Budget alerts, warehouse suspension, cost overruns
 - **Time**: 15-30 minutes
 - **Access**: Snowflake usage reports, resource monitors, warehouse configs
 
-**7. Slow Query Performance**
+#### 7. Slow Query Performance
 
 - **Symptoms**: Dashboard timeouts, degraded query performance, user complaints
 - **Time**: 30-90 minutes
@@ -72,19 +72,19 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 
 ### 📈 BI & Dashboard Runbooks
 
-**8. Metabase Dashboard Outage**
+#### 8. Metabase Dashboard Outage
 
 - **Symptoms**: Dashboards unavailable, error messages, connection failures
 - **Time**: 15-30 minutes
 - **Access**: Metabase logs, Snowflake connection status, database permissions
 
-**9. Metabase Query Timeout**
+#### 9. Metabase Query Timeout
 
 - **Symptoms**: Dashboard load failures, timeout errors, slow rendering
 - **Time**: 20-45 minutes
 - **Access**: Metabase query logs, underlying SQL, warehouse performance
 
-**10. Dashboard Data Incorrect**
+#### 10. Dashboard Data Incorrect
 
 - **Symptoms**: Wrong numbers, missing data, stale metrics
 - **Time**: 30-60 minutes
@@ -92,19 +92,19 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 
 ### 🔍 Data Quality Runbooks
 
-**11. Duplicate Records**
+#### 11. Duplicate Records
 
 - **Symptoms**: Unexpected duplicates in fact tables, grain violations
 - **Time**: 25-50 minutes
 - **Access**: Affected tables, incremental logic, unique key definitions
 
-**12. Null Values in Required Fields**
+#### 12. Null Values in Required Fields
 
 - **Symptoms**: Data completeness issues, missing critical fields
 - **Time**: 20-40 minutes
 - **Access**: Source data validation, transformation logic, schema tests
 
-**13. Referential Integrity Failure**
+#### 13. Referential Integrity Failure
 
 - **Symptoms**: Orphaned foreign keys, missing dimension records
 - **Time**: 30-60 minutes
@@ -112,13 +112,13 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 
 ### 🚨 Infrastructure Runbooks
 
-**14. GitHub Actions Build Failure**
+#### 14. GitHub Actions Build Failure
 
 - **Symptoms**: CI/CD pipeline failures, deployment blocked
 - **Time**: 15-35 minutes
 - **Access**: GitHub Actions logs, workflow files, test results
 
-**15. Production Deployment Rollback**
+#### 15. Production Deployment Rollback
 
 - **Symptoms**: Bad deployment causing issues, need to revert
 - **Time**: 10-25 minutes

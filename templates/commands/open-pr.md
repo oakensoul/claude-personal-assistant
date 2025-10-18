@@ -38,7 +38,7 @@ Automates the pull request creation process including atomic commits, versioning
 
 1.5. **Handle Uncommitted Changes** (if any changes found in step 1):
 
-- If no uncommitted changes found in step 1, skip this step
+   - If no uncommitted changes found in step 1, skip this step
 - Otherwise, categorize uncommitted changes:
 
   ```bash
@@ -51,7 +51,7 @@ Automates the pull request creation process including atomic commits, versioning
 
 - **Present Interactive Menu**:
 
-     ```text
+   ```text
      Found uncommitted changes:
 
      Staged:
@@ -73,34 +73,34 @@ Automates the pull request creation process including atomic commits, versioning
 
 - **Option 1: Review Individually** (recommended):
 
-  - Group files by logical category:
+   - Group files by logical category:
     - Source code changes
     - Documentation changes
     - Configuration changes
     - Test files
     - Untracked files
-  - For each file/group, prompt:
+   - For each file/group, prompt:
 
-       ```text
+     ```text
        Include 'lib/installer-common/colors.sh' in this PR? (y/n/view)
        - y: Include in PR (stage if unstaged)
        - n: Stash for later
        - view: Show diff before deciding (git diff <file>)
        ```
 
-  - Track "to-stash" list for files user wants to exclude
-  - After all files reviewed:
+   - Track "to-stash" list for files user wants to exclude
+   - After all files reviewed:
 
-    - If to-stash list is not empty:
+     - If to-stash list is not empty:
 
       ```bash
       # Stash excluded files with timestamp and -u flag for untracked
       git stash push -u -m "open-pr-excluded-$(date +%Y%m%d-%H%M%S)" -- <file1> <file2> ...
       ```
 
-    - Display summary:
+     - Display summary:
 
-         ```text
+       ```text
          ✓ Changes organized:
            - Including in PR: 2 files
            - Stashed for later: 1 file
@@ -111,21 +111,21 @@ Automates the pull request creation process including atomic commits, versioning
 
 - **Option 2: Include All**:
 
-  - Stage all changes: `git add -A`
+   - Stage all changes: `git add -A`
   - Continue to next step with all changes
 
 - **Option 3: Stash All**:
 
-  - Useful when you already have commits to push but have uncommitted changes
+   - Useful when you already have commits to push but have uncommitted changes
   - Stash everything with descriptive message:
 
     ```bash
     git stash push -u -m "open-pr-all-excluded-$(date +%Y%m%d-%H%M%S)"
     ```
 
-  - Confirm stash succeeded:
+   - Confirm stash succeeded:
 
-       ```text
+     ```text
        ✓ All changes stashed: stash@{0}
 
        Note: You must have existing commits to push. If working tree is now
@@ -134,25 +134,25 @@ Automates the pull request creation process including atomic commits, versioning
        Use /cleanup-main after merge to restore stashed changes.
        ```
 
-  - Continue to next step (may hit "no changes" error if no commits exist)
+   - Continue to next step (may hit "no changes" error if no commits exist)
 
 - **Option 4: Cancel**:
 
-  - Display: "PR creation cancelled. No changes were made."
+   - Display: "PR creation cancelled. No changes were made."
   - Exit command immediately
 
 - **Error Handling**:
 
-  - If stash command fails:
+   - If stash command fails:
     - Display error: "Failed to stash files: <error message>"
     - Ask: "Continue without stashing? (y/n)"
     - If no: Exit command
     - If yes: Proceed with all changes included
-  - If user cancels during review (Ctrl+C):
+   - If user cancels during review (Ctrl+C):
     - Do not modify working tree
     - Exit cleanly
 
-- After this step completes, proceed to next step
+   - After this step completes, proceed to next step
 
 2. **Detect Branch Type**:
    - Get current branch name: `git branch --show-current`
@@ -162,23 +162,23 @@ Automates the pull request creation process including atomic commits, versioning
 
 2a. **Time-Tracking Branch Workflow** (simplified workflow for time-tracking branches):
 
-- **Validate Time-Tracking Changes**:
+   - **Validate Time-Tracking Changes**:
 
   - Check for changes in `.time-tracking/` directory: `git diff --name-only | grep "^\.time-tracking/"`
   - If no time-tracking changes, display error: "No time-tracking changes detected. Time-tracking branches should only modify .time-tracking/ files."
   - Extract date from branch name (format: `time-tracking/{developer}/{YYYY-MM-DD}`)
   - Extract developer name from branch name
 
-- **Calculate Time Summary**:
+   - **Calculate Time Summary**:
 
-  - Read `.time-tracking/summary.json` to get total hours
+     - Read `.time-tracking/summary.json` to get total hours
   - Count number of issues logged
   - List changed files for PR body
 
-- **Delegate Simple Git Operations to devops-engineer**:
+   - **Delegate Simple Git Operations to devops-engineer**:
 
-  - For time-tracking branches, we can handle this simply but still use devops-engineer
-  - Invoke `devops-engineer` subagent with context:
+     - For time-tracking branches, we can handle this simply but still use devops-engineer
+     - Invoke `devops-engineer` subagent with context:
 
        ```text
        Context:
@@ -207,11 +207,11 @@ Automates the pull request creation process including atomic commits, versioning
        Return: PR number, PR URL, reviewers assigned (or "none"/"auto")
        ```
 
-  - If delegation fails, display error and halt
+     - If delegation fails, display error and halt
 
-- **Confirm Success**:
+   - **Confirm Success**:
 
-  - Display summary from devops-engineer agent:
+     - Display summary from devops-engineer agent:
 
        ```text
        ✓ Time-Tracking Pull Request Created Successfully
@@ -229,7 +229,7 @@ Automates the pull request creation process including atomic commits, versioning
        3. Use /cleanup-main after merge to clean up local branches
        ```
 
-- **END** - Skip all remaining steps (3-15) for time-tracking branches
+   - **END** - Skip all remaining steps (3-15) for time-tracking branches
 
 3. **Parse Branch Information** (feature branches only):
    - Get current branch name: `git branch --show-current`
@@ -399,6 +399,7 @@ Automates the pull request creation process including atomic commits, versioning
     **Sub-steps (ALL must complete)**:
 
     a. **Read and Update Issue README**:
+
        - Read current issue README: `.github/issues/in-progress/issue-{id}/README.md`
        - Check frontmatter for `estimated_effort` field (may exist if created by `/create-issue`)
        - Prompt user: "How many hours did you spend on issue #X?"
@@ -426,6 +427,7 @@ Automates the pull request creation process including atomic commits, versioning
          - This ensures frontmatter and body stay in sync
 
     b. **Add Resolution Section**:
+
        - Add **Resolution** section before the closing:
 
          ```markdown
@@ -445,6 +447,7 @@ Automates the pull request creation process including atomic commits, versioning
          ```
 
     c. **🚨 MOVE THE FOLDER (DO NOT SKIP!) 🚨**:
+
        - Create completed directory: `mkdir -p .github/issues/completed`
        - **CRITICAL**: Move the ENTIRE issue folder:
 
@@ -461,6 +464,7 @@ Automates the pull request creation process including atomic commits, versioning
        - If the move fails, HALT and report error
 
     d. **Stage and Commit the Moved Documentation**:
+
        - Stage ALL files in the moved folder:
 
          ```bash
@@ -480,11 +484,13 @@ Automates the pull request creation process including atomic commits, versioning
          - Re-commit after fixing
 
     e. **Verification**:
+
        - Confirm the folder exists at: `.github/issues/completed/issue-{id}/`
        - Confirm the commit succeeded
        - Confirm no uncommitted changes remain for issue documentation
 
     **⚠️ FAILURE HANDLING ⚠️**:
+
     If this step fails for ANY reason:
     - DO NOT proceed to step 12 (PR creation)
     - HALT the workflow
@@ -518,6 +524,8 @@ Automates the pull request creation process including atomic commits, versioning
     - **Determine Labels from Issue and Configuration**:
 
       a. **Fetch Issue Labels**:
+
+
          ```bash
          # Get issue labels
          ISSUE_LABELS=$(gh issue view {issue-id} --json labels --jq '.labels[].name')
@@ -530,6 +538,8 @@ Automates the pull request creation process including atomic commits, versioning
          ```
 
       b. **Validate Configuration**:
+
+
          ```bash
          # Check workflow-config.json exists
          if [ ! -f "$HOME/.claude/config/workflow-config.json" ]; then
@@ -552,6 +562,8 @@ Automates the pull request creation process including atomic commits, versioning
          ```
 
       c. **Determine Version Label**:
+
+
          ```bash
          # Read version label from workflow-config.json
          VERSION_LABEL=$(jq -r ".github.labels.issue_to_pr_mapping.\"$ISSUE_TYPE\".version" "$HOME/.claude/config/workflow-config.json")
@@ -564,6 +576,8 @@ Automates the pull request creation process including atomic commits, versioning
          ```
 
       d. **Determine Build Label**:
+
+
          ```bash
          # Check for build override first (highest priority)
          if [ -n "$BUILD_OVERRIDE" ]; then
@@ -582,6 +596,8 @@ Automates the pull request creation process including atomic commits, versioning
          ```
 
       e. **Log Label Application**:
+
+
          ```bash
          echo ""
          echo "Label Application Log:"
@@ -799,7 +815,7 @@ Prompts you to select reviewers when creating the PR. If a team list is configur
 }
 ```
 
-**Interactive prompt:**
+**Interactive prompt**:
 
 ```text
 Who should review this PR?

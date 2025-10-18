@@ -47,6 +47,7 @@ Ensure metric consistency and prevent metric sprawl by:
 ### Phase 1: Metric Discovery & Inventory
 
 1. **Identify all metric sources**:
+
    ```yaml
    Sources_to_Scan:
      - dbt_Semantic_Layer:
@@ -64,12 +65,14 @@ Ensure metric consistency and prevent metric sprawl by:
    ```
 
 2. **Extract metric definitions**:
+
    - For dbt metrics: Parse `metrics.yml` files
    - For Metabase: Query Metabase API for dashboard SQL
    - For notebooks: Scan `.ipynb` and `.sql` files
    - For legacy: Check archived documentation
 
 3. **Normalize metric metadata**:
+
    ```yaml
    Metric_Metadata:
      - Name: "Revenue"
@@ -88,12 +91,14 @@ Ensure metric consistency and prevent metric sprawl by:
 For each metric concept (e.g., "Revenue", "Active Users"):
 
 1. **Compare SQL definitions**:
+
    - Extract SELECT clause (aggregation function)
    - Extract FROM clause (source tables)
    - Extract WHERE clause (filters)
    - Extract GROUP BY clause (grain/dimensions)
 
 2. **Identify inconsistencies**:
+
    ```yaml
    Inconsistency_Types:
      - Formula_Mismatch: "SUM(amount) vs SUM(transaction_amount)"
@@ -117,16 +122,19 @@ For each metric concept (e.g., "Revenue", "Active Users"):
 ### Phase 3: Metric Sprawl Detection
 
 1. **Identify duplicate metrics**:
+
    - Same business concept, different names
    - Example: "Revenue", "Total Revenue", "Gross Revenue" all calculate same thing
    - Recommendation: Consolidate to single canonical name
 
 2. **Detect conflicting definitions**:
+
    - Same name, different calculation logic
    - Example: "Revenue" includes/excludes refunds in different dashboards
    - Severity: CRITICAL (business decisions based on wrong numbers)
 
 3. **Find orphaned metrics**:
+
    - Metrics defined but not used in any dashboard
    - Metrics in deprecated dashboards
    - Recommendation: Archive or deprecate
@@ -145,6 +153,7 @@ For each metric concept (e.g., "Revenue", "Active Users"):
 ### Phase 4: Semantic Layer Alignment
 
 1. **Check dbt metrics coverage**:
+
    ```yaml
    Coverage_Analysis:
      Total_Metrics_in_Use: 45
@@ -159,6 +168,7 @@ For each metric concept (e.g., "Revenue", "Active Users"):
    ```
 
 2. **Verify dashboard usage**:
+
    ```yaml
    Dashboard_Alignment:
      Total_Dashboards: 25
@@ -186,6 +196,7 @@ For each metric concept (e.g., "Revenue", "Active Users"):
 ### Phase 5: Business Logic Validation
 
 1. **Test metric calculations**:
+
    ```yaml
    Validation_Tests:
      - Test: "Daily revenue sums match monthly total"
@@ -202,6 +213,7 @@ For each metric concept (e.g., "Revenue", "Active Users"):
    ```
 
 2. **Verify edge cases**:
+
    ```yaml
    Edge_Case_Tests:
      - Null_Handling: "How are NULL values treated?"
@@ -212,11 +224,13 @@ For each metric concept (e.g., "Revenue", "Active Users"):
    ```
 
 3. **Check temporal consistency**:
+
    - Do daily rollups match weekly aggregates?
    - Do weekly rollups match monthly aggregates?
    - Are there data gaps or duplicates?
 
 4. **Validate dimensional slicing**:
+
    - Does revenue by segment sum to total revenue?
    - Does revenue by geography sum to total revenue?
    - Are there overlapping segments causing double-counting?
@@ -224,16 +238,19 @@ For each metric concept (e.g., "Revenue", "Active Users"):
 ### Phase 6: Remediation Recommendations
 
 1. **Immediate fixes** (critical issues):
+
    - Unit mismatches (100x differences)
    - Filter conflicts (inclusion/exclusion errors)
    - Broken metric references
 
 2. **Short-term improvements** (1-2 sprints):
+
    - Migrate dashboards to dbt metrics
    - Consolidate duplicate metrics
    - Standardize metric naming
 
 3. **Long-term initiatives** (strategic):
+
    - Implement metric governance policy
    - Build metric catalog with approval workflow
    - Add CI/CD validation for metric consistency
@@ -618,6 +635,7 @@ Next Steps:
 ```
 
 **Output**:
+
 - Scans dbt metrics, Metabase dashboards, notebooks
 - Finds 4 revenue definitions
 - Identifies 3 inconsistencies (filter, unit, grain)
@@ -631,6 +649,7 @@ Next Steps:
 ```
 
 **Output**:
+
 ```yaml
 Metric_Sprawl_Report:
   Total_Metrics_Scanned: 67
@@ -670,6 +689,7 @@ Metric_Sprawl_Report:
 ```
 
 **Output**:
+
 ```yaml
 Semantic_Layer_Coverage_Report:
   Total_Metrics_in_Use: 67

@@ -25,7 +25,7 @@ Publishes local issue drafts to GitHub. Reads draft metadata, creates GitHub iss
 
 # Publish all drafts
 /publish-issue --all
-```text
+```
 
 ## Instructions
 
@@ -99,7 +99,7 @@ Found {count} draft(s) to publish:
    ...
 
 ========================================
-```text
+```
 
 - Prompt: "Publish these {count} issue(s) to GitHub? (y/n)"
 - If no: Exit without publishing
@@ -110,12 +110,15 @@ Found {count} draft(s) to publish:
 For each draft:
 
 - **Check milestone exists on GitHub**:
+
   - Run: `gh api repos/:owner/:repo/milestones --jq '.[] | select(.title=="{milestone}") | .number'`
   - If not found: Display error "Milestone '{milestone}' not found on GitHub. Create it first.", skip this draft
 - **Check labels exist** (optional validation):
+
   - Can fetch existing labels: `gh label list --json name`
   - If label doesn't exist, it will be created or warning shown
 - **Validate assignee** (if provided):
+
   - Run: `gh api users/{assignee}` to check user exists
   - If not found: Display warning "User @{assignee} not found, skipping assignee", continue
 
@@ -124,6 +127,7 @@ For each draft:
 For each draft in list:
 
 1. **Build GitHub issue body**
+
     - Use body from README.md (content after frontmatter)
     - Optionally enhance with metadata section at bottom:
 
@@ -135,6 +139,7 @@ For each draft in list:
     ```
 
 2. **Create GitHub issue**
+
     - Build `gh issue create` command:
 
     ```bash
@@ -152,6 +157,7 @@ For each draft in list:
 3. **Handle creation result**
 
     **On success**:
+
 
     - Display: `✓ Published: {title} → Issue #{number}`
     - Store issue number and URL
@@ -207,7 +213,7 @@ Next Steps:
 
 2. View issues on GitHub:
    gh issue list --milestone "{milestone}"
-```text
+```
 
 ## Examples
 
@@ -219,7 +225,7 @@ Next Steps:
 # Output:
 # ✓ Published: Add Dark Mode Support → Issue #42
 # Moved draft to: .github/issues/published/milestone-v0.1/feature-add-dark-mode/
-```text
+```
 
 ### Publish Multiple Drafts
 
@@ -227,7 +233,7 @@ Next Steps:
 /publish-issue add-dark-mode refactor-auth fix-login-bug
 
 # Publishes all three drafts in one command
-```text
+```
 
 ### Publish by Milestone
 
@@ -236,7 +242,7 @@ Next Steps:
 
 # Finds all drafts in .github/issues/drafts/milestone-v0.1/
 # Publishes all of them
-```text
+```
 
 ### Publish Everything
 
@@ -245,7 +251,7 @@ Next Steps:
 
 # Publishes every draft in drafts/
 # Useful for batch operations
-```text
+```
 
 ## Error Handling
 
@@ -260,7 +266,8 @@ Next Steps:
 ## Directory Structure
 
 **Before publishing**:
-```
+
+```text
 .github/issues/drafts/milestone-v0.1/
 ├── feature-add-dark-mode/
 │   └── README.md (status: DRAFT)
@@ -269,7 +276,8 @@ Next Steps:
 ```
 
 **After publishing**:
-```
+
+```text
 .github/issues/published/milestone-v0.1/
 ├── feature-add-dark-mode/
 │   └── README.md (status: PUBLISHED, includes GitHub URL)
@@ -278,6 +286,7 @@ Next Steps:
 ```
 
 **Git tracking**:
+
 - `.github/issues/drafts/` - Gitignored (local only)
 - `.github/issues/published/` - Committed to repo (shared history)
 
