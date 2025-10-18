@@ -1,10 +1,12 @@
 ---
+
 name: github-init
 description: Initialize GitHub repository with labels, project, and workflow automations
 args:
   mode:
     description: "full (default), labels-only, verify, reset"
     required: false
+
 ---
 
 # GitHub Repository Initialization Command
@@ -20,6 +22,7 @@ This command initializes a GitHub repository with standardized configuration:
 - **Verification**: State tracking and validation
 
 **Prerequisites:**
+
 - GitHub CLI (`gh`) installed and authenticated
 - Repository admin access
 - Git repository with GitHub remote
@@ -33,29 +36,37 @@ This command initializes a GitHub repository with standardized configuration:
 Run all automated setup, then provide interactive guidance for manual configuration.
 
 ```bash
+
 /github-init
 /github-init full
+
 ```
 
 ### `labels-only`
 Only create/update GitHub labels without project or automation setup.
 
 ```bash
+
 /github-init labels-only
+
 ```
 
 ### `verify`
 Check configuration without making changes. Report what's missing or incorrect.
 
 ```bash
+
 /github-init verify
+
 ```
 
 ### `reset`
 Remove all labels and clear verification cache (requires confirmation).
 
 ```bash
+
 /github-init reset
+
 ```
 
 ---
@@ -71,6 +82,7 @@ This phase uses GitHub CLI to configure what can be automated.
 Check all prerequisites before proceeding:
 
 ```bash
+
 # Check 1: GitHub CLI installed and authenticated
 gh auth status 2>&1
 
@@ -82,9 +94,11 @@ git remote get-url origin 2>&1
 
 # Check 4: User has admin access
 gh repo view --json name,owner,viewerPermission --jq '.viewerPermission'
+
 ```
 
 **Expected Results:**
+
 - `gh auth status`: Shows "Logged in to github.com"
 - `git rev-parse --git-dir`: Returns `.git`
 - `git remote get-url origin`: Returns GitHub URL
@@ -108,6 +122,7 @@ If any check fails, **STOP** and display error with resolution steps.
 Load workflow configuration to get GitHub settings:
 
 ```bash
+
 # Verify workflow-config.json exists
 if [ ! -f .claude/config/workflow-config.json ]; then
     echo "ERROR: workflow-config.json not found. Run /workflow-init first."
@@ -116,9 +131,11 @@ fi
 
 # Extract GitHub configuration
 jq '.github' .claude/config/workflow-config.json
+
 ```
 
 **Required Configuration Keys:**
+
 - `github.project.name`
 - `github.project.statuses` (array of 10 status names)
 - `github.project.views` (array of 2 view definitions)
@@ -126,6 +143,7 @@ jq '.github' .claude/config/workflow-config.json
 - `github.workflow_automations` (array of automation rules)
 
 **Error Handling:**
+
 - If `.github` key missing: "ERROR: workflow-config.json missing GitHub section. Run /workflow-init first."
 - If required keys missing: "ERROR: GitHub configuration incomplete. Check workflow-config.json"
 
@@ -136,6 +154,7 @@ jq '.github' .claude/config/workflow-config.json
 Run the label creation script:
 
 ```bash
+
 # Make script executable
 chmod +x scripts/create-labels.sh
 
@@ -146,11 +165,13 @@ chmod +x scripts/create-labels.sh
 LABEL_COUNT=$(gh label list --json name | jq -r '.[] | select(.name | startswith("version:") or startswith("build:") or startswith("build-override:")) | .name' | wc -l | xargs)
 
 echo "Created ${LABEL_COUNT} labels"
+
 ```
 
 **Expected Output:** `Created 26 labels` (or similar count based on script)
 
 **Label Categories Created:**
+
 - `version:` - Major, minor, patch version changes
 - `build:` - Build scope (staging, core, marts, full-refresh, selective)
 - `build-override:` - Build overrides (skip-ci, manual-only, etc.)
@@ -159,14 +180,17 @@ echo "Created ${LABEL_COUNT} labels"
 - Priority labels (critical, high, normal, low)
 
 **Error Handling:**
+
 - Script not found: "ERROR: scripts/create-labels.sh not found"
 - Script fails: Display script output and "ERROR: Label creation failed"
 - Verify command fails: Warn but continue
 
 **Mode: `labels-only`**
+
 If mode is `labels-only`, STOP after this step and display:
 
 ```
+
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ ✓ LABELS CREATED                                                          ║
 ╚════════════════════════════════════════════════════════════════════════════╝
@@ -176,6 +200,7 @@ Created labels: 26
 Review labels: gh label list
 Delete deprecated: ./scripts/delete-deprecated-labels.sh
 Documentation: docs/development/LABELS.md
+
 ```
 
 ## Step 4: Create Verification Cache
@@ -185,6 +210,7 @@ Documentation: docs/development/LABELS.md
 Create `.github/.verification-cache.json` to track configuration state:
 
 ```bash
+
 # Get current timestamp
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
@@ -265,9 +291,11 @@ cat > .github/.verification-cache.json <<EOF
 EOF
 
 echo "Verification cache created: .github/.verification-cache.json"
+
 ```
 
 **Verification Cache Purpose:**
+
 - Track completion of manual setup steps
 - Store checksums to detect configuration drift
 - Enable resumable setup if interrupted
@@ -278,6 +306,7 @@ echo "Verification cache created: .github/.verification-cache.json"
 Display summary of automated setup:
 
 ```
+
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ ✓ AUTOMATED SETUP COMPLETE                                                ║
 ╚════════════════════════════════════════════════════════════════════════════╝
@@ -293,15 +322,20 @@ Verification cache: .github/.verification-cache.json
    Manual setup required - see Phase 2 below.
 
    Future enhancement: Use GitHub GraphQL API to configure:
+
    - Auto-add items to project
    - Auto-archive stale items
    - Custom field workflows
+
+
 ```
 
 **Mode: `verify`**
+
 If mode is `verify`, load existing verification cache and report status:
 
 ```bash
+
 # Check if verification cache exists
 if [ -f .github/.verification-cache.json ]; then
     echo "Verification Cache Status:"
@@ -317,6 +351,7 @@ if [ -f .github/.verification-cache.json ]; then
 else
     echo "ERROR: Verification cache not found. Run /github-init to create."
 fi
+
 ```
 
 STOP after displaying verification report.
@@ -332,6 +367,7 @@ The following setup steps require GitHub UI interaction. This command will guide
 ## Interactive Wizard Protocol
 
 For each manual step:
+
 1. **Check verification cache** - Skip if step already completed
 2. **Display instructions** - Show formatted guidance with UI paths
 3. **Wait for user confirmation** - `[Enter]` to continue, `[S]` to skip
@@ -343,17 +379,21 @@ For each manual step:
 ### Step 6: Create GitHub Project
 
 **Check State:**
+
 ```bash
+
 PROJECT_VERIFIED=$(jq -r '.manual_rules.project_created.verified' .github/.verification-cache.json)
 if [ "$PROJECT_VERIFIED" = "true" ]; then
     echo "Step 6: Already complete (project created)"
     # Skip to Step 7
 fi
+
 ```
 
 **Display Instructions:**
 
 ```
+
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ STEP 6: Create GitHub Project Board                                       ║
 ╚════════════════════════════════════════════════════════════════════════════╝
@@ -361,6 +401,7 @@ fi
 GitHub Projects cannot be created via CLI. Follow these steps:
 
 1. Navigate to Projects:
+
    • Organization projects: https://github.com/orgs/${REPO_OWNER}/projects
    • Repository projects: https://github.com/${REPO_OWNER}/${REPO_NAME}/projects
 
@@ -369,27 +410,33 @@ GitHub Projects cannot be created via CLI. Follow these steps:
 3. Select "Board" template
 
 4. Configure project:
+
    Name: ${PROJECT_NAME}
    Description: Project board for ${REPO_NAME}
 
 5. Click "Create project"
 
 6. Link to repository:
+
    • Project Settings → Linked repositories
    • Add: ${REPO_OWNER}/${REPO_NAME}
 
 7. Note the project URL (you'll need this):
+
    Format: https://github.com/orgs/${REPO_OWNER}/projects/${NUMBER}
 
 Press [Enter] when complete, or [S] to skip: _
+
 ```
 
 **User Input:**
+
 - Wait for user to press Enter or type 'S'
 - If 'S': Mark step as skipped, continue
 - If Enter: Prompt for project URL
 
 ```bash
+
 echo "Enter project URL (https://github.com/orgs/${REPO_OWNER}/projects/NUMBER):"
 read PROJECT_URL
 
@@ -408,22 +455,27 @@ jq --arg url "$PROJECT_URL" --arg timestamp "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" '
 mv .github/.verification-cache.json.tmp .github/.verification-cache.json
 
 echo "✓ Step 6 complete"
+
 ```
 
 ### Step 7: Configure Status Field
 
 **Check State:**
+
 ```bash
+
 STATUS_VERIFIED=$(jq -r '.manual_rules.status_field.verified' .github/.verification-cache.json)
 if [ "$STATUS_VERIFIED" = "true" ]; then
     echo "Step 7: Already complete (status field configured)"
     # Skip to Step 8
 fi
+
 ```
 
 **Display Instructions:**
 
 ```
+
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ STEP 7: Configure Status Field                                            ║
 ╚════════════════════════════════════════════════════════════════════════════╝
@@ -438,6 +490,7 @@ Configure the Status field with workflow stages:
 $(jq -r '.github.project.statuses | to_entries[] | "   \(.key + 1). \(.value)"' .claude/config/workflow-config.json)
 
 5. Set colors as desired (suggested):
+
    • Parking Lot: Gray
    • Triage: Yellow
    • Ready: Blue
@@ -454,10 +507,13 @@ $(jq -r '.github.project.statuses | to_entries[] | "   \(.key + 1). \(.value)"' 
 Reference: .claude/config/workflow-config.json → github.project.statuses
 
 Press [Enter] when complete, or [S] to skip: _
+
 ```
 
 **User Input:**
+
 ```bash
+
 read -p "" RESPONSE
 
 if [[ "$RESPONSE" =~ ^[Ss]$ ]]; then
@@ -474,6 +530,7 @@ else
 
     echo "✓ Step 7 complete"
 fi
+
 ```
 
 ### Steps 8-15: Workflow Automations (8 Rules)
@@ -481,6 +538,7 @@ fi
 **For each automation rule in `workflow-config.json`, display guided setup:**
 
 ```bash
+
 # Get automation rules
 AUTOMATIONS=$(jq -c '.github.workflow_automations[]' .claude/config/workflow-config.json)
 
@@ -516,6 +574,7 @@ Configuration:
   Action: ${ACTION}
 
 Steps:
+
   1. Click "Add workflow"
   2. Select trigger: "${TRIGGER}"
   3. Select action: "${ACTION}"
@@ -556,6 +615,7 @@ if [ "$COMPLETED_COUNT" -eq "$EXPECTED_COUNT" ]; then
 
     echo "✓ All workflow automations configured (${COMPLETED_COUNT}/${EXPECTED_COUNT})"
 fi
+
 ```
 
 **Typical Workflow Automations (from workflow-config.json):**
@@ -595,17 +655,21 @@ fi
 ### Step 16: Create Board Views
 
 **Check State:**
+
 ```bash
+
 VIEWS_VERIFIED=$(jq -r '.manual_rules.board_views.verified' .github/.verification-cache.json)
 if [ "$VIEWS_VERIFIED" = "true" ]; then
     echo "Step 16: Already complete (board views created)"
     # Skip to Step 17
 fi
+
 ```
 
 **Display Instructions:**
 
 ```
+
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ STEP 16: Create Board Views                                               ║
 ╚════════════════════════════════════════════════════════════════════════════╝
@@ -622,6 +686,7 @@ View: ${VIEW_NAME}
   Visible statuses: ${STATUSES}
 
   Steps:
+
     1. Click "New view" in project
     2. Select "Board" layout
     3. Name: "${VIEW_NAME}"
@@ -635,10 +700,13 @@ done)
 Reference: .claude/config/workflow-config.json → github.project.views
 
 Press [Enter] when complete, or [S] to skip: _
+
 ```
 
 **User Input:**
+
 ```bash
+
 read -p "" RESPONSE
 
 if [[ "$RESPONSE" =~ ^[Ss]$ ]]; then
@@ -654,22 +722,27 @@ else
 
     echo "✓ Step 16 complete"
 fi
+
 ```
 
 ### Step 17: Configure Branch Protection
 
 **Check State:**
+
 ```bash
+
 BRANCH_VERIFIED=$(jq -r '.manual_rules.branch_protection.verified' .github/.verification-cache.json)
 if [ "$BRANCH_VERIFIED" = "true" ]; then
     echo "Step 17: Already complete (branch protection configured)"
     # Skip to completion
 fi
+
 ```
 
 **Display Instructions:**
 
 ```
+
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ STEP 17: Configure Branch Protection                                      ║
 ╚════════════════════════════════════════════════════════════════════════════╝
@@ -688,6 +761,7 @@ Enable these protections:
   ☑ Require status checks to pass before merging
     ☑ Require branches to be up to date before merging
     Required checks (add these):
+
       - dbt-build
       - sqlfluff-lint
 
@@ -703,10 +777,13 @@ Optional (recommended):
 Documentation: .github/GITHUB_SETUP_GUIDE.md
 
 Press [Enter] when complete, or [S] to skip: _
+
 ```
 
 **User Input:**
+
 ```bash
+
 read -p "" RESPONSE
 
 if [[ "$RESPONSE" =~ ^[Ss]$ ]]; then
@@ -721,6 +798,7 @@ else
 
     echo "✓ Step 17 complete"
 fi
+
 ```
 
 ---
@@ -730,6 +808,7 @@ fi
 Display comprehensive summary of setup status:
 
 ```bash
+
 # Load verification cache
 CACHE=".github/.verification-cache.json"
 
@@ -784,17 +863,21 @@ NEXT STEPS:
 ────────────────────────────────────────────────────────────────────────────
 $(if [ "$ALL_COMPLETE" = "true" ]; then
     cat <<COMPLETE
+
   1. Verify setup: /github-sync check
   2. Review labels: gh label list
   3. Delete deprecated labels: ./scripts/delete-deprecated-labels.sh
   4. Test workflow: Create test issue and move through statuses
   5. Read documentation: docs/development/LABELS.md
+
 COMPLETE
 else
     cat <<INCOMPLETE
+
   1. Resume setup: /github-init (will skip completed steps)
   2. Verify progress: cat .github/.verification-cache.json | jq '.manual_rules'
   3. When complete, run: /github-sync check
+
 INCOMPLETE
 fi)
 
@@ -806,6 +889,7 @@ FILES CREATED:
 
 ╚════════════════════════════════════════════════════════════════════════════╝
 EOF
+
 ```
 
 ---
@@ -815,6 +899,7 @@ EOF
 **WARNING:** This mode removes all labels and resets verification cache. Use with caution.
 
 ```bash
+
 echo "╔════════════════════════════════════════════════════════════════════════════╗"
 echo "║ ⚠️  RESET MODE - DANGER ZONE                                               ║"
 echo "╚════════════════════════════════════════════════════════════════════════════╝"
@@ -867,6 +952,7 @@ echo "  1. Go to: Repository → Settings → Branches"
 echo "  2. Delete branch protection rules manually"
 echo ""
 echo "To reinitialize: /github-init"
+
 ```
 
 ---
@@ -880,13 +966,16 @@ echo "To reinitialize: /github-init"
 **Error:** `gh: command not found` or `not logged in`
 
 **Resolution:**
+
 ```bash
+
 # Install GitHub CLI (if missing)
 brew install gh  # macOS
 # Or: https://cli.github.com/
 
 # Authenticate
 gh auth login
+
 ```
 
 ### 2. Insufficient Permissions
@@ -894,6 +983,7 @@ gh auth login
 **Error:** `User lacks admin access`
 
 **Resolution:**
+
 - Request admin access from repository owner
 - Or use organization-level permissions if available
 
@@ -902,9 +992,12 @@ gh auth login
 **Error:** `workflow-config.json not found`
 
 **Resolution:**
+
 ```bash
+
 # Initialize workflow configuration first
 /workflow-init
+
 ```
 
 ### 4. Label Creation Fails
@@ -912,6 +1005,7 @@ gh auth login
 **Error:** `Label already exists` or `API error`
 
 **Resolution:**
+
 - Labels already exist: Skip label creation or delete existing labels first
 - API rate limit: Wait and retry
 - Network error: Check internet connection
@@ -921,10 +1015,13 @@ gh auth login
 **Error:** `JSON parse error` or invalid cache data
 
 **Resolution:**
+
 ```bash
+
 # Regenerate cache
 rm .github/.verification-cache.json
 /github-init verify  # Will recreate cache
+
 ```
 
 ## Resumable Workflow
@@ -932,18 +1029,27 @@ rm .github/.verification-cache.json
 If setup is interrupted:
 
 1. **Check current state:**
+
    ```bash
+
    cat .github/.verification-cache.json | jq '.manual_rules'
+
    ```
 
 2. **Resume setup:**
+
    ```bash
+
    /github-init  # Automatically skips completed steps
+
    ```
 
 3. **Verify completion:**
+
    ```bash
+
    /github-init verify
+
    ```
 
 ---
@@ -959,6 +1065,7 @@ If setup is interrupted:
 ## Execution Order
 
 ```mermaid
+
 graph TD
     A[Start] --> B[Validate Prerequisites]
     B --> C[Load Configuration]
@@ -977,6 +1084,7 @@ graph TD
     O --> F
     G --> F
     H --> F
+
 ```
 
 ## Success Criteria
@@ -994,6 +1102,7 @@ graph TD
 ---
 
 **Estimated Time:**
+
 - Automated setup: 5 minutes
 - Manual setup (guided): 10-15 minutes
 - **Total:** 15-20 minutes

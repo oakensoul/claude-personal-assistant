@@ -38,7 +38,7 @@ Without a clear model, we risk:
 
 **Description**: Separate frontend and backend engineering:
 
-```
+```text
 frontend-engineer/
   → Handles: React, Vue, Angular, CSS, browser APIs
 
@@ -64,7 +64,7 @@ backend-engineer/
 
 **Description**: One general-purpose engineer handles everything:
 
-```
+```text
 full-stack-engineer/
   → Handles: Everything (UI, API, database, deployment, infrastructure)
 ```
@@ -129,7 +129,7 @@ full-stack-engineer/
 
 **Description**: Organize by service type:
 
-```
+```text
 web-app-engineer/
 microservice-engineer/
 lambda-engineer/
@@ -325,7 +325,7 @@ mobile-engineer/
 
 Use this flowchart to decide which engineer agent to use:
 
-```
+```text
 Is this data/analytics work?
 ├─ Yes → data-engineer
 └─ No

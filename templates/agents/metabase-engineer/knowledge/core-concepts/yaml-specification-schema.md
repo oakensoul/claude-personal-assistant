@@ -1,9 +1,11 @@
 ---
+
 title: "YAML Specification Schema Reference"
 description: "Complete schema reference for Metabase dashboard and question YAML specifications"
 category: "core-concepts"
 tags: ["yaml", "schema", "specification", "dashboards", "questions"]
 last_updated: "2025-10-16"
+
 ---
 
 # YAML Specification Schema Reference
@@ -15,7 +17,10 @@ Complete reference for defining Metabase dashboards and questions in YAML format
 ### Complete Example
 
 ```yaml
+
+
 ---
+
 name: "Market Maker Performance Dashboard"
 description: "Financial performance metrics for Market Maker autodraft system"
 collection: "Finance"
@@ -28,13 +33,16 @@ author: "data-team"
 
 # Global dashboard filters
 filters:
+
   - name: "Date Range"
+
     field: "date_actual"
     type: "date-range"
     default: "last-30-days"
     widget_type: "date/range"
 
   - name: "User Tier"
+
     field: "user_tier"
     type: "category"
     values: ["free", "premium", "vip"]
@@ -49,7 +57,9 @@ layout:
 # Questions (charts/visualizations)
 questions:
   # KPI Scorecards (Row 1)
+
   - name: "Total House Handle"
+
     description: "Total amount wagered by Market Maker"
     type: "scalar"
     position: {row: 0, col: 0, sizeX: 3, sizeY: 2}
@@ -65,11 +75,14 @@ questions:
       metrics: ["house_handle"]
       aggregation: "sum"
       filters:
+
         - field: "date_actual"
+
           operator: "between"
           value: "{{date_range}}"
 
   - name: "Net House Payout"
+
     description: "House P&L (should be negative = profit)"
     type: "scalar"
     position: {row: 0, col: 3, sizeX: 3, sizeY: 2}
@@ -86,11 +99,14 @@ questions:
       metrics: ["net_house_payout"]
       aggregation: "sum"
       filters:
+
         - field: "date_actual"
+
           operator: "between"
           value: "{{date_range}}"
 
   - name: "House ROI %"
+
     description: "Return on investment for Market Maker"
     type: "scalar"
     position: {row: 0, col: 6, sizeX: 3, sizeY: 2}
@@ -107,11 +123,14 @@ questions:
       metrics: ["house_roi_pct"]
       aggregation: "avg"
       filters:
+
         - field: "date_actual"
+
           operator: "between"
           value: "{{date_range}}"
 
   - name: "Autodraft Count"
+
     description: "Number of automated slips generated"
     type: "scalar"
     position: {row: 0, col: 9, sizeX: 3, sizeY: 2}
@@ -126,12 +145,16 @@ questions:
       metrics: ["autodraft_count"]
       aggregation: "sum"
       filters:
+
         - field: "date_actual"
+
           operator: "between"
           value: "{{date_range}}"
 
   # Time Series Charts (Row 2-3)
+
   - name: "Daily House Handle Trend"
+
     description: "House handle over time"
     type: "timeseries"
     position: {row: 2, col: 0, sizeX: 6, sizeY: 4}
@@ -152,11 +175,14 @@ questions:
       group_by: ["date_actual"]
       order_by: ["date_actual ASC"]
       filters:
+
         - field: "date_actual"
+
           operator: "between"
           value: "{{date_range}}"
 
   - name: "Cumulative House P&L"
+
     description: "Running total of house profit/loss"
     type: "timeseries"
     position: {row: 2, col: 6, sizeX: 6, sizeY: 4}
@@ -180,12 +206,16 @@ questions:
         partition_by: []
         order_by: ["date_actual"]
       filters:
+
         - field: "date_actual"
+
           operator: "between"
           value: "{{date_range}}"
 
   # Detail Table (Row 4)
+
   - name: "Daily Breakdown"
+
     description: "Daily detail of Market Maker activity"
     type: "table"
     position: {row: 6, col: 0, sizeX: 12, sizeY: 4}
@@ -193,27 +223,41 @@ questions:
       type: "table"
       settings:
         columns:
+
           - field: "date_actual"
+
             display_name: "Date"
             format: "date"
+
           - field: "house_handle"
+
             display_name: "Handle"
             format: "currency"
+
           - field: "net_house_payout"
+
             display_name: "Net Payout"
             format: "currency"
+
           - field: "house_roi_pct"
+
             display_name: "ROI %"
             format: "percentage"
+
           - field: "autodraft_count"
+
             display_name: "Autodrafts"
             format: "integer"
         conditional_formatting:
+
           - column: "house_roi_pct"
+
             condition: "greater_than"
             value: 0
             style: {background: "#FFE4E1", color: "#FF0000"}
+
           - column: "net_house_payout"
+
             condition: "greater_than"
             value: 0
             style: {background: "#FFE4E1", color: "#FF0000"}
@@ -226,7 +270,9 @@ questions:
       order_by: ["date_actual DESC"]
       limit: 100
       filters:
+
         - field: "date_actual"
+
           operator: "between"
           value: "{{date_range}}"
 
@@ -234,6 +280,7 @@ questions:
 permissions:
   view: ["finance-team", "executives", "data-team"]
   edit: ["data-team"]
+
 ```
 
 ## Question Specification Schema
@@ -241,7 +288,10 @@ permissions:
 ### Native SQL Query Question
 
 ```yaml
+
+
 ---
+
 name: "Market Maker ROI by Contest Type"
 description: "House ROI percentage broken down by contest type"
 collection: "Finance/Shared Questions"
@@ -263,12 +313,15 @@ query:
     ORDER BY house_roi_pct ASC
 
   parameters:
+
     - name: "date_start"
+
       type: "date"
       default: "2025-01-01"
       required: true
 
     - name: "date_end"
+
       type: "date"
       default: "today"
       required: true
@@ -284,12 +337,16 @@ visualization:
       value: 0
       label: "Break Even"
       style: "dashed"
+
 ```
 
 ### GUI-Based Question
 
 ```yaml
+
+
 ---
+
 name: "Daily Revenue by User Tier"
 description: "Revenue trends segmented by user tier"
 collection: "Finance/Shared Questions"
@@ -301,24 +358,35 @@ query:
   source_table: "finance_revenue_daily"
 
   aggregations:
+
     - metric: "total_revenue"
+
       function: "sum"
 
   breakouts:
+
     - field: "date_actual"
+
       temporal_unit: "day"
+
     - field: "user_tier"
 
   filters:
+
     - field: "date_actual"
+
       operator: "between"
       value: ["2025-01-01", "2025-12-31"]
+
     - field: "revenue_type"
+
       operator: "equals"
       value: "contest_fee"
 
   order_by:
+
     - field: "date_actual"
+
       direction: "ascending"
 
 visualization:
@@ -334,6 +402,7 @@ visualization:
       free: "#84BB4C"
       premium: "#509EE3"
       vip: "#F9CF48"
+
 ```
 
 ## Schema Field Reference
@@ -409,18 +478,21 @@ visualization:
 
 ### Required Frontmatter
 All YAML specifications MUST include frontmatter with:
+
 - `name` (unique within collection)
 - `description` (clear, concise purpose)
 - `collection` (valid collection path)
 - `database` (valid database connection)
 
 ### Naming Conventions
+
 - **Dashboard names**: Human-readable, sentence case ("Market Maker Performance Dashboard")
 - **Question names**: Descriptive, concise ("Daily House Handle")
 - **Collection paths**: Use forward slashes ("Finance/Market Maker")
 - **Field names**: snake_case matching database schema
 
 ### Layout Rules
+
 - Grid is 12 columns wide
 - Minimum question size: 2x2
 - KPI scorecards typically: 3x2 or 4x2
@@ -428,6 +500,7 @@ All YAML specifications MUST include frontmatter with:
 - Tables typically: 12x4 or wider
 
 ### Performance Considerations
+
 - Limit dashboards to 15-20 questions max
 - Use pre-aggregated marts when possible
 - Always include date range filters
@@ -439,26 +512,35 @@ All YAML specifications MUST include frontmatter with:
 ### Dashboard-to-Question Parameters
 
 ```yaml
+
 # Dashboard filter
 filters:
+
   - name: "Date Range"
+
     field: "date_actual"
     type: "date-range"
     default: "last-30-days"
 
 # Question using filter
 questions:
+
   - name: "Revenue Trend"
+
     query:
       filters:
+
         - field: "date_actual"
+
           operator: "between"
           value: "{{date_range}}"  # References dashboard filter
+
 ```
 
 ### Question Parameters
 
 ```yaml
+
 query:
   sql: |
     SELECT * FROM revenue
@@ -466,19 +548,24 @@ query:
     AND date >= {{start_date}}
 
   parameters:
+
     - name: "tier"
+
       type: "category"
       values: ["free", "premium", "vip"]
       default: "premium"
 
     - name: "start_date"
+
       type: "date"
       default: "2025-01-01"
+
 ```
 
 ## Best Practices
 
 ### YAML Structure
+
 1. Always include complete frontmatter
 2. Comment complex queries
 3. Use consistent indentation (2 spaces)
@@ -486,6 +573,7 @@ query:
 5. Order fields consistently
 
 ### Query Design
+
 1. Use marts over raw facts when possible
 2. Always include date filters for large tables
 3. Test queries in Snowflake before YAML
@@ -493,6 +581,7 @@ query:
 5. Add comments for complex logic
 
 ### Visualization Selection
+
 1. Scalars for single metrics
 2. Lines for trends over time
 3. Bars for categorical comparisons
@@ -500,6 +589,7 @@ query:
 5. Avoid pie charts (bars are clearer)
 
 ### Documentation
+
 1. Description explains "why" not "what"
 2. Include metric definitions in descriptions
 3. Document expected value ranges
@@ -508,6 +598,7 @@ query:
 ---
 
 **Related Documents**:
+
 - [metabase-architecture.md](metabase-architecture.md) - Metabase data model
 - [dashboard-architecture.md](dashboard-architecture.md) - Layout patterns
 - [python-deployment-scripts.md](../deployment-automation/python-deployment-scripts.md) - Deploying YAML specs

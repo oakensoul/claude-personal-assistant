@@ -7,6 +7,7 @@ Complete guide to installing and configuring pytest in Python projects.
 ### Basic Installation
 
 ```bash
+
 # Using pip
 pip install pytest
 
@@ -15,19 +16,23 @@ poetry add --group dev pytest
 
 # Using pipenv
 pipenv install --dev pytest
+
 ```
 
 ### Recommended Plugins
 
 ```bash
+
 # Install commonly used plugins
 pip install pytest-cov pytest-mock pytest-asyncio pytest-xdist
 
 # Or with poetry
 poetry add --group dev pytest-cov pytest-mock pytest-asyncio pytest-xdist
+
 ```
 
 **Plugin Descriptions**:
+
 - `pytest-cov`: Coverage reporting
 - `pytest-mock`: Simplified mocking
 - `pytest-asyncio`: Async test support
@@ -38,6 +43,7 @@ poetry add --group dev pytest-cov pytest-mock pytest-asyncio pytest-xdist
 ### Recommended Directory Layout
 
 ```
+
 project/
 ├── src/
 │   └── mypackage/
@@ -52,16 +58,19 @@ project/
 ├── pytest.ini               # pytest configuration
 ├── pyproject.toml           # Modern Python projects
 └── setup.py                 # Legacy Python projects
+
 ```
 
 ### Test File Naming
 
 pytest discovers tests using these patterns:
+
 - Test files: `test_*.py` or `*_test.py`
 - Test functions: `test_*`
 - Test classes: `Test*`
 
 **Examples**:
+
 - ✅ `test_user_auth.py`, `test_api.py`
 - ✅ `def test_login()`, `def test_password_reset()`
 - ✅ `class TestUserModel`, `class TestAuthentication`
@@ -75,6 +84,7 @@ pytest discovers tests using these patterns:
 Create `pytest.ini` in project root:
 
 ```ini
+
 [pytest]
 # Minimum version
 minversion = 7.0
@@ -89,6 +99,7 @@ testpaths = tests
 
 # Command line options (always applied)
 addopts =
+
     --strict-markers
     --verbose
     --color=yes
@@ -106,11 +117,13 @@ markers =
 
 # Ignore paths
 norecursedirs = .git .tox dist build *.egg
+
 ```
 
 ### pyproject.toml (Modern Alternative)
 
 ```toml
+
 [tool.pytest.ini_options]
 minversion = "7.0"
 testpaths = ["tests"]
@@ -134,6 +147,7 @@ markers = [
     "unit: unit tests",
     "smoke: smoke tests",
 ]
+
 ```
 
 ## Running Tests
@@ -141,6 +155,7 @@ markers = [
 ### Basic Commands
 
 ```bash
+
 # Run all tests
 pytest
 
@@ -171,11 +186,13 @@ pytest --lf
 
 # Run failed tests first, then others
 pytest --ff
+
 ```
 
 ### Parallel Execution
 
 ```bash
+
 # Install pytest-xdist
 pip install pytest-xdist
 
@@ -184,11 +201,13 @@ pytest -n auto
 
 # Run tests on 4 workers
 pytest -n 4
+
 ```
 
 ### Coverage
 
 ```bash
+
 # Run with coverage
 pytest --cov=src
 
@@ -197,11 +216,13 @@ pytest --cov=src --cov-report=html
 
 # Open coverage report
 open htmlcov/index.html  # macOS
+
 ```
 
 ## Example Test File
 
 ```python
+
 # tests/test_calculator.py
 """Tests for calculator module."""
 import pytest
@@ -247,6 +268,7 @@ class TestCalculator:
         """Test complex calculation (marked as slow)."""
         # ... slow test ...
         pass
+
 ```
 
 ## conftest.py
@@ -254,6 +276,7 @@ class TestCalculator:
 Create `tests/conftest.py` for shared fixtures:
 
 ```python
+
 """Shared pytest fixtures."""
 import pytest
 from database import Database
@@ -282,6 +305,7 @@ def mock_env(monkeypatch):
     """Set up mock environment variables."""
     monkeypatch.setenv("API_KEY", "test-key")
     monkeypatch.setenv("DEBUG", "true")
+
 ```
 
 ## Best Practices
@@ -317,6 +341,7 @@ def mock_env(monkeypatch):
 **Problem**: pytest doesn't find your tests
 
 **Solutions**:
+
 - Check file naming: `test_*.py` or `*_test.py`
 - Check function naming: `test_*`
 - Verify `testpaths` in configuration
@@ -327,6 +352,7 @@ def mock_env(monkeypatch):
 **Problem**: `ModuleNotFoundError` when running tests
 
 **Solutions**:
+
 - Install package in editable mode: `pip install -e .`
 - Check `PYTHONPATH` includes source directory
 - Use `src/` layout (recommended)
@@ -337,6 +363,7 @@ def mock_env(monkeypatch):
 **Problem**: `fixture 'db' not found`
 
 **Solutions**:
+
 - Check fixture is defined in `conftest.py` or same file
 - Verify fixture name matches exactly
 - Check `conftest.py` is in correct directory

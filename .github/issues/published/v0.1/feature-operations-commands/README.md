@@ -1,4 +1,5 @@
 ---
+
 slug: operations-commands
 title: "Create /incident, /debug, /security commands - operations management"
 type: feature
@@ -8,6 +9,7 @@ estimated_effort: 8
 status: draft
 created: 2025-10-10
 depends_on: ["versioning-system"]
+
 ---
 
 # Create /incident, /debug, /security commands - operations management
@@ -15,6 +17,7 @@ depends_on: ["versioning-system"]
 ## Problem
 
 Current operations commands exist but need consolidation and enhancement:
+
 - `incident` - exists but needs subcommands
 - `debug` - exists but needs subcommands
 - Multiple security commands scattered: `security-audit`, `compliance-check`, `pii-scan`
@@ -28,20 +31,24 @@ Create three consolidated operations commands with subcommands.
 ### `/incident` Command
 
 ```bash
+
 /incident start [type]          # Start incident (ops, security, data, defect)
 /incident status                # Show active incidents
 /incident update [notes]        # Update incident status
 /incident resolve               # Resolve incident
 /incident postmortem            # Generate postmortem
+
 ```
 
 **Incident Types:**
+
 - `ops` - Operational incidents (outages, performance)
 - `security` - Security incidents (breaches, vulnerabilities)
 - `data` - Data quality/pipeline incidents
 - `defect` - Critical bug/defect incidents
 
 **Features:**
+
 - Severity levels (P0, P1, P2, P3)
 - Timeline tracking
 - Automated postmortem generation
@@ -50,20 +57,24 @@ Create three consolidated operations commands with subcommands.
 ### `/debug` Command
 
 ```bash
+
 /debug production               # Debug production issues
 /debug local                    # Debug local development
 /debug data                     # Debug data pipelines (dbt, SQL)
 /debug performance              # Debug performance problems
 /debug test                     # Debug test failures
+
 ```
 
 **Production Debugging:**
+
 - Log analysis
 - Error correlation
 - Service health checks
 - Dependency analysis
 
 **Data Debugging:**
+
 - dbt test failures
 - SQL query problems
 - Data quality issues
@@ -72,14 +83,17 @@ Create three consolidated operations commands with subcommands.
 ### `/security` Command
 
 ```bash
+
 /security audit                 # Full security audit
 /security compliance [framework] # Compliance checks
 /security pii [domain]          # PII scanning
 /security scan                  # Quick security scan
 /security report                # Generate security report
+
 ```
 
 **Frameworks:**
+
 - GDPR
 - HIPAA
 - SOC 2
@@ -87,6 +101,7 @@ Create three consolidated operations commands with subcommands.
 - Custom policies
 
 **Features:**
+
 - Cross-platform security checks
 - Data privacy validation
 - Access control review
@@ -178,6 +193,7 @@ Create three consolidated operations commands with subcommands.
 ## Testing Scenarios
 
 ```bash
+
 # Test incident management
 /incident start ops --severity=P0 --title="Database down"
 /incident status
@@ -194,6 +210,7 @@ Create three consolidated operations commands with subcommands.
 /security audit --scope=full
 /security compliance gdpr
 /security pii --domain=finance
+
 ```
 
 ## Dependencies

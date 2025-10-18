@@ -60,11 +60,13 @@ behavior:
 AIDA uses a two-phase variable substitution system:
 
 **Install-time Variables** (`{{VAR}}`):
+
 - `{{AIDA_HOME}}` - AIDA installation directory (~/.aida/)
 - `{{CLAUDE_CONFIG_DIR}}` - Claude config directory (~/.claude/)
 - `{{HOME}}` - User's home directory
 
 **Runtime Variables** (`${VAR}`):
+
 - `${PROJECT_ROOT}` - Current project directory
 - `${GIT_ROOT}` - Git repository root
 - `$(date)` - Dynamic bash expressions
@@ -72,17 +74,20 @@ AIDA uses a two-phase variable substitution system:
 ### Configuration File Locations
 
 **Framework Directories**:
+
 - `~/.aida/` - AIDA framework installation
 - `~/.aida/personalities/` - Personality definitions
 - `~/.aida/templates/` - Template files
 
 **User Configuration**:
+
 - `~/.claude/` - User Claude configuration
 - `~/.claude/agents/` - User-level agents
 - `~/.claude/commands/` - User-level commands
 - `~/CLAUDE.md` - Main entry point
 
 **Project Configuration**:
+
 - `.claude/agents/` - Project-specific agents
 - `.claude/agents-global/` - Project context for global agents
 - `.claude/commands/` - Project-specific commands
@@ -91,6 +96,7 @@ AIDA uses a two-phase variable substitution system:
 ### Validation Requirements
 
 **Personality YAML Validation**:
+
 1. Required fields: name, display_name, version, description
 2. Valid tone values: professional, casual, friendly, formal
 3. Valid formality values: formal, neutral, casual
@@ -98,12 +104,14 @@ AIDA uses a two-phase variable substitution system:
 5. Boolean fields must be true/false
 
 **Template Variable Validation**:
+
 1. Install-time variables must use `{{VAR}}` syntax
 2. Runtime variables must use `${VAR}` syntax
 3. No mixed syntax (no `{{${VAR}}}`)
 4. All variables must be documented in template README
 
 **Configuration Schema**:
+
 - All YAML files must pass `yamllint --strict`
 - No document-start markers in docker-compose.yml
 - 2-space indentation required
@@ -112,13 +120,15 @@ AIDA uses a two-phase variable substitution system:
 ### Error Message Standards
 
 AIDA error messages must be:
+
 1. **Actionable**: Tell user exactly what to do
 2. **Contextual**: Include relevant file paths and values
 3. **Friendly**: Match personality tone
 4. **Informative**: Explain why the error occurred
 
 **Example**:
-```
+
+```text
 Error: Invalid personality configuration
 
 File: ~/.aida/personalities/custom.yml
@@ -170,6 +180,7 @@ AIDA uses different formats for different purposes:
 ### Environment-Specific Configurations
 
 AIDA supports:
+
 - Development mode (--dev flag with symlinks)
 - Normal mode (copied files)
 - Project-specific overrides

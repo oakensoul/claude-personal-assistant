@@ -1,7 +1,9 @@
 ---
+
 title: "Data Engineer - Knowledge Base"
 description: "Generic data engineering patterns for orchestration, dbt, ingestion, and data quality"
 last_updated: "2025-10-15"
+
 ---
 
 # Data Engineer Knowledge Base
@@ -12,6 +14,7 @@ This knowledge base contains generic data engineering patterns and best practice
 
 ### Core Concepts
 Foundational data engineering knowledge:
+
 - **Orchestration Principles**: DAG design, scheduling strategies, dependency management
 - **dbt Framework**: Core concepts, commands, materializations, testing, Jinja
 - **Incremental Processing**: Merge strategies, partition-based processing, idempotency
@@ -20,6 +23,7 @@ Foundational data engineering knowledge:
 
 ### Patterns
 Reusable patterns for common data engineering scenarios:
+
 - **Ingestion Patterns**: CDC, batch loading, stream processing, API polling, file-based
 - **Airbyte Integration**: Connector patterns, normalization, webhook orchestration
 - **Fivetran Integration**: Sync patterns, soft deletes, schema drift handling
@@ -30,6 +34,7 @@ Reusable patterns for common data engineering scenarios:
 
 ### Decisions
 Decision frameworks for data engineering:
+
 - **Materialization Strategy Selection**: When to use table/view/incremental/ephemeral
 - **Build Schedule Optimization**: Frequency tradeoffs, resource planning
 - **Tool Selection Matrix**: Airflow vs Prefect vs GitHub Actions vs Dagster
@@ -37,6 +42,7 @@ Decision frameworks for data engineering:
 
 ### Reference
 Quick reference materials:
+
 - **dbt Commands Reference**: Selection syntax, target environments, common patterns
 - **Orchestrator Command Patterns**: Airflow CLI, Prefect CLI, common troubleshooting
 - **Data Engineering Anti-Patterns**: What to avoid in pipeline design
@@ -53,6 +59,7 @@ Project-specific implementation details (pipeline schedules, source systems, dbt
 As the owner of the "T" (Transform) in ELT, this agent includes comprehensive dbt framework knowledge:
 
 ### dbt Core Concepts
+
 - Commands: run, test, build, compile, docs generate, source freshness
 - Materializations: table, view, incremental, ephemeral
 - Testing: schema tests, data tests, singular tests
@@ -62,6 +69,7 @@ As the owner of the "T" (Transform) in ELT, this agent includes comprehensive db
 - Seeds & Snapshots: Static data loading, SCD tracking
 
 ### dbt Project Patterns
+
 - Layering: staging → intermediate → core → marts
 - Naming conventions: stg_, int_, fct_, dim_, rpt_
 - Testing strategies: Coverage by layer, test pyramid
@@ -81,6 +89,7 @@ As the owner of the "T" (Transform) in ELT, this agent includes comprehensive db
 ## Contributing
 
 When adding new knowledge:
+
 1. Ensure it's **generic** (applies to ANY data project)
 2. Document dbt patterns under relevant sections
 3. Document orchestration patterns separately from tool-specific implementation

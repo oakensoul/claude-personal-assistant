@@ -23,10 +23,10 @@ last_updated: "2025-10-07"
    ```bash
    # Revoke Snowflake user access immediately
    ALTER USER <compromised_user> SET DISABLED = TRUE;
-   
+
    # Disable API keys
    aws secretsmanager update-secret --secret-id <secret-name> --secret-string '{"revoked": true}'
-   
+
    # Block IP address in network policy
    ALTER NETWORK POLICY PRODUCTION_ACCESS SET BLOCKED_IP_LIST = ('x.x.x.x');
    ```
@@ -49,7 +49,7 @@ last_updated: "2025-10-07"
    ```bash
    # Emergency KMS key rotation
    aws kms create-key --description "Emergency rotation 2025-10-07"
-   
+
    # Update Snowflake to use new key
    ALTER ACCOUNT SET AWS_KMS_KEY_ARN = 'arn:aws:kms:...new-key...';
    ```

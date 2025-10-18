@@ -241,15 +241,15 @@ Task:
   subagent_type: "security-engineer"
   prompt: |
     Analyze the following table for PII:
-    
+
     Table: staging.stg_new_users
     Columns: [user_id, email, phone_number, first_name, last_name, created_at, ip_address]
-    
+
     Apply PII detection methods:
     1. Pattern-based detection (regex matching)
     2. Column name heuristics
     3. Sample data analysis (first 1000 rows)
-    
+
     Return PII confidence scores for each column.
 ```
 
@@ -285,26 +285,26 @@ LIMIT 1000;
 def classify_column(pii_type, confidence_score):
     if pii_type is None:
         return "Level 1 - Public Data"
-    
+
     # Regulated PII (GDPR/CCPA protected)
     regulated_pii_types = [
-        'email', 'phone', 'ssn', 'credit_card', 
+        'email', 'phone', 'ssn', 'credit_card',
         'passport', 'drivers_license', 'precise_geolocation',
         'biometric', 'health_info'
     ]
-    
+
     if pii_type in regulated_pii_types and confidence_score > 80:
         return "Level 4 - Regulated PII"
-    
+
     # Sensitive PII (not regulated but requires access controls)
     sensitive_pii_types = [
         'ip_address', 'user_agent', 'wallet_address',
         'first_name', 'last_name', 'city_geolocation'
     ]
-    
+
     if pii_type in sensitive_pii_types and confidence_score > 70:
         return "Level 3 - Sensitive Data"
-    
+
     # Internal data (business data, no PII)
     return "Level 2 - Internal Data"
 ```
@@ -312,13 +312,13 @@ def classify_column(pii_type, confidence_score):
 **Snowflake Tagging**:
 ```sql
 -- Apply classification tag to column
-ALTER TABLE staging.stg_new_users 
-MODIFY COLUMN email 
+ALTER TABLE staging.stg_new_users
+MODIFY COLUMN email
 SET TAG classification = 'regulated_pii';
 
 -- Apply PII type tag
-ALTER TABLE staging.stg_new_users 
-MODIFY COLUMN email 
+ALTER TABLE staging.stg_new_users
+MODIFY COLUMN email
 SET TAG pii_type = 'email_address';
 ```
 
@@ -330,15 +330,15 @@ SET TAG pii_type = 'email_address';
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_email_partial AS (val STRING)
 RETURNS STRING ->
-  CASE 
+  CASE
     WHEN CURRENT_ROLE() IN ('FINANCE_ADMIN', 'DBA', 'COMPLIANCE_OFFICER') THEN val
     ELSE REGEXP_REPLACE(val, '(.).*@', '\\1***@')
   END
 COMMENT = 'Partial email masking: u***@example.com';
 
 -- Apply to column
-ALTER TABLE staging.stg_new_users 
-MODIFY COLUMN email 
+ALTER TABLE staging.stg_new_users
+MODIFY COLUMN email
 SET MASKING POLICY mask_email_partial;
 ```
 
@@ -346,15 +346,15 @@ SET MASKING POLICY mask_email_partial;
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_phone_full AS (val STRING)
 RETURNS STRING ->
-  CASE 
+  CASE
     WHEN CURRENT_ROLE() IN ('FINANCE_ADMIN', 'DBA', 'COMPLIANCE_OFFICER') THEN val
     ELSE 'XXX-XXX-XXXX'
   END
 COMMENT = 'Full phone number masking';
 
 -- Apply to column
-ALTER TABLE staging.stg_new_users 
-MODIFY COLUMN phone_number 
+ALTER TABLE staging.stg_new_users
+MODIFY COLUMN phone_number
 SET MASKING POLICY mask_phone_full;
 ```
 
@@ -362,7 +362,7 @@ SET MASKING POLICY mask_phone_full;
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_ssn_full AS (val STRING)
 RETURNS STRING ->
-  CASE 
+  CASE
     WHEN CURRENT_ROLE() IN ('FINANCE_ADMIN', 'DBA', 'COMPLIANCE_OFFICER', 'LEGAL') THEN val
     ELSE 'XXX-XX-XXXX'
   END
@@ -373,7 +373,7 @@ COMMENT = 'Full SSN masking for GDPR/CCPA compliance';
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_credit_card_partial AS (val STRING)
 RETURNS STRING ->
-  CASE 
+  CASE
     WHEN CURRENT_ROLE() IN ('FINANCE_ADMIN', 'DBA', 'PAYMENT_PROCESSOR') THEN val
     ELSE 'XXXX-XXXX-XXXX-' || RIGHT(val, 4)
   END
@@ -384,7 +384,7 @@ COMMENT = 'Credit card masking showing last 4 digits';
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_ip_partial AS (val STRING)
 RETURNS STRING ->
-  CASE 
+  CASE
     WHEN CURRENT_ROLE() IN ('SECURITY_ADMIN', 'DBA', 'FRAUD_TEAM') THEN val
     ELSE REGEXP_REPLACE(val, '([0-9]+\\.[0-9]+\\.).*', '\\1XXX.XXX')
   END
@@ -395,7 +395,7 @@ COMMENT = 'IP address masking: 192.168.XXX.XXX';
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_wallet_partial AS (val STRING)
 RETURNS STRING ->
-  CASE 
+  CASE
     WHEN CURRENT_ROLE() IN ('FINANCE_ADMIN', 'DBA', 'FRAUD_TEAM') THEN val
     ELSE LEFT(val, 6) || '***' || RIGHT(val, 4)
   END
@@ -575,14 +575,14 @@ PII_Scan_Report:
   Timestamp: "2025-10-07T14:32:15Z"
   Operator: "rob@betterpool.com"
   Target: "finance_staging.stg_wallet_transactions"
-  
+
   Table_Summary:
     Total_Columns: 23
     PII_Detected: 5
     High_Confidence_PII: 4 (>80%)
     Medium_Confidence_PII: 1 (50-80%)
     Classification_Level: "Level 4 - Regulated PII"
-  
+
   PII_Columns:
     - Column: user_email
       Data_Type: VARCHAR(255)
@@ -597,7 +597,7 @@ PII_Scan_Report:
       Recommended_Masking: "Partial (u***@example.com)"
       Masking_Policy: "mask_email_partial"
       Unmasked_Roles: [FINANCE_ADMIN, DBA, COMPLIANCE_OFFICER]
-    
+
     - Column: phone_number
       Data_Type: VARCHAR(20)
       PII_Type: Phone Number
@@ -611,7 +611,7 @@ PII_Scan_Report:
       Recommended_Masking: "Full (XXX-XXX-XXXX)"
       Masking_Policy: "mask_phone_full"
       Unmasked_Roles: [FINANCE_ADMIN, DBA, COMPLIANCE_OFFICER]
-    
+
     - Column: wallet_address
       Data_Type: VARCHAR(42)
       PII_Type: Cryptocurrency Wallet (Ethereum)
@@ -625,7 +625,7 @@ PII_Scan_Report:
       Recommended_Masking: "Partial (0x742d***bEb)"
       Masking_Policy: "mask_wallet_partial"
       Unmasked_Roles: [FINANCE_ADMIN, DBA, FRAUD_TEAM]
-    
+
     - Column: ip_address
       Data_Type: VARCHAR(45)
       PII_Type: IP Address (IPv4/IPv6)
@@ -639,7 +639,7 @@ PII_Scan_Report:
       Recommended_Masking: "Partial (192.168.XXX.XXX)"
       Masking_Policy: "mask_ip_partial"
       Unmasked_Roles: [SECURITY_ADMIN, DBA, FRAUD_TEAM]
-    
+
     - Column: transaction_note
       Data_Type: TEXT
       PII_Type: Possible Free-Text PII
@@ -653,156 +653,156 @@ PII_Scan_Report:
       Recommended_Masking: "Manual review + redaction policy"
       Masking_Policy: "MANUAL_REVIEW_REQUIRED"
       Action_Required: "Review free-text field for PII leakage, consider NLP-based redaction"
-  
+
   Masking_Policies_Generated:
     - Policy_Name: mask_email_partial
       SQL: |
         CREATE OR REPLACE MASKING POLICY mask_email_partial AS (val STRING)
         RETURNS STRING ->
-          CASE 
+          CASE
             WHEN CURRENT_ROLE() IN ('FINANCE_ADMIN', 'DBA', 'COMPLIANCE_OFFICER') THEN val
             ELSE REGEXP_REPLACE(val, '(.).*@', '\\1***@')
           END
         COMMENT = 'Partial email masking: u***@example.com';
-      
+
       Apply_To:
         - "finance_staging.stg_wallet_transactions.user_email"
-      
+
       Apply_SQL: |
-        ALTER TABLE finance_staging.stg_wallet_transactions 
-        MODIFY COLUMN user_email 
+        ALTER TABLE finance_staging.stg_wallet_transactions
+        MODIFY COLUMN user_email
         SET MASKING POLICY mask_email_partial;
-    
+
     - Policy_Name: mask_phone_full
       SQL: |
         CREATE OR REPLACE MASKING POLICY mask_phone_full AS (val STRING)
         RETURNS STRING ->
-          CASE 
+          CASE
             WHEN CURRENT_ROLE() IN ('FINANCE_ADMIN', 'DBA', 'COMPLIANCE_OFFICER') THEN val
             ELSE 'XXX-XXX-XXXX'
           END
         COMMENT = 'Full phone number masking';
-      
+
       Apply_To:
         - "finance_staging.stg_wallet_transactions.phone_number"
-      
+
       Apply_SQL: |
-        ALTER TABLE finance_staging.stg_wallet_transactions 
-        MODIFY COLUMN phone_number 
+        ALTER TABLE finance_staging.stg_wallet_transactions
+        MODIFY COLUMN phone_number
         SET MASKING POLICY mask_phone_full;
-    
+
     - Policy_Name: mask_wallet_partial
       SQL: |
         CREATE OR REPLACE MASKING POLICY mask_wallet_partial AS (val STRING)
         RETURNS STRING ->
-          CASE 
+          CASE
             WHEN CURRENT_ROLE() IN ('FINANCE_ADMIN', 'DBA', 'FRAUD_TEAM') THEN val
             ELSE LEFT(val, 6) || '***' || RIGHT(val, 4)
           END
         COMMENT = 'Crypto wallet masking: 0x742d***bEb';
-      
+
       Apply_To:
         - "finance_staging.stg_wallet_transactions.wallet_address"
-      
+
       Apply_SQL: |
-        ALTER TABLE finance_staging.stg_wallet_transactions 
-        MODIFY COLUMN wallet_address 
+        ALTER TABLE finance_staging.stg_wallet_transactions
+        MODIFY COLUMN wallet_address
         SET MASKING POLICY mask_wallet_partial;
-  
+
   Compliance_Validation:
     GDPR_Compliance:
       Article_32_Encryption:
         Status: ✅ PASS
         Evidence: "Snowflake AES-256 encryption at-rest enabled"
-      
+
       Article_15_Access_Request:
         Status: ⚠️  ACTION REQUIRED
         Action: "Implement DSAR automation to export user PII by user_id"
         Priority: HIGH
         Deadline: "2025-11-07 (30 days)"
-      
+
       Article_17_Erasure:
         Status: ⚠️  ACTION REQUIRED
         Action: "Implement right-to-be-forgotten deletion workflow with audit trail"
         Priority: HIGH
         Deadline: "2025-11-07 (30 days)"
-      
+
       Article_30_Records:
         Status: ✅ PASS
         Evidence: "PII inventory catalog updated with scan results"
-      
+
       Article_33_Breach_Notification:
         Status: ⚠️  REVIEW
         Action: "Document PII breach notification workflow (72-hour requirement)"
         Priority: MEDIUM
         Deadline: "2025-12-07 (60 days)"
-    
+
     CCPA_Compliance:
       Section_1798_100_Disclosure:
         Status: ✅ PASS
         Evidence: "Privacy notice discloses PII collection (email, phone, wallet transactions)"
-      
+
       Section_1798_110_Access:
         Status: ⚠️  ACTION REQUIRED
         Action: "Same as GDPR Article 15 - DSAR automation"
         Priority: HIGH
         Deadline: "2025-11-07 (30 days)"
-      
+
       Section_1798_105_Deletion:
         Status: ⚠️  ACTION REQUIRED
         Action: "Same as GDPR Article 17 - deletion workflow"
         Priority: HIGH
         Deadline: "2025-11-07 (30 days)"
-      
+
       Section_1798_120_Opt_Out:
         Status: ✅ PASS (N/A)
         Evidence: "No sale of personal information (sports betting platform)"
-    
+
     SOC2_Compliance:
       CC6_7_Data_Classification:
         Status: ✅ PASS
         Evidence: "4-level classification taxonomy applied to all PII columns"
-      
+
       CC6_1_Logical_Access:
         Status: ✅ PASS
         Evidence: "Role-based masking policies enforce least privilege access"
-      
+
       CC7_2_System_Monitoring:
         Status: ✅ PASS
         Evidence: "Snowflake QUERY_HISTORY audit log tracks PII access"
-  
+
   Compliance_Summary:
     Total_Checks: 12
     Passed: 7
     Action_Required: 4
     Under_Review: 1
     Overall_Status: ⚠️  COMPLIANT WITH ACTION ITEMS
-  
+
   Action_Items:
     - Priority: HIGH
       Action: "Implement DSAR automation (GDPR Art. 15, CCPA 1798.110)"
       Owner: "Data Governance Team"
       Deadline: "2025-11-07"
       Ticket: "Create JIRA ticket for DSAR workflow implementation"
-    
+
     - Priority: HIGH
       Action: "Implement right-to-be-forgotten deletion workflow (GDPR Art. 17, CCPA 1798.105)"
       Owner: "Data Governance Team"
       Deadline: "2025-11-07"
       Ticket: "Create JIRA ticket for deletion workflow implementation"
-    
+
     - Priority: MEDIUM
       Action: "Document PII breach notification workflow (GDPR Art. 33)"
       Owner: "Security Team"
       Deadline: "2025-12-07"
       Ticket: "Create JIRA ticket for breach notification documentation"
-    
+
     - Priority: LOW
       Action: "Review free-text field 'transaction_note' for PII leakage"
       Owner: "Data Engineering Team"
       Deadline: "2025-11-07"
       Ticket: "Manual review + NLP redaction policy evaluation"
-  
+
   Next_Steps:
     1. "Review masking policies with Legal and Compliance teams"
     2. "Apply masking policies to production (SQL provided above)"
@@ -810,12 +810,12 @@ PII_Scan_Report:
     4. "Update data retention policy for Level 4 Regulated PII"
     5. "Schedule PII scan review in 30 days (2025-11-07)"
     6. "Add to privacy notice: Cryptocurrency wallet addresses collected"
-  
+
   Documentation_Updated:
     - "PII Inventory Catalog: finance_staging.stg_wallet_transactions entry created"
     - "Audit Trail: PII scan log entry added"
     - "Compliance Dashboard: Action items tracked"
-  
+
   Scan_Duration: "3.2 seconds"
   Rows_Sampled: 1000
   Next_Review_Date: "2025-11-07"
@@ -868,7 +868,7 @@ Summary:
   "4 PII columns detected in staging.stg_new_user_signups"
   "3 masking policies generated (SQL provided)"
   "2 HIGH priority action items for GDPR/CCPA compliance"
-  
+
 Would you like me to:
 1. Generate JIRA tickets for compliance action items?
 2. Apply masking policies to production?
@@ -919,13 +919,13 @@ Summary:
   "47 PII columns detected across 12 finance domain tables"
   "15 masking policies generated (8 unique, 7 reusable)"
   "2 HIGH priority compliance action items (DSAR, deletion)"
-  
+
 Bulk_Application_Plan:
   "Apply masking policies in phases:"
   Phase_1: "Staging tables (3 tables, 12 PII columns)"
   Phase_2: "Core tables (5 tables, 23 PII columns)"
   Phase_3: "Marts (4 tables, 12 PII columns)"
-  
+
   Estimated_Time: "15 minutes (policy creation + application)"
   Rollback_Plan: "DROP MASKING POLICY commands provided"
 
@@ -982,7 +982,7 @@ Summary:
   "⚠️  UNEXPECTED PII DETECTED IN NEW AIRBYTE SOURCE"
   "3 columns contain undocumented PII in free-text/JSON fields"
   "Compliance risk: Privacy notice does not disclose this PII collection"
-  
+
 Recommended_Actions:
   1. "URGENT: Apply masking policies to unexpected PII columns"
   2. "Update privacy notice with new PII categories"

@@ -1,9 +1,11 @@
 ---
+
 title: "Data Governance Agent Knowledge Base"
 description: "Comprehensive knowledge catalog for data compliance, privacy, and governance"
 agent: "data-governance-agent"
 knowledge_count: 14
 last_updated: "2025-10-07"
+
 ---
 
 # Data Governance Agent Knowledge Base
@@ -15,6 +17,7 @@ This knowledge base provides comprehensive guidance on data governance, complian
 Foundational knowledge on compliance frameworks, data classification, audit architecture, and privacy engineering.
 
 ### [compliance-frameworks.md](core-concepts/compliance-frameworks.md)
+
 **GDPR, CCPA, SOC2, and HIPAA requirements for data governance**
 
 - GDPR principles and data subject rights (access, erasure, portability)
@@ -24,12 +27,14 @@ Foundational knowledge on compliance frameworks, data classification, audit arch
 - Compliance decision matrix for Splash Sports
 
 **Key Topics**:
+
 - GDPR Article 30 (Records of Processing Activities)
 - DPIA (Data Protection Impact Assessment) requirements
 - Data breach notification (72-hour window)
 - Cross-framework synergies and implementation priorities
 
 ### [data-classification.md](core-concepts/data-classification.md)
+
 **Data sensitivity levels, PII types, and classification tagging strategy**
 
 - Four-level sensitivity framework (Public, Internal, Confidential, Restricted)
@@ -39,12 +44,14 @@ Foundational knowledge on compliance frameworks, data classification, audit arch
 - Snowflake object tagging for compliance tracking
 
 **Key Topics**:
+
 - K-anonymity for quasi-identifiers (k ≥ 5)
 - Automated PII detection (pattern-based, catalog-based, ML-based)
 - Data masking decision tree
 - Classification review workflow
 
 ### [audit-trail-architecture.md](core-concepts/audit-trail-architecture.md)
+
 **Comprehensive logging frameworks, compliance reporting, and access tracking**
 
 - The 5 W's of audit logging (Who, What, When, Where, Why)
@@ -54,12 +61,14 @@ Foundational knowledge on compliance frameworks, data classification, audit arch
 - Real-time monitoring and alerting (unusual PII access, failed logins, privilege escalation)
 
 **Key Topics**:
+
 - Column-level access tracking via ACCESS_HISTORY
 - dbt models for audit log staging (`stg_snowflake__query_history`)
 - Data subject request audit trail (GDPR erasure example)
 - Audit trail best practices (tamper-proof storage, SIEM integration)
 
 ### [privacy-engineering.md](core-concepts/privacy-engineering.md)
+
 **Privacy Impact Assessments, privacy-by-design, and proactive privacy engineering**
 
 - Privacy by Design principles (Proactive, Default Privacy, Embedded)
@@ -69,6 +78,7 @@ Foundational knowledge on compliance frameworks, data classification, audit arch
 - Privacy engineering checklist (collection, storage, processing, sharing, retention)
 
 **Key Topics**:
+
 - GDPR DPIA (Data Protection Impact Assessment) requirements
 - dbt macros for privacy (`pseudonymize_user_id`, `enforce_k_anonymity`)
 - Differential privacy for aggregates
@@ -81,6 +91,7 @@ Foundational knowledge on compliance frameworks, data classification, audit arch
 Reusable implementation patterns for PII detection, data masking, retention automation, and compliance workflows.
 
 ### [pii-detection-patterns.md](patterns/pii-detection-patterns.md)
+
 **Automated and manual methods for discovering PII in data warehouse**
 
 - Multi-layered detection strategy (catalog, pattern, ML, manual review)
@@ -91,6 +102,7 @@ Reusable implementation patterns for PII detection, data masking, retention auto
 - Data profiling for quasi-identifier re-identification risk
 
 **Key Topics**:
+
 - Python script for PII scanning (`scan_pii.py`)
 - CI/CD integration (GitHub Actions PII scan workflow)
 - Snowflake UDF for ML-based PII detection
@@ -98,6 +110,7 @@ Reusable implementation patterns for PII detection, data masking, retention auto
 - Pre-commit hook for PII validation
 
 ### [data-masking-strategies.md](patterns/data-masking-strategies.md)
+
 **Tokenization, anonymization, pseudonymization, and Snowflake DDM implementation**
 
 - Masking techniques comparison (static, dynamic, tokenization, pseudonymization, anonymization)
@@ -107,12 +120,14 @@ Reusable implementation patterns for PII detection, data masking, retention auto
 - Anonymization techniques (generalization, data suppression, k-anonymity)
 
 **Key Topics**:
+
 - DDM deployment pattern (create policies, apply to columns, validate)
 - dbt macro for pseudonymization (`pseudonymize_user_id`)
 - Privacy-preserving joins (aggregate before join, anonymized keys)
 - Differential privacy for published aggregates
 
 ### [retention-policy-implementation.md](patterns/retention-policy-implementation.md)
+
 **Automated data lifecycle management and retention enforcement**
 
 - dbt incremental models with retention filters
@@ -121,11 +136,13 @@ Reusable implementation patterns for PII detection, data masking, retention auto
 - Legal hold mechanism for litigation/investigations
 
 **Key Topics**:
+
 - Retention-aware dbt models (`retention:90_days` tag)
 - Automated purge tasks (weekly/monthly deletion workflows)
 - Retention decision matrix (active, archive, deletion)
 
 ### [compliance-automation.md](patterns/compliance-automation.md)
+
 **Policy-as-code and automated governance workflows**
 
 - dbt tests for PII tagging enforcement
@@ -134,6 +151,7 @@ Reusable implementation patterns for PII detection, data masking, retention auto
 - Automated compliance reporting dashboards
 
 **Key Topics**:
+
 - Pre-commit hooks for governance validation
 - CI/CD gates for new data sources (PIA completion check)
 - Quarterly access review automation
@@ -146,6 +164,7 @@ Reusable implementation patterns for PII detection, data masking, retention auto
 Documented governance decisions, classification taxonomy, retention standards, and compliance priorities.
 
 ### [classification-taxonomy.md](decisions/classification-taxonomy.md)
+
 **Chosen classification framework and rationale**
 
 - Four-level sensitivity framework decision (Public → Internal → Confidential → Restricted)
@@ -155,6 +174,7 @@ Documented governance decisions, classification taxonomy, retention standards, a
 **Rationale**: Aligns with industry standards (NIST, ISO 27001), integrates with dbt tagging strategy (DA-257)
 
 ### [retention-standards.md](decisions/retention-standards.md)
+
 **Default retention periods by data type**
 
 - Financial transactions: 7 years (IRS, SOX compliance)
@@ -166,6 +186,7 @@ Documented governance decisions, classification taxonomy, retention standards, a
 **Decision**: Automated deletion with manual override capability (reduces compliance risk, scales better)
 
 ### [compliance-priorities.md](decisions/compliance-priorities.md)
+
 **Implementation roadmap for regulatory compliance**
 
 - **Phase 1 (Q1 2025)**: GDPR & CCPA baseline (CRITICAL)
@@ -184,6 +205,7 @@ Documented governance decisions, classification taxonomy, retention standards, a
 Quick reference materials including checklists, field catalogs, and schema documentation.
 
 ### [gdpr-compliance-checklist.md](reference/gdpr-compliance-checklist.md)
+
 **Actionable checklist for GDPR compliance in data warehouse**
 
 - Legal basis for processing documentation
@@ -194,6 +216,7 @@ Quick reference materials including checklists, field catalogs, and schema docum
 - Records of Processing Activities (Article 30 register)
 
 ### [pii-field-catalog.md](reference/pii-field-catalog.md)
+
 **Comprehensive inventory of PII fields across all data sources**
 
 - `splash_production.users`: email, phone, first_name, last_name, birthdate, zip_code, ip_address
@@ -202,6 +225,7 @@ Quick reference materials including checklists, field catalogs, and schema docum
 - Masking policy assignments for each PII column
 
 ### [audit-log-schema.md](reference/audit-log-schema.md)
+
 **Database schemas for audit tables and compliance reporting**
 
 - `prod.audit.fct_data_access`: Query and access tracking fact table
@@ -216,27 +240,32 @@ Quick reference materials including checklists, field catalogs, and schema docum
 ### When to Reference Each Category
 
 **Starting a New Data Source Integration?**
+
 1. Read `core-concepts/privacy-engineering.md` for PIA process
 2. Read `patterns/pii-detection-patterns.md` for automated scanning
 3. Read `reference/pii-field-catalog.md` for known PII fields
 4. Update catalog with new PII fields discovered
 
 **Implementing Data Masking?**
+
 1. Read `core-concepts/data-classification.md` for sensitivity levels
 2. Read `patterns/data-masking-strategies.md` for DDM implementation
 3. Reference `reference/pii-field-catalog.md` for columns to mask
 
 **Setting Up Compliance Reporting?**
+
 1. Read `core-concepts/audit-trail-architecture.md` for logging framework
 2. Read `core-concepts/compliance-frameworks.md` for regulatory requirements
 3. Reference `reference/audit-log-schema.md` for report queries
 
 **Defining Retention Policies?**
+
 1. Read `decisions/retention-standards.md` for default periods
 2. Read `patterns/retention-policy-implementation.md` for automation
 3. Coordinate with legal/compliance team for exceptions
 
 **Preparing for Compliance Audit?**
+
 1. Read `reference/gdpr-compliance-checklist.md` for GDPR readiness
 2. Read `core-concepts/compliance-frameworks.md` for framework requirements
 3. Run compliance reports from `reference/audit-log-schema.md`
@@ -246,19 +275,23 @@ Quick reference materials including checklists, field catalogs, and schema docum
 ## Coordination with Other Agents
 
 **With architect**:
+
 - Classification influences dimensional design (SCD Type 2 for audit trails)
 - Conformed dimensions must have consistent PII handling
 - Reference: `core-concepts/data-classification.md`, `patterns/data-masking-strategies.md`
 
 **With security-engineer**:
+
 - Governance policies require security controls (encryption, RBAC)
 - Reference: `core-concepts/compliance-frameworks.md` (SOC2 controls)
 
 **With bi-platform-engineer**:
+
 - BI dashboards must respect DDM policies and RBAC
 - Reference: `patterns/data-masking-strategies.md` (Snowflake DDM)
 
 **With data-pipeline-engineer**:
+
 - Source ingestion must apply classification at entry
 - Reference: `patterns/pii-detection-patterns.md` (automated scanning)
 
@@ -267,19 +300,23 @@ Quick reference materials including checklists, field catalogs, and schema docum
 ## Maintenance and Updates
 
 **Monthly**:
+
 - Review new PII fields from data source changes
 - Update `reference/pii-field-catalog.md`
 
 **Quarterly**:
+
 - Run access reviews from `reference/audit-log-schema.md`
 - Update `decisions/retention-standards.md` if business needs change
 
 **Annually**:
+
 - Review compliance priorities in `decisions/compliance-priorities.md`
 - Update `core-concepts/compliance-frameworks.md` for new regulations
 - Conduct privacy impact assessments for all major processing activities
 
 **Continuous**:
+
 - Monitor `patterns/compliance-automation.md` for CI/CD failures
 - Investigate alerts from `core-concepts/audit-trail-architecture.md`
 

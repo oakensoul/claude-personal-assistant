@@ -17,6 +17,7 @@ Project-specific architectural context and documentation pointers for the AIDA (
 **Detected Type**: Software
 
 **Technology Stack**:
+
 - Shell scripting (Bash)
 - YAML configuration
 - Markdown documentation
@@ -27,6 +28,7 @@ Project-specific architectural context and documentation pointers for the AIDA (
 ## Architecture Patterns in Use
 
 **Documented patterns**:
+
 - [x] Template-based code generation
 - [x] Two-tier architecture (user-level + project-level)
 - [x] Configuration over code
@@ -37,6 +39,7 @@ Project-specific architectural context and documentation pointers for the AIDA (
 - [ ] Layered architecture
 
 **Framework-Specific**:
+
 - Template pattern for agents, commands, and knowledge
 - Two-tier knowledge architecture (user-level + project-level)
 - Configuration-driven agent definitions
@@ -45,7 +48,8 @@ Project-specific architectural context and documentation pointers for the AIDA (
 ## Architecture Documentation
 
 **Recommended Structure**:
-```
+
+```text
 docs/architecture/
 ├── c4-system-context.md      # System context diagram
 ├── c4-container.md            # Container diagram
@@ -60,6 +64,7 @@ docs/architecture/
 ```
 
 **Detected Documentation**:
+
 - docs/architecture/ARCHITECTURE.md
 - docs/architecture/c4-system-context.md
 - docs/architecture/decisions/README.md
@@ -67,6 +72,7 @@ docs/architecture/
 - docs/architecture/dotfiles-integration.md
 
 **TODO**: Create missing architecture documentation:
+
 - [ ] C4 container diagram
 - [ ] C4 component diagram (optional)
 - [x] Architecture Decision Records (ADRs) - started
@@ -75,6 +81,7 @@ docs/architecture/
 - [ ] Security requirements specification
 
 **Note**: ADR-002 exists. Additional ADRs should be created for:
+
 - Shell script framework choice
 - YAML configuration system
 - GNU Stow integration
@@ -83,6 +90,7 @@ docs/architecture/
 ## Integration Points
 
 **External System Integrations**:
+
 - **Claude AI**: Conversational AI engine via Claude Code CLI
 - **Obsidian**: Optional integration for daily notes and project tracking
 - **GNU Stow**: Dotfiles management and installation
@@ -90,6 +98,7 @@ docs/architecture/
 - **Docker**: Cross-platform testing environments
 
 **Integration Architecture**:
+
 - AIDA works standalone (does not require dotfiles)
 - Dotfiles can optionally install AIDA
 - Bidirectional integration possible
@@ -121,7 +130,8 @@ docs/architecture/
 ## Project Structure
 
 **Key Directories**:
-```
+
+```text
 claude-personal-assistant/
 ├── .claude/                    # Project-level agent configs
 │   └── agents-global/         # Two-tier agent project configs
@@ -145,6 +155,7 @@ claude-personal-assistant/
 ```
 
 **Installation Model**:
+
 - Framework installs to `~/.aida/` (system-level)
 - User configuration generates in `~/.claude/` (user-level)
 - Main entry point generated at `~/CLAUDE.md`
@@ -153,17 +164,20 @@ claude-personal-assistant/
 ## Technology Decisions
 
 **Core Framework**:
+
 - **Language**: Bash (macOS/Linux compatibility)
 - **Configuration**: YAML (agents, personalities, commands)
 - **Templating**: Sed-based variable substitution
 - **Version Control**: Git
 
 **Quality Tools**:
+
 - **Testing**: Pre-commit hooks (shellcheck, yamllint, markdownlint)
 - **CI/CD**: GitHub Actions
 - **Validation**: Template variable validation script
 
 **Integrations**:
+
 - **Obsidian**: Daily notes, project tracking, dashboard views
 - **GNU Stow**: Manages dotfiles integration
 - **GitHub**: Issue tracking, PR workflow
@@ -172,12 +186,14 @@ claude-personal-assistant/
 ## Architecture References
 
 **Documentation**:
+
 - Architecture docs: `docs/architecture/`
 - README: `README.md`
 - Project instructions: `CLAUDE.md`
 - Contributing guide: `docs/CONTRIBUTING.md`
 
 **Related Agents**:
+
 - **tech-lead**: Implementation standards and code review
 - **shell-script-specialist**: Shell scripting best practices
 - **configuration-specialist**: YAML configuration design
@@ -187,18 +203,21 @@ claude-personal-assistant/
 ## Cross-Cutting Concerns
 
 **Error Handling**:
+
 - All scripts use `set -euo pipefail`
 - User input validation in all scripts
 - Template variable validation before installation
 - Exit codes for all commands
 
 **Testing Strategy**:
+
 - Pre-commit hooks (static analysis)
 - Docker-based integration tests
 - Manual testing on macOS and Linux
 - Template validation script
 
 **Documentation**:
+
 - Markdown everywhere with frontmatter
 - Inline code comments in shell scripts
 - YAML frontmatter in agents and commands
@@ -208,6 +227,7 @@ claude-personal-assistant/
 ## Version History
 
 **Current Installation**: v1.0.0 (upgraded 2025-10-15)
+
 - Updated to standardized two-tier agent format
 - Enhanced project scanning and context detection
 - Improved architecture documentation references

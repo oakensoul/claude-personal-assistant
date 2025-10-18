@@ -51,6 +51,7 @@ Data classification is the foundation of data governance, enabling appropriate s
 - Logging: Basic access logs
 
 **dbt Tagging**:
+
 ```yaml
 {{ config(
     tags=['sensitivity:public', 'pii:false']
@@ -79,6 +80,7 @@ Data classification is the foundation of data governance, enabling appropriate s
 - Logging: Access logs for audit
 
 **dbt Tagging**:
+
 ```yaml
 {{ config(
     tags=['sensitivity:internal', 'pii:false', 'access:public']
@@ -107,6 +109,7 @@ Data classification is the foundation of data governance, enabling appropriate s
 - Logging: Detailed access logs, quarterly reviews
 
 **dbt Tagging**:
+
 ```yaml
 {{ config(
     tags=['sensitivity:confidential', 'business:finance', 'access:private']
@@ -138,6 +141,7 @@ Data classification is the foundation of data governance, enabling appropriate s
 - Logging: Comprehensive audit trail, real-time alerts
 
 **dbt Tagging**:
+
 ```yaml
 {{ config(
     tags=[
@@ -190,6 +194,7 @@ Data classification is the foundation of data governance, enabling appropriate s
 **K-Anonymity**: Ensure at least K individuals share same quasi-identifier combination (typically K ≥ 5).
 
 **Example**:
+
 ```sql
 -- Quasi-identifier generalization
 select
@@ -226,6 +231,7 @@ from dim_user;
 - **Masking**: Show only partial data (email: j***@example.com)
 
 **Snowflake DDM Example**:
+
 ```sql
 -- Masking policy for email
 create or replace masking policy email_mask as (val string) returns string ->
@@ -260,6 +266,7 @@ alter table dim_user modify column email set masking policy email_mask;
 - **Access logging**: Full audit trail, real-time monitoring
 
 **PCI-DSS Compliance for Payment Data**:
+
 ```sql
 -- NEVER store full credit card numbers in data warehouse
 -- Use tokenized references from payment processor
@@ -320,6 +327,7 @@ from fct_wallet_deposits
 ### dbt Model Tags
 
 **Required Tags for PII Models**:
+
 ```yaml
 {{ config(
     tags=[
@@ -402,6 +410,7 @@ having count(*) >= 5  -- K-anonymity (k=5)
 ### Snowflake Object Tagging
 
 **Tag Creation**:
+
 ```sql
 -- Create classification tags in Snowflake
 create tag if not exists pii_classification
@@ -415,6 +424,7 @@ create tag if not exists compliance_scope
 ```
 
 **Apply Tags to Tables/Columns**:
+
 ```sql
 -- Tag entire table
 alter table prod.finance.dim_user set tag pii_classification = 'DIRECT_IDENTIFIER';

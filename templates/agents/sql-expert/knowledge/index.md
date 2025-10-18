@@ -1,7 +1,9 @@
 ---
+
 title: "SQL Expert - Knowledge Base"
 description: "Generic SQL patterns and platform-specific features for query optimization"
 last_updated: "2025-10-15"
+
 ---
 
 # SQL Expert Knowledge Base
@@ -12,6 +14,7 @@ This knowledge base contains generic SQL patterns and platform-specific features
 
 ### Core Concepts
 Foundational SQL knowledge that applies to all platforms:
+
 - SQL fundamentals (ANSI SQL standard)
 - Query optimization principles
 - Indexing strategies
@@ -19,6 +22,7 @@ Foundational SQL knowledge that applies to all platforms:
 
 ### Patterns
 Reusable SQL patterns for common scenarios:
+
 - CTE patterns (WITH clauses)
 - Window functions (ROW_NUMBER, RANK, LAG, LEAD)
 - Join patterns (INNER, LEFT, CROSS, SELF)
@@ -26,6 +30,7 @@ Reusable SQL patterns for common scenarios:
 
 ### Platforms
 Platform-specific features and optimizations:
+
 - **Snowflake**: QUALIFY, FLATTEN, time travel, clustering, warehouse optimization
 - **PostgreSQL**: jsonb operators, extensions, index types, materialized views
 - **BigQuery**: Nested/repeated fields, partitioning, slots, UDFs
@@ -33,12 +38,14 @@ Platform-specific features and optimizations:
 
 ### Decisions
 Decision frameworks for SQL architecture:
+
 - When to use which optimization technique
 - Platform feature comparison
 - Materialization strategy selection
 
 ### Reference
 Quick reference materials:
+
 - SQL syntax reference by platform
 - Query optimization cookbook
 - Common anti-patterns to avoid
@@ -60,6 +67,7 @@ Project-specific SQL standards (SQLFluff rules, CTE naming conventions, performa
 ## Contributing
 
 When adding new knowledge:
+
 1. Ensure it's **generic** (applies to ANY project using the platform)
 2. Document platform-specific features under `platforms/{platform}/`
 3. Document cross-platform patterns under `patterns/`

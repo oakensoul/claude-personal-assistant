@@ -1,4 +1,5 @@
 ---
+
 slug: work-command
 title: "Create /work command - universal development workflow"
 type: feature
@@ -8,6 +9,7 @@ estimated_effort: 12
 status: draft
 created: 2025-10-10
 depends_on: ["versioning-system"]
+
 ---
 
 # Create /work command - universal development workflow
@@ -15,6 +17,7 @@ depends_on: ["versioning-system"]
 ## Problem
 
 Developers have different workflows:
+
 - Some use issues, some don't
 - Some use branches, some don't
 - Some use PRs, some commit directly
@@ -29,6 +32,7 @@ Create a flexible `/work` command that adapts to YOUR workflow, whatever it is.
 ### Core Subcommands
 
 ```bash
+
 /work start [issue|description]   # Begin work (flexible!)
 /work plan                        # Plan implementation
 /work implement                   # Guided implementation
@@ -39,38 +43,51 @@ Create a flexible `/work` command that adapts to YOUR workflow, whatever it is.
 /work pause                       # Pause work (stash)
 /work resume                      # Resume paused work
 /work complete                    # Finish work session
+
 ```
 
 ### Flexibility Examples
 
 **With Issue Tracking:**
+
 ```bash
+
 /work start 42
 # → Fetches issue #42
 # → Creates branch: feature/42-add-dark-mode
 # → Sets up context
+
 ```
 
 **Ad-hoc with Branch:**
+
 ```bash
+
 /work start "refactor auth system"
 # → Creates branch: work/refactor-auth-system
 # → No issue tracking
+
 ```
 
 **No Branch:**
+
 ```bash
+
 /work start "fix typo" --no-branch
 # → Stays on current branch
 # → Still tracks work
+
 ```
 
 **No Git:**
+
 ```bash
+
 /work start "design new feature"
 # → Creates work session
 # → Tracks time and notes
 # → No version control needed
+
 ```
 
 ## Implementation Tasks
@@ -158,6 +175,7 @@ Create a flexible `/work` command that adapts to YOUR workflow, whatever it is.
 ## Testing Scenarios
 
 ```bash
+
 # Test with full integration
 /work start 42
 /work plan
@@ -181,6 +199,7 @@ Create a flexible `/work` command that adapts to YOUR workflow, whatever it is.
 /work start "design work"
 /work track 1h
 /work status
+
 ```
 
 ## Dependencies

@@ -1,8 +1,10 @@
 ---
+
 title: "Encryption Standards"
 description: "Approved encryption algorithms, key sizes, rotation policies, and compliance requirements"
 category: "decisions"
 last_updated: "2025-10-07"
+
 ---
 
 # Encryption Standards

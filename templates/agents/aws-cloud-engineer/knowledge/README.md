@@ -189,6 +189,7 @@ last_updated: 2025-10-09
 `{Project}{Environment}{Purpose}Stack`
 
 Examples:
+
 - MyProjectProdNetworkStack
 - MyProjectProdDatabaseStack
 - MyProjectProdApplicationStack

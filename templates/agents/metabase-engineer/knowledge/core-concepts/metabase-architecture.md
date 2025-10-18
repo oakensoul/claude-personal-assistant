@@ -1,9 +1,11 @@
 ---
+
 title: "Metabase Architecture & Data Model"
 description: "Understanding Metabase's internal data model, collections, dashboards, questions, and database connections"
 category: "core-concepts"
 tags: ["architecture", "data-model", "collections", "dashboards"]
 last_updated: "2025-10-16"
+
 ---
 
 # Metabase Architecture & Data Model
@@ -13,6 +15,7 @@ Understanding Metabase's internal architecture is essential for effective API op
 ## High-Level Architecture
 
 ```
+
 ┌─────────────────────────────────────────────────────┐
 │                  Metabase Web UI                    │
 │            (React Frontend Application)             │
@@ -36,6 +39,7 @@ Understanding Metabase's internal architecture is essential for effective API op
 │  - Snowflake (dataops-splash-dwh)                   │
 │  - PostgreSQL, MySQL, BigQuery, etc.                │
 └─────────────────────────────────────────────────────┘
+
 ```
 
 ## Core Data Model
@@ -43,6 +47,7 @@ Understanding Metabase's internal architecture is essential for effective API op
 ### Hierarchy
 
 ```
+
 Database Connection
   └── Schema
       └── Table/View
@@ -54,6 +59,7 @@ Collection
       ├── Dashboard
       │   └── Dashboard Card (Question Instance)
       └── Question (Saved Query)
+
 ```
 
 ## Entity Relationships
@@ -63,6 +69,7 @@ Collection
 Collections organize dashboards and questions hierarchically.
 
 ```
+
 Root Collection (Your company)
 ├── Finance
 │   ├── Executive Dashboards
@@ -73,9 +80,11 @@ Root Collection (Your company)
 │   └── Fill Rate Analysis
 └── Partners
     └── Partner Analytics
+
 ```
 
 **Key Properties**:
+
 - `id`: Unique collection identifier
 - `name`: Display name
 - `slug`: URL-friendly identifier
@@ -90,6 +99,7 @@ Root Collection (Your company)
 Dashboards are containers for questions (visualizations) with shared filters and layout.
 
 **Key Properties**:
+
 - `id`: Unique dashboard identifier
 - `name`: Dashboard title
 - `description`: Purpose and context
@@ -107,6 +117,7 @@ Dashboards are containers for questions (visualizations) with shared filters and
 Dashboard cards represent question instances placed on a dashboard with position and size.
 
 **Key Properties**:
+
 - `id`: Unique card identifier
 - `dashboard_id`: Parent dashboard
 - `card_id`: Question being displayed (null for text cards)
@@ -120,6 +131,7 @@ Dashboard cards represent question instances placed on a dashboard with position
 **Grid System**: 12 columns, variable rows
 
 ```
+
 ┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
 │ 0  │ 1  │ 2  │ 3  │ 4  │ 5  │ 6  │ 7  │ 8  │ 9  │ 10 │ 11 │
 ├────┴────┴────┴────┼────┴────┴────┴────┼────┴────┴────┴────┤
@@ -130,6 +142,7 @@ Dashboard cards represent question instances placed on a dashboard with position
 │                                                             │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
+
 ```
 
 **API Endpoint**: `/api/dashboard/{id}/cards`
@@ -139,11 +152,13 @@ Dashboard cards represent question instances placed on a dashboard with position
 Questions are saved queries with visualization configuration. Also called "Cards" in Metabase's API.
 
 **Question Types**:
+
 1. **Native Query**: Raw SQL queries
 2. **GUI Query**: Built with Metabase query builder
 3. **Model**: Reusable query foundation (Metabase Models)
 
 **Key Properties**:
+
 - `id`: Unique question identifier
 - `name`: Question title
 - `description`: What this question shows
@@ -162,6 +177,7 @@ Questions are saved queries with visualization configuration. Also called "Cards
 #### Native Query Example
 
 ```json
+
 {
   "database": 2,
   "type": "native",
@@ -179,11 +195,13 @@ Questions are saved queries with visualization configuration. Also called "Cards
     }
   }
 }
+
 ```
 
 #### GUI Query Example
 
 ```json
+
 {
   "database": 2,
   "type": "query",
@@ -194,6 +212,7 @@ Questions are saved queries with visualization configuration. Also called "Cards
     "filter": ["between", ["field", 456, null], "2025-01-01", "2025-12-31"]
   }
 }
+
 ```
 
 ### Database Connections
@@ -201,6 +220,7 @@ Questions are saved queries with visualization configuration. Also called "Cards
 Database connections link Metabase to data sources.
 
 **Key Properties**:
+
 - `id`: Unique database identifier
 - `name`: Display name (e.g., "Snowflake DWH")
 - `engine`: Database type (snowflake, postgres, mysql, etc.)
@@ -216,7 +236,9 @@ Database connections link Metabase to data sources.
 After connecting a database, Metabase syncs schema metadata.
 
 **Schema Hierarchy**:
+
 ```
+
 Database: Snowflake DWH
 ├── Schema: PUBLIC
 │   ├── Table: finance_revenue_daily
@@ -224,15 +246,18 @@ Database: Snowflake DWH
 │   └── Table: fct_wallet_transactions
 └── Schema: ANALYTICS
     └── Table: dim_user
+
 ```
 
 **Field Metadata**:
+
 - Field name and display name
 - Data type (integer, float, text, date, etc.)
 - Semantic type (PK, FK, category, metric, etc.)
 - Special types (latitude, longitude, URL, email, etc.)
 
 **API Endpoints**:
+
 - `/api/database/{id}/metadata` - Full schema metadata
 - `/api/database/{id}/schemas` - List schemas
 - `/api/table/{id}` - Table details
@@ -243,17 +268,20 @@ Database: Snowflake DWH
 ### Permission Levels
 
 **Collection Permissions**:
+
 - **View**: Can see and use dashboards/questions
 - **Edit**: Can modify dashboards/questions
 - **Curate**: Can manage collection structure
 
 **Database Permissions**:
+
 - **No Access**: Cannot see database
 - **Limited Access**: Can see specific tables
 - **Unrestricted Access**: Can query any table
 - **Native Query**: Can write raw SQL
 
 **Groups**:
+
 - Users belong to groups
 - Permissions assigned to groups
 - Special groups: "All Users", "Administrators"
@@ -261,6 +289,7 @@ Database: Snowflake DWH
 ### Access Control Best Practice
 
 ```
+
 Group: Finance Team
 ├── Collection: Finance → Edit
 ├── Database: Snowflake DWH → Unrestricted
@@ -270,6 +299,7 @@ Group: Executives
 ├── Collection: Finance → View
 ├── Collection: Shared → View
 └── Database: Snowflake DWH → No Access (use saved questions only)
+
 ```
 
 ## Caching Architecture
@@ -279,18 +309,21 @@ Group: Executives
 Metabase caches query results to improve performance.
 
 **Cache Strategies**:
+
 1. **TTL-based**: Cache expires after N seconds
 2. **Adaptive**: Cache duration based on query execution time
 3. **Dashboard-level**: Cache entire dashboard
 4. **Question-level**: Cache individual questions
 
 **Configuration**:
+
 - Global default TTL
 - Per-database TTL
 - Per-dashboard TTL override
 - Per-question TTL override
 
 **Cache Invalidation**:
+
 - Automatic: After TTL expires
 - Manual: Clear cache via API
 - On-demand: Refresh button in UI
@@ -300,6 +333,7 @@ Metabase caches query results to improve performance.
 Metabase caches distinct values for dropdown filters.
 
 **Sync Schedule**:
+
 - Hourly, daily, or custom cron schedule
 - Scans low-cardinality fields for filter values
 - Stores top N values by frequency
@@ -309,6 +343,7 @@ Metabase caches distinct values for dropdown filters.
 Metabase stores its metadata in PostgreSQL.
 
 **Key Tables**:
+
 - `metabase_database`: Database connections
 - `collection`: Collection hierarchy
 - `report_dashboard`: Dashboard definitions
@@ -327,9 +362,11 @@ Metabase stores its metadata in PostgreSQL.
 ### Session-Based Authentication
 
 ```bash
+
 # Login
 curl -X POST \
   https://metabase.example.com/api/session \
+
   -H 'Content-Type: application/json' \
   -d '{"username": "user@example.com", "password": "password"}'
 
@@ -339,15 +376,22 @@ curl -X POST \
 # Use session token
 curl -X GET \
   https://metabase.example.com/api/dashboard/123 \
+
   -H 'X-Metabase-Session: session-token-here'
+
+
 ```
 
 ### API Key Authentication (Enterprise)
 
 ```bash
+
 curl -X GET \
   https://metabase.example.com/api/dashboard/123 \
+
   -H 'X-API-KEY: your-api-key-here'
+
+
 ```
 
 ## Visualization Settings
@@ -357,6 +401,7 @@ Each visualization type has specific settings.
 ### Scalar (Number)
 
 ```json
+
 {
   "scalar.field": "total_revenue",
   "scalar.comparisons": [{
@@ -365,11 +410,13 @@ Each visualization type has specific settings.
     "color": "#509EE3"
   }]
 }
+
 ```
 
 ### Line Chart
 
 ```json
+
 {
   "graph.dimensions": ["date_actual"],
   "graph.metrics": ["total_revenue"],
@@ -378,11 +425,13 @@ Each visualization type has specific settings.
   "graph.y_axis.scale": "linear",
   "graph.y_axis.auto_range": true
 }
+
 ```
 
 ### Table
 
 ```json
+
 {
   "table.columns": [
     {"name": "date_actual", "enabled": true, "fieldRef": ["field", 123, null]},
@@ -394,11 +443,13 @@ Each visualization type has specific settings.
     "currency": "USD"
   }]
 }
+
 ```
 
 ## Performance Considerations
 
 ### Query Performance
+
 - Always include WHERE clauses on large tables
 - Use indexed columns in filters
 - Prefer marts over raw fact tables
@@ -406,6 +457,7 @@ Each visualization type has specific settings.
 - Avoid SELECT * (specify columns)
 
 ### Dashboard Performance
+
 - Limit to 15-20 questions per dashboard
 - Use dashboard-level caching
 - Optimize individual queries first
@@ -413,6 +465,7 @@ Each visualization type has specific settings.
 - Use scalars instead of tables for KPIs
 
 ### API Performance
+
 - Batch operations when possible
 - Use pagination for large result sets
 - Implement exponential backoff for retries
@@ -426,6 +479,7 @@ Each visualization type has specific settings.
 Models are curated, reusable queries that serve as data sources for questions.
 
 **Benefits**:
+
 - Hide complexity from end users
 - Enforce business logic in one place
 - Performance optimization layer
@@ -436,6 +490,7 @@ Models are curated, reusable queries that serve as data sources for questions.
 ### Public Sharing
 
 Dashboards and questions can be shared publicly via:
+
 - **Public Links**: Anyone with link can view
 - **Embedded Dashboards**: iFrame embedding with signed JWT
 - **Static Embeds**: Pre-rendered images
@@ -445,6 +500,7 @@ Dashboards and questions can be shared publicly via:
 ---
 
 **Related Documents**:
+
 - [yaml-specification-schema.md](yaml-specification-schema.md) - YAML spec reference
 - [api-dashboards.md](../api-reference/api-dashboards.md) - Dashboard API operations
 - [collections-and-permissions.md](collections-and-permissions.md) - Access control

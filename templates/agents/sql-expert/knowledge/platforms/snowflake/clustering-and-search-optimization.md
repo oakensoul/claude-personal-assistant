@@ -1,18 +1,22 @@
 ---
+
 title: "Clustering Keys and Search Optimization Guide"
 description: "Comprehensive guide to Snowflake clustering keys, search optimization service, and performance tuning strategies"
 agent: "snowflake-sql-expert"
 category: "patterns"
 tags:
+
   - clustering
   - search-optimization
   - performance
   - micro-partitions
   - pruning
   - indexing
+
 last_updated: "2025-10-07"
 priority: "high"
 use_cases:
+
   - "Large fact table optimization"
   - "Time-series query performance"
   - "Point lookup optimization"
@@ -41,10 +45,14 @@ Snowflake automatically divides tables into compressed, immutable micro-partitio
 When executing a query, Snowflake uses partition metadata to skip (prune) partitions that don't contain relevant data:
 
 ```sql
+
+
 -- Query with date filter
+
 select *
 from {{ ref('fct_wallet_transactions') }}
 where transaction_date_et = '2025-10-07'
+
 ```
 
 **Without clustering**: May scan 1,000+ partitions
@@ -67,15 +75,18 @@ where transaction_date_et = '2025-10-07'
 ### Project-Specific Guidance
 
 **Always Cluster**:
+
 - `fct_wallet_transactions` - By `transaction_date_et` (100M+ rows, time-based queries)
 - `fct_contest_entries` - By `entry_date_et` (50M+ rows, time-based queries)
 - `stg_segment__web_events` - By `event_date_et` (500M+ rows, high-volume)
 
 **Consider Clustering**:
+
 - `fct_user_sessions` - By `session_date_et` if > 10M rows
 - `fct_partner_transactions` - By `transaction_date_et` if > 5M rows
 
 **Don't Cluster**:
+
 - `dim_user` - Small dimension, full scan is fast
 - `dim_contest` - Lookup table, not large enough
 - `stg_splash_production__users` - Staging is 1:1 with source, queries are simple
@@ -85,6 +96,8 @@ where transaction_date_et = '2025-10-07'
 ### Single Column Clustering
 
 ```sql
+
+
 -- models/dwh/core/finance/fct_wallet_transactions.sql
 
 {{
@@ -121,11 +134,14 @@ from {{ ref('stg_splash_wallet__transactions') }}
 {% if is_incremental() %}
 where transaction_timestamp_utc > (select max(transaction_timestamp_utc) from {{ this }})
 {% endif %}
+
 ```
 
 ### Multi-Column Clustering
 
 ```sql
+
+
 -- models/dwh/core/contests/fct_contest_entries.sql
 
 {{
@@ -145,9 +161,12 @@ where transaction_timestamp_utc > (select max(transaction_timestamp_utc) from {{
 }}
 
 -- Queries filtering by both entry_date_et AND contest_id benefit most
+
+
 ```
 
 **Column Order Matters**:
+
 1. **First column**: Most selective filter (usually date)
 2. **Second column**: Next most common filter
 3. **Limit to 3-4 columns**: More columns = higher maintenance cost
@@ -155,12 +174,16 @@ where transaction_timestamp_utc > (select max(transaction_timestamp_utc) from {{
 ### Expression-Based Clustering
 
 ```sql
+
+
 -- Cluster by derived column
+
 {{
     config(
         cluster_by=['date(event_timestamp_et)']  -- Cluster by date part only
     )
 }}
+
 ```
 
 ## Monitoring Clustering Health
@@ -168,12 +191,18 @@ where transaction_timestamp_utc > (select max(transaction_timestamp_utc) from {{
 ### Check Clustering Information
 
 ```sql
+
+
 -- Check clustering statistics for a table
+
 select system$clustering_information('fct_wallet_transactions', '(transaction_date_et)');
+
 ```
 
 **Example Output**:
+
 ```json
+
 {
   "cluster_by_keys": "(TRANSACTION_DATE_ET)",
   "total_partition_count": 2500,
@@ -188,28 +217,34 @@ select system$clustering_information('fct_wallet_transactions', '(transaction_da
     "00004": 50
   }
 }
+
 ```
 
 ### Key Metrics Explained
 
 **average_depth**:
+
 - **1.0**: Perfect clustering (each partition contains unique range of values)
 - **2-3**: Good clustering (acceptable for most use cases)
 - **4-6**: Moderate clustering (consider reclustering)
 - **>6**: Poor clustering (reclustering recommended)
 
 **average_overlaps**:
+
 - Number of partitions that contain the same clustering key value
 - Lower is better (1.0 = no overlaps)
 - High overlaps = more partitions scanned per query
 
 **partition_depth_histogram**:
+
 - Shows distribution of clustering depth across partitions
 - Most partitions should be in depth 1-2 buckets
 
 ### Monitoring Query (Run Daily)
 
 ```sql
+
+
 -- Create monitoring view for clustering health
 -- models/dwh/marts/operations/mart_clustering_health.sql
 
@@ -266,6 +301,7 @@ select
     current_timestamp() as measured_at
 from clustering_stats
 order by average_depth desc
+
 ```
 
 ## Automatic vs Manual Reclustering
@@ -275,11 +311,16 @@ order by average_depth desc
 Snowflake automatically reclusters tables in the background when clustering depth degrades:
 
 ```sql
+
+
 -- Enable automatic reclustering (default for tables with cluster keys)
+
 alter table fct_wallet_transactions resume recluster;
+
 ```
 
 **Automatic reclustering triggers when**:
+
 - Clustering depth increases beyond thresholds
 - Table has cluster key defined
 - Reclustering is not suspended
@@ -287,17 +328,24 @@ alter table fct_wallet_transactions resume recluster;
 ### Manual Reclustering
 
 ```sql
+
+
 -- Suspend automatic reclustering
+
 alter table fct_wallet_transactions suspend recluster;
 
 -- Manually trigger reclustering
+
 alter table fct_wallet_transactions recluster;
 
 -- Resume automatic reclustering
+
 alter table fct_wallet_transactions resume recluster;
+
 ```
 
 **When to use manual reclustering**:
+
 - Large data load just completed (force immediate reclustering)
 - Testing clustering effectiveness
 - Cost optimization (schedule during off-hours)
@@ -307,6 +355,7 @@ alter table fct_wallet_transactions resume recluster;
 ### Cost Considerations
 
 **Reclustering Credits**:
+
 - Automatic reclustering consumes compute credits
 - Cost = warehouse size × time spent reclustering
 - Larger tables = higher reclustering cost
@@ -315,14 +364,21 @@ alter table fct_wallet_transactions resume recluster;
 
 1. **Cluster only large, frequently-queried tables** (> 1 GB)
 2. **Use appropriate warehouse for reclustering**:
+
 ```sql
+
 alter table fct_wallet_transactions
     set recluster_warehouse = 'COMPUTE_WH_MEDIUM';  -- Dedicated warehouse
+
 ```
 
 3. **Monitor reclustering costs**:
+
 ```sql
+
+
 -- Query reclustering history
+
 select
     table_name,
     start_time,
@@ -333,12 +389,18 @@ from table(information_schema.automatic_clustering_history(
     date_range_start => dateadd('day', -7, current_date)
 ))
 order by credits_used desc;
+
 ```
 
 4. **Suspend reclustering for rarely-queried tables**:
+
 ```sql
+
+
 -- If table is only queried monthly, suspend reclustering
+
 alter table fct_historical_contests suspend recluster;
+
 ```
 
 ## Search Optimization Service
@@ -346,6 +408,7 @@ alter table fct_historical_contests suspend recluster;
 ### What is Search Optimization?
 
 Search Optimization Service creates a **search access path** (like an index) for:
+
 - **Equality filters** (`WHERE column = value`)
 - **IN filters** (`WHERE column IN (value1, value2)`)
 - **SUBSTRING/LIKE filters** (`WHERE column LIKE '%pattern%'`)
@@ -366,21 +429,30 @@ Search Optimization Service creates a **search access path** (like an index) for
 ### Enabling Search Optimization
 
 ```sql
+
+
 -- Enable on specific columns
+
 alter table dim_user
     add search optimization on equality(user_id, email);
 
 -- Enable on VARIANT column properties
+
 alter table stg_segment__web_events
     add search optimization on equality(event_properties:contest_id);
 
 -- Enable on all supported columns (use cautiously)
+
 alter table fct_wallet_transactions
     add search optimization;
 
 -- Check search optimization status
+
 show tables like 'DIM_USER';
+
 -- Look for SEARCH_OPTIMIZATION column
+
+
 ```
 
 ### Search Optimization in dbt
@@ -388,26 +460,35 @@ show tables like 'DIM_USER';
 **Not directly supported in dbt config** - Must enable via Snowflake SQL post-deployment:
 
 ```sql
+
+
 -- Post-deployment script (run manually or via CI/CD)
 -- scripts/snowflake/enable_search_optimization.sql
 
 -- User dimension - for point lookups
+
 alter table {{ target.database }}.SHARED.DIM_USER
     add search optimization on equality(user_id, email);
 
 -- Contest dimension - for contest_id lookups
+
 alter table {{ target.database }}.CONTESTS.DIM_CONTEST
     add search optimization on equality(contest_id);
 
 -- Segment events - for JSON property lookups
+
 alter table {{ target.database }}.ANALYTICS_STAGING.STG_SEGMENT__WEB_EVENTS
     add search optimization on equality(event_properties:contest_id, event_properties:user_id);
+
 ```
 
 ### Monitoring Search Optimization
 
 ```sql
+
+
 -- Check search optimization maintenance
+
 select
     table_name,
     search_optimization_progress,
@@ -418,6 +499,7 @@ where table_catalog = current_database()
 order by search_optimization_bytes desc;
 
 -- Check search optimization benefit
+
 select
     query_id,
     query_text,
@@ -429,6 +511,7 @@ where query_text ilike '%dim_user%'
     and query_text ilike '%user_id =%'
 order by start_time desc
 limit 10;
+
 ```
 
 ## Practical Examples
@@ -436,6 +519,8 @@ limit 10;
 ### Example 1: Large Fact Table Clustering
 
 ```sql
+
+
 -- models/dwh/core/finance/fct_wallet_transactions.sql
 
 {{
@@ -457,25 +542,35 @@ limit 10;
 -- Table size: 100M+ rows, 50+ GB
 -- Query pattern: 95% of queries filter by transaction_date_et
 -- Clustering benefit: 50x faster queries (from 2 min to 2-3 sec)
+
+
 ```
 
 **Before clustering**:
+
 ```
+
 Partitions Scanned: 2,500 of 2,500 (100%)
 Bytes Scanned: 52 GB
 Execution Time: 2m 15s
+
 ```
 
 **After clustering**:
+
 ```
+
 Partitions Scanned: 50 of 2,500 (2%)
 Bytes Scanned: 1.2 GB
 Execution Time: 2.8s
+
 ```
 
 ### Example 2: Segment Events with Multi-Column Clustering
 
 ```sql
+
+
 -- models/dwh/staging/analytics/stg_segment__web_events.sql
 
 {{
@@ -496,21 +591,30 @@ Execution Time: 2.8s
 -- Table size: 500M+ rows, 800+ GB
 -- Query pattern: Filter by date AND event_name (e.g., 'Contest Entry Submitted')
 -- Clustering benefit: 100x faster event-specific queries
+
+
 ```
 
 ### Example 3: User Dimension with Search Optimization
 
 ```sql
+
+
 -- Enable search optimization for user lookups
+
 alter table PROD.SHARED.DIM_USER
     add search optimization on equality(user_id, email);
 
 -- Query benefit
+
 select *
 from {{ ref('dim_user') }}
 where user_id = 123456;  -- Point lookup
+
 -- Before: 5 seconds (full scan of 10M rows)
 -- After: 0.2 seconds (search optimization index)
+
+
 ```
 
 ## Best Practices Summary
@@ -543,6 +647,7 @@ where user_id = 123456;  -- Point lookup
 ## Decision Tree
 
 ```
+
 Is table > 1 GB?
 ├─ No → Don't cluster
 └─ Yes → Are queries filtered by date/time?
@@ -553,16 +658,19 @@ Is table > 1 GB?
     └─ No → Are there frequent point lookups (WHERE id = value)?
         ├─ Yes → Consider search optimization
         └─ No → Monitor query patterns, may not need optimization
+
 ```
 
 ## Additional Resources
 
 **Snowflake Documentation**:
+
 - [Clustering Keys](https://docs.snowflake.com/en/user-guide/tables-clustering-keys.html)
 - [Search Optimization Service](https://docs.snowflake.com/en/user-guide/search-optimization-service.html)
 - [Micro-Partitions](https://docs.snowflake.com/en/user-guide/tables-clustering-micropartitions.html)
 
 **Project Integration**:
+
 - All large fact tables (> 1 GB) should have clustering keys
 - Monitor clustering health in `mart_clustering_health`
 - Enable search optimization post-deployment for dimensions
