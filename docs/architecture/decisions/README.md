@@ -34,21 +34,27 @@ None currently
 ## Categories
 
 ### Framework Design
+
 - ADR-001: Shell Script Framework
 
 ### Architecture Patterns
+
 - ADR-002: Two-Tier Agent Architecture
 
 ### Agent Architecture
+
 - ADR-006: Agent Reorganization to Analyst/Engineer Pattern
 - ADR-007: Product/Platform/API Engineering Model
 - ADR-008: Engineers Own Testing Philosophy
 
 ### Knowledge Management
+
 - ADR-009: Skills System Architecture
 
 ### Integration
+
 (Future ADRs for Obsidian, Stow, GitHub integrations)
 
 ### Security
+
 (Future ADRs for permission model, secret management)

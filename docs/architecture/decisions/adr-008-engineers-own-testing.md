@@ -219,6 +219,7 @@ Engineers implement ALL tests (unit, integration, E2E, performance)
 - Review test implementation for completeness
 
 **Does NOT**:
+
 - Write test code
 - Implement test automation
 - Configure test frameworks
@@ -268,6 +269,7 @@ performance test for scenario 10"
 - Analyze performance test results
 
 **Does NOT**:
+
 - Write performance test code
 - Implement load tests
 - Configure performance tools
@@ -307,6 +309,7 @@ SLA: 99.9% availability, p95 < 200ms response time"
 **Responsibilities**: ALL engineers write ALL tests for their code
 
 **product-engineer, platform-engineer, api-engineer, data-engineer**:
+
 - Write unit tests
 - Write integration tests
 - Write E2E tests
@@ -316,6 +319,7 @@ SLA: 99.9% availability, p95 < 200ms response time"
 - Use testing skills for framework-specific patterns
 
 **Testing Skills Used**:
+
 - `pytest-patterns` - Python unit testing
 - `jest-testing` - JavaScript unit testing
 - `playwright-automation` - E2E testing
@@ -344,6 +348,7 @@ Workflow:
 **Who**: platform-engineer (if test infrastructure is shared across teams)
 
 **What**:
+
 - Set up test frameworks (pytest, jest, Playwright)
 - Configure CI/CD test execution
 - Create test databases and environments
@@ -379,6 +384,7 @@ Workflow:
 ### No test-automation-engineer
 
 We explicitly do NOT create a test-automation-engineer agent because:
+
 - Testing is implementation (engineers own implementation per ADR-006)
 - Testing uses same skills as feature code
 - Creates handoff delays if separate

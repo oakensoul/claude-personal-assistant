@@ -50,7 +50,7 @@ This command provides comprehensive data governance automation:
 
 **Email Addresses**:
 
-```regex
+```text
 Pattern: [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
 Examples: user@example.com, john.doe+tag@domain.co.uk
 Confidence: 95% if pattern matches + column name contains "email"
@@ -58,7 +58,7 @@ Confidence: 95% if pattern matches + column name contains "email"
 
 **Phone Numbers**:
 
-```regex
+```text
 US_Pattern: ^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$
 International: ^\+?[1-9]\d{1,14}$
 Examples: 555-123-4567, (555) 123-4567, +1-555-123-4567
@@ -67,7 +67,7 @@ Confidence: 90% if pattern matches + column name contains "phone"
 
 **Social Security Numbers (SSN)**:
 
-```regex
+```text
 Pattern: ^(?!000|666)[0-8][0-9]{2}-(?!00)[0-9]{2}-(?!0000)[0-9]{4}$
 Examples: 123-45-6789
 Confidence: 99% (highly specific pattern)
@@ -75,7 +75,7 @@ Confidence: 99% (highly specific pattern)
 
 **Credit Card Numbers**:
 
-```regex
+```text
 Pattern: ^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13})$
 Validation: Luhn algorithm checksum
 Examples: 4111-1111-1111-1111 (Visa), 5500-0000-0000-0004 (Mastercard)
@@ -84,7 +84,7 @@ Confidence: 95% with Luhn validation
 
 **IP Addresses**:
 
-```regex
+```text
 IPv4: ^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$
 IPv6: ^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|...)$
 Examples: 192.168.1.1, 2001:0db8:85a3:0000:0000:8a2e:0370:7334
@@ -93,7 +93,7 @@ Confidence: 85% (can be used for non-PII purposes)
 
 **Cryptocurrency Wallet Addresses**:
 
-```regex
+```text
 Bitcoin: ^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$
 Ethereum: ^0x[a-fA-F0-9]{40}$
 Examples: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa, 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb
@@ -166,7 +166,6 @@ confidence_score = (
 
 **Examples**:
 
-
 - Product catalogs
 - Public event schedules
 - Contest rules and descriptions
@@ -181,7 +180,6 @@ confidence_score = (
 **Access**: Restricted to employees
 
 **Examples**:
-
 
 - Revenue aggregates (no user-level detail)
 - Contest performance metrics
@@ -198,7 +196,6 @@ confidence_score = (
 
 **Examples**:
 
-
 - User behavior analytics (pseudonymized)
 - Wallet balances (no payment methods)
 - Contest history (user-level)
@@ -213,7 +210,6 @@ confidence_score = (
 **Access**: Strict access controls + masking policies
 
 **Examples**:
-
 
 - Email addresses
 - Phone numbers
@@ -367,7 +363,6 @@ SET TAG pii_type = 'email_address';
 **Masking Policy Templates**:
 
 **Email Masking (Partial)**:
-
 
 ```sql
 CREATE OR REPLACE MASKING POLICY mask_email_partial AS (val STRING)

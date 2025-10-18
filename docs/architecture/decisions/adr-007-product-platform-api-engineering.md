@@ -88,24 +88,28 @@ full-stack-engineer/
 **Description**: Organize by purpose and audience, not by technology layer:
 
 **product-engineer**:
+
 - **Purpose**: User-facing features (full-stack)
 - **Audience**: End users
 - **Handles**: UI, API endpoints, business logic, tests, monitoring
 - **Examples**: Next.js apps, user dashboards, customer-facing features
 
 **platform-engineer**:
+
 - **Purpose**: Platform capabilities and shared services
 - **Audience**: Internal engineers
 - **Handles**: Libraries, SDKs, internal services, shared infrastructure
 - **Examples**: Auth service, notification system, shared UI components
 
 **api-engineer**:
+
 - **Purpose**: External/partner integrations
 - **Audience**: External developers, partners
 - **Handles**: Public APIs, webhooks, SDKs, API docs, versioning
 - **Examples**: REST APIs for partners, GraphQL for mobile apps, webhooks
 
 **data-engineer** (existing):
+
 - **Purpose**: Data pipelines and analytics
 - **Audience**: Analysts, data scientists
 - **Handles**: ELT, data warehouse, dbt, data quality

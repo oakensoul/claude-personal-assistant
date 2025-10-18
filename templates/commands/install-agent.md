@@ -86,7 +86,6 @@ Scan `~/.claude/agents/` for agents with two-tier architecture:
 
 **Detection Criteria**:
 
-
 - Agent definition file exists: `~/.claude/agents/{agent}/{agent}.md`
 - Agent description or content mentions "two-tier" or "Tier: 2-tier"
 - Agent has user-level knowledge base: `~/.claude/agents/{agent}/knowledge/`

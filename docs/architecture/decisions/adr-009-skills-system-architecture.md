@@ -210,12 +210,14 @@ Project-Level (project-specific):
 **Definition**: A skill is reusable technical knowledge that multiple agents can use
 
 **Characteristics**:
+
 - **Reusable**: Used by 2+ agents
 - **Technical**: Specific implementation knowledge (not strategic)
 - **Passive**: No decision-making, just patterns/templates
 - **Scoped**: Focused on one technology or pattern
 
 **Examples**:
+
 - ✅ `hipaa-compliance` - HIPAA requirements and patterns
 - ✅ `pytest-patterns` - pytest setup and test patterns
 - ✅ `api-design` - REST API design conventions
@@ -225,23 +227,27 @@ Project-Level (project-specific):
 ### What is NOT a Skill?
 
 **Agent Knowledge** (lives in agent directory):
+
 - How to be that agent (role definition)
 - When to invoke that agent
 - Responsibilities and boundaries
 - Coordination with other agents
 
 **Example**: `product-engineer/instructions.md`
+
 - "You are a full-stack engineer building user-facing features"
 - "Use skills like react-patterns and api-design"
 - "Coordinate with platform-engineer for shared services"
 
 **Skills** (lives in skills directory):
+
 - Technical patterns and templates
 - Framework-specific knowledge
 - Compliance requirements
 - Testing patterns
 
 **Example**: `skills/react-patterns/`
+
 - "Component composition patterns"
 - "Custom hooks best practices"
 - "State management strategies"
@@ -420,26 +426,32 @@ Project skill: {project}/.claude/skills/acme-ui-library/
 ### Skill Categories
 
 **compliance/**
+
 - Regulatory compliance (HIPAA, GDPR, PCI, SOC2)
 - Used by: governance-analyst, compliance-analyst, all engineers
 
 **testing/**
+
 - Testing frameworks and patterns
 - Used by: quality-analyst (defines scenarios), all engineers (implement tests)
 
 **frameworks/**
+
 - Frontend/backend framework patterns
 - Used by: product-engineer, platform-engineer, api-engineer
 
 **api/**
+
 - API design and documentation
 - Used by: api-engineer, platform-engineer, product-engineer
 
 **data-engineering/**
+
 - Data pipeline patterns
 - Used by: data-engineer, sql-expert
 
 **infrastructure/**
+
 - Infrastructure as code patterns
 - Used by: aws-cloud-engineer, devops-engineer, platform-engineer
 
@@ -530,12 +542,14 @@ cp -r ~/.claude/skills/category/pattern {project}/.claude/skills/
 **Skill**: `~/.claude/skills/compliance/hipaa-compliance/`
 
 **Used by**:
+
 - `governance-analyst` - Audits HIPAA compliance
 - `product-engineer` - Implements HIPAA-compliant features
 - `data-engineer` - Handles PHI in data pipelines
 - `platform-engineer` - Builds HIPAA-compliant services
 
 **Content**:
+
 - requirements.md - HIPAA requirements
 - patient-data-handling.md - How to handle PHI
 - audit-logging.md - Audit trail requirements
@@ -544,19 +558,23 @@ cp -r ~/.claude/skills/category/pattern {project}/.claude/skills/
 ### Example 2: Project-Specific React Patterns
 
 **User Skill**: `~/.claude/skills/frameworks/react-patterns/`
+
 - Generic React patterns (hooks, composition, state)
 
 **Project Skill**: `{project}/.claude/skills/acme-ui-library/`
+
 - Company-specific component library
 - Overrides generic React patterns with company standards
 
 **product-engineer uses**:
+
 - Project skill for company UI patterns
 - Falls back to user skill for generic React knowledge
 
 ### Example 3: Testing Skill Chain
 
 **Workflow**:
+
 1. `quality-analyst` uses `pytest-patterns` skill to recommend test structure
 2. `product-engineer` uses `pytest-patterns` skill to implement tests
 3. Both use same skill, different purposes

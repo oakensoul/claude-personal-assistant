@@ -80,6 +80,7 @@ C4Context
 **Primary Interface**: Natural language in Claude AI chat
 
 **Example Interactions**:
+
 - "Help me implement feature X"
 - "Create a PR for this work"
 - "Design a dimensional model for orders"
@@ -140,6 +141,7 @@ C4Context
 **Standalone**: AIDA works without Obsidian or GitHub (core functionality only)
 
 **Modular**: Integrations are optional plugins
+
 - Obsidian integration: Optional, enabled via configuration
 - GitHub workflow: Optional, requires `gh` CLI
 - Dotfiles integration: Optional, bidirectional

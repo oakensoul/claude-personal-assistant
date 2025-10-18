@@ -80,12 +80,14 @@ security-engineer/
 **Description**: Split agents into two clear categories:
 
 **Analysts** (Requirements Definition):
+
 - Define WHAT needs to be done from their domain expertise
 - Output requirements, scenarios, constraints
 - Do NOT implement
 - Examples: quality-analyst, security-analyst, governance-analyst, performance-analyst
 
 **Engineers** (Implementation):
+
 - Implement HOW based on ALL analyst requirements
 - Own code AND tests AND security AND monitoring
 - Write all implementation artifacts

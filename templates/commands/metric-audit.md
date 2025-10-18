@@ -66,10 +66,10 @@ Ensure metric consistency and prevent metric sprawl by:
 
 2. **Extract metric definitions**:
 
-   - For dbt metrics: Parse `metrics.yml` files
-   - For Metabase: Query Metabase API for dashboard SQL
-   - For notebooks: Scan `.ipynb` and `.sql` files
-   - For legacy: Check archived documentation
+- For dbt metrics: Parse `metrics.yml` files
+- For Metabase: Query Metabase API for dashboard SQL
+- For notebooks: Scan `.ipynb` and `.sql` files
+- For legacy: Check archived documentation
 
 3. **Normalize metric metadata**:
 
@@ -99,17 +99,18 @@ For each metric concept (e.g., "Revenue", "Active Users"):
 
 2. **Identify inconsistencies**:
 
-   ```yaml
+```yaml
    Inconsistency_Types:
      - Formula_Mismatch: "SUM(amount) vs SUM(transaction_amount)"
      - Filter_Mismatch: "type = 'DEPOSIT' vs type IN ('DEPOSIT', 'WITHDRAWAL')"
      - Grain_Mismatch: "daily vs monthly aggregation"
      - Unit_Mismatch: "dollars vs cents (100x difference)"
      - Dimension_Mismatch: "grouped by user vs grouped by user + cohort"
-   ```
+```
 
 3. **Calculate consistency score**:
-   ```
+
+```text
    Consistency_Score = (Matching_Definitions / Total_Definitions) × 100%
 
    Rating_Scale:
@@ -117,7 +118,7 @@ For each metric concept (e.g., "Revenue", "Active Users"):
      70-89%:  ⚠️  NEEDS IMPROVEMENT (some inconsistencies)
      50-69%:  ❌ POOR (major inconsistencies)
      0-49%:   🚨 CRITICAL (definitions completely misaligned)
-   ```
+```
 
 ### Phase 3: Metric Sprawl Detection
 
@@ -140,7 +141,8 @@ For each metric concept (e.g., "Revenue", "Active Users"):
    - Recommendation: Archive or deprecate
 
 4. **Calculate sprawl score**:
-   ```
+
+```text
    Sprawl_Score = (Unique_Metric_Definitions / Total_Metric_Instances) × 100%
 
    Targets:
@@ -148,7 +150,7 @@ For each metric concept (e.g., "Revenue", "Active Users"):
      25-50%:  ⚠️  MODERATE (some duplication)
      50-75%:  ❌ HIGH (significant sprawl)
      75-100%: 🚨 CRITICAL (almost no consolidation)
-   ```
+```
 
 ### Phase 4: Semantic Layer Alignment
 
@@ -183,7 +185,8 @@ For each metric concept (e.g., "Revenue", "Active Users"):
    ```
 
 3. **Calculate alignment percentage**:
-   ```
+
+```text
    Alignment_Score = (Dashboards_Using_dbt / Total_Dashboards) × 100%
 
    Targets:
@@ -191,7 +194,7 @@ For each metric concept (e.g., "Revenue", "Active Users"):
      60-79%:  ⚠️  MODERATE (some bypassing)
      40-59%:  ❌ LOW (significant bypassing)
      0-39%:   🚨 CRITICAL (semantic layer underutilized)
-   ```
+```
 
 ### Phase 5: Business Logic Validation
 

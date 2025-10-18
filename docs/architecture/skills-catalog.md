@@ -25,16 +25,16 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 **Purpose**: Consistent formatting and style across all files
 
 - [ ] **markdown-style-guide** 🔥 **CRITICAL**
-  - Used by: technical-writer, ALL agents (everyone writes markdown)
-  - Why: Pass markdownlint, consistent docs across AIDA system
-  - Files: formatting-rules, lists-and-spacing, code-blocks, headings-and-structure, links-and-references, tables, frontmatter, common-mistakes-md032-md031-md040
-  - **Priority**: PHASE 1 - Foundation
+    - Used by: technical-writer, ALL agents (everyone writes markdown)
+    - Why: Pass markdownlint, consistent docs across AIDA system
+    - Files: formatting-rules, lists-and-spacing, code-blocks, headings-and-structure, links-and-references, tables, frontmatter, common-mistakes-md032-md031-md040
+    - **Priority**: PHASE 1 - Foundation
 
 - [ ] **frontmatter-patterns** 🔥 **CRITICAL**
-  - Used by: technical-writer, ALL agents creating markdown files
-  - Why: AIDA requires frontmatter on all markdown docs
-  - Files: required-fields, optional-fields, categories, tags, validation, examples
-  - **Priority**: PHASE 1 - Foundation
+    - Used by: technical-writer, ALL agents creating markdown files
+    - Why: AIDA requires frontmatter on all markdown docs
+    - Files: required-fields, optional-fields, categories, tags, validation, examples
+    - **Priority**: PHASE 1 - Foundation
 
 - [ ] **yaml-style-guide**
   - Used by: ALL engineers (docker-compose, GitHub Actions, dbt, configs)
@@ -1148,6 +1148,7 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 **Total Skills**: 145+
 
 ### Skills Created
+
 - ✅ hipaa-compliance (2 files: README, requirements)
 - ✅ pytest-patterns (2 files: README, setup)
 
@@ -1465,22 +1466,26 @@ This document catalogs all skills to be implemented for the AIDA system, organiz
 ## Implementation Strategy
 
 ### Parallel Development
+
 - **Phase 1** must complete first (foundation)
 - **Phase 2** can start once Phase 1 style-guides are done (agents need markdown/yaml/commit standards)
 - **Phase 3** build on-demand based on project needs
 
 ### Priority Within Each Phase
+
 1. **🔥 CRITICAL** - Build first
 2. **🔥 HIGH PRIORITY** - Build second
 3. Regular priority - Build third
 
 ### Skill Creation Velocity
+
 - **Week 1-2**: 1 skill per day (learning curve)
 - **Week 3+**: 2-3 skills per day (templates established)
 - **Estimated**: ~60 days for all 168 skills (full-time focus)
 - **Realistic**: ~120 days (part-time, with other work)
 
 ### Success Criteria
+
 - ✅ All Phase 1 skills created (foundation complete)
 - ✅ Agents can create new agents/commands/skills (meta-circular!)
 - ✅ 80% of Phase 2 skills created (daily tools covered)

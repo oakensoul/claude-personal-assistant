@@ -158,7 +158,6 @@ For each draft in list:
 
     **On success**:
 
-
     - Display: `✓ Published: {title} → Issue #{number}`
     - Store issue number and URL
     - Move draft to published folder:
