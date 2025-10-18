@@ -95,6 +95,7 @@ This document provides a step-by-step plan for migrating AIDA agents from the cu
 | `data-governance-agent` | `governance-analyst` | Consistent naming, broader scope |
 
 **Tasks**:
+
 - [ ] Rename agent directories in `templates/agents/`
 - [ ] Update agent instruction files
 - [ ] Update references in CLAUDE.md
@@ -103,11 +104,13 @@ This document provides a step-by-step plan for migrating AIDA agents from the cu
 - [ ] Update all documentation
 
 **Backward Compatibility**:
+
 - Keep symlinks from old names → new names for 2 releases
 - Add deprecation warnings when old names used
 - Document migration in release notes
 
 **Validation**:
+
 - [ ] All commands still work with new names
 - [ ] Agent descriptions reflect new analyst role
 - [ ] Documentation updated
@@ -212,6 +215,7 @@ templates/agents/api-engineer/
 - sdk-generation
 
 **Tasks**:
+
 - [ ] Create agent directories and instructions
 - [ ] Write knowledge base content
 - [ ] Define skill dependencies
@@ -220,6 +224,7 @@ templates/agents/api-engineer/
 - [ ] Add to agent interaction patterns
 
 **Validation**:
+
 - [ ] Agents can be invoked successfully
 - [ ] Knowledge bases provide clear guidance
 - [ ] Skills integrate properly
@@ -261,6 +266,7 @@ templates/agents/performance-analyst/
 - Performance risk assessments
 
 **Tasks**:
+
 - [ ] Create agent directory and instructions
 - [ ] Write knowledge base content
 - [ ] Define integration with engineers
@@ -268,6 +274,7 @@ templates/agents/performance-analyst/
 - [ ] Update CLAUDE.md
 
 **Validation**:
+
 - [ ] Can define clear performance requirements
 - [ ] Integrates with engineers for implementation
 - [ ] Provides actionable guidance
@@ -304,6 +311,7 @@ templates/agents/performance-analyst/
 ```
 
 **Tasks**:
+
 - [ ] Update tech-lead to include architecture review responsibility
 - [ ] Update security-analyst to include code security review
 - [ ] Update quality-analyst to include test coverage review
@@ -313,6 +321,7 @@ templates/agents/performance-analyst/
 - [ ] Update all documentation removing code-reviewer references
 
 **Validation**:
+
 - [ ] `/review code` produces comprehensive review
 - [ ] All review aspects covered by specialized analysts
 - [ ] No loss of functionality from code-reviewer removal
@@ -390,6 +399,7 @@ templates/skills/api-design/
 ```
 
 **Tasks**:
+
 - [ ] Create skills directory structure
 - [ ] Write skill content for each pattern
 - [ ] Document which agents use which skills
@@ -397,6 +407,7 @@ templates/skills/api-design/
 - [ ] Update agent knowledge bases to reference skills
 
 **Validation**:
+
 - [ ] Skills provide clear, actionable patterns
 - [ ] Multiple agents can use same skill
 - [ ] Skills integrate with agent workflows
@@ -410,32 +421,38 @@ templates/skills/api-design/
 **Documentation to Update**:
 
 #### Primary Documentation
+
 - [ ] README.md - Update agent list
 - [ ] CLAUDE.md - Update all agent references
 - [ ] docs/CONTRIBUTING.md - Update agent development guidelines
 
 #### Architecture Documentation
+
 - [ ] docs/architecture/README.md - Update architecture overview
 - [ ] docs/architecture/c4-system-context.md - Update agent relationships
 - [ ] Create new C4 container diagram showing agent types
 
 #### Agent Documentation
+
 - [ ] Each agent README.md - Update descriptions
 - [ ] Agent interaction examples
 - [ ] Skill integration examples
 
 #### Command Documentation
+
 - [ ] Update all command .md files referencing agents
 - [ ] Update `/review code` to show multi-agent orchestration
 - [ ] Update `/implement` workflow
 
 **Tasks**:
+
 - [ ] Audit all documentation for agent references
 - [ ] Update to new agent names
 - [ ] Add examples of new patterns
 - [ ] Create migration guide for users
 
 **Validation**:
+
 - [ ] No references to old agent names (except deprecation docs)
 - [ ] All examples use correct agents
 - [ ] Migration guide is clear and actionable
@@ -466,6 +483,7 @@ If critical issues arise during migration:
 Migration is successful when:
 
 ### Technical Success
+
 - [ ] All renamed agents work correctly
 - [ ] New engineering agents functional
 - [ ] New analyst agents provide value
@@ -474,12 +492,14 @@ Migration is successful when:
 - [ ] No functionality regression
 
 ### Documentation Success
+
 - [ ] All agent names updated
 - [ ] Clear migration guide for users
 - [ ] Examples demonstrate new patterns
 - [ ] ADRs document decisions
 
 ### User Success
+
 - [ ] Users understand analyst vs engineer distinction
 - [ ] Clear guidance on which agent to use
 - [ ] Improved agent selection (less confusion)

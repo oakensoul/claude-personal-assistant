@@ -36,6 +36,7 @@ C4Context
 ### People
 
 **User**:
+
 - Developer, data engineer, or analyst
 - Uses AIDA to manage projects, track work, and automate workflows
 - Interacts via natural language in Claude AI chat
@@ -43,32 +44,38 @@ C4Context
 ### Systems
 
 **AIDA Framework** (The System):
+
 - Conversational AI assistant framework
 - Provides agent orchestration, personality system, knowledge management
 - Installed to `~/.aida/` with user config in `~/.claude/`
 - CLI commands generated at `~/.claude/commands/`
 
 **Claude AI API** (External):
+
 - Anthropic's Claude AI service
 - Processes natural language, executes tools
 - Accessed via official Claude Code or web interface
 
 **Obsidian** (External, Optional):
+
 - Personal knowledge management tool
 - AIDA updates daily notes, project tracking, dashboards
 - Integration is optional (AIDA works without Obsidian)
 
 **GitHub** (External):
+
 - Code hosting and issue tracking
 - AIDA creates branches, issues, PRs via `gh` CLI
 - Workflow commands: `/start-work`, `/open-pr`, `/cleanup-main`
 
 **Git** (External):
+
 - Version control for configurations and projects
 - AIDA manages commits, branches, tags
 - Used for dotfiles and project repositories
 
 **Terminal** (External):
+
 - User's command-line interface (zsh or bash)
 - AIDA provides custom commands via `~/.claude/commands/`
 - Shell completions and aliases
@@ -88,30 +95,35 @@ C4Context
 ### AIDA → External Systems
 
 **Claude AI API**:
+
 - Direction: AIDA → Claude
 - Protocol: HTTPS API
 - Purpose: AI processing, tool execution
 - Frequency: Every user interaction
 
 **Obsidian** (Optional):
+
 - Direction: AIDA → Obsidian
 - Protocol: File system (write Markdown files)
 - Purpose: Update daily notes, project tracking
 - Frequency: On-demand (when user requests)
 
 **GitHub**:
+
 - Direction: AIDA → GitHub
 - Protocol: `gh` CLI (HTTPS API)
 - Purpose: Create issues, PRs, manage workflow
 - Frequency: Workflow commands (`/start-work`, `/open-pr`)
 
 **Git**:
+
 - Direction: AIDA → Git
 - Protocol: `git` CLI
 - Purpose: Version control, branching, committing
 - Frequency: Workflow commands, commits
 
 **Terminal**:
+
 - Direction: AIDA → Terminal
 - Protocol: Shell scripts (bash)
 - Purpose: Execute commands, run workflows
@@ -153,20 +165,24 @@ C4Context
 ## Non-Functional Characteristics
 
 **Performance**:
+
 - Installation: < 30 seconds
 - Command execution: < 2 seconds (most commands)
 - No background processes (on-demand execution)
 
 **Availability**:
+
 - Offline capable (except Claude AI API calls)
 - No server required (CLI-based)
 
 **Security**:
+
 - File permissions: 600 for user configs
 - No secrets in repository
 - Privacy scrubbing for knowledge sync
 
 **Scalability**:
+
 - Supports unlimited projects
 - Supports unlimited agents
 - Knowledge base grows over time
@@ -174,12 +190,14 @@ C4Context
 ## Future Considerations
 
 **Potential New External Systems**:
+
 - **Notion**: Alternative to Obsidian for knowledge management
 - **Linear**: Alternative to GitHub for issue tracking
 - **Slack/Discord**: Notifications and status updates
 - **MCP Servers**: Model Context Protocol for external tools
 
 **Potential Internal Changes**:
+
 - CLI tool (Rust/Go) instead of shell scripts
 - Plugin registry for third-party agents/commands
 - Web UI for configuration management
@@ -198,6 +216,7 @@ C4Context
 ## Version History
 
 **v1.0** - 2025-10-15
+
 - Initial C4 system context diagram
 - Documented user, AIDA, and external systems
 - Defined system boundaries and interactions

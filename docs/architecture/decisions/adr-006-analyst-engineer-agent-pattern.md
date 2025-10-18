@@ -11,12 +11,14 @@
 AIDA's current agent structure mixes requirements definition with implementation responsibilities. Agents like `security-engineer`, `qa-engineer`, and `code-reviewer` blur the line between identifying WHAT needs to be done and HOW to implement it. This creates confusion about agent responsibilities and doesn't reflect how modern software teams actually work.
 
 We need to decide how to organize agents to:
+
 - Clearly separate requirements definition from implementation
 - Mirror real-world software team structures
 - Enable multiple domain experts to feed requirements to implementers
 - Ensure engineers own all aspects of their code (tests, security, monitoring)
 
 Without a clear separation, we risk:
+
 - Agents with unclear, overlapping responsibilities
 - Engineers not owning their test implementation
 - Security/quality becoming separate handoffs rather than integrated
@@ -38,11 +40,13 @@ Without a clear separation, we risk:
 **Description**: Continue with agents that both define requirements and implement solutions (e.g., `security-engineer`, `qa-engineer`)
 
 **Pros**:
+
 - No migration needed
 - Familiar to existing users
 - Simple one-agent-per-concern model
 
 **Cons**:
+
 - Unclear whether agent defines requirements or implements them
 - Creates handoff delays (QA writes tests, not engineers)
 - Doesn't reflect modern practices (engineers own their tests)
@@ -63,10 +67,12 @@ security-engineer/
 ```
 
 **Pros**:
+
 - Familiar traditional model
 - Clear functional boundaries
 
 **Cons**:
+
 - Frontend/backend split doesn't fit modern full-stack development
 - Perpetuates separate QA (engineers should own tests)
 - Security remains a handoff, not integrated
@@ -94,6 +100,7 @@ security-engineer/
 - Examples: product-engineer, platform-engineer, api-engineer, data-engineer
 
 **Pros**:
+
 - Crystal clear separation: analysts define requirements, engineers implement
 - Mirrors real-world teams (business analysts, security analysts, engineers)
 - Multiple analysts can feed one engineer (quality + security + governance → product-engineer)
@@ -102,6 +109,7 @@ security-engineer/
 - Integration over handoff (security/quality integrated into engineering)
 
 **Cons**:
+
 - Requires renaming/reorganizing existing agents
 - Users need to learn new pattern
 - More agents overall (but clearer responsibilities)
@@ -122,9 +130,11 @@ etc.
 ```
 
 **Pros**:
+
 - Deep expertise per narrow domain
 
 **Cons**:
+
 - Agent explosion (20+ agents)
 - Coordination nightmare
 - Fragmentation of knowledge
@@ -161,6 +171,7 @@ etc.
 ### Consequences
 
 **Positive**:
+
 - Clear, non-overlapping agent responsibilities
 - Analysts can specialize deeply in their domain
 - Engineers have full ownership of their code
@@ -171,6 +182,7 @@ etc.
 - Supports full-stack engineering (not artificial frontend/backend split)
 
 **Negative**:
+
 - Requires renaming existing agents (migration effort)
   - **Mitigation**: Provide clear migration guide, maintain backward compatibility temporarily
 - More total agents than current structure
@@ -181,6 +193,7 @@ etc.
   - **Mitigation**: Phased migration, one agent at a time
 
 **Neutral**:
+
 - Commands orchestrate analyst + engineer workflows
 - Skills become shared knowledge across both analysts and engineers
 - Two-tier architecture still applies (user-level + project-level)
@@ -205,6 +218,7 @@ etc.
 **Output**: Requirements documents, scenarios, constraints, checklists
 
 **Examples**:
+
 - **quality-analyst**: Identifies test scenarios, edge cases, coverage requirements
 - **security-analyst**: Defines security requirements, threat models, vulnerabilities
 - **governance-analyst**: Defines compliance rules, data handling policies
@@ -222,12 +236,14 @@ etc.
 **Output**: Code, tests, deployment configs, monitoring setup
 
 **Examples**:
+
 - **product-engineer**: Full-stack feature implementation (UI + API + tests + monitoring)
 - **platform-engineer**: Shared services, libraries, internal tools
 - **api-engineer**: External/partner APIs, SDKs, public contracts
 - **data-engineer**: Data pipelines, ELT, data quality
 
 **Responsibilities**:
+
 - Write feature code
 - Write ALL tests (unit, integration, E2E, performance)
 - Implement security requirements
@@ -267,22 +283,26 @@ product-engineer (implementation)
 
 ### Migration Plan
 
-**Phase 1: Rename Existing Agents**
+#### Phase 1: Rename Existing Agents
+
 - `security-engineer` → `security-analyst`
 - `qa-engineer` → `quality-analyst`
 - `privacy-security-auditor` → `compliance-analyst`
 - `data-governance-agent` → `governance-analyst`
 
-**Phase 2: Create New Engineering Agents**
+#### Phase 2: Create New Engineering Agents
+
 - Create `product-engineer` (full-stack features)
 - Create `platform-engineer` (platform services)
 - Create `api-engineer` (external APIs)
 - Enhance `data-engineer` (already follows pattern)
 
-**Phase 3: Remove Redundant Agents**
+#### Phase 3: Remove Redundant Agents
+
 - Delete `code-reviewer` (distribute to tech-lead, security-analyst, quality-analyst)
 
-**Phase 4: Update Documentation**
+#### Phase 4: Update Documentation
+
 - Update all agent descriptions
 - Update command definitions
 - Create agent interaction pattern documentation

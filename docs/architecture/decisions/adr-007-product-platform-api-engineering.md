@@ -11,6 +11,7 @@
 Traditional frontend/backend engineering split no longer reflects modern software development. Modern frameworks (Next.js, Remix, SvelteKit) blur the frontend/backend line with full-stack capabilities. Serverless architectures, microservices, and API-first design require engineers to work across the entire stack.
 
 We need to decide how to organize engineering agents to:
+
 - Support modern full-stack development practices
 - Clearly define ownership for different types of code
 - Match how engineering teams actually organize
@@ -18,6 +19,7 @@ We need to decide how to organize engineering agents to:
 - Enable engineers to own entire features end-to-end
 
 Without a clear model, we risk:
+
 - Artificial separation between UI and API code in Next.js apps
 - Confusion about which agent handles microservices
 - Unclear ownership for platform capabilities vs product features
@@ -47,10 +49,12 @@ backend-engineer/
 ```
 
 **Pros**:
+
 - Familiar traditional model
 - Clear technology boundaries
 
 **Cons**:
+
 - Doesn't fit Next.js (which is both frontend and backend)
 - Artificial split for full-stack features
 - Unclear where server components go (frontend or backend?)
@@ -70,11 +74,13 @@ full-stack-engineer/
 ```
 
 **Pros**:
+
 - No artificial splits
 - Single agent for entire feature
 - Matches "full-stack developer" role
 
 **Cons**:
+
 - Too broad, lacks specialization
 - Platform code vs product code blur together
 - External APIs vs internal services lack distinction
@@ -115,6 +121,7 @@ full-stack-engineer/
 - **Handles**: ELT, data warehouse, dbt, data quality
 
 **Pros**:
+
 - Matches purpose and audience (product vs platform vs external)
 - Full-stack within each domain (no artificial layer split)
 - Clear ownership (product features vs platform capabilities vs partner APIs)
@@ -123,6 +130,7 @@ full-stack-engineer/
 - Scales naturally (add mobile-engineer for mobile-specific needs)
 
 **Cons**:
+
 - Less familiar than frontend/backend
 - Requires understanding the distinction
 - Some overlap (where does internal admin UI go?)
@@ -141,9 +149,11 @@ mobile-engineer/
 ```
 
 **Pros**:
+
 - Matches deployment architecture
 
 **Cons**:
+
 - Too architecture-specific
 - Doesn't help with "what to build"
 - Lambdas can be product, platform, or API
@@ -187,6 +197,7 @@ mobile-engineer/
 ### Consequences
 
 **Positive**:
+
 - Engineers own complete features end-to-end (no handoff between UI and API)
 - Clear ownership based on purpose and audience
 - Supports modern full-stack frameworks naturally
@@ -196,6 +207,7 @@ mobile-engineer/
 - Easier to decide which agent to use (ask "who is this for?")
 
 **Negative**:
+
 - Less familiar than traditional frontend/backend split
   - **Mitigation**: Clear documentation with examples, agent descriptions explain distinction
 - Edge cases (where does internal admin UI go?)
@@ -204,6 +216,7 @@ mobile-engineer/
   - **Mitigation**: Agent prompts clarify when to use each, examples in knowledge base
 
 **Neutral**:
+
 - Engineers use same skills (React, Python, etc.) regardless of agent
 - Skills become technology-specific (react-patterns, fastapi-async), shared across agents
 - Two-tier architecture still applies (user-level + project-level knowledge)
@@ -226,6 +239,7 @@ mobile-engineer/
 **Audience**: End users, customers
 
 **Scope**:
+
 - Full-stack web applications (Next.js, Remix, SvelteKit)
 - User interfaces (React, Vue, Angular)
 - API endpoints for product features
@@ -234,6 +248,7 @@ mobile-engineer/
 - User-facing workflows
 
 **Examples**:
+
 - "Build a user dashboard showing account activity"
 - "Add password reset feature"
 - "Create checkout flow"
@@ -242,6 +257,7 @@ mobile-engineer/
 **Technologies**: React, Next.js, TypeScript, Python, Node.js, databases
 
 **Not in Scope**:
+
 - Shared libraries (platform-engineer)
 - Partner APIs (api-engineer)
 - Data pipelines (data-engineer)
@@ -253,6 +269,7 @@ mobile-engineer/
 **Audience**: Internal engineers, other services
 
 **Scope**:
+
 - Shared libraries and SDKs
 - Internal services (auth, notifications, email)
 - Developer tools and frameworks
@@ -261,6 +278,7 @@ mobile-engineer/
 - Service mesh, API gateways
 
 **Examples**:
+
 - "Build authentication service used by all apps"
 - "Create shared React component library"
 - "Implement notification service with email/SMS/push"
@@ -270,6 +288,7 @@ mobile-engineer/
 **Technologies**: Python, Node.js, Go, CDK, Terraform, Docker, Kubernetes
 
 **Not in Scope**:
+
 - User-facing product features (product-engineer)
 - External partner APIs (api-engineer)
 - Data warehousing (data-engineer)
@@ -281,6 +300,7 @@ mobile-engineer/
 **Audience**: External developers, partners, mobile apps, third-party integrations
 
 **Scope**:
+
 - Public REST APIs
 - GraphQL APIs for mobile/web
 - Webhooks and event notifications
@@ -291,6 +311,7 @@ mobile-engineer/
 - Partner integrations
 
 **Examples**:
+
 - "Design REST API for partners to query data"
 - "Create GraphQL API for mobile app"
 - "Implement webhook system for real-time events"
@@ -300,6 +321,7 @@ mobile-engineer/
 **Technologies**: REST, GraphQL, OpenAPI, SDK generation, API gateway, documentation
 
 **Not in Scope**:
+
 - Internal service-to-service APIs (platform-engineer)
 - Product UI (product-engineer)
 - Data pipelines (data-engineer)
@@ -311,6 +333,7 @@ mobile-engineer/
 **Audience**: Analysts, data scientists, business users
 
 **Scope**:
+
 - ELT pipelines (Airbyte, Fivetran)
 - Data warehouse (Snowflake, BigQuery)
 - dbt models and transformations
@@ -319,6 +342,7 @@ mobile-engineer/
 - Data orchestration (Airflow, Dagster)
 
 **Examples**:
+
 - "Build pipeline to ingest Salesforce data"
 - "Create dbt dimensional model for sales"
 - "Implement data quality tests"
@@ -340,6 +364,7 @@ Is this data/analytics work?
 ```
 
 **Examples**:
+
 - "Build user dashboard" → End users → **product-engineer**
 - "Create auth service" → Internal services → **platform-engineer**
 - "Design partner API" → External developers → **api-engineer**
