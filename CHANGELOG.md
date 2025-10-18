@@ -5,6 +5,72 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.6] - 2025-10-18
+
+### Added
+
+- **ADR-010: Command Structure Refactoring** - Complete redesign of 70 commands with:
+  - Workflow-oriented naming (issue/repository/ssh prefixes)
+  - Noun-verb convention (/agent-create not /create-agent)
+  - 13-step issue workflow with trust-building granularity
+  - 11 repository management commands (VCS-agnostic)
+  - 6 SSH key management commands with security-first design
+  - Progress management: checkpoint, pause, resume workflows
+  - Automation modes: autopilot, yolo for high-trust scenarios
+- **Architecture Decision Records** (5 ADRs):
+  - ADR-002: Two-Tier Agent Architecture (global vs project)
+  - ADR-006: Analyst/Engineer Agent Pattern (separation of concerns)
+  - ADR-007: Product/Platform/API Engineering Model (team structure)
+  - ADR-008: Engineers Own Testing Philosophy (no separate QA team)
+  - ADR-009: Skills System Architecture (knowledge management)
+- **Skills System** - 177 reusable knowledge modules across 28 categories:
+  - Testing: pytest, jest, rspec, playwright, cypress patterns
+  - Infrastructure: terraform, kubernetes, docker, observability
+  - Data: dbt, airflow, data-quality, dimensional-modeling
+  - Cloud: aws-services, gcp-services, azure-services
+  - Security: encryption, access-control, threat-modeling
+  - Compliance: GDPR, HIPAA, PCI-DSS, SOC2
+  - Analytics: metabase, looker, tableau, powerbi
+  - Business: saas-metrics, product-metrics, financial-metrics
+  - 20 additional categories
+- **New Agent Templates** (4):
+  - data-engineer: Data pipeline orchestration, dbt, ELT, data quality
+  - metabase-engineer: BI platform, YAML specs, API operations, visualization
+  - sql-expert: Query optimization, platform-specific best practices
+  - system-architect: Architecture patterns, ADRs, C4 models, system design
+- **Architecture Documentation**:
+  - C4 system context diagram for AIDA framework
+  - Agent interaction patterns and coordination workflows
+  - Agent migration plan for new structure
+  - Skills catalog with complete reference
+  - Skills guide for using knowledge modules
+- **VCS Provider Configuration System**:
+  - Auto-detection from git remote (GitHub/GitLab/Bitbucket)
+  - Quick setup modes: /aida-init [provider]
+  - Configuration hierarchy (project > user)
+  - Support for any VCS/work tracker combination
+- **system-architect agent** installed globally for architecture reviews
+
+### Changed
+
+- Reorganized commands per ADR-008 (Engineers Own Testing):
+  - Removed specialist commands: config-validate, integration-check, qa-check, ux-review
+  - Validation now part of analyst workflows
+  - Engineers own quality, no separate QA team
+- Updated agent templates for ADR alignment:
+  - aws-cloud-engineer: Enhanced two-tier architecture documentation
+  - datadog-observability-engineer: Updated proactive behavior patterns
+- install-agent command added for installing global agent templates to projects
+
+### Documentation
+
+- Complete command reference (70 commands) with categories and examples
+- Trust-building philosophy: "Granularity builds trust" - baby steps for AI adoption
+- Dopamine gamification through multiple workflow checkpoints
+- Repository management vs GitHub integration distinction
+- SSH key security philosophy and pain points addressed
+- VCS provider configuration best practices
+
 ## [0.1.5] - 2025-10-15
 
 ### Fixed

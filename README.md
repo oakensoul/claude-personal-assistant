@@ -12,7 +12,7 @@ audience: "users"
 
 ## Agentic Intelligence Digital Assistant
 
-[![Version](https://img.shields.io/badge/version-0.1.3-blue.svg)](https://github.com/oakensoul/claude-personal-assistant/releases/tag/v0.1.3)
+[![Version](https://img.shields.io/badge/version-0.1.6-blue.svg)](https://github.com/oakensoul/claude-personal-assistant/releases/tag/v0.1.6)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-green.svg)](LICENSE)
 
 A conversational, agentic operating system for managing digital life through Claude AI. Unlike traditional dotfiles (shell configurations), AIDA provides a natural language interface to manage projects, files, tasks, and daily workflows.
@@ -80,24 +80,27 @@ See [Installation Flows](#installation-flows) for detailed comparison.
 
 ## Recent Changes
 
-### [0.1.3] - 2025-10-07
+### [0.1.6] - 2025-10-18
 
-- **Workflow Command Templates**: Added 4 core workflow commands as customizable templates (cleanup-main, implement, open-pr, start-work)
-- **Template Variable Substitution**: Install-time variable substitution system with sed-based processing
-- **Enhanced Validation**: Template variable validation added to privacy validation script
-- **Quality Improvements**: Fixed all markdown linting errors across 4 large command template files
+- **ADR-010: Command Structure Refactoring**: Complete redesign of 70 commands with workflow-oriented naming, trust-building granularity, and automation modes
+- **Architecture Decision Records**: Added 5 ADRs (Two-Tier Architecture, Analyst/Engineer Pattern, Product/Platform/API Model, Engineers Own Testing, Skills System)
+- **Skills System**: 177 reusable knowledge modules across 28 categories (testing, infrastructure, data, cloud, security, compliance, analytics, business metrics)
+- **New Agent Templates**: data-engineer, metabase-engineer, sql-expert, system-architect with comprehensive knowledge bases
+- **VCS Provider Configuration**: Auto-detection from git remote with support for GitHub/GitLab/Bitbucket
+- **Architecture Documentation**: C4 diagrams, agent interaction patterns, migration plans, skills catalog
 
-### [0.1.2] - 2025-10-07
+### [0.1.5] - 2025-10-15
 
-- **Template System**: Archived 8 core commands and 6 core agents to `templates/` with runtime variable substitution
-- **Privacy Validation**: Comprehensive privacy validation script and pre-commit hook integration
-- **Template Documentation**: 56KB of comprehensive README documentation for templates, commands, and agents
-- **Quality Infrastructure**: All templates privacy-validated, markdown-linted, and shellcheck-verified
+- **Bug Fixes**: workflow-init now creates agents in correct `.claude/agents-global/` directory
+- **Documentation**: Added directory safety best practices to command guidelines
+- **publish-issue Update**: Now moves (not deletes) published drafts to `.github/issues/published/`
 
-### [0.1.1] - 2025-10-05
+### [0.1.4] - 2025-10-10
 
-- **Installation Script**: Complete foundational installation script with interactive setup, validation, and dev mode support
-- **Testing Infrastructure**: Comprehensive cross-platform testing with 4 Docker environments and GitHub Actions CI/CD
+- **23 New Commands**: Quality assurance, security & compliance, operations, infrastructure, data & analytics
+- **11 New Agent Templates**: aws-cloud-engineer, datadog-observability-engineer, cost-optimization, data-governance, security-engineer, and 6 more
+- **Two-Tier Agent Architecture**: Global agents in `.claude/agents-global/` with project-specific context
+- **Command Documentation**: Updated README with all 32 current commands categorized by function
 - **Enhanced Workflows**: Added 5 reviewer strategies including GitHub Copilot support
 - **Quality Improvements**: Fixed yamllint strict mode for consistency between local and CI validation
 
