@@ -29,12 +29,14 @@ This guide explains how to create, organize, and use skills in the AIDA framewor
 ### When to Create a Skill
 
 Create a skill when:
+
 - ✅ Multiple agents need the same technical knowledge
 - ✅ Pattern is specific and actionable (not strategic)
 - ✅ Knowledge is about HOW to implement something
 - ✅ Content is reusable across projects (or specific to one project)
 
 Do NOT create a skill when:
+
 - ❌ Knowledge is about an agent's role or responsibilities
 - ❌ Only one agent needs this knowledge
 - ❌ Content is strategic decision-making (that's agent knowledge)
@@ -48,7 +50,7 @@ Location: `~/.claude/skills/`
 
 These are generic, reusable patterns that apply across all projects.
 
-```
+```text
 ~/.claude/skills/
 ├── compliance/          (Regulatory compliance)
 │   ├── hipaa-compliance/
@@ -83,7 +85,7 @@ Location: `{project}/.claude/skills/`
 
 These are project or company-specific patterns that override or extend user-level skills.
 
-```
+```text
 {project}/.claude/skills/
 ├── acme-ui-library/           (Company React component library)
 ├── acme-api-standards/        (Company API conventions)
@@ -97,6 +99,7 @@ These are project or company-specific patterns that override or extend user-leve
 **Category**: One of: compliance, testing, frameworks, api, data-engineering, infrastructure
 
 **Name**: Descriptive, lowercase with hyphens
+
 - ✅ `pytest-patterns`
 - ✅ `hipaa-compliance`
 - ✅ `dbt-incremental-strategy`
@@ -167,7 +170,7 @@ Provide practical examples of using this skill in context.
 
 Create focused markdown files for each aspect of the skill:
 
-```
+```text
 skill-name/
 ├── README.md              (Overview, index)
 ├── getting-started.md     (Quick start guide)
@@ -179,6 +182,7 @@ skill-name/
 ```
 
 Keep files focused:
+
 - ✅ Each file covers one topic
 - ✅ Files are 200-500 lines max
 - ✅ Use clear headings and examples
@@ -204,6 +208,7 @@ Update agents that should use this skill:
 **Purpose**: Regulatory compliance requirements and patterns
 
 **Examples**:
+
 - `hipaa-compliance`: Healthcare data compliance
 - `gdpr-compliance`: EU data privacy
 - `pci-compliance`: Payment card industry standards
@@ -217,6 +222,7 @@ Update agents that should use this skill:
 **Purpose**: Testing framework patterns and configurations
 
 **Examples**:
+
 - `pytest-patterns`: Python testing with pytest
 - `playwright-automation`: E2E browser testing
 - `k6-performance`: Load and performance testing
@@ -230,6 +236,7 @@ Update agents that should use this skill:
 **Purpose**: Frontend and backend framework patterns
 
 **Examples**:
+
 - `react-patterns`: React component patterns
 - `nextjs-setup`: Next.js configuration and patterns
 - `django-patterns`: Django application patterns
@@ -244,6 +251,7 @@ Update agents that should use this skill:
 **Purpose**: API design and implementation patterns
 
 **Examples**:
+
 - `api-design`: REST/GraphQL design conventions
 - `openapi-spec`: OpenAPI specification patterns
 - `webhook-patterns`: Webhook implementation
@@ -257,6 +265,7 @@ Update agents that should use this skill:
 **Purpose**: Data pipeline and transformation patterns
 
 **Examples**:
+
 - `dbt-incremental-strategy`: dbt incremental model patterns
 - `airbyte-setup`: Airbyte connector configuration
 - `snowflake-optimization`: Snowflake performance tuning
@@ -270,6 +279,7 @@ Update agents that should use this skill:
 **Purpose**: Infrastructure as code patterns
 
 **Examples**:
+
 - `cdk-patterns`: AWS CDK construct patterns
 - `terraform-modules`: Terraform module patterns
 - `github-actions-workflows`: CI/CD workflow templates
@@ -312,7 +322,7 @@ When building a React component, refer to the react-patterns skill for:
 
 When both user-level and project-level skills exist with the same purpose:
 
-```
+```text
 User skill: ~/.claude/skills/frameworks/react-patterns/
 Project skill: {project}/.claude/skills/acme-ui-library/
 
@@ -367,7 +377,8 @@ cp -r ~/.claude/skills/category/pattern \
 **Directory**: `~/.claude/skills/testing/pytest-patterns/`
 
 **Files**:
-```
+
+```text
 pytest-patterns/
 ├── README.md              (Overview, when to use)
 ├── setup.md               (pytest installation and configuration)
@@ -379,6 +390,7 @@ pytest-patterns/
 ```
 
 **README.md** (excerpt):
+
 ```markdown
 ---
 title: "pytest Patterns"
@@ -414,7 +426,8 @@ for Python projects.
 **Directory**: `~/.claude/skills/compliance/hipaa-compliance/`
 
 **Files**:
-```
+
+```text
 hipaa-compliance/
 ├── README.md                (Overview)
 ├── requirements.md          (HIPAA requirements summary)
@@ -426,6 +439,7 @@ hipaa-compliance/
 ```
 
 **Used by**:
+
 - `governance-analyst`: Audits HIPAA compliance
 - `product-engineer`: Implements HIPAA-compliant features
 - `data-engineer`: Handles PHI in pipelines
@@ -436,7 +450,8 @@ hipaa-compliance/
 **Directory**: `{project}/.claude/skills/acme-ui-library/`
 
 **Files**:
-```
+
+```text
 acme-ui-library/
 ├── README.md           (Overview of Acme UI library)
 ├── components.md       (Available components)
@@ -446,6 +461,7 @@ acme-ui-library/
 ```
 
 **Relationship to User Skills**:
+
 - Extends `~/.claude/skills/frameworks/react-patterns/`
 - Provides Acme-specific component implementations
 - Overrides generic React patterns with company standards
@@ -455,6 +471,7 @@ acme-ui-library/
 ### Content Organization
 
 **DO**:
+
 - ✅ One skill per technology or pattern
 - ✅ Break large skills into multiple focused files
 - ✅ Use clear headings and examples
@@ -463,6 +480,7 @@ acme-ui-library/
 - ✅ Update last_updated date when changing
 
 **DON'T**:
+
 - ❌ Create monolithic skills covering too much
 - ❌ Duplicate content across multiple skills
 - ❌ Include agent role definition in skills
@@ -472,12 +490,14 @@ acme-ui-library/
 ### Naming Conventions
 
 **DO**:
+
 - ✅ Use lowercase with hyphens: `pytest-patterns`
 - ✅ Be descriptive: `dbt-incremental-strategy` not `dbt-patterns`
 - ✅ Use singular for frameworks: `react-patterns` not `react-pattern`
 - ✅ Use category prefixes when needed: `api-design`, `api-versioning`
 
 **DON'T**:
+
 - ❌ Use underscores: `pytest_patterns`
 - ❌ Use camelCase: `pytestPatterns`
 - ❌ Be too generic: `testing`, `python`
@@ -486,6 +506,7 @@ acme-ui-library/
 ### Documentation Quality
 
 **DO**:
+
 - ✅ Include frontmatter in README
 - ✅ List all agents that use the skill
 - ✅ Provide concrete examples
@@ -494,6 +515,7 @@ acme-ui-library/
 - ✅ Include troubleshooting section
 
 **DON'T**:
+
 - ❌ Copy-paste official docs (link instead)
 - ❌ Provide only theory without examples
 - ❌ Assume prior knowledge
@@ -503,17 +525,20 @@ acme-ui-library/
 ## Skill Development Workflow
 
 ### 1. Identify Need
+
 - Multiple agents need same knowledge
 - Knowledge is technical and specific
 - Pattern is reusable
 
 ### 2. Plan Structure
+
 - Choose category
 - Name the skill
 - List content files needed
 - Identify which agents will use it
 
 ### 3. Create Skeleton
+
 ```bash
 # Create directory
 mkdir -p ~/.claude/skills/category/skill-name
@@ -544,17 +569,20 @@ EOF
 ```
 
 ### 4. Write Content
+
 - Fill in README
 - Create content files
 - Add examples
 - Test with agents
 
 ### 5. Update Agents
+
 - Add skill reference to agent instructions
 - Remove duplicated knowledge from agents
 - Test agent can use skill successfully
 
 ### 6. Document
+
 - Update this guide if needed
 - Add examples
 - Create migration notes
@@ -566,6 +594,7 @@ EOF
 **Problem**: Agent can't find skill
 
 **Solutions**:
+
 - Check skill directory name matches reference
 - Verify README.md exists
 - Check file permissions
@@ -576,6 +605,7 @@ EOF
 **Problem**: Same knowledge in multiple skills
 
 **Solutions**:
+
 - Merge skills into one comprehensive skill
 - Use one skill and reference it from others
 - Split into more focused skills
@@ -585,6 +615,7 @@ EOF
 **Problem**: Skill covers too many topics
 
 **Solutions**:
+
 - Break into multiple focused skills
 - Create category with multiple related skills
 - Use clear file organization within skill
@@ -594,6 +625,7 @@ EOF
 **Problem**: Agent doesn't reference skill when it should
 
 **Solutions**:
+
 - Add explicit skill reference in agent instructions
 - Provide examples of when to use skill
 - Check skill name matches agent reference
