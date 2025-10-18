@@ -15,6 +15,7 @@ depends_on: ["versioning-system"]
 ## Problem
 
 Current workflow commands are scattered and GitHub-specific:
+
 - `create-issue`, `publish-issue` - individual commands
 - `open-pr`, `cleanup-main` - separate commands
 - `workflow-init`, `github-init`, `github-sync` - redundant/overlapping
@@ -37,6 +38,7 @@ Create three consolidated workflow commands with subcommands.
 ```
 
 **Flexibility:**
+
 - Works with local drafts (no forge needed)
 - Publishes to GitHub, GitLab, or Bitbucket
 - Falls back gracefully if no forge configured
@@ -52,6 +54,7 @@ Create three consolidated workflow commands with subcommands.
 ```
 
 **Flexibility:**
+
 - Detects forge type (GitHub/GitLab/Bitbucket)
 - Adapts to workflow (PR, MR, patch submission)
 - Works with or without CI/CD
@@ -67,6 +70,7 @@ Create three consolidated workflow commands with subcommands.
 ```
 
 **Flexibility:**
+
 - Detects available forges
 - Works with multiple remotes
 - Handles local-only projects

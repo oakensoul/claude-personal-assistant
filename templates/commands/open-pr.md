@@ -620,11 +620,10 @@ Automates the pull request creation process including atomic commits, versioning
          - Important: Apply ALL THREE labels simultaneously: version:*, build:*, and issue type
       4. Capture and return PR number from output
       5. Log success:
-         ```
          ✓ PR created with labels: {version-label}, {build-label}, {issue-type}
-         ```
 
       Return: PR number, PR URL, reviewers assigned (or "none"/"auto"), labels applied
+
       ```
 
     - If push or PR creation fails, display error and halt

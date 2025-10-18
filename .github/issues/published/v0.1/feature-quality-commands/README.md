@@ -15,6 +15,7 @@ depends_on: ["versioning-system"]
 ## Problem
 
 Quality assurance commands are scattered:
+
 - `code-review`, `script-audit`, `config-validate`, `ux-review` - individual commands
 - `qa-check`, `test-plan` - separate testing commands
 - `generate-docs`, `runbook` - documentation commands not grouped
@@ -38,6 +39,7 @@ Create two consolidated commands for quality assurance and documentation.
 ```
 
 **Code Review:**
+
 - Security vulnerabilities
 - Performance issues
 - Code style/standards
@@ -45,6 +47,7 @@ Create two consolidated commands for quality assurance and documentation.
 - Maintainability
 
 **Script Audit:**
+
 - ShellCheck compliance
 - Security issues
 - Error handling
@@ -52,12 +55,14 @@ Create two consolidated commands for quality assurance and documentation.
 - Best practices
 
 **Config Validation:**
+
 - YAML/JSON/TOML validation
 - Schema compliance
 - Security issues
 - Best practices
 
 **UX Review:**
+
 - CLI interaction patterns
 - Terminal UX design
 - Command ergonomics
@@ -74,12 +79,14 @@ Create two consolidated commands for quality assurance and documentation.
 ```
 
 **Audiences:**
+
 - `developers` - Technical documentation
 - `customers` - End-user guides
 - `partners` - Integration guides
 - `internal` - Internal procedures
 
 **Features:**
+
 - Multiple format support (Markdown, HTML, PDF)
 - Automatic TOC generation
 - Cross-referencing

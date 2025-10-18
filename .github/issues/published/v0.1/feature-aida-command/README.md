@@ -15,6 +15,7 @@ depends_on: ["versioning-system"]
 ## Problem
 
 Framework management commands are scattered:
+
 - `create-agent`, `create-command` - individual commands
 - No centralized way to manage AIDA itself
 - No validation, migration, or health checking
@@ -29,6 +30,7 @@ Create `/aida` command with comprehensive subcommands for managing the AIDA fram
 ### `/aida` Command Structure
 
 **Agent Management:**
+
 ```bash
 /aida agent create              # Create new agent
 /aida agent update              # Update agents to latest standards
@@ -38,6 +40,7 @@ Create `/aida` command with comprehensive subcommands for managing the AIDA fram
 ```
 
 **Command Management:**
+
 ```bash
 /aida command create            # Create new command
 /aida command update            # Update commands to latest standards
@@ -47,6 +50,7 @@ Create `/aida` command with comprehensive subcommands for managing the AIDA fram
 ```
 
 **Framework Operations:**
+
 ```bash
 /aida scan                      # Scan for outdated patterns
 /aida validate                  # Validate all configurations

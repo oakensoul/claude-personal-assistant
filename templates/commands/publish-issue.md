@@ -161,6 +161,7 @@ For each draft in list:
     - Display: `✓ Published: {title} → Issue #{number}`
     - Store issue number and URL
     - Move draft to published folder:
+
       ```bash
       # Create published directory structure
       mkdir -p .github/issues/published/{milestone}/
@@ -172,8 +173,9 @@ For each draft in list:
       sed -i '' 's/status: DRAFT/status: PUBLISHED/' .github/issues/published/{milestone}/{type}-{slug}/README.md
       echo -e "\n---\n\n**GitHub Issue**: {issue-url}" >> .github/issues/published/{milestone}/{type}-{slug}/README.md
       ```
+
     - Verify move successful
-    - Display: `  Moved draft to: .github/issues/published/{milestone}/{type}-{slug}/`
+    - Display: `Moved draft to: .github/issues/published/{milestone}/{type}-{slug}/`
 
     **On failure**:
 
