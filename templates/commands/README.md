@@ -3,7 +3,7 @@ title: "Command Templates"
 description: "Slash command templates for AIDA workflow automation"
 category: "reference"
 tags: ["commands", "templates", "workflows", "automation"]
-last_updated: "2025-10-06"
+last_updated: "2025-10-10"
 status: "published"
 audience: "developers"
 ---
@@ -108,7 +108,11 @@ This hybrid approach provides:
 
 ## Available Commands
 
-AIDA includes 8 core commands for workflow automation:
+AIDA currently includes 32 commands for workflow automation. The core workflow commands are documented below, with additional specialized commands for quality assurance, security, operations, and domain-specific tasks.
+
+**Note**: In milestone v0.1.0, these commands will be consolidated into 10 logical command groups with subcommands for better organization and discoverability. See [GitHub milestone 0.1.0](https://github.com/oakensoul/claude-personal-assistant/milestone/16) for details.
+
+### Core Workflow Commands
 
 ### 1. create-agent
 
@@ -238,7 +242,39 @@ AIDA includes 8 core commands for workflow automation:
 - `--type <type>`: Documentation type (api, user, integration, developer, readme)
 - `--audience <audience>`: Target audience (developers, customers, partners)
 
-### 6. publish-issue
+### 6. integration-check
+
+**Purpose**: Verify external integrations (Obsidian, GNU Stow, MCP servers, Git hooks) are properly configured and functioning
+
+**Invocation**:
+
+```bash
+/integration-check
+/integration-check obsidian
+/integration-check stow
+/integration-check mcp
+/integration-check git-hooks
+/integration-check all
+```
+
+**What It Does**:
+
+- Validates integration connectivity and configuration
+- Checks directory structures and file permissions
+- Tests service availability (MCP servers, Git hooks)
+- Detects common configuration issues
+- Provides specific remediation steps
+- Generates health reports for each integration
+
+**When to Use**: After installation, after system updates, when experiencing integration issues, or as part of monthly maintenance
+
+**Type**: Automated, agent-delegating (delegates to `integration-specialist`)
+
+**Arguments**:
+
+- `<integration>`: Specific integration to check (obsidian, stow, mcp, git-hooks, all - default: all)
+
+### 7. publish-issue
 
 **Purpose**: Publish local issue drafts to GitHub
 
@@ -269,7 +305,7 @@ AIDA includes 8 core commands for workflow automation:
 - `--milestone X.Y`: Publish all drafts for a specific milestone
 - `--all`: Publish all drafts
 
-### 7. track-time
+### 8. track-time
 
 **Purpose**: Log development time with automatic activity detection
 
@@ -304,7 +340,7 @@ AIDA includes 8 core commands for workflow automation:
 - `--issue <number>`: Attribute all time to specific issue
 - `--interactive`: Manually allocate time across issues
 
-### 8. workflow-init
+### 9. workflow-init
 
 **Purpose**: Initialize workflow configuration for a project with interactive setup
 
@@ -457,6 +493,10 @@ Command instructions for Claude...
 4. **Idempotency**: Design commands to be safely re-runnable
 5. **Validation**: Check prerequisites before executing
 6. **Documentation**: Include examples and usage notes
+7. **Directory Safety**: Always return to project root after operations
+   - Use `cd ${PROJECT_ROOT}` after any directory changes
+   - Alternatively, use absolute paths to avoid directory changes
+   - Example: `cd ${PROJECT_ROOT} && git add .` instead of `cd subdir && git add .`
 
 ### Command Naming
 
@@ -524,6 +564,52 @@ Commands work together to form complete development workflows:
 # Document specific components
 /generate-docs --files "src/components/**/*.tsx" --type readme
 ```
+
+### Additional Commands
+
+Beyond the core workflow commands documented above, AIDA includes specialized commands for:
+
+**Quality Assurance**:
+
+- `/code-review` - Code review and security analysis
+- `/script-audit` - Shell script security and quality audit
+- `/config-validate` - Configuration file validation
+- `/ux-review` - CLI/UX interaction review
+- `/qa-check` - QA checklist generation
+- `/test-plan` - Test plan generation
+
+**Security & Compliance**:
+
+- `/security-audit` - Comprehensive security audit
+- `/compliance-check` - Compliance framework validation
+- `/pii-scan` - PII detection and scanning
+
+**Operations**:
+
+- `/incident` - Incident response workflow
+- `/debug` - Production and local debugging
+- `/runbook` - Runbook access and execution
+
+**Project Management**:
+
+- `/start-work` - Begin work on GitHub issue
+- `/implement` - Guided implementation workflow
+- `/cleanup-main` - Post-merge cleanup
+
+**Infrastructure & DevOps**:
+
+- `/aws-review` - AWS infrastructure review
+- `/github-init` - GitHub repository initialization
+- `/github-sync` - GitHub labels/milestones sync
+
+**Data & Analytics** (domain-specific):
+
+- `/metric-audit` - Metrics definition audit
+- `/optimize-warehouse` - Snowflake warehouse optimization
+- `/cost-review` - Cost analysis and optimization
+- `/sla-report` - SLA compliance reporting
+
+**Note**: These specialized commands will be consolidated into `/quality`, `/security`, `/incident`, `/debug`, `/project`, `/review`, `/docs`, and `/aida` command groups in v0.1.0. See [issue #44](https://github.com/oakensoul/claude-personal-assistant/issues/44) and related issues for the consolidation plan.
 
 ## Runtime Behavior
 

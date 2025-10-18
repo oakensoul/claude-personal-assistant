@@ -1,6 +1,6 @@
 ---
 name: publish-issue
-description: Publishes local issue drafts to GitHub and removes them from drafts/
+description: Publishes local issue drafts to GitHub and moves them to published/ for historical reference
 args:
   slugs:
     description: "One or more slugs to publish, or --milestone X.Y, or --all"
@@ -9,7 +9,7 @@ args:
 
 # Publish Issue Command
 
-Publishes local issue drafts to GitHub. Reads draft metadata, creates GitHub issues, and removes local drafts on success.
+Publishes local issue drafts to GitHub. Reads draft metadata, creates GitHub issues, and moves local drafts to `.github/issues/published/` on success.
 
 ## Usage
 
@@ -25,7 +25,7 @@ Publishes local issue drafts to GitHub. Reads draft metadata, creates GitHub iss
 
 # Publish all drafts
 /publish-issue --all
-```text
+```
 
 ## Instructions
 
@@ -99,7 +99,7 @@ Found {count} draft(s) to publish:
    ...
 
 ========================================
-```text
+```
 
 - Prompt: "Publish these {count} issue(s) to GitHub? (y/n)"
 - If no: Exit without publishing
@@ -110,12 +110,15 @@ Found {count} draft(s) to publish:
 For each draft:
 
 - **Check milestone exists on GitHub**:
+
   - Run: `gh api repos/:owner/:repo/milestones --jq '.[] | select(.title=="{milestone}") | .number'`
   - If not found: Display error "Milestone '{milestone}' not found on GitHub. Create it first.", skip this draft
 - **Check labels exist** (optional validation):
+
   - Can fetch existing labels: `gh label list --json name`
   - If label doesn't exist, it will be created or warning shown
 - **Validate assignee** (if provided):
+
   - Run: `gh api users/{assignee}` to check user exists
   - If not found: Display warning "User @{assignee} not found, skipping assignee", continue
 
@@ -124,6 +127,7 @@ For each draft:
 For each draft in list:
 
 1. **Build GitHub issue body**
+
     - Use body from README.md (content after frontmatter)
     - Optionally enhance with metadata section at bottom:
 
@@ -135,6 +139,7 @@ For each draft in list:
     ```
 
 2. **Create GitHub issue**
+
     - Build `gh issue create` command:
 
     ```bash
@@ -155,14 +160,28 @@ For each draft in list:
 
     - Display: `✓ Published: {title} → Issue #{number}`
     - Store issue number and URL
-    - Delete draft folder: `rm -rf {draft-folder}`
-    - Verify deletion successful
+    - Move draft to published folder:
+
+      ```bash
+      # Create published directory structure
+      mkdir -p .github/issues/published/{milestone}/
+
+      # Move draft folder
+      mv {draft-folder} .github/issues/published/{milestone}/{type}-{slug}/
+
+      # Update README.md status and add GitHub URL
+      sed -i '' 's/status: DRAFT/status: PUBLISHED/' .github/issues/published/{milestone}/{type}-{slug}/README.md
+      echo -e "\n---\n\n**GitHub Issue**: {issue-url}" >> .github/issues/published/{milestone}/{type}-{slug}/README.md
+      ```
+
+    - Verify move successful
+    - Display: `Moved draft to: .github/issues/published/{milestone}/{type}-{slug}/`
 
     **On failure**:
 
     - Display: `✗ Failed to publish: {title}`
     - Show error message from `gh issue create`
-    - DO NOT delete draft folder (preserve for retry)
+    - DO NOT delete or move draft folder (preserve for retry)
     - Continue with next draft
 
 ### 7. Display Summary
@@ -195,7 +214,7 @@ Next Steps:
 
 2. View issues on GitHub:
    gh issue list --milestone "{milestone}"
-```text
+```
 
 ## Examples
 
@@ -206,8 +225,8 @@ Next Steps:
 
 # Output:
 # ✓ Published: Add Dark Mode Support → Issue #42
-# Draft removed from: .github/issues/drafts/milestone-v0.1/feature-add-dark-mode/
-```text
+# Moved draft to: .github/issues/published/milestone-v0.1/feature-add-dark-mode/
+```
 
 ### Publish Multiple Drafts
 
@@ -215,7 +234,7 @@ Next Steps:
 /publish-issue add-dark-mode refactor-auth fix-login-bug
 
 # Publishes all three drafts in one command
-```text
+```
 
 ### Publish by Milestone
 
@@ -224,7 +243,7 @@ Next Steps:
 
 # Finds all drafts in .github/issues/drafts/milestone-v0.1/
 # Publishes all of them
-```text
+```
 
 ### Publish Everything
 
@@ -233,7 +252,7 @@ Next Steps:
 
 # Publishes every draft in drafts/
 # Useful for batch operations
-```text
+```
 
 ## Error Handling
 
@@ -245,16 +264,45 @@ Next Steps:
 - **Permission error**: Display error about GitHub token permissions
 - **Partial failure**: Display which succeeded and which failed, preserve failed drafts
 
+## Directory Structure
+
+**Before publishing**:
+
+```text
+.github/issues/drafts/milestone-v0.1/
+├── feature-add-dark-mode/
+│   └── README.md (status: DRAFT)
+└── bug-fix-login/
+    └── README.md (status: DRAFT)
+```
+
+**After publishing**:
+
+```text
+.github/issues/published/milestone-v0.1/
+├── feature-add-dark-mode/
+│   └── README.md (status: PUBLISHED, includes GitHub URL)
+└── bug-fix-login/
+    └── README.md (status: PUBLISHED, includes GitHub URL)
+```
+
+**Git tracking**:
+
+- `.github/issues/drafts/` - Gitignored (local only)
+- `.github/issues/published/` - Committed to repo (shared history)
+
 ## Notes
 
-- **Drafts deleted on success**: Once published, local draft is removed
-- **Failures preserved**: If publish fails, draft remains for retry
+- **Drafts moved on success**: Once published, local draft is moved to `.github/issues/published/` for historical reference
+- **Status updated**: README.md status changes from "DRAFT" to "PUBLISHED" with GitHub issue URL appended
+- **Failures preserved**: If publish fails, draft remains in `drafts/` for retry
 - **Idempotent-ish**: Re-running publishes only remaining drafts
 - **Atomic per-draft**: Each draft publishes independently
 - **Batch operations**: Use `--milestone` or `--all` for efficiency
 - **Validation before publish**: Checks milestone exists before attempting
 - **Safe to retry**: Failed publishes can be retried without duplicates
-- **Preserves history**: GitHub issues become permanent record
+- **Preserves history**: Both GitHub issues and local published drafts maintain permanent record
+- **Team visibility**: Published folder should be committed so team can see what was created
 
 ## Related Commands
 
