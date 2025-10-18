@@ -9,12 +9,14 @@
 ## Context and Problem Statement
 
 AIDA agents need knowledge to provide context-aware assistance. We need to decide how to organize agent knowledge to balance:
+
 - Reusability across projects (generic knowledge)
 - Project-specific context (custom knowledge)
 - User preferences and personal philosophy
 - Maintainability and clarity
 
 Without a clear architecture, we risk:
+
 - Duplicating generic knowledge in every project
 - Mixing user-level preferences with project-specific details
 - Making agents unable to detect when project context is missing
@@ -36,11 +38,13 @@ Without a clear architecture, we risk:
 **Description**: All agent knowledge lives in project directories only (`.claude/agents/{agent}/`)
 
 **Pros**:
+
 - Simple (one location per project)
 - All knowledge is project-specific
 - No confusion about where to add knowledge
 
 **Cons**:
+
 - Must duplicate generic knowledge in every project
 - No way to capture user preferences across projects
 - Agents can't provide generic guidance outside project context
@@ -53,11 +57,13 @@ Without a clear architecture, we risk:
 **Description**: All agent knowledge lives in user home directory only (`~/.claude/agents/{agent}/`)
 
 **Pros**:
+
 - Simple (one location globally)
 - Reusable across all projects
 - Captures user preferences
 
 **Cons**:
+
 - No project-specific context
 - All projects get same generic guidance
 - Can't document project-specific decisions (tech stack, ADRs, C4 models)
@@ -88,6 +94,7 @@ Project-Level (specific):
 ```
 
 **Pros**:
+
 - Clear separation (generic vs specific)
 - Generic knowledge reusable across projects
 - Project knowledge tailored to constraints
@@ -97,6 +104,7 @@ Project-Level (specific):
 - Easy to maintain (update generic once, applies everywhere)
 
 **Cons**:
+
 - More complex (two locations to manage)
 - Agents must check both locations
 - Need clear guidelines on what goes where
@@ -116,10 +124,12 @@ Project-Level (specific):
 ```
 
 **Pros**:
+
 - Support organization-level standards
 - Good for enterprise/team use
 
 **Cons**:
+
 - Overly complex for individual use
 - Hard to manage three tiers
 - Organization concept doesn't fit AIDA (personal assistant)
@@ -131,6 +141,7 @@ Project-Level (specific):
 **Chosen option**: Option C - Two-Tier Architecture (User + Project)
 
 **Rationale**:
+
 - Balances reusability (user-level) with specificity (project-level)
 - Agents can provide intelligent guidance both inside and outside projects
 - User preferences captured once, apply everywhere
@@ -142,6 +153,7 @@ Project-Level (specific):
 ### Consequences
 
 **Positive**:
+
 - Generic patterns documented once, reused across all projects
 - User's technical philosophy captured (coding standards, preferred patterns)
 - Project-specific context enables tailored recommendations
@@ -150,6 +162,7 @@ Project-Level (specific):
 - Clear separation of concerns
 
 **Negative**:
+
 - More complex than single-tier (two locations)
 - **Mitigation**: Clear documentation on what goes where (documented in agent definitions)
 - Agents must check both locations (implementation complexity)
@@ -158,6 +171,7 @@ Project-Level (specific):
 - **Mitigation**: Agents warn when project context is missing, guide users to run `/workflow-init`
 
 **Neutral**:
+
 - Adds `/workflow-init` command to create project-level configuration
 - Need to document tier separation in all agent definitions
 
@@ -171,6 +185,7 @@ Project-Level (specific):
 ## Implementation Notes
 
 **User-Level Knowledge** (`~/.claude/agents/{agent}/knowledge/`):
+
 - Generic architecture patterns (microservices, event-driven, DDD)
 - User's coding standards and preferences
 - Reusable templates (ADRs, C4 diagrams)
@@ -178,6 +193,7 @@ Project-Level (specific):
 - Cross-project best practices
 
 **Project-Level Knowledge** (`{project}/.claude/agents-global/{agent}/`):
+
 - Project-specific architecture (C4 models, ADRs)
 - Technology stack and rationale
 - Project coding standards (if different from user preferences)
@@ -185,6 +201,7 @@ Project-Level (specific):
 - Non-functional requirements
 
 **Agent Behavior**:
+
 1. Always load user-level knowledge
 2. Check if in project directory (`.git` exists)
 3. Check if project-level knowledge exists (`.claude/agents-global/{agent}/`)
@@ -192,6 +209,7 @@ Project-Level (specific):
 5. Warn if in project but no project-level knowledge
 
 **Commands**:
+
 - `/workflow-init`: Creates project-level agent configurations
 
 ## References

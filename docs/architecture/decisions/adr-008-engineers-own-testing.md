@@ -13,12 +13,14 @@ Testing is a critical part of software development. Traditionally, some organiza
 Modern software practices emphasize that engineers should own all aspects of their code, including tests. Testing is just another form of code, requiring the same skills as feature implementation.
 
 We need to decide:
+
 - Who writes automated tests (unit, integration, E2E, performance)?
 - What role does QA play in modern development?
 - Should we have a dedicated test-automation-engineer agent?
 - How do quality concerns integrate into engineering?
 
 Without clarity, we risk:
+
 - Creating handoff delays between feature code and test code
 - Engineers not owning quality of their work
 - QA becoming a bottleneck instead of a quality multiplier
@@ -46,11 +48,13 @@ test-automation-engineer writes tests for that code
 ```
 
 **Pros**:
+
 - Dedicated testing expertise
 - Engineers focus on features only
 - Tests written by testing specialist
 
 **Cons**:
+
 - Handoff delay (feature ready, waiting for tests)
 - Split ownership (engineer doesn't own quality)
 - Testing is still code (same skills needed)
@@ -71,10 +75,12 @@ qa-engineer writes integration/E2E tests
 ```
 
 **Pros**:
+
 - Engineers write some tests
 - QA adds higher-level tests
 
 **Cons**:
+
 - Still split ownership
 - Arbitrary boundary (why is unit different from integration?)
 - Integration/E2E tests often need code context
@@ -96,6 +102,7 @@ Engineers implement ALL tests (unit, integration, E2E, performance)
 ```
 
 **Pros**:
+
 - Engineers own all code (features + tests)
 - No handoff delays
 - Quality integrated into engineering
@@ -105,6 +112,7 @@ Engineers implement ALL tests (unit, integration, E2E, performance)
 - Clear separation: quality-analyst defines WHAT, engineers implement HOW
 
 **Cons**:
+
 - Engineers must learn testing practices
   - **Mitigation**: Testing skills provide patterns, quality-analyst provides guidance
 - No dedicated test-automation expertise
@@ -117,9 +125,11 @@ Engineers implement ALL tests (unit, integration, E2E, performance)
 **Description**: Entirely separate QA team writes all tests after features complete:
 
 **Pros**:
+
 - None in modern context
 
 **Cons**:
+
 - Waterfall anti-pattern
 - Massive handoff delays
 - No modern organization uses this
@@ -168,6 +178,7 @@ Engineers implement ALL tests (unit, integration, E2E, performance)
 ### Consequences
 
 **Positive**:
+
 - Engineers own complete quality of their code
 - No handoff delays between feature and test implementation
 - Faster feedback loops (test while developing)
@@ -179,6 +190,7 @@ Engineers implement ALL tests (unit, integration, E2E, performance)
 - Clear separation: quality-analyst analyzes WHAT to test, engineers implement HOW to test
 
 **Negative**:
+
 - Engineers must invest time learning testing practices
   - **Mitigation**: Testing skills provide patterns (pytest-patterns, playwright-automation, k6-performance)
   - **Mitigation**: quality-analyst provides guidance and best practices
@@ -189,6 +201,7 @@ Engineers implement ALL tests (unit, integration, E2E, performance)
   - **Mitigation**: Tech-lead enforces testing standards
 
 **Neutral**:
+
 - Different from traditional "QA writes tests" model
 - Requires cultural shift if coming from traditional QA model
 - Quality-analyst role is advisory/analytical, not implementation
@@ -210,6 +223,7 @@ Engineers implement ALL tests (unit, integration, E2E, performance)
 **Purpose**: Define quality requirements, identify test scenarios, analyze coverage gaps
 
 **Responsibilities**:
+
 - Identify test scenarios (happy path, edge cases, error cases)
 - Analyze code coverage and identify gaps
 - Define quality gates (coverage thresholds, complexity limits)
@@ -225,6 +239,7 @@ Engineers implement ALL tests (unit, integration, E2E, performance)
 - Configure test frameworks
 
 **Output**:
+
 - Test scenario lists
 - Coverage gap analysis
 - Quality recommendations
@@ -262,6 +277,7 @@ performance test for scenario 10"
 **Purpose**: Define performance requirements, SLAs, and load expectations
 
 **Responsibilities**:
+
 - Define performance targets (response time, throughput)
 - Set SLAs and error budgets
 - Identify performance risks
@@ -275,6 +291,7 @@ performance test for scenario 10"
 - Configure performance tools
 
 **Output**:
+
 - Performance requirements
 - SLA definitions
 - Load testing scenarios

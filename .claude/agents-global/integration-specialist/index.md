@@ -18,7 +18,8 @@ Project-specific integration patterns and requirements for the AIDA framework.
 AIDA integrates with Obsidian for note-taking, knowledge management, and daily tracking.
 
 **Vault Structure**:
-```
+
+```text
 ~/Documents/Obsidian/Main/
 ├── Daily Notes/
 │   └── YYYY-MM-DD.md          # Daily notes with AIDA context
@@ -30,6 +31,7 @@ AIDA integrates with Obsidian for note-taking, knowledge management, and daily t
 ```
 
 **Daily Note Template**:
+
 ```markdown
 ---
 date: {{date}}
@@ -54,12 +56,14 @@ personality: {{current_personality}}
 ```
 
 **Integration Points**:
+
 1. **Daily Notes**: AIDA appends activity to current daily note
 2. **Project Notes**: Link project work to Obsidian project pages
 3. **Knowledge Base**: Sync AIDA knowledge to Obsidian vault
 4. **Dashboard**: Auto-update AIDA status dashboard
 
 **API Access**:
+
 - Use Obsidian Local REST API plugin
 - Base URL: `http://localhost:27124`
 - Authentication: API token in environment variable
@@ -69,7 +73,8 @@ personality: {{current_personality}}
 AIDA can be managed with GNU Stow for dotfiles integration.
 
 **Stow Package Structure**:
-```
+
+```text
 ~/dotfiles/
 └── aida/
     ├── .aida/                 # Framework installation
@@ -83,6 +88,7 @@ AIDA can be managed with GNU Stow for dotfiles integration.
 ```
 
 **Stow Commands**:
+
 ```bash
 # Install AIDA via stow
 cd ~/dotfiles
@@ -96,6 +102,7 @@ stow -R aida
 ```
 
 **Integration Requirements**:
+
 1. **Standalone First**: AIDA must work without stow
 2. **Stow Optional**: Stow integration is enhancement, not requirement
 3. **No Conflicts**: Stow package must not conflict with manual installation
@@ -106,6 +113,7 @@ stow -R aida
 AIDA integrates with git for version control and collaboration.
 
 **Pre-commit Hooks**:
+
 ```bash
 #!/bin/bash
 # .git/hooks/pre-commit
@@ -124,11 +132,13 @@ fi
 ```
 
 **Workflow Commands Integration**:
+
 - `/start-work` - Create feature branch from issue
 - `/open-pr` - Create pull request with AIDA context
 - `/cleanup-main` - Post-merge cleanup automation
 
 **Git Context Tracking**:
+
 ```yaml
 # AIDA tracks git context
 git_context:
@@ -143,6 +153,7 @@ git_context:
 AIDA can expose Model Context Protocol (MCP) servers for Claude Desktop integration.
 
 **AIDA MCP Server**:
+
 ```json
 {
   "mcpServers": {
@@ -159,6 +170,7 @@ AIDA can expose Model Context Protocol (MCP) servers for Claude Desktop integrat
 ```
 
 **MCP Tools Provided**:
+
 1. `aida_get_personality` - Get current personality
 2. `aida_switch_personality` - Switch to different personality
 3. `aida_get_memory` - Retrieve AIDA memory
@@ -170,6 +182,7 @@ AIDA can expose Model Context Protocol (MCP) servers for Claude Desktop integrat
 AIDA integrates with user shell configuration.
 
 **Shell RC Integration** (`.zshrc` / `.bashrc`):
+
 ```bash
 # AIDA Framework Integration
 if [ -f ~/.aida/lib/shell-integration.sh ]; then
@@ -188,6 +201,7 @@ fi
 ```
 
 **Shell Functions**:
+
 ```bash
 # Quick personality switching
 alias jarvis='aida personality jarvis'
@@ -218,7 +232,7 @@ AIDA <-> Obsidian sync pattern:
 
 AIDA supports external plugins via:
 
-```
+```text
 ~/.aida/plugins/
 ├── obsidian-sync/
 │   ├── plugin.yml         # Plugin metadata
@@ -228,6 +242,7 @@ AIDA supports external plugins via:
 ```
 
 **Plugin Configuration**:
+
 ```yaml
 ---
 name: "obsidian-sync"
@@ -255,6 +270,7 @@ hooks:
 ### Error Handling
 
 **Integration Failure Modes**:
+
 - **Obsidian Offline**: Queue updates, retry on next command
 - **Stow Package Conflict**: Warn user, suggest resolution
 - **Git Hook Error**: Log error, allow commit to proceed

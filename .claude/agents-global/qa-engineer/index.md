@@ -28,11 +28,13 @@ Project-specific testing standards and requirements for the AIDA framework.
 ### Supported Platforms
 
 **macOS**:
+
 - macOS Sonoma (14.x)
 - macOS Sequoia (15.x)
 - Default shells: bash 3.2, zsh 5.x
 
 **Linux**:
+
 - Ubuntu 22.04 LTS
 - Ubuntu 24.04 LTS
 - Debian 12
@@ -51,6 +53,7 @@ shells:
 ```
 
 **Compatibility Requirements**:
+
 - No Bash 4+ features (associative arrays, etc.)
 - No Linux-specific commands (use portable alternatives)
 - Test `readlink` vs `greadlink` (macOS differences)
@@ -60,6 +63,7 @@ shells:
 ### Test Scenarios
 
 **Normal Installation**:
+
 ```bash
 # Test standard installation flow
 ./install.sh
@@ -72,6 +76,7 @@ test -f ~/.aida/personalities/jarvis.yml
 ```
 
 **Dev Mode Installation**:
+
 ```bash
 # Test development mode with symlinks
 ./install.sh --dev
@@ -82,6 +87,7 @@ readlink ~/.aida/ | grep "$(pwd)"
 ```
 
 **Upgrade Scenarios**:
+
 ```bash
 # Test upgrade from v0.1.0 to v0.2.0
 # 1. Install v0.1.0
@@ -94,6 +100,7 @@ readlink ~/.aida/ | grep "$(pwd)"
 ### Installation Validation
 
 **Directory Structure**:
+
 ```bash
 # Validate required directories exist
 required_dirs=(
@@ -112,6 +119,7 @@ done
 ```
 
 **File Permissions**:
+
 ```bash
 # Validate secure permissions
 test "$(stat -f %A ~/.claude)" = "700" || echo "FAIL: Insecure ~/.claude/"
@@ -123,6 +131,7 @@ test "$(stat -f %A ~/CLAUDE.md)" = "644" || echo "FAIL: Wrong CLAUDE.md perms"
 ### Automated Linting
 
 **Shell Scripts** (shellcheck):
+
 ```bash
 # All .sh files must pass
 shellcheck --severity=warning install.sh
@@ -131,6 +140,7 @@ shellcheck lib/**/*.sh
 ```
 
 **YAML Files** (yamllint):
+
 ```yaml
 # yamllint --strict required
 # .yamllint.yml
@@ -145,12 +155,14 @@ rules:
 ```
 
 **Markdown Files** (markdownlint):
+
 ```bash
 # All .md files must pass
 markdownlint --config .markdownlint.yml **/*.md
 ```
 
 **GitHub Actions** (actionlint):
+
 ```bash
 # Validate all workflow files
 actionlint .github/workflows/*.yml
@@ -159,6 +171,7 @@ actionlint .github/workflows/*.yml
 ### Linting Enforcement
 
 **Pre-commit Hooks**:
+
 ```bash
 #!/bin/bash
 # .git/hooks/pre-commit
@@ -180,6 +193,7 @@ echo "✓ All linters passed"
 ```
 
 **CI/CD Pipeline**:
+
 ```yaml
 # .github/workflows/lint.yml
 name: Lint
@@ -205,6 +219,7 @@ jobs:
 ### Docker Test Environment
 
 **Test Containers**:
+
 ```yaml
 # .github/testing/docker-compose.yml
 version: '3.8'
@@ -238,6 +253,7 @@ services:
 ### Test Execution
 
 **Local Testing**:
+
 ```bash
 # Run all platform tests
 ./.github/testing/test-install.sh --all
@@ -250,6 +266,7 @@ services:
 ```
 
 **CI/CD Testing**:
+
 ```yaml
 # .github/workflows/test.yml
 name: Test
@@ -274,6 +291,7 @@ jobs:
 ### Personality System Testing
 
 **Personality Loading**:
+
 ```bash
 # Test personality validation
 test_personality_validation() {
@@ -287,6 +305,7 @@ test_personality_validation() {
 ```
 
 **Personality Switching**:
+
 ```bash
 # Test personality switching
 test_personality_switch() {
@@ -305,6 +324,7 @@ test_personality_switch() {
 ### Template System Testing
 
 **Variable Substitution**:
+
 ```bash
 # Test install-time variable substitution
 test_install_time_variables() {
@@ -327,6 +347,7 @@ test_runtime_variables() {
 ### Agent System Testing
 
 **Agent Loading**:
+
 ```bash
 # Test agent discovery
 test_agent_discovery() {
@@ -345,6 +366,7 @@ test_agent_discovery() {
 ### Command System Testing
 
 **Command Execution**:
+
 ```bash
 # Test workflow commands
 test_workflow_commands() {
@@ -366,6 +388,7 @@ test_workflow_commands() {
 ### Obsidian Integration
 
 **API Availability**:
+
 ```bash
 # Test Obsidian API graceful degradation
 test_obsidian_offline() {
@@ -384,6 +407,7 @@ test_obsidian_offline() {
 ### GNU Stow Integration
 
 **Stow Compatibility**:
+
 ```bash
 # Test AIDA works standalone
 test_standalone() {
@@ -404,6 +428,7 @@ test_with_stow() {
 ### Git Integration
 
 **Pre-commit Hooks**:
+
 ```bash
 # Test privacy validation
 test_precommit_privacy() {
@@ -424,6 +449,7 @@ test_precommit_privacy() {
 ### Version Compatibility
 
 **Backward Compatibility**:
+
 ```bash
 # Test v0.1.x configs work with v0.2.x
 test_backward_compat() {
@@ -447,6 +473,7 @@ test_backward_compat() {
 ### Feature Preservation
 
 **Critical Features**:
+
 1. Personality switching must always work
 2. Installation must never fail silently
 3. User configurations must never be lost
@@ -457,6 +484,7 @@ test_backward_compat() {
 ### Test Coverage Report
 
 **Required Coverage**:
+
 - Installation: 100% (all scenarios tested)
 - Personality System: 100%
 - Template System: 100%
@@ -466,6 +494,7 @@ test_backward_compat() {
 ### Test Execution Reports
 
 **CI/CD Reports**:
+
 ```yaml
 # Store test artifacts
 - name: Upload test results

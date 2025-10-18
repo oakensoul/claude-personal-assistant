@@ -17,19 +17,22 @@ AIDA uses a three-repository model to enforce privacy separation:
 
 ### Repository Roles
 
-**1. claude-personal-assistant (Public Framework)**
+#### 1. claude-personal-assistant (Public Framework)
+
 - **Privacy Level**: PUBLIC - No user data, no secrets
 - **Contains**: Framework code, templates, generic agents
 - **Validation**: Templates must use placeholder variables
 - **Install Location**: `~/.aida/`
 
-**2. dotfiles (Public Configurations)**
+#### 2. dotfiles (Public Configurations)
+
 - **Privacy Level**: PUBLIC - Generic configs, no secrets
 - **Contains**: Shell configs, git configs, AIDA templates
 - **Validation**: No API keys, no personal data
 - **Managed With**: GNU Stow
 
-**3. dotfiles-private (Private Overrides)**
+#### 3. dotfiles-private (Private Overrides)
+
 - **Privacy Level**: PRIVATE - User data and secrets
 - **Contains**: API keys, personal customizations, secrets
 - **Validation**: Never commit to public repos
@@ -38,6 +41,7 @@ AIDA uses a three-repository model to enforce privacy separation:
 ### Privacy Boundaries
 
 **Public Framework (claude-personal-assistant)**:
+
 ```yaml
 # Template with placeholders - OK for public repo
 api_key: "{{OPENAI_API_KEY}}"
@@ -46,6 +50,7 @@ vault_path: "{{OBSIDIAN_VAULT}}"
 ```
 
 **User Configuration (Generated, Private)**:
+
 ```yaml
 # Generated from template - stays local
 api_key: "sk-real-key-here"
@@ -58,18 +63,21 @@ vault_path: "/Users/rob/Documents/Obsidian/Main"
 ### AIDA-Specific PII Patterns
 
 **User Identification**:
+
 - User names in personality greetings
 - Email addresses in git configs
 - Home directory paths (`/Users/rob/`)
 - API keys and tokens
 
 **System Information**:
+
 - Machine hostnames
 - Local file paths
 - IP addresses in MCP configs
 - Obsidian vault locations
 
 **Usage Data**:
+
 - Command history
 - Personality switching patterns
 - Project names and paths
@@ -78,6 +86,7 @@ vault_path: "/Users/rob/Documents/Obsidian/Main"
 ### Privacy Scrubbing Rules
 
 **Template Variables** (Install-time):
+
 ```bash
 # Before scrubbing (contains PII)
 home_dir: "/Users/rob"
@@ -89,6 +98,7 @@ vault: "{{OBSIDIAN_VAULT}}"
 ```
 
 **Configuration Files**:
+
 ```yaml
 # Before scrubbing
 user:
@@ -108,12 +118,14 @@ user:
 When syncing AIDA knowledge between devices or to Obsidian:
 
 **Privacy-First Approach**:
+
 1. **Scrub Before Sync**: Remove PII before syncing to cloud
 2. **Encrypt Sensitive**: Encrypt personal decisions and logs
 3. **Selective Sync**: Only sync non-sensitive knowledge
 4. **User Control**: Allow users to mark content as private
 
 **Knowledge Classification**:
+
 ```markdown
 ---
 privacy: public
@@ -140,6 +152,7 @@ I decided to use API key sk-1234...
 ### Installation Security
 
 **install.sh Security**:
+
 1. **No Sudo Required**: Framework installs to user directory
 2. **Permission Validation**: Check directory permissions before install
 3. **Symlink Safety**: Validate symlink targets in dev mode
@@ -147,6 +160,7 @@ I decided to use API key sk-1234...
 5. **Script Injection**: Sanitize all user inputs
 
 **Directory Permissions**:
+
 ```bash
 # Secure defaults
 chmod 755 ~/.aida/                    # Framework directory
@@ -158,6 +172,7 @@ chmod 600 ~/.claude/secrets.yml       # Secrets (user-only)
 ### Runtime Security
 
 **Environment Variables**:
+
 ```bash
 # Sensitive data in environment, not files
 export AIDA_API_KEY="sk-..."
@@ -169,6 +184,7 @@ api_key: "${AIDA_API_KEY}"
 ```
 
 **Secrets Management**:
+
 - Never log API keys or tokens
 - Mask secrets in error messages
 - Clear sensitive data from memory after use
@@ -177,6 +193,7 @@ api_key: "${AIDA_API_KEY}"
 ### Git Security
 
 **Pre-commit Validation**:
+
 ```bash
 #!/bin/bash
 # Prevent committing secrets to public repos
@@ -195,6 +212,7 @@ fi
 ```
 
 **Repository Classification**:
+
 ```yaml
 # .aida/repo-config.yml
 repository:
@@ -211,11 +229,13 @@ repository:
 ### Local Data Storage
 
 **Persistent Data**:
+
 - Memory logs: `~/.claude/memory/` (user-only, 700 permissions)
 - Decision history: `~/.claude/decisions/` (user-only)
 - Activity logs: `~/.claude/logs/` (rotated, cleaned after 30 days)
 
 **Temporary Data**:
+
 - Command outputs: `/tmp/aida-*` (cleaned on exit)
 - Personality switches: `/tmp/aida-personality-*` (ephemeral)
 - Cache: `~/.aida/cache/` (cleaned weekly)
@@ -223,6 +243,7 @@ repository:
 ### Privacy Controls
 
 **User Privacy Settings**:
+
 ```yaml
 # ~/.claude/privacy.yml
 privacy:
@@ -246,6 +267,7 @@ privacy:
 ### AIDA License Compliance
 
 **AGPL-3.0 License**:
+
 - All AIDA code is AGPL-3.0
 - Modifications must be open-sourced if distributed
 - User data remains user's property
@@ -254,6 +276,7 @@ privacy:
 ### Data Portability
 
 Users must be able to:
+
 1. **Export All Data**: `aida export --all`
 2. **Delete All Data**: `aida cleanup --purge`
 3. **View Data**: `aida data list`
