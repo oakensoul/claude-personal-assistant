@@ -36,6 +36,8 @@ We need to refactor commands to align with these architectural decisions and pro
 #### 1. Developers Think in Workflows, Not Technologies
 
 When working, developers don't think:
+
+
 - ❌ "I need to interact with GitHub issues"
 - ✅ "I need to plan my work"
 
@@ -48,6 +50,7 @@ When managing AIDA, developers don't think:
 **The fundamental challenge**: Developers won't trust "Do issue X from start to finish and commit it."
 
 **Why command granularity matters**: We're bringing developers into agentic workflows. They need **baby steps** where they can:
+
 - See what the AI did
 - Verify each step
 - Course-correct when needed
@@ -61,34 +64,42 @@ When managing AIDA, developers don't think:
 Developers move through adoption stages:
 
 **Stage 1: "I don't trust AI at all"**
-```
+
+```text
 /issue-create       # I'll write my own issue
 /issue-publish      # I'll publish it myself
 /issue-start        # OK, AI can set up my branch... I'll verify
 ```
+
 → **Trust building**: AI handles low-risk setup tasks
 
 **Stage 2: "AI can help, but I verify everything"**
-```
+
+```text
 /issue-analyze      # AI analyzes → I review → iterate
 /issue-implement    # AI suggests code → I review each change
 /issue-checkpoint   # I control my own commits and progress
 ```
+
 → **Trust building**: AI provides value, human retains control
 
 **Stage 3: "I'm building confidence"**
-```
+
+```text
 /issue-pause        # AI manages context switching (low risk)
 /issue-resume       # Shows me where I left off (useful!)
 /issue-review       # Multiple review gates (quality, security)
 ```
+
 → **Trust building**: AI handles more, but with transparency
 
 **Stage 4: "I trust the workflow"**
-```
+
+```text
 /issue-submit       # AI handles PR creation (I've verified everything)
 /issue-complete     # Cleanup is safe to automate
 ```
+
 → **Trust achieved**: Developer confidently delegates
 
 **Key principle**: Each command is **optional**. Developers skip steps as they gain confidence, but granularity remains for those who need control.
@@ -100,7 +111,8 @@ Developers move through adoption stages:
 **Principle**: Commands reflect **what you're doing** (workflow), not **what you're using** (technology).
 
 **Issue Workflow** (work happens around issues):
-```
+
+```text
 /issue-create       Create issue draft locally
 /issue-publish      Publish to work tracker (GitHub, Jira, etc.)
 /issue-start        Start work (branch, workspace)
@@ -125,11 +137,13 @@ Developers move through adoption stages:
 **Pattern**: `/{noun}-{verb}` (not `/{verb}-{noun}`)
 
 **Examples**:
+
 - `/agent-create` (not `/create-agent`)
 - `/issue-start` (not `/start-work`)
 - `/pr-open` (not `/open-pr`)
 
 **Rationale**:
+
 - **Visual grouping**: `/agent-*`, `/issue-*`, `/skill-*`, `/pr-*`
 - **Autocomplete-friendly**: Type `/agent` → see all agent commands
 - **Semantic clarity**: Clear what you're operating on
@@ -141,6 +155,7 @@ Developers move through adoption stages:
 **Principle**: Use semantic prefixes to group related commands, not nested hierarchies.
 
 **Groups**:
+
 - `/aida-*` - AIDA system operations (init, status, validate)
 - `/agent-*` - Agent management (create, install, optimize, etc.)
 - `/skill-*` - Skill management (create, install, list, etc.)
@@ -150,6 +165,7 @@ Developers move through adoption stages:
 - `/github-*` - GitHub infrastructure (init, sync, status)
 
 **Why flat namespace**:
+
 - Faster to type (`/issue-create` vs `/github issue create`)
 - Simpler autocomplete
 - Less cognitive load
@@ -162,6 +178,7 @@ Developers move through adoption stages:
 **Purpose**: Manages AIDA itself (agents, skills, commands, configuration)
 
 **Rationale**:
+
 - **Simple**: Just "aida", not "aida-manager" or "aida-architect"
 - **Clear scope**: If it's about AIDA itself, invoke "aida"
 - **No confusion**: Developers don't think "I need the Claude agent manager", they think "I need to manage AIDA"
@@ -171,14 +188,16 @@ Developers move through adoption stages:
 **Principle**: Modes are **variations of a workflow**, not different operations.
 
 **Correct** (modes within commands):
-```
+
+```text
 /agent-create --global      (mode: where to create)
 /agent-optimize --tokens    (mode: what to optimize)
 /github-init --labels-only  (mode: how much to initialize)
 ```
 
 **Incorrect** (parent/child commands):
-```
+
+```text
 /agent create               (requires space parsing)
 /agent optimize             (not how Claude Code works)
 ```
@@ -190,6 +209,7 @@ Developers move through adoption stages:
 **Decision**: Documentation updates are **part of all operations**, not a separate command.
 
 When you:
+
 - `/agent-create` → Documentation generated
 - `/agent-upgrade` → Documentation updated
 - `/agent-optimize` → Documentation reflects changes
@@ -206,6 +226,7 @@ When you:
 **Problem**: Engineering teams need to document daily work, compile team reports, and communicate technical achievements to executives in accessible language.
 
 **Current pain points**:
+
 - Individual daily work is lost without documentation
 - Team accomplishments are hard to surface for leadership
 - Technical reports don't translate well for executive consumption
@@ -219,6 +240,7 @@ When you:
 **Purpose**: Document daily engineering work with factual accuracy
 
 **Requirements**:
+
 - **Git commit analysis** - Scan multiple repositories for user commits in time range
 - **Time tracking** - day_start, day_end, break_time, hours_worked (prevents double-counting)
 - **Conversational interviewing** - Ask about meetings, code reviews, non-commit work
@@ -228,11 +250,13 @@ When you:
 - **User configuration** - Git identifiers, default hours, timezone per team member
 
 **Data sources**:
+
 - Git commits (local and remote, all configured repos)
 - Work tracker activity (JIRA, Linear, GitHub Issues, etc.)
 - Direct user input via conversational interview
 
 **Captured information**:
+
 - Code commits with context (what, why, not just message)
 - Meetings attended (what, when, outcomes)
 - Code reviews performed
@@ -241,6 +265,7 @@ When you:
 - Key accomplishments
 
 **Output structure**:
+
 ```markdown
 daily/{username}/{YYYY}/{MM}/{YYYY-MM-DD}.md
 
@@ -264,18 +289,21 @@ Sections:
 **Purpose**: Compile individual entries into team-wide reports
 
 **Weekly summaries** (personal):
+
 - Compile individual's daily entries for the week
 - Identify patterns and themes
 - Highlight major accomplishments
 - Document challenges overcome
 
 **Monthly summaries** (personal):
+
 - Roll up weekly summaries
 - High-level accomplishments and projects
 - Growth and learning
 - Key themes
 
 **Team reports** (compiled):
+
 - Aggregate all team members' entries
 - Executive summary of team activities
 - Individual team member sections with attribution
@@ -286,6 +314,7 @@ Sections:
 **Purpose**: Transform technical reports into executive-friendly summaries
 
 **Requirements**:
+
 - **Audience-aware writing** - Different tone for executives vs technical teams
 - **Business impact framing** - Focus on "so what" and business value
 - **Cultural adaptation** - Match company culture (professional, startup, sports company, etc.)
@@ -294,12 +323,14 @@ Sections:
 - **Highlight extraction** - Pull key sections for landing pages/wikis
 
 **Tone configuration** (per company culture):
+
 - Professional (traditional corporate)
 - Engaging (startup, casual)
 - Light commentary (sports companies, creative industries)
 - Humor level: minimal → moderate → enthusiastic
 
 **Output examples**:
+
 ```markdown
 Executive Weekly:
 - Opening with engaging hook
@@ -320,6 +351,7 @@ Executive Monthly:
 **Purpose**: Connect to external systems (work trackers, wikis, etc.)
 
 **Requirements**:
+
 - **MCP-based integrations** - Use Model Context Protocol for tool integration
 - **Wiki publishing** - Confluence, Notion, GitBook, etc.
 - **Work tracker sync** - JIRA, Linear, GitHub Issues
@@ -330,16 +362,19 @@ Executive Monthly:
 ### Generalized Concepts
 
 **Remove company-specific references**:
+
 - ❌ "Splash Sports" → ✅ Configurable company name
 - ❌ "sports commentary" → ✅ Configurable cultural tone
 - ❌ "Data Engineering Squad" → ✅ Team name from config
 
 **Make integrations pluggable**:
+
 - Git analysis (any git repository)
 - Work tracker (JIRA, Linear, GitHub, etc.)
 - Wiki system (Confluence, Notion, GitBook, etc.)
 
 **Configuration-driven**:
+
 ```yaml
 team_reporting:
   company_name: "Your Company"
@@ -363,32 +398,37 @@ team_reporting:
 Using our workflow-oriented naming and noun-verb convention:
 
 **Journal Workflow** (individual work documentation):
-```
+
+```text
 /journal-daily          Create daily journal entry with git analysis
 /journal-weekly         Compile week's daily entries into summary
 /journal-monthly        Compile month's weekly summaries
 ```
 
 **Team Report Workflow** (team-wide compilation):
-```
+
+```text
 /team-report-weekly     Compile all team members' weekly summaries
 /team-report-monthly    Compile team's monthly report
 ```
 
 **Executive Summary Workflow** (leadership communication):
-```
+
+```text
 /executive-summary-weekly   Transform team report → executive summary
 /executive-summary-monthly  Transform monthly report → executive summary
 ```
 
 **Publishing Workflow** (external integration):
-```
+
+```text
 /wiki-publish-summary   Publish executive summary to wiki
 /wiki-update-index      Update landing page with latest highlights
 ```
 
 **Configuration & Setup**:
-```
+
+```text
 /journal-configure      Set up user preferences (git identifiers, hours, timezone)
 /team-configure         Set up team reporting config
 ```
@@ -397,7 +437,7 @@ Using our workflow-oriented naming and noun-verb convention:
 
 Following ADR-009 (Skills System Architecture), create reusable skills:
 
-```
+```text
 ~/.claude/skills/
 ├── work-documentation/
 │   ├── daily-journaling/
@@ -452,41 +492,45 @@ Following ADR-009 (Skills System Architecture), create reusable skills:
 **Potential future agents** (to be designed):
 
 1. **team-chronicler** - Daily/weekly work documentation
-   - Uses: daily-journaling, git-commit-analysis, time-tracking skills
-   - Responsibilities: Conduct interviews, analyze git activity, create structured entries
-   - Tone: Factual, professional, conversational
+    - Uses: daily-journaling, git-commit-analysis, time-tracking skills
+    - Responsibilities: Conduct interviews, analyze git activity, create structured entries
+    - Tone: Factual, professional, conversational
 
 2. **executive-communicator** - Transform technical → business language
-   - Uses: executive-summaries, technical-to-business-translation skills
-   - Responsibilities: Create executive summaries, frame business impact, match cultural tone
-   - Tone: Configurable (professional, engaging, light commentary)
+    - Uses: executive-summaries, technical-to-business-translation skills
+    - Responsibilities: Create executive summaries, frame business impact, match cultural tone
+    - Tone: Configurable (professional, engaging, light commentary)
 
 3. **work-tracker-specialist** - Integration with JIRA/Linear/GitHub
-   - Uses: mcp-atlassian, work tracker integration skills
-   - Responsibilities: Sync work tracker activity, manage tickets, update wikis
-   - Tone: Efficient, meticulous
+    - Uses: mcp-atlassian, work tracker integration skills
+    - Responsibilities: Sync work tracker activity, manage tickets, update wikis
+    - Tone: Efficient, meticulous
 
 **Note**: These could alternatively be modes/personalities of existing agents (tech-lead, product-manager) rather than separate agents. Design decision deferred.
 
 ### Implementation Considerations
 
 **Phase 1: Skills Development** (foundational)
+
 - Create skills in `~/.claude/skills/` structure
 - Document patterns and best practices
 - Make them available to all agents
 
 **Phase 2: Command Design** (workflow)
+
 - Design `/journal-*` commands
 - Design `/team-report-*` commands
 - Design `/executive-summary-*` commands
 - Follow noun-verb convention
 
 **Phase 3: Agent Decision** (later)
+
 - Decide if dedicated agents needed or if existing agents can handle
 - Consider: tech-lead uses team-reporting skills for status updates
 - Consider: product-manager uses executive-communication skills for stakeholder updates
 
 **Phase 4: Integration** (final)
+
 - MCP integrations (JIRA, Confluence, etc.)
 - Wiki publishing workflows
 - Automated publishing pipelines
@@ -494,53 +538,56 @@ Following ADR-009 (Skills System Architecture), create reusable skills:
 ### Key Principles (from ETL and Tell)
 
 1. **Factual Accuracy is Sacred**
-   - NEVER make up statistics, metrics, or performance claims
-   - All numbers must come from actual data (git, JIRA, user input)
-   - If information is missing, ask the user - don't invent
+    - NEVER make up statistics, metrics, or performance claims
+    - All numbers must come from actual data (git, JIRA, user input)
+    - If information is missing, ask the user - don't invent
 
 2. **Time Tracking Prevents Double-Counting**
-   - Use day_start/day_end to define work boundaries
-   - Track break_time separately
-   - hours_worked = (day_end - day_start) - break_time
-   - User's stated hours are authoritative, not git commit timestamps
+    - Use day_start/day_end to define work boundaries
+    - Track break_time separately
+    - hours_worked = (day_end - day_start) - break_time
+    - User's stated hours are authoritative, not git commit timestamps
 
 3. **Conversational Interviewing**
-   - Ask open-ended questions to gather context
-   - Probe for non-commit work (meetings, planning, troubleshooting)
-   - Be thorough but respectful of user's time
-   - Don't re-ask what user already provided
+    - Ask open-ended questions to gather context
+    - Probe for non-commit work (meetings, planning, troubleshooting)
+    - Be thorough but respectful of user's time
+    - Don't re-ask what user already provided
 
 4. **Attribution Matters**
-   - Give credit to individuals for their contributions
-   - Maintain attribution through all compilation levels
-   - Team reports should celebrate individual achievements
+    - Give credit to individuals for their contributions
+    - Maintain attribution through all compilation levels
+    - Team reports should celebrate individual achievements
 
 5. **Cultural Adaptation**
-   - Executive summaries should match company culture
-   - Configuration-driven tone (professional, engaging, light commentary)
-   - Humor level configurable (some cultures appreciate it, others don't)
+    - Executive summaries should match company culture
+    - Configuration-driven tone (professional, engaging, light commentary)
+    - Humor level configurable (some cultures appreciate it, others don't)
 
 6. **Comprehensive Documentation**
-   - Capture both code work AND non-code work
-   - Include "why" context, not just "what"
-   - Document blockers and challenges, not just wins
-   - Provide both summaries AND detailed information
+    - Capture both code work AND non-code work
+    - Include "why" context, not just "what"
+    - Document blockers and challenges, not just wins
+    - Provide both summaries AND detailed information
 
 ### Benefits
 
 **For Individual Engineers**:
+
 - Daily work is documented for future reference
 - Easier performance reviews (comprehensive work log)
 - Clearer communication of accomplishments
 - Time tracking for billing/planning
 
 **For Engineering Managers**:
+
 - Team visibility without micromanagement
 - Easy compilation of team reports for leadership
 - Identify patterns, blockers, and bottlenecks
 - Recognition and attribution of team contributions
 
 **For Executives**:
+
 - Technical work explained in business terms
 - High-level awareness without technical details
 - Team momentum and progress visibility
@@ -561,12 +608,9 @@ Following ADR-009 (Skills System Architecture), create reusable skills:
 - Original agents: The Journalist, The Sportscaster, The Atlassian Specialist
 - Key insight: "Factual accuracy + cultural adaptation + attribution = valuable team reporting"
 
----
-
 **Decision**: Add team reporting and executive communication workflows to AIDA command structure. Implement as skills first, then design commands, defer agent decision.
 
 **Status**: Requirements captured, skills structure designed, command naming proposed. Implementation deferred to future milestone.
-
 
 ## Command Structure
 
@@ -596,6 +640,7 @@ Following ADR-009 (Skills System Architecture), create reusable skills:
 ```
 
 **Aliases for backward compatibility**:
+
 - `/create-issue` → `/issue-create`
 - `/publish-issue` → `/issue-publish`
 - `/start-work` → `/issue-start`
@@ -612,7 +657,7 @@ Following ADR-009 (Skills System Architecture), create reusable skills:
 
 **Use case**: End of day, completed a milestone, want to save work but continue later.
 
-```bash
+```text
 /issue-checkpoint
 
 # Interactive prompts:
@@ -643,7 +688,7 @@ Following ADR-009 (Skills System Architecture), create reusable skills:
 
 **Default behavior** (no mode): Ask what to do
 
-```bash
+```text
 /issue-pause
 
 → ⚠️  You have uncommitted changes:
@@ -660,7 +705,7 @@ Following ADR-009 (Skills System Architecture), create reusable skills:
 
 **With modes**:
 
-```bash
+```text
 # Checkpoint first (commits work, then stashes, then returns to main)
 /issue-pause --checkpoint
 → Runs /issue-checkpoint
@@ -676,7 +721,8 @@ Following ADR-009 (Skills System Architecture), create reusable skills:
 ```
 
 **Confirmation**:
-```
+
+```text
 ✓ Issue #42 paused
   Stash: issue-42
   Resume with: /issue-resume 42
@@ -688,7 +734,7 @@ Following ADR-009 (Skills System Architecture), create reusable skills:
 
 **Use case**: Next day after pause, switching back from urgent work.
 
-```bash
+```text
 /issue-resume 42
 
 # Actions:
@@ -730,7 +776,7 @@ Continue working or run /issue-checkpoint when ready to save progress.
 
 **Aliases**: `/issue-yolo` (same command, different personality!)
 
-```bash
+```text
 # Professional version
 /issue-autopilot 42
 
@@ -780,6 +826,7 @@ Continue working or run /issue-checkpoint when ready to save progress.
 ```
 
 **What it does**:
+
 1. Runs `/issue-start` - Sets up branch and workspace
 2. Runs `/issue-analyze` - Deep requirements analysis
 3. Runs `/issue-implement` - Writes the code
@@ -789,6 +836,7 @@ Continue working or run /issue-checkpoint when ready to save progress.
 **Checkpoints**: Pauses at each step for review if errors detected (can abort anytime)
 
 **When to use**:
+
 - ✅ Simple issues (update docs, fix typos, update dependencies)
 - ✅ Well-defined requirements (no ambiguity)
 - ✅ Emergency fixes (need it done fast)
@@ -802,6 +850,7 @@ Continue working or run /issue-checkpoint when ready to save progress.
 ### AIDA Meta Commands
 
 **Agent Management** (7):
+
 ```bash
 /agent-create       # Create new agent [--global|--local] [--from-template]
 /agent-install      # Install global agent to project (agent-name|--list|--all)
@@ -813,10 +862,12 @@ Continue working or run /issue-checkpoint when ready to save progress.
 ```
 
 **Aliases**:
+
 - `/create-agent` → `/agent-create`
 - `/install-agent` → `/agent-install`
 
 **Skill Management** (5):
+
 ```bash
 /skill-create       # Create new skill [--global|--local]
 /skill-install      # Install global skill to project (skill-name|--list|--all)
@@ -826,6 +877,7 @@ Continue working or run /issue-checkpoint when ready to save progress.
 ```
 
 **Command Management** (4):
+
 ```bash
 /command-create     # Create new command [--global|--local]
 /command-install    # Install global command to project (command-name|--list|--all)
@@ -834,9 +886,11 @@ Continue working or run /issue-checkpoint when ready to save progress.
 ```
 
 **Aliases**:
+
 - `/create-command` → `/command-create`
 
 **System Management** (4):
+
 ```bash
 /aida-init [provider]       # Initialize AIDA (github|gitlab|bitbucket|--minimal)
 /aida-configure [section]   # Update configuration (vcs|team|integrations)
@@ -845,6 +899,7 @@ Continue working or run /issue-checkpoint when ready to save progress.
 ```
 
 **Aliases**:
+
 - `/workflow-init` → `/aida-init`
 
 **VCS Configuration Examples**:
@@ -901,6 +956,7 @@ integrations:
 ### Repository Management Commands (11)
 
 **Repository Lifecycle** (5):
+
 ```bash
 /repository-create      # Create new repository (local + remote)
 /repository-clone       # Clone existing repository
@@ -910,6 +966,7 @@ integrations:
 ```
 
 **Repository Configuration** (4):
+
 ```bash
 /repository-configure   # Configure settings (branch protection, webhooks, secrets)
 /repository-access      # Manage collaborators and team access
@@ -918,12 +975,14 @@ integrations:
 ```
 
 **Repository Information** (2):
+
 ```bash
 /repository-status      # Show repository health/metrics
 /repository-list        # List repositories [--org|--user|--all]
 ```
 
 **Differentiation from GitHub commands**:
+
 - `/github-init` - Sets up GitHub **integration** for project (labels, milestones, workflow)
 - `/github-sync` - Syncs **labels/milestones** between repos
 - `/repository-*` - Manages the **repository itself** (creation, settings, access)
@@ -976,6 +1035,7 @@ integrations:
 ### SSH Key Management Commands (6)
 
 **SSH Key Lifecycle**:
+
 ```bash
 /ssh-create-key         # Create new SSH key pair (interactive: type, bits, comment)
 /ssh-add-key [service]  # Add SSH key to service (github|snowflake|gitlab|aws)
@@ -986,6 +1046,7 @@ integrations:
 ```
 
 **Key Features**:
+
 - **Interactive workflow**: Guides through each step (no quickstart)
 - **Service-specific knowledge**: Uses skills (github-ssh-keys, snowflake-ssh-keys, gitlab-ssh-keys, aws-ssh-keys)
 - **Audit capabilities**: Check encryption strength, key age, last used date
@@ -1073,27 +1134,32 @@ integrations:
 ```
 
 **Aliases**:
+
 - `/open-pr` → `/pr-open`
 - `/cleanup-main` → `/pr-cleanup`
 
 ## Total Commands by Category
 
 ### Core Workflow Commands
+
 - **Issue Workflow**: 13 commands (create, publish, start, analyze, implement, checkpoint, pause, resume, review, ship-it, complete, autopilot, yolo)
 - **Repository Management**: 11 commands (create, clone, fork, archive, delete, configure, access, sync, template, status, list)
 - **SSH Key Management**: 6 commands (create-key, add-key, list-keys, rotate-key, audit-keys, backup-keys)
 - **Pull Request**: 2 commands (open, cleanup) - merged into issue workflow conceptually
 
 ### AIDA Meta Commands
+
 - **Agent Management**: 7 commands (create, install, upgrade, optimize, validate, analyze, list)
 - **Skill Management**: 5 commands (create, install, upgrade, validate, list)
 - **Command Management**: 4 commands (create, install, validate, list)
 - **System Management**: 4 commands (init, configure, status, validate)
 
 ### Infrastructure Commands
+
 - **GitHub Integration**: 3 commands (init, sync, status)
 
 ### Domain-Specific Commands (Unchanged)
+
 - **Operations & Debugging**: 3 commands (/debug, /incident, /runbook)
 - **Time Tracking**: 1 command (/track-time)
 - **Security & Compliance**: 3 commands (/security-audit, /compliance-check, /pii-scan)
@@ -1105,6 +1171,7 @@ integrations:
 - **AWS**: 1 command (/aws-review)
 
 **Total**: 70 commands
+
 - **New/Refactored**: 51 commands (issue workflow, repository, SSH, AIDA meta)
 - **Domain-specific (unchanged)**: 19 commands
 - **Aliases**: 10 (backward compatibility)
@@ -1152,71 +1219,71 @@ integrations:
 1. **Create "aida" agent** (replaces "claude-agent-manager")
 2. **Add alias support** to command loader (frontmatter `aliases: []` field)
 3. **Implement configuration system**:
-   - Create `.claude/config.yml` schema
-   - Add VCS provider detection from git remote
-   - Implement `/aida-init [provider]` with modes (github|gitlab|bitbucket|--minimal)
-   - Implement `/aida-configure [section]` for updates
-   - Implement `/aida-status` (show current configuration)
+    - Create `.claude/config.yml` schema
+    - Add VCS provider detection from git remote
+    - Implement `/aida-init [provider]` with modes (github|gitlab|bitbucket|--minimal)
+    - Implement `/aida-configure [section]` for updates
+    - Implement `/aida-status` (show current configuration)
 4. **Implement discoverability commands**:
-   - `/agent-list`, `/skill-list`, `/command-list`
+    - `/agent-list`, `/skill-list`, `/command-list`
 
 ### Phase 2: Issue Workflow Refactoring (Week 3-4)
 
 1. **Rename existing commands** with aliases:
-   - `/create-issue` → `/issue-create`
-   - `/publish-issue` → `/issue-publish`
-   - `/start-work` → `/issue-start`
-   - `/expert-analysis` → `/issue-analyze`
-   - `/implement` → `/issue-implement`
-   - `/open-pr` → `/issue-ship-it`
-   - `/cleanup-main` → `/issue-complete`
+    - `/create-issue` → `/issue-create`
+    - `/publish-issue` → `/issue-publish`
+    - `/start-work` → `/issue-start`
+    - `/expert-analysis` → `/issue-analyze`
+    - `/implement` → `/issue-implement`
+    - `/open-pr` → `/issue-ship-it`
+    - `/cleanup-main` → `/issue-complete`
 
 2. **Create new issue workflow commands**:
-   - `/issue-checkpoint` (save progress, track time)
-   - `/issue-pause [--checkpoint|--no-checkpoint]` (context switch)
-   - `/issue-resume <issue-id>` (resume with context)
-   - `/issue-review` (analyst reviews)
-   - `/issue-autopilot <issue-id>` (full automation)
-   - `/issue-yolo <issue-id>` (alias to autopilot)
+    - `/issue-checkpoint` (save progress, track time)
+    - `/issue-pause [--checkpoint|--no-checkpoint]` (context switch)
+    - `/issue-resume <issue-id>` (resume with context)
+    - `/issue-review` (analyst reviews)
+    - `/issue-autopilot <issue-id>` (full automation)
+    - `/issue-yolo <issue-id>` (alias to autopilot)
 
 ### Phase 3: Repository & SSH Management (Week 5-6)
 
 1. **Implement repository commands**:
-   - Lifecycle: `/repository-create`, `/repository-clone`, `/repository-fork`, `/repository-archive`, `/repository-delete`
-   - Configuration: `/repository-configure`, `/repository-access`, `/repository-sync`, `/repository-template`
-   - Information: `/repository-status`, `/repository-list`
+    - Lifecycle: `/repository-create`, `/repository-clone`, `/repository-fork`, `/repository-archive`, `/repository-delete`
+    - Configuration: `/repository-configure`, `/repository-access`, `/repository-sync`, `/repository-template`
+    - Information: `/repository-status`, `/repository-list`
 
 2. **Implement SSH key commands**:
-   - `/ssh-create-key`, `/ssh-add-key [service]`, `/ssh-list-keys`
-   - `/ssh-rotate-key`, `/ssh-audit-keys`, `/ssh-backup-keys`
+    - `/ssh-create-key`, `/ssh-add-key [service]`, `/ssh-list-keys`
+    - `/ssh-rotate-key`, `/ssh-audit-keys`, `/ssh-backup-keys`
 
 3. **Create SSH key skills**:
-   - `github-ssh-keys`, `snowflake-ssh-keys`, `gitlab-ssh-keys`, `aws-ssh-keys`
+    - `github-ssh-keys`, `snowflake-ssh-keys`, `gitlab-ssh-keys`, `aws-ssh-keys`
 
 ### Phase 4: Agent/Skill/Command Management (Week 7-8)
 
 1. **Rename existing commands** with aliases:
-   - `/create-agent` → `/agent-create`
-   - `/install-agent` → `/agent-install`
-   - `/create-command` → `/command-create`
+    - `/create-agent` → `/agent-create`
+    - `/install-agent` → `/agent-install`
+    - `/create-command` → `/command-create`
 
 2. **Create new agent commands**:
-   - `/agent-upgrade`, `/agent-optimize`, `/agent-validate`, `/agent-analyze`
+    - `/agent-upgrade`, `/agent-optimize`, `/agent-validate`, `/agent-analyze`
 
 3. **Create new skill commands**:
-   - `/skill-create`, `/skill-install`, `/skill-upgrade`, `/skill-validate`
+    - `/skill-create`, `/skill-install`, `/skill-upgrade`, `/skill-validate`
 
 4. **Create new system commands**:
-   - `/aida-validate [--fix]`
+    - `/aida-validate [--fix]`
 
 ### Phase 5: Documentation & Migration (Week 9-10)
 
 1. **Update all documentation** to use new names
 2. **Add workflow guides**:
-   - 13-step issue workflow (with checkpoint/pause/resume/autopilot)
-   - Repository management lifecycle
-   - SSH key security best practices
-   - VCS provider setup guide
+    - 13-step issue workflow (with checkpoint/pause/resume/autopilot)
+    - Repository management lifecycle
+    - SSH key security best practices
+    - VCS provider setup guide
 3. **Create migration guide** (old → new command mapping)
 4. **Add deprecation warnings** to old command names (future: v0.3+)
 5. **Create video tutorials** for key workflows (optional)
@@ -1241,6 +1308,7 @@ integrations:
 Each step is a **conversation waypoint** or **automation option**:
 
 **Manual Workflow (11 steps)**:
+
 1. **Create**: Draft locally, refine before publishing
 2. **Publish**: Commit to work tracker
 3. **Start**: Set up development environment
@@ -1254,6 +1322,7 @@ Each step is a **conversation waypoint** or **automation option**:
 11. **Complete**: Clean up after merge
 
 **Automation Workflow (2 commands)**:
+
 12. **Autopilot**: Automate steps 3-10 (start → analyze → implement → review → ship-it)
 13. **YOLO**: Same as autopilot, with personality! 😎
 
@@ -1264,19 +1333,19 @@ This supports **both** iterative, conversational development (manual) **and** fu
 Added three commands for flexible work patterns:
 
 1. **`/issue-checkpoint`**: Save progress (commit, track time, document) while staying on branch
-   - Use case: End of day, milestone completed, want to save work
-   - Stays on branch - developer continues working
+    - Use case: End of day, milestone completed, want to save work
+    - Stays on branch - developer continues working
 
 2. **`/issue-pause [--checkpoint|--no-checkpoint]`**: Context switch to different work
-   - Use case: Urgent bug, switching issues, end of day cleanup
-   - Stashes work, returns to main
-   - Default: Asks whether to checkpoint first
-   - Modes: `--checkpoint` (commit then stash), `--no-checkpoint` (just stash)
+    - Use case: Urgent bug, switching issues, end of day cleanup
+    - Stashes work, returns to main
+    - Default: Asks whether to checkpoint first
+    - Modes: `--checkpoint` (commit then stash), `--no-checkpoint` (just stash)
 
 3. **`/issue-resume <issue-id>`**: Resume paused work with full context
-   - Use case: Next day, switching back from urgent work
-   - Shows progress summary, checkpoints, next steps
-   - Unstashes work automatically
+    - Use case: Next day, switching back from urgent work
+    - Shows progress summary, checkpoints, next steps
+    - Unstashes work automatically
 
 **Rationale**: Developers need flexible work patterns - not just linear "start → finish" flows. Real work involves context switching, incremental progress, and resuming where you left off.
 
@@ -1298,18 +1367,21 @@ The 11-step issue workflow (vs a single "do issue X" command) is **intentional p
 **Critical distinction** between repository management and GitHub integration:
 
 **`/repository-*` commands** (manage the repository itself):
+
 - Create, clone, fork, archive, delete repositories
 - Configure repository settings (branch protection, webhooks, secrets)
 - Manage access (collaborators, teams, permissions)
 - Technology-agnostic where possible (works with GitHub, GitLab, Bitbucket)
 
 **`/github-*` commands** (manage GitHub integration for a project):
+
 - Initialize GitHub labels, milestones, project structure
 - Sync labels/milestones across repositories
 - Show GitHub integration status
 - Technology-specific (GitHub only)
 
 **Example workflow**:
+
 ```bash
 # Create new repository
 /repository-create          # Creates repo on VCS provider
@@ -1332,6 +1404,7 @@ The 11-step issue workflow (vs a single "do issue X" command) is **intentional p
 5. **Inventory tracking**: Maintains `~/.ssh/key-inventory.yml` with key metadata
 
 **Why 6 commands**:
+
 - **Create**: Generate key with best practices (Ed25519, passphrase, permissions)
 - **Add**: Service-specific setup (different process for GitHub vs Snowflake vs AWS)
 - **List**: Quick overview of all keys and usage
@@ -1340,6 +1413,7 @@ The 11-step issue workflow (vs a single "do issue X" command) is **intentional p
 - **Backup**: Secure backup procedures
 
 **Pain point addressed**: Developers often have 5-10 SSH keys with no tracking of:
+
 - Which services use which keys
 - When keys were created
 - When keys were last used
@@ -1350,6 +1424,7 @@ The 11-step issue workflow (vs a single "do issue X" command) is **intentional p
 **Design principle**: Auto-detect where possible, configure once, work everywhere.
 
 **Auto-detection**:
+
 ```bash
 # Detects from git remote origin URL
 git remote -v
@@ -1359,15 +1434,18 @@ git remote -v
 ```
 
 **Configuration hierarchy**:
+
 1. **Project-level** (highest priority): `{PROJECT_ROOT}/.claude/config.yml`
 2. **User-level** (default): `~/.claude/config.yml`
 
 **Quick setup modes**:
+
 - `/aida-init` - Interactive (full questions)
 - `/aida-init github` - Quick setup (auto-detects, minimal prompts)
 - `/aida-init --minimal` - Essential config only
 
 **Configuration separation**:
+
 - **VCS provider**: Where code lives (GitHub, GitLab, Bitbucket)
 - **Work tracker**: Where issues live (can be same or different: Jira, Linear, etc.)
 - **Team settings**: Default reviewers, team name
@@ -1376,6 +1454,7 @@ git remote -v
 ### Business Metrics Skill Category
 
 During this discussion, identified missing **business-metrics** skill category (added to catalog):
+
 - SaaS metrics (ARR, MRR, churn, NRR, GRR)
 - Product metrics (DAU, MAU, activation, retention)
 - Financial metrics (burn rate, runway, CAC, LTV)
@@ -1391,11 +1470,13 @@ During this discussion, identified missing **business-metrics** skill category (
 ### Issue Workflow (13 commands)
 
 **Issue Lifecycle**:
+
 - `/issue-create` - Create issue draft locally
 - `/issue-publish [slug|--milestone|--all]` - Publish to work tracker
 - `/issue-start <issue-id>` - Start work (branch, workspace)
 
 **Development & Progress**:
+
 - `/issue-analyze` - Analyze requirements (business + technical)
 - `/issue-implement` - Implement the solution
 - `/issue-checkpoint` - Save progress (commit, track time, document)
@@ -1403,11 +1484,13 @@ During this discussion, identified missing **business-metrics** skill category (
 - `/issue-resume <issue-id>` - Resume paused work with context
 
 **Quality & Completion**:
+
 - `/issue-review` - Review work (quality, security, compliance)
 - `/issue-ship-it [reviewers]` - Create PR and ship! 🚢
 - `/issue-complete` - Complete and cleanup after merge
 
 **Automation**:
+
 - `/issue-autopilot <issue-id>` - Automate entire workflow 🤖
 - `/issue-yolo <issue-id>` - Same as autopilot, with personality! 😎
 
@@ -1416,6 +1499,7 @@ During this discussion, identified missing **business-metrics** skill category (
 ### Repository Management (11 commands)
 
 **Repository Lifecycle**:
+
 - `/repository-create` - Create new repository (local + remote)
 - `/repository-clone` - Clone existing repository
 - `/repository-fork` - Fork repository for contribution
@@ -1423,18 +1507,21 @@ During this discussion, identified missing **business-metrics** skill category (
 - `/repository-delete [--confirm]` - Delete repository
 
 **Repository Configuration**:
+
 - `/repository-configure` - Configure settings (branch protection, webhooks, secrets)
 - `/repository-access` - Manage collaborators and team access
 - `/repository-sync` - Sync fork with upstream
 - `/repository-template` - Create repository from template
 
 **Repository Information**:
+
 - `/repository-status` - Show repository health/metrics
 - `/repository-list [--org|--user|--all]` - List repositories
 
 ### SSH Key Management (6 commands)
 
 **SSH Key Lifecycle**:
+
 - `/ssh-create-key` - Create new SSH key pair (interactive)
 - `/ssh-add-key [service]` - Add SSH key to service (github|snowflake|gitlab|aws)
 - `/ssh-list-keys` - List all SSH keys and their usage
@@ -1536,9 +1623,8 @@ During this discussion, identified missing **business-metrics** skill category (
 
 - `/aws-review [scope]` - Review AWS infrastructure (all|cdk|cost|security|stack-name)
 
----
-
 **Total: 70 commands**
+
 - **Core workflow**: 32 commands (issue, repository, SSH, PR)
 - **AIDA meta**: 23 commands (agent, skill, command, system, GitHub)
 - **Domain-specific**: 15 commands (operations, security, quality, docs, testing, cost, data, AWS)

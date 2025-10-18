@@ -14,13 +14,17 @@ dbt (data build tool) is a transformation framework that enables data analysts a
 ## Core Concepts
 
 ### The "T" in ELT
+
 dbt handles the **Transform** step in Extract, Load, Transform:
+
 - **Extract**: Ingestion tools (Airbyte, Fivetran) pull data from sources
 - **Load**: Data is loaded into the warehouse (Snowflake, BigQuery, Redshift)
 - **Transform**: dbt transforms raw data into analytics-ready models
 
 ### Models
+
 Models are SELECT statements that define transformations:
+
 ```sql
 -- models/staging/stg_orders.sql
 WITH source AS (
@@ -40,19 +44,23 @@ SELECT * FROM renamed
 ```
 
 ### Materializations
+
 How dbt persists models in the warehouse:
 
 **Table** - Full refresh, creates physical table:
+
 ```sql
 {{ config(materialized='table') }}
 ```
 
 **View** - Virtual table, no data stored:
+
 ```sql
 {{ config(materialized='view') }}
 ```
 
 **Incremental** - Only processes new/changed data:
+
 ```sql
 {{ config(
     materialized='incremental',
@@ -61,6 +69,7 @@ How dbt persists models in the warehouse:
 ```
 
 **Ephemeral** - CTE only, not persisted:
+
 ```sql
 {{ config(materialized='ephemeral') }}
 ```
@@ -68,6 +77,7 @@ How dbt persists models in the warehouse:
 ## Key Commands
 
 ### Core Workflow Commands
+
 ```bash
 # Compile models (generate SQL)
 dbt compile
@@ -89,6 +99,7 @@ dbt docs serve
 ```
 
 ### Selection Syntax
+
 ```bash
 # Run specific model
 dbt run --select my_model
@@ -107,6 +118,7 @@ dbt build --select state:modified+ --defer --state prod-manifest/
 ```
 
 ### Target Environments
+
 ```bash
 # Run against dev environment
 dbt run --target dev
@@ -150,19 +162,25 @@ One-off tests for specific business logic.
 ## Jinja Templating
 
 ### ref() Function
+
 Reference other dbt models (creates dependencies):
+
 ```sql
 SELECT * FROM {{ ref('stg_orders') }}
 ```
 
 ### source() Function
+
 Reference raw data sources:
+
 ```sql
 SELECT * FROM {{ source('raw', 'orders') }}
 ```
 
 ### Macros
+
 Reusable SQL snippets:
+
 ```sql
 {% macro cents_to_dollars(column_name) %}
     ({{ column_name }} / 100)::decimal(10,2)
@@ -173,6 +191,7 @@ SELECT {{ cents_to_dollars('order_amount') }} AS order_amount
 ```
 
 ### Control Structures
+
 ```sql
 {% if target.name == 'prod' %}
     WHERE is_deleted = FALSE
@@ -202,6 +221,7 @@ dbt_project/
 ## dbt Packages
 
 ### Installing Packages
+
 ```yaml
 # packages.yml
 packages:
@@ -216,6 +236,7 @@ dbt deps  # Install packages
 ```
 
 ### Common Packages
+
 - **dbt_utils**: Utility macros (surrogate keys, date spine, etc.)
 - **dbt_expectations**: Great Expectations-style tests
 - **dbt_project_evaluator**: Project quality checks
@@ -224,7 +245,9 @@ dbt deps  # Install packages
 ## Hooks
 
 ### Pre/Post Hooks
+
 Run SQL before or after model execution:
+
 ```sql
 {{ config(
     pre_hook="GRANT USAGE ON SCHEMA {{ target.schema }} TO analyst_role",
@@ -233,7 +256,9 @@ Run SQL before or after model execution:
 ```
 
 ### on-run-start / on-run-end
+
 Run at project level:
+
 ```yaml
 # dbt_project.yml
 on-run-start:
@@ -246,12 +271,14 @@ on-run-end:
 ## Best Practices
 
 ### Layering
+
 - **Staging**: 1:1 with sources, light transformations
 - **Intermediate**: Business logic, joins (no direct BI access)
 - **Core**: Facts and dimensions (Kimball methodology)
 - **Marts**: Domain-specific, BI-ready
 
 ### Naming Conventions
+
 - `stg_` - Staging models
 - `int_` - Intermediate models
 - `fct_` - Fact tables
@@ -259,6 +286,7 @@ on-run-end:
 - `rpt_` - Report models
 
 ### CTE Patterns
+
 - `base_*` - Initial CTEs pulling from sources
 - `renamed` - Column renaming
 - `filtered` - WHERE clause filters
@@ -267,7 +295,9 @@ on-run-end:
 - `final` - Final CTE before SELECT
 
 ### Documentation
+
 Every model should have:
+
 - Model-level description
 - Column-level descriptions for key fields
 - Tags for organization and selective builds

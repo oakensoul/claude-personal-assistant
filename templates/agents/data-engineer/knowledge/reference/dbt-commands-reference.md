@@ -10,7 +10,9 @@ last_updated: "2025-10-15"
 ## Core Commands
 
 ### run
+
 Execute models (creates tables/views in warehouse):
+
 ```bash
 # Run all models
 dbt run
@@ -32,7 +34,9 @@ dbt run --select tag:finance
 ```
 
 ### test
+
 Run data tests:
+
 ```bash
 # Run all tests
 dbt test
@@ -48,7 +52,9 @@ dbt test --select test_type:data
 ```
 
 ### build
+
 Run models + tests in dependency order:
+
 ```bash
 # Build all
 dbt build
@@ -61,7 +67,9 @@ dbt build --select state:modified+ --defer --state prod-manifest/
 ```
 
 ### compile
+
 Generate SQL without executing:
+
 ```bash
 # Compile all models
 dbt compile
@@ -76,7 +84,9 @@ cat target/compiled/my_project/models/my_model.sql
 ## Documentation Commands
 
 ### docs generate
+
 Generate documentation:
+
 ```bash
 dbt docs generate
 
@@ -85,7 +95,9 @@ dbt docs generate --target prod
 ```
 
 ### docs serve
+
 Serve documentation locally:
+
 ```bash
 dbt docs serve
 
@@ -96,7 +108,9 @@ dbt docs serve --port 8001
 ## Source Commands
 
 ### source freshness
+
 Check source data freshness:
+
 ```bash
 # Check all sources
 dbt source freshness
@@ -106,7 +120,9 @@ dbt source freshness --select source:raw
 ```
 
 ### list sources
+
 List all sources:
+
 ```bash
 dbt list --resource-type source
 ```
@@ -116,6 +132,7 @@ dbt list --resource-type source
 ### Graph Operators
 
 **Downstream (+)**:
+
 ```bash
 # Model + all downstream
 dbt run --select my_model+
@@ -125,6 +142,7 @@ dbt run --select my_model+2
 ```
 
 **Upstream (+)**:
+
 ```bash
 # All upstream + model
 dbt run --select +my_model
@@ -134,6 +152,7 @@ dbt run --select 2+my_model
 ```
 
 **Both (@)**:
+
 ```bash
 # All upstream, model, all downstream
 dbt run --select @my_model
@@ -142,18 +161,21 @@ dbt run --select @my_model
 ### Intersections
 
 **AND (,)**:
+
 ```bash
 # Finance AND staging layer
 dbt run --select tag:finance,tag:staging
 ```
 
 **UNION (space)**:
+
 ```bash
 # Finance OR staging layer
 dbt run --select tag:finance tag:staging
 ```
 
 **EXCLUDE (--exclude)**:
+
 ```bash
 # All finance models except staging
 dbt run --select tag:finance --exclude tag:staging
@@ -185,6 +207,7 @@ dbt build --select state:modified+ state:new --defer --state ./prod-manifest/
 ## Target Environments
 
 ### Using targets
+
 ```bash
 # Run against dev
 dbt run --target dev
@@ -197,6 +220,7 @@ dbt debug
 ```
 
 ### profiles.yml structure
+
 ```yaml
 my_project:
   target: dev
@@ -219,24 +243,28 @@ my_project:
 ## Advanced Patterns
 
 ### Parallel Execution
+
 ```bash
 # Run with 8 threads (faster)
 dbt run --threads 8
 ```
 
 ### Partial Parsing
+
 ```bash
 # Disable partial parsing (troubleshooting)
 dbt run --no-partial-parse
 ```
 
 ### Fail Fast
+
 ```bash
 # Stop on first failure
 dbt test --fail-fast
 ```
 
 ### Full Refresh
+
 ```bash
 # Force full refresh of incremental models
 dbt run --full-refresh
@@ -246,6 +274,7 @@ dbt run --select my_model --full-refresh
 ```
 
 ### Seed Data
+
 ```bash
 # Load CSV files from seeds/ directory
 dbt seed
@@ -255,6 +284,7 @@ dbt seed --select my_seed
 ```
 
 ### Snapshot
+
 ```bash
 # Run snapshots (SCD Type 2)
 dbt snapshot
@@ -266,7 +296,9 @@ dbt snapshot --select my_snapshot
 ## Debugging Commands
 
 ### debug
+
 Validate connection and configuration:
+
 ```bash
 dbt debug
 
@@ -275,7 +307,9 @@ dbt debug --profiles-dir ./custom-profiles/
 ```
 
 ### list
+
 List resources:
+
 ```bash
 # List all models
 dbt list
@@ -291,7 +325,9 @@ dbt list --output path
 ```
 
 ### show
+
 Preview query results (without materializing):
+
 ```bash
 # Show first 5 rows
 dbt show --select my_model
@@ -301,7 +337,9 @@ dbt show --select my_model --limit 10
 ```
 
 ### run-operation
+
 Execute macros:
+
 ```bash
 # Run macro
 dbt run-operation my_macro
@@ -345,6 +383,7 @@ dbt run --log-format json
 ## CI/CD Patterns
 
 ### Slim CI (GitHub Actions)
+
 ```bash
 # 1. Download production manifest
 # 2. Run only changed models
@@ -356,6 +395,7 @@ dbt build \
 ```
 
 ### Production Run
+
 ```bash
 # Full build with tests
 dbt build --target prod
@@ -365,6 +405,7 @@ dbt run --target prod
 ```
 
 ### Selective Build by Domain
+
 ```bash
 # Finance domain
 dbt build --select tag:domain:finance
@@ -376,6 +417,7 @@ dbt build --select tag:critical:true
 ## Common Combinations
 
 ### Full Model Lifecycle
+
 ```bash
 # Compile → Run → Test → Generate Docs
 dbt compile && \
@@ -385,18 +427,21 @@ dbt docs generate
 ```
 
 ### Modified Models with Tests
+
 ```bash
 # CI/CD pattern
 dbt build --select state:modified+ --defer --state prod/
 ```
 
 ### Tag-based Production Build
+
 ```bash
 # Build finance domain
 dbt build --select tag:group:finance --target prod
 ```
 
 ### Development Workflow
+
 ```bash
 # Compile specific model
 dbt compile --select my_model

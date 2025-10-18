@@ -20,14 +20,17 @@ Audit trails provide evidence of compliance with regulatory requirements (GDPR, 
 ### Regulatory Requirements
 
 **GDPR Article 30**: Records of Processing Activities
+
 - Document all processing activities
 - Include purposes, data categories, recipients, retention periods
 
 **CCPA**: Transparency and Accountability
+
 - Track data access and sharing with third parties
 - Support data subject request fulfillment
 
 **SOC2 CC6.1**: Logical and Physical Access Controls
+
 - Log all access to sensitive systems and data
 - Monitor and review access logs regularly
 - Investigate anomalies and unauthorized access
@@ -47,25 +50,30 @@ Audit trails provide evidence of compliance with regulatory requirements (GDPR, 
 ### The 5 W's of Audit Logging
 
 **Who**: User or service account performing the action
+
 - User name, role name, authentication method
 - Session ID for tracing multi-step operations
 
 **What**: Action performed
+
 - Query type (SELECT, INSERT, UPDATE, DELETE, GRANT, REVOKE)
 - SQL text (full query for forensics)
 - Objects accessed (database, schema, table, column)
 
 **When**: Timestamp of the action
+
 - UTC timestamp with millisecond precision
 - Session start/end times
 - Duration of long-running queries
 
 **Where**: System and location
+
 - Database, schema, table, column
 - Warehouse used for compute
 - Client IP address, application name
 
 **Why**: Business justification (optional but recommended)
+
 - Ticket ID or approval reference
 - Business purpose (analytics, reporting, data science)
 - Requested by (for delegated access)
@@ -79,6 +87,7 @@ Audit trails provide evidence of compliance with regulatory requirements (GDPR, 
 **Purpose**: Tracks all SQL statements executed in Snowflake account.
 
 **Key Columns**:
+
 - `QUERY_ID`: Unique identifier for each query
 - `USER_NAME`: User who executed the query
 - `ROLE_NAME`: Role used for execution
@@ -92,6 +101,7 @@ Audit trails provide evidence of compliance with regulatory requirements (GDPR, 
 **Retention**: 365 days in ACCOUNT_USAGE, 7 days in INFORMATION_SCHEMA
 
 **Example Query**:
+
 ```sql
 -- Audit all queries accessing PII tables in last 30 days
 select
@@ -120,6 +130,7 @@ order by start_time desc;
 **Purpose**: Column-level access tracking for sensitive data.
 
 **Key Columns**:
+
 - `QUERY_ID`: Links to QUERY_HISTORY
 - `USER_NAME`: User who accessed the data
 - `DIRECT_OBJECTS_ACCESSED`: Tables/views directly queried
@@ -130,6 +141,7 @@ order by start_time desc;
 **Retention**: 365 days
 
 **Example Query**:
+
 ```sql
 -- Column-level access to email addresses
 select
@@ -153,6 +165,7 @@ order by ah.query_start_time desc;
 **Purpose**: Track authentication events (successful and failed logins).
 
 **Key Columns**:
+
 - `USER_NAME`: User attempting login
 - `EVENT_TIMESTAMP`: When login occurred
 - `IS_SUCCESS`: TRUE/FALSE
@@ -163,6 +176,7 @@ order by ah.query_start_time desc;
 **Retention**: 365 days
 
 **Example Query**:
+
 ```sql
 -- Failed login attempts (potential brute force)
 select
@@ -188,6 +202,7 @@ order by event_timestamp desc;
 **Purpose**: Track privilege changes (GRANT/REVOKE operations).
 
 **Key Columns**:
+
 - `CREATED_ON`: When grant was created
 - `DELETED_ON`: When grant was revoked (NULL if active)
 - `PRIVILEGE`: SELECT, INSERT, UPDATE, DELETE, OWNERSHIP, etc.
@@ -199,6 +214,7 @@ order by event_timestamp desc;
 **Retention**: 365 days (deleted grants retained)
 
 **Example Query**:
+
 ```sql
 -- Recent grants on PII tables
 select
@@ -220,6 +236,7 @@ order by created_on desc;
 **Purpose**: Track active and historical user sessions.
 
 **Key Columns**:
+
 - `SESSION_ID`: Unique session identifier
 - `USER_NAME`: Session user
 - `CREATED_ON`: Session start time
@@ -250,6 +267,7 @@ grant select on future tables in schema prod.audit to role compliance_analyst;
 ### Audit Log Staging Models
 
 **dbt Staging Model: stg_snowflake__query_history**
+
 ```sql
 -- models/dwh/staging/audit/stg_snowflake__query_history.sql
 {{
@@ -311,6 +329,7 @@ where start_time > (select max(start_time) from {{ this }})
 ```
 
 **dbt Staging Model: stg_snowflake__access_history**
+
 ```sql
 -- models/dwh/staging/audit/stg_snowflake__access_history.sql
 {{
@@ -364,6 +383,7 @@ from base_objects
 ### Audit Fact Table
 
 **Fact Table: fct_data_access**
+
 ```sql
 -- models/dwh/core/audit/fct_data_access.sql
 {{
@@ -506,6 +526,7 @@ order by pii_queries desc;
 ### Real-Time Alerts
 
 **Alert 1: Unusual PII Access Volume**
+
 ```sql
 -- Alert if user accesses >1000 rows of PII in single query
 select
@@ -523,6 +544,7 @@ order by rows_produced desc;
 ```
 
 **Alert 2: Failed Login Attempts (Brute Force)**
+
 ```sql
 -- Alert if >5 failed logins from same IP in 10 minutes
 select
@@ -540,6 +562,7 @@ order by failed_attempts desc;
 ```
 
 **Alert 3: Privilege Escalation**
+
 ```sql
 -- Alert on grants to sensitive tables
 select
@@ -558,6 +581,7 @@ order by created_on desc;
 ### Dashboards
 
 **Compliance Dashboard (Metabase/Tableau)**:
+
 1. **PII Access Trends**: Daily volume of PII queries by user/role
 2. **Failed Logins**: Geographic distribution and top offending IPs
 3. **Top Data Consumers**: Users with highest query volume
@@ -569,26 +593,31 @@ order by created_on desc;
 ## Audit Trail Best Practices
 
 ### 1. Comprehensive Logging
+
 - **Log Everything**: Query history, access history, login attempts, privilege changes
 - **Column-Level Granularity**: Track which columns accessed (not just tables)
 - **Retain Long-Term**: 7 years for financial/compliance (archive to S3/Glacier if needed)
 
 ### 2. Tamper-Proof Storage
+
 - **Read-Only Access**: Audit logs should be immutable (no UPDATE/DELETE)
 - **Separate Schema**: Isolate audit data from operational schemas
 - **Restricted Permissions**: Only compliance/security roles can read audit logs
 
 ### 3. Regular Reviews
+
 - **Quarterly Access Reviews**: Certify that users still need access
 - **Anomaly Detection**: Investigate unusual patterns (volume, time, user)
 - **Privilege Audits**: Validate least privilege principle
 
 ### 4. Integration with SIEM
+
 - **Export to SIEM**: Stream logs to Splunk, Datadog, or CloudWatch
 - **Correlation**: Cross-reference with application logs, network logs
 - **Automated Response**: Trigger alerts, lock accounts, escalate to security team
 
 ### 5. Documentation
+
 - **Audit Policy**: Document what is logged, retention periods, access controls
 - **Incident Response**: Procedures for investigating security events
 - **Compliance Mapping**: Map audit logs to regulatory requirements (GDPR, CCPA, SOC2)
@@ -600,6 +629,7 @@ order by created_on desc;
 When user requests data deletion (GDPR Right to Erasure):
 
 **Step 1: Log the Request**
+
 ```sql
 insert into prod.audit.data_subject_requests (
     request_id, user_id, request_type, requested_at, requested_by, status
@@ -609,6 +639,7 @@ insert into prod.audit.data_subject_requests (
 ```
 
 **Step 2: Execute Deletion and Log**
+
 ```sql
 begin transaction;
 
@@ -635,6 +666,7 @@ commit;
 ```
 
 **Step 3: Generate Audit Report**
+
 ```sql
 -- Confirm deletion and provide audit trail
 select

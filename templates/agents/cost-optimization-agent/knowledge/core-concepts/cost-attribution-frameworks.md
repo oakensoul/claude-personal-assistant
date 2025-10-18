@@ -14,6 +14,7 @@ Cost attribution enables organizations to allocate Snowflake costs to specific t
 ## Why Cost Attribution Matters
 
 **Business Benefits**:
+
 - **Budget Accountability**: Teams understand their actual data platform costs
 - **Optimization Incentives**: Cost visibility drives efficiency improvements
 - **Fair Allocation**: Shared infrastructure costs distributed appropriately
@@ -21,6 +22,7 @@ Cost attribution enables organizations to allocate Snowflake costs to specific t
 - **Capacity Planning**: Predict future costs by team/project growth
 
 **Technical Benefits**:
+
 - Identify expensive workloads for optimization
 - Track cost trends by business domain
 - Justify infrastructure investments with usage data
@@ -63,11 +65,13 @@ ORDER BY total_credits DESC;
 ```
 
 **Pros**:
+
 - Simple, direct attribution
 - No ambiguity (warehouse = team)
 - Easy to implement resource monitors per team
 
 **Cons**:
+
 - Warehouse proliferation (management overhead)
 - Inefficient resource utilization (small teams underutilize)
 - Cannot attribute shared warehouse costs
@@ -115,11 +119,13 @@ ORDER BY total_credits DESC;
 ```
 
 **Pros**:
+
 - Flexible (multiple tags per resource)
 - No warehouse proliferation needed
 - Supports hierarchical attribution (department → team → project)
 
 **Cons**:
+
 - Requires consistent tagging discipline
 - Tag changes not historically tracked
 - Shared warehouses still require allocation logic
@@ -163,11 +169,13 @@ ORDER BY total_credits DESC;
 ```
 
 **Pros**:
+
 - Granular attribution (query-level)
 - Reflects actual usage patterns
 - Can attribute shared warehouse costs proportionally
 
 **Cons**:
+
 - Approximate (doesn't account for idle time, auto-suspend delays)
 - Complex calculation (requires warehouse size mapping)
 - Doesn't include serverless features (clustering, Snowpipe)
@@ -241,7 +249,8 @@ ORDER BY total_credits DESC;
 - No budget enforcement
 
 **Example Report**:
-```
+
+```text
 Team: Finance Analytics
 Monthly Compute: $2,450 (245 credits @ $10/credit effective rate)
 Monthly Storage: $85 (2.1 TB @ $40/TB)
@@ -270,6 +279,7 @@ FROM monthly_costs;
 ```
 
 **Chargeback Options**:
+
 - **Direct**: Team budgets debited actual costs
 - **Tiered**: Fixed tiers (S/M/L) regardless of actual usage
 - **Subsidized**: Central IT absorbs base infrastructure, teams pay marginal
@@ -301,6 +311,7 @@ Queries:
 ### Tagging Strategy
 
 1. **Consistent Taxonomy**:
+
    ```yaml
    Required_Tags:
      - cost_center (department/team owner)
@@ -318,7 +329,8 @@ Queries:
    - Regular audits for untagged resources
 
 3. **Hierarchical Tags**:
-   ```
+
+   ```text
    cost_center: "finance"
    sub_team: "fp_and_a"
    project: "revenue_forecasting"
@@ -347,35 +359,43 @@ ALTER WAREHOUSE finance_analyst_wh SET RESOURCE_MONITOR = finance_team_monitor;
 ### Attribution Challenges
 
 **Challenge 1: Shared Warehouses**
+
 - **Solution**: Proportional allocation based on query execution time by user/team
 
 **Challenge 2: Serverless Features**
+
 - **Solution**: Tag databases/tables to attribute clustering, materialized view costs
 
 **Challenge 3: Development vs Production**
+
 - **Solution**: Separate warehouses/databases by environment, tag accordingly
 
 **Challenge 4: Historical Data**
+
 - **Solution**: Tag changes not retroactive; document tag migration dates
 
 ## Implementation Roadmap
 
 ### Phase 1: Foundation (Month 1)
+
 - Define cost attribution taxonomy (cost_center, project_id)
 - Tag existing warehouses and databases
 - Create basic monthly cost reports by cost_center
 
 ### Phase 2: Refinement (Months 2-3)
+
 - Implement hybrid attribution model (warehouse + tags + queries)
 - Set up resource monitors for major cost centers
 - Establish showback reporting cadence
 
 ### Phase 3: Automation (Months 4-6)
+
 - Automated tagging in provisioning workflows
 - Self-service cost dashboard for teams
 - Anomaly detection and alerts
 
 ### Phase 4: Chargeback (Month 6+)
+
 - Transition from showback to chargeback
 - Integrate with finance systems
 - Optimize based on team feedback
@@ -404,7 +424,8 @@ ANALYST_WH:
 ```
 
 **Monthly Report**:
-```
+
+```text
 Cost Center: Data Engineering
   - finance_dwh project: $2,500 (1,000 credits)
   - segment_analytics project: $5,000 (2,000 credits)

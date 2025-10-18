@@ -12,13 +12,16 @@ Comprehensive guide to optimizing DataDog log costs without sacrificing critical
 ## Understanding Log Costs
 
 ### DataDog Log Pricing Model
+
 - **Ingestion**: Cost per GB of logs sent to DataDog
 - **Indexing**: Cost per GB of logs indexed (searchable)
 - **Retention**: Cost varies by retention period (3, 7, 15, 30, 90 days)
 - **Archives**: Separate cost for long-term archive storage
 
 ### Typical Cost Breakdown
+
 For most organizations:
+
 - 60-70%: Log indexing costs
 - 20-30%: APM and infrastructure metrics
 - 10-15%: Synthetic monitoring and other features
@@ -30,12 +33,14 @@ For most organizations:
 ### 1. Ingest vs Index Strategy
 
 **Ingest Everything** (relatively cheap):
+
 - All logs sent to DataDog
 - Available for live tail and debugging
 - Can be archived for compliance
 - Not searchable unless indexed
 
 **Index Selectively** (expensive):
+
 - Only critical logs are searchable
 - Retained for configured period
 - Enable alerts and analytics
@@ -43,7 +48,7 @@ For most organizations:
 
 ### 2. Log Pipeline Architecture
 
-```
+```text
 Application Logs
     |
     v
@@ -65,7 +70,7 @@ Search & Alert        Compliance Storage
 
 Health check logs provide no value in DataDog:
 
-```
+```text
 # Exclude AWS ALB health checks
 source:alb AND @http.status_code:200 AND @http.url_details.path:/health
 
@@ -82,7 +87,7 @@ service:api AND @http.url_details.path:"/health" AND @http.status_code:200
 
 Debug logs are useful in development but create noise in production:
 
-```
+```text
 # Exclude debug logs from production
 env:production AND status:debug
 
@@ -99,7 +104,7 @@ service:lambda AND @message:"Lambda execution environment*"
 
 For high-volume services, exclude successful operations and only index failures:
 
-```
+```text
 # Index only errors and warnings
 -(status:info OR status:ok)
 
@@ -118,7 +123,7 @@ service:database AND -(@db.response_time:<100 AND @db.error:false)
 
 For extremely high-volume logs, keep a representative sample:
 
-```
+```text
 # Keep 10% of successful API requests
 service:api AND @http.status_code:[200 TO 299] AND sample:10
 
@@ -135,6 +140,7 @@ service:lambda AND status:info AND sample:1
 Create multiple indexes with different retention policies:
 
 **Index: critical-logs (30-day retention)**
+
 - Errors and warnings from production
 - Security events
 - Authentication failures
@@ -142,12 +148,14 @@ Create multiple indexes with different retention policies:
 - Data quality issues
 
 **Index: standard-logs (7-day retention)**
+
 - Info-level production logs
 - Successful API requests (sampled)
 - Application events
 - Non-critical warnings
 
 **Index: short-term-logs (3-day retention)**
+
 - Development and staging logs
 - Verbose debug logs
 - High-volume operational logs
@@ -158,7 +166,7 @@ Create multiple indexes with different retention policies:
 
 In DataDog UI: Logs > Configuration > Indexes
 
-```
+```text
 Index: critical-logs
   Filter: (status:error OR status:critical) AND env:production
   Retention: 30 days
@@ -185,14 +193,17 @@ Index: dev-logs
 Efficient structured logs vs wasteful unstructured logs:
 
 **Bad (wasteful)**:
+
 ```python
 logger.info(f"User {user_id} performed action {action} on resource {resource_id} at {timestamp} with result {result}")
 ```
+
 - Long message strings
 - Difficult to parse
 - Hard to exclude or sample
 
 **Good (efficient)**:
+
 ```python
 logger.info("User action completed", extra={
     'user_id': user_id,
@@ -201,6 +212,7 @@ logger.info("User action completed", extra={
     'result': result
 })
 ```
+
 - Shorter message
 - Easy to filter and aggregate
 - Can exclude by attribute
@@ -221,12 +233,14 @@ logger.setLevel(logLevel);
 Don't log information you can derive from metrics:
 
 **Bad**:
+
 ```python
 # This creates a log entry for every API call
 logger.info(f"API call to {endpoint} returned {status_code}")
 ```
 
 **Good**:
+
 ```python
 # Send a metric instead
 statsd.increment('api.requests', tags=[f'endpoint:{endpoint}', f'status:{status_code}'])
@@ -241,11 +255,13 @@ if status_code >= 400:
 ### Extension vs Forwarder
 
 **DataDog Lambda Extension** (recommended):
+
 - Sends logs directly to DataDog
 - Lower latency, less volume (no CloudWatch duplication)
 - Lower costs
 
 **Forwarder Pattern** (legacy):
+
 - Logs go to CloudWatch, then Forwarder Lambda
 - Higher volume (stored in CloudWatch + DataDog)
 - Higher costs
@@ -275,7 +291,7 @@ def handler(event, context):
 
 Lambda generates platform logs that are often not useful:
 
-```
+```text
 # Exclude Lambda START/END/REPORT lines
 @message:"START RequestId:*" OR @message:"END RequestId:*" OR @message:"REPORT RequestId:*"
 ```
@@ -287,12 +303,14 @@ Lambda generates platform logs that are often not useful:
 For compliance, archive ingested logs to S3 (much cheaper than DataDog indexing):
 
 **DataDog Archive to S3**:
+
 - Ingest all logs to DataDog (low cost)
 - Exclude most from indexing (high cost)
 - Archive everything to S3 (medium cost)
 - Re-ingest from S3 if needed for investigations
 
 **Cost Comparison**:
+
 - DataDog 30-day index: $1.27/GB/month
 - DataDog 7-day index: ~$0.50/GB/month
 - S3 archive: ~$0.02/GB/month (98% cheaper!)
@@ -316,6 +334,7 @@ Rehydration: Available on-demand for investigations
 Create a dashboard to track log costs:
 
 **Metrics to Track**:
+
 - Daily log ingestion volume (GB)
 - Daily log indexing volume (GB) by index
 - Logs indexed vs logs excluded (ratio)
@@ -326,7 +345,7 @@ Create a dashboard to track log costs:
 
 Set up alerts for unexpected log volume:
 
-```
+```text
 Alert: High log volume
 Metric: logs.estimated.usage
 Condition: Above 1.5x rolling average (7 days)
@@ -337,7 +356,7 @@ Notification: Platform team + FinOps
 
 Identify logs with high unique message counts (expensive to index):
 
-```
+```text
 # In DataDog Logs Explorer
 Group by: @service, @message
 Aggregation: Unique count
@@ -345,6 +364,7 @@ Sort: Descending
 ```
 
 Services with high unique message counts are candidates for:
+
 - Better structured logging
 - Message parameterization
 - Sampling or exclusion
@@ -352,6 +372,7 @@ Services with high unique message counts are candidates for:
 ## Cost Optimization Checklist
 
 ### Immediate Actions (Quick Wins)
+
 - [ ] Exclude health check logs
 - [ ] Exclude debug logs from production
 - [ ] Exclude Lambda START/END/REPORT logs
@@ -359,6 +380,7 @@ Services with high unique message counts are candidates for:
 - [ ] Migrate Lambda functions to DataDog Extension (from Forwarder)
 
 ### Short-Term (1-2 Weeks)
+
 - [ ] Implement multi-index strategy (critical, standard, short-term)
 - [ ] Configure S3 archives for compliance
 - [ ] Create log cost monitoring dashboard
@@ -366,6 +388,7 @@ Services with high unique message counts are candidates for:
 - [ ] Review top 10 log sources and optimize each
 
 ### Long-Term (1-3 Months)
+
 - [ ] Implement structured logging standards
 - [ ] Sample high-volume successful operations
 - [ ] Replace log-based metrics with actual metrics
@@ -377,11 +400,13 @@ Services with high unique message counts are candidates for:
 ### Example Scenario
 
 **Before Optimization**:
+
 - 500 GB/day indexed at $1.27/GB = $19,050/month
 - No exclusion filters
 - All logs 30-day retention
 
 **After Optimization**:
+
 - 500 GB/day ingested
 - 100 GB/day indexed (critical, 30-day) = $3,810/month
 - 200 GB/day indexed (standard, 7-day) = $3,000/month
@@ -392,7 +417,9 @@ Services with high unique message counts are candidates for:
 ## Common Mistakes
 
 ### Over-Optimization
+
 Excluding too much can blind you during incidents. Always retain:
+
 - All ERROR and CRITICAL logs
 - Authentication and authorization events
 - Security events
@@ -400,13 +427,17 @@ Excluding too much can blind you during incidents. Always retain:
 - Payment processing logs
 
 ### Under-Tagging
+
 Without proper tags (`service`, `env`, `team`), you can't:
+
 - Allocate costs by team
 - Create service-specific exclusion filters
 - Identify high-cost sources
 
 ### Ignoring Archives
+
 Teams often pay for 30-day indexing when they could:
+
 - Index for 7 days (recent investigations)
 - Archive for 1 year (compliance)
 - Re-ingest on-demand (rare deep investigations)

@@ -18,12 +18,14 @@ Comprehensive guide to access control models (RBAC, ABAC), least privilege princ
 ## Access Control Fundamentals
 
 ### Core Principles
+
 1. **Least Privilege**: Grant minimum necessary permissions for job function
 2. **Separation of Duties**: Divide critical tasks among multiple users
 3. **Defense in Depth**: Multiple layers of access control (network + application + data)
 4. **Zero Trust**: Never trust, always verify (authenticate and authorize every request)
 
 ### Access Control Models
+
 - **DAC (Discretionary Access Control)**: Resource owner controls access (file permissions)
 - **MAC (Mandatory Access Control)**: System enforces access based on classification (Top Secret, Confidential)
 - **RBAC (Role-Based Access Control)**: Permissions assigned to roles, users assigned to roles
@@ -35,12 +37,14 @@ Comprehensive guide to access control models (RBAC, ABAC), least privilege princ
 RBAC is the most common access control model for data platforms, assigning permissions to roles instead of individual users.
 
 **Key Components**:
+
 1. **Users**: Individual identities (humans or service accounts)
 2. **Roles**: Named collections of permissions (ANALYST, DATA_ENGINEER, ADMIN)
 3. **Permissions**: Specific actions on resources (SELECT, INSERT, CREATE TABLE)
 4. **Role Hierarchies**: Roles can inherit from parent roles (SENIOR_ANALYST inherits from ANALYST)
 
 **Benefits**:
+
 - Simplified permission management (update role, not individual users)
 - Easier onboarding/offboarding (assign/revoke role membership)
 - Clear audit trail (who has which role)
@@ -49,6 +53,7 @@ RBAC is the most common access control model for data platforms, assigning permi
 ### Snowflake RBAC Implementation
 
 #### Role Hierarchy Design
+
 ```sql
 -- Create role hierarchy for dbt-splash-prod-v2 project
 -- Hierarchy: SYSADMIN > TRANSFORMER > ANALYST > REPORTER
@@ -94,6 +99,7 @@ GRANT ROLE TRANSFORMER TO ROLE SYSADMIN;  -- Admins can do everything
 ```
 
 #### Functional Role Patterns
+
 ```sql
 -- Finance Domain Roles
 CREATE ROLE FINANCE_ANALYST;
@@ -118,6 +124,7 @@ GRANT SELECT ON ALL TABLES IN SCHEMA PROD.OPERATIONS_STAGING TO ROLE OPERATIONS_
 ```
 
 #### Time-Bound Access (Just-In-Time)
+
 ```sql
 -- Grant temporary elevated access for incident response
 -- MANUAL PROCESS (requires ACCOUNTADMIN or SECURITYADMIN role)

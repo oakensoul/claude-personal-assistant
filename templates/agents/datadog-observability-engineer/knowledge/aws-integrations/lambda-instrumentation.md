@@ -15,6 +15,7 @@ Comprehensive guide for instrumenting AWS Lambda functions with DataDog monitori
 The DataDog Lambda Extension is the preferred method for modern Lambda instrumentation.
 
 **Advantages**:
+
 - No VPC or internet gateway required
 - Async log and metric forwarding (no performance impact)
 - Simplified configuration
@@ -22,6 +23,7 @@ The DataDog Lambda Extension is the preferred method for modern Lambda instrumen
 - Lower latency than Forwarder
 
 **How it Works**:
+
 - Runs as a Lambda extension (sidecar process)
 - Buffers logs, metrics, and traces
 - Sends data directly to DataDog during and after invocation
@@ -31,11 +33,13 @@ The DataDog Lambda Extension is the preferred method for modern Lambda instrumen
 An older pattern using a separate Lambda function to forward CloudWatch logs.
 
 **When to Use**:
+
 - Already deployed and working
 - Need to collect logs from non-Lambda sources
 - Extension not available in your region
 
 **Disadvantages**:
+
 - Requires CloudWatch log subscription
 - Additional Lambda function to manage
 - Higher latency for data arrival
@@ -45,6 +49,7 @@ An older pattern using a separate Lambda function to forward CloudWatch logs.
 Direct use of DataDog SDKs without extension or forwarder.
 
 **When to Use**:
+
 - Custom instrumentation requirements
 - Non-standard runtimes
 - Testing and development
@@ -54,6 +59,7 @@ Direct use of DataDog SDKs without extension or forwarder.
 ### Pattern 1: DataDog CDK Constructs (Recommended)
 
 Install the DataDog CDK constructs:
+
 ```bash
 npm install --save datadog-cdk-constructs-v2
 ```
@@ -274,13 +280,17 @@ def handler(event, context):
 ```
 
 ### Tracing API Gateway -> Lambda
+
 DataDog automatically traces API Gateway to Lambda if both are instrumented:
+
 - API Gateway access logs with trace ID
 - Lambda function with DataDog layer
 - Trace correlation happens automatically
 
 ### Tracing EventBridge -> Lambda
+
 Enable EventBridge tracing:
+
 ```typescript
 const rule = new events.Rule(this, 'MyRule', {
   eventPattern: {
@@ -355,22 +365,27 @@ def handler(event, context):
 ## Performance Optimization
 
 ### Cold Start Impact
+
 DataDog layers add ~20-50ms to cold start time:
+
 - Python: ~30ms
 - Node.js: ~20ms
 - Extension: ~10-15ms
 
 **Mitigation**:
+
 - Use provisioned concurrency for latency-sensitive functions
 - Consider manual instrumentation for ultra-low-latency requirements
 - Monitor cold start percentage in DataDog
 
 ### Memory Overhead
+
 - Lambda library layer: ~10-20MB
 - Extension: ~15-25MB
 - Total overhead: ~30-45MB
 
 **Recommendations**:
+
 - Add 64-128MB to function memory allocation
 - Monitor memory usage in DataDog Lambda metrics
 
@@ -398,6 +413,7 @@ environment: {
 ```
 
 In DataDog UI, create exclusion filters:
+
 - Exclude logs matching `status:info` for non-critical functions
 - Exclude high-frequency DEBUG logs
 - Retain ERROR and WARN logs
@@ -414,18 +430,21 @@ environment: {
 ## Troubleshooting
 
 ### Missing Metrics or Traces
+
 1. Check CloudWatch logs for DataDog extension errors
 2. Verify API key has correct permissions
 3. Confirm layer versions are compatible with runtime
 4. Check function timeout (should be > 3 seconds for extension flush)
 
 ### High Costs
+
 1. Review trace sampling rate (should be < 1.0 for high-volume functions)
 2. Check log exclusion filters in DataDog
 3. Disable payload capture if enabled
 4. Consider disabling DataDog for dev/test environments
 
 ### Trace Gaps
+
 1. Ensure all functions in call chain have DataDog layers
 2. Verify trace context propagation in custom code
 3. Check for async invocations (use Step Functions for complex workflows)
@@ -433,6 +452,7 @@ environment: {
 ## Security Considerations
 
 ### API Key Management
+
 - NEVER hardcode API keys
 - Store in AWS Secrets Manager
 - Grant least-privilege IAM permissions: `secretsmanager:GetSecretValue`

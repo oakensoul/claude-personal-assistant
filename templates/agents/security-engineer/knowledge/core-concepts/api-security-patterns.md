@@ -18,6 +18,7 @@ Comprehensive guide to API security patterns including OAuth 2.0, JWT tokens, AP
 ## API Security Fundamentals
 
 ### Security Goals
+
 1. **Authentication**: Verify the identity of API clients (who are you?)
 2. **Authorization**: Verify permissions to access resources (what can you do?)
 3. **Confidentiality**: Protect data in transit (TLS encryption)
@@ -25,6 +26,7 @@ Comprehensive guide to API security patterns including OAuth 2.0, JWT tokens, AP
 5. **Availability**: Prevent abuse and denial-of-service (rate limiting)
 
 ### Authentication Methods
+
 - **API Keys**: Simple static tokens for service-to-service authentication
 - **OAuth 2.0**: Delegated authorization with access tokens
 - **JWT (JSON Web Tokens)**: Self-contained tokens with claims
@@ -37,6 +39,7 @@ Comprehensive guide to API security patterns including OAuth 2.0, JWT tokens, AP
 OAuth 2.0 is an authorization framework that enables third-party applications to obtain limited access to resources without exposing user credentials.
 
 **Key Components**:
+
 1. **Resource Owner**: User who owns the data (e.g., Snowflake user)
 2. **Client**: Application requesting access (e.g., dbt Cloud, Metabase)
 3. **Authorization Server**: Issues access tokens (e.g., Okta, Auth0, Snowflake OAuth)
@@ -45,7 +48,8 @@ OAuth 2.0 is an authorization framework that enables third-party applications to
 ### OAuth 2.0 Grant Types
 
 #### Authorization Code Flow (User Authentication)
-```
+
+```text
 User → Client: Click "Login with Snowflake"
 Client → Authorization Server: Redirect to /authorize?client_id=...&redirect_uri=...&response_type=code
 User → Authorization Server: Enter username/password (+ MFA)
@@ -56,6 +60,7 @@ Client → Resource Server: API request with Authorization: Bearer <access_token
 ```
 
 **Example: Metabase OAuth with Okta**
+
 ```bash
 # Step 1: User clicks "Sign in with Okta" in Metabase
 # Step 2: Metabase redirects to Okta authorization endpoint
@@ -100,13 +105,15 @@ curl https://splash.okta.com/oauth2/v1/userinfo \
 ```
 
 #### Client Credentials Flow (Service-to-Service)
-```
+
+```text
 Client → Authorization Server: POST /token with client_id + client_secret
 Authorization Server → Client: Return access_token
 Client → Resource Server: API request with Authorization: Bearer <access_token>
 ```
 
 **Example: dbt Cloud to Snowflake OAuth**
+
 ```bash
 # dbt Cloud service account authenticates with Snowflake OAuth
 curl -X POST https://xyz12345.snowflakecomputing.com/oauth/token-request \
@@ -168,9 +175,10 @@ GRANT USAGE ON INTEGRATION METABASE_OAUTH TO ROLE METABASE_READER;
 ## JSON Web Tokens (JWT)
 
 ### JWT Structure
+
 JWT is a compact, URL-safe token format consisting of three Base64-encoded parts separated by dots:
 
-```
+```text
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
 Header:    {"alg":"HS256","typ":"JWT"}
@@ -179,6 +187,7 @@ Signature: HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), 
 ```
 
 ### JWT Claims (Payload)
+
 ```json
 {
   "iss": "https://auth.splash.com",  // Issuer
@@ -194,6 +203,7 @@ Signature: HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), 
 ```
 
 ### Metabase JWT Authentication
+
 ```python
 # Generate JWT token for embedding Metabase dashboards
 import jwt
@@ -219,6 +229,7 @@ iframe_url = f"https://metabase.splash.com/embed/dashboard/{token}#bordered=true
 ```
 
 ### JWT Validation Best Practices
+
 ```python
 import jwt
 from jwt import PyJWKClient
@@ -253,12 +264,14 @@ def validate_jwt_token(token):
 ## API Keys
 
 ### API Key Characteristics
+
 - **Static tokens**: Long-lived credentials (90-365 days)
 - **Simple authentication**: Pass in header or query parameter
 - **Service accounts**: Machine-to-machine authentication
 - **Revocable**: Can be revoked without changing code (rotate via secrets manager)
 
 ### Metabase API Key Authentication
+
 ```bash
 # Create API key in Metabase (Admin Settings > API Keys)
 # API key format: mb_abc123def456789...
@@ -273,6 +286,7 @@ curl https://metabase.splash.com/api/dashboard/123 \
 ```
 
 ### dbt Cloud API Key Authentication
+
 ```bash
 # Create service account token in dbt Cloud (Account Settings > Service Tokens)
 
@@ -288,6 +302,7 @@ curl -X POST https://cloud.getdbt.com/api/v2/accounts/12345/jobs/67890/run/ \
 ```
 
 ### Airbyte API Key Authentication
+
 ```bash
 # Create API key in Airbyte (Settings > API Keys)
 
@@ -302,6 +317,7 @@ curl https://airbyte.splash.com/api/v1/jobs/456 \
 ```
 
 ### API Key Security Best Practices
+
 1. **Use environment variables or secrets manager** (never hardcode in code)
 2. **Rotate keys regularly** (every 90 days minimum)
 3. **Scope API keys** to minimum necessary permissions
@@ -314,7 +330,8 @@ curl https://airbyte.splash.com/api/v1/jobs/456 \
 ### Rate Limiting Strategies
 
 #### Fixed Window
-```
+
+```text
 Limit: 100 requests per minute
 Window: 00:00-00:59, 01:00-01:59, ...
 
@@ -324,10 +341,12 @@ Request at 01:00 (count: 1) → ALLOW (new window, counter reset)
 ```
 
 **Pros**: Simple to implement
+
 **Cons**: Burst traffic at window boundaries (200 requests in 2 seconds)
 
 #### Sliding Window
-```
+
+```text
 Limit: 100 requests per 60-second rolling window
 
 Request at 00:58 → Check requests from 23:58-00:58 → ALLOW if <100
@@ -335,10 +354,12 @@ Request at 01:00 → Check requests from 00:00-01:00 → ALLOW if <100
 ```
 
 **Pros**: Prevents burst traffic at boundaries
+
 **Cons**: More complex to implement (requires timestamp tracking)
 
 #### Token Bucket
-```
+
+```text
 Bucket capacity: 100 tokens
 Refill rate: 10 tokens per second
 
@@ -347,9 +368,11 @@ Empty bucket → Wait for refill or DENY
 ```
 
 **Pros**: Allows controlled bursts
+
 **Cons**: Complex configuration (capacity + refill rate)
 
 ### Metabase Rate Limiting
+
 ```nginx
 # Nginx rate limiting for Metabase API
 # /etc/nginx/conf.d/metabase.conf
@@ -378,6 +401,7 @@ server {
 ```
 
 ### Kong API Gateway Rate Limiting
+
 ```bash
 # Kong rate limiting plugin for Airbyte API
 curl -X POST http://kong-admin:8001/services/airbyte-api/plugins \
@@ -397,6 +421,7 @@ RateLimit-Reset: 45  # Seconds until reset
 ```
 
 ### Snowflake Query Rate Limiting
+
 ```sql
 -- Resource monitors to limit query consumption
 CREATE RESOURCE MONITOR DAILY_QUERY_LIMIT
@@ -421,6 +446,7 @@ ORDER BY start_time DESC;
 ## Request Validation and Input Sanitization
 
 ### SQL Injection Prevention
+
 ```python
 # BAD: SQL injection vulnerable
 def get_user_data(user_id):
@@ -442,6 +468,7 @@ def get_user_data(user_id):
 ```
 
 ### API Input Validation
+
 ```python
 from pydantic import BaseModel, validator, Field
 from datetime import datetime
@@ -473,6 +500,7 @@ async def query_dashboard(request: DashboardQueryRequest):
 ```
 
 ### Content-Type Validation
+
 ```python
 # Reject requests with unexpected Content-Type
 @app.middleware("http")
@@ -491,6 +519,7 @@ async def validate_content_type(request: Request, call_next):
 ## API Security Headers
 
 ### Security Headers for API Responses
+
 ```python
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
@@ -528,6 +557,7 @@ async def add_security_headers(request: Request, call_next):
 ## Webhook Security
 
 ### HMAC Signature Validation (Airbyte Webhooks)
+
 ```python
 import hmac
 import hashlib

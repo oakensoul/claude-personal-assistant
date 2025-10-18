@@ -27,32 +27,38 @@ This document provides a step-by-step plan for migrating AIDA agents from the cu
 ### Existing Agents by Category
 
 **Leadership & Architecture (4)**:
+
 - system-architect ✅ (keep as-is)
 - tech-lead ✅ (keep as-is, enhance with code review responsibilities)
 - product-manager ✅ (keep as-is)
 - claude-agent-manager ✅ (keep as-is)
 
 **Application Development (3)**:
+
 - code-reviewer ❌ (DELETE - distribute responsibilities)
 - security-engineer ✏️ (RENAME to security-analyst)
 - qa-engineer ✏️ (RENAME to quality-analyst)
 
 **Data Engineering (3)**:
+
 - data-engineer ✅ (keep as-is, already follows pattern)
 - sql-expert ✅ (keep as-is)
 - metabase-engineer ✅ (keep as-is)
 
 **Infrastructure & Operations (3)**:
+
 - devops-engineer ✅ (keep as-is)
 - aws-cloud-engineer ✅ (keep as-is)
 - datadog-observability-engineer ✅ (keep as-is)
 
 **Compliance & Governance (3)**:
+
 - privacy-security-auditor ✏️ (RENAME to compliance-analyst)
 - data-governance-agent ✏️ (RENAME to governance-analyst)
 - cost-optimization-agent ✅ (keep as-is)
 
 **Specialized (5)**:
+
 - technical-writer ✅ (keep as-is)
 - integration-specialist ✅ (keep as-is)
 - configuration-specialist ✅ (keep as-is, may merge later)
@@ -62,9 +68,11 @@ This document provides a step-by-step plan for migrating AIDA agents from the cu
 ### Agents to Create
 
 **New Analyst Agents (1)**:
+
 - performance-analyst (NEW)
 
 **New Engineer Agents (3)**:
+
 - product-engineer (NEW)
 - platform-engineer (NEW)
 - api-engineer (NEW)
@@ -128,12 +136,14 @@ templates/agents/product-engineer/
 ```
 
 **Responsibilities**:
+
 - User-facing features (Next.js, React, full-stack apps)
 - Feature code + tests + monitoring
 - Integration with platform services
 - End-to-end ownership
 
 **Skills Used**:
+
 - react-patterns, nextjs-setup
 - pytest-patterns, playwright-automation
 - api-testing, database-patterns
@@ -143,7 +153,8 @@ templates/agents/product-engineer/
 **Purpose**: Build platform capabilities and shared services
 
 **Knowledge Base**:
-```
+
+```text
 templates/agents/platform-engineer/
 ├── instructions.md
 └── knowledge/
@@ -154,12 +165,14 @@ templates/agents/platform-engineer/
 ```
 
 **Responsibilities**:
+
 - Shared services (auth, notifications, email)
 - Internal libraries and SDKs
 - Developer tools and frameworks
 - Infrastructure code (CDK, Terraform)
 
 **Skills Used**:
+
 - microservices-patterns
 - cdk-constructs
 - service-mesh
@@ -170,7 +183,8 @@ templates/agents/platform-engineer/
 **Purpose**: Build external APIs for partners and third parties
 
 **Knowledge Base**:
-```
+
+```text
 templates/agents/api-engineer/
 ├── instructions.md
 └── knowledge/
@@ -181,6 +195,7 @@ templates/agents/api-engineer/
 ```
 
 **Responsibilities**:
+
 - Public REST/GraphQL APIs
 - API documentation (OpenAPI)
 - SDK generation and maintenance
@@ -188,6 +203,7 @@ templates/agents/api-engineer/
 - Webhooks and events
 
 **Skills Used**:
+
 - api-design
 - openapi-spec
 - graphql-schema
@@ -228,6 +244,7 @@ templates/agents/performance-analyst/
 ```
 
 **Responsibilities**:
+
 - Define performance targets (latency, throughput)
 - Set SLAs and error budgets
 - Identify performance risks
@@ -235,6 +252,7 @@ templates/agents/performance-analyst/
 - Analyze performance test results
 
 **Output**:
+
 - Performance requirements
 - SLA definitions
 - Load test scenarios
@@ -272,7 +290,8 @@ templates/agents/performance-analyst/
 | Complexity | code-reviewer | performance-analyst |
 
 **New `/review code` Command Orchestration**:
-```
+
+```text
 /review code → Orchestrates:
   1. tech-lead (architecture and design)
   2. security-analyst (security vulnerabilities)
@@ -305,7 +324,8 @@ templates/agents/performance-analyst/
 **Skills to Create**:
 
 #### Compliance Skills
-```
+
+```text
 templates/skills/hipaa-compliance/
 ├── requirements.md
 ├── patient-data-handling.md
@@ -324,7 +344,8 @@ templates/skills/pci-compliance/
 ```
 
 #### Testing Skills
-```
+
+```text
 templates/skills/pytest-patterns/
 ├── setup.md
 ├── fixtures.md
@@ -345,7 +366,8 @@ templates/skills/k6-performance/
 ```
 
 #### Framework Skills
-```
+
+```text
 templates/skills/react-patterns/
 ├── component-composition.md
 ├── hooks.md
@@ -421,16 +443,19 @@ templates/skills/api-design/
 If critical issues arise during migration:
 
 ### Phase 1-2 Rollback
+
 - Restore old agent names from backup
 - Revert CLAUDE.md changes
 - Keep new engineering agents (no conflicts)
 
 ### Phase 3-4 Rollback
+
 - Restore code-reviewer agent
 - Remove performance-analyst
 - Revert `/review code` command
 
 ### Phase 5-6 Rollback
+
 - Skills are additive (no rollback needed)
 - Documentation can be reverted via git
 
@@ -475,18 +500,21 @@ Migration is successful when:
 Once migration is complete:
 
 ### Continuous Improvement
+
 1. Gather feedback on new agent pattern
 2. Refine analyst/engineer boundaries
 3. Add more skills as patterns emerge
 4. Create project-specific agent knowledge
 
 ### Future Enhancements
+
 1. Command consolidation (per issue #44)
 2. More specialized analysts (accessibility, cost, etc.)
 3. Mobile-engineer for mobile-specific development
 4. Enhanced C4 diagrams with agent flows
 
 ### Monitoring & Metrics
+
 1. Track agent usage patterns
 2. Identify which agents are most valuable
 3. Find gaps in coverage

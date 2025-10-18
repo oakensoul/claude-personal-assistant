@@ -17,12 +17,14 @@ Comprehensive guide to encryption strategies for data at-rest, in-transit, and k
 ## Encryption Fundamentals
 
 ### Encryption Goals
+
 1. **Confidentiality**: Protect data from unauthorized access
 2. **Integrity**: Detect unauthorized modifications
 3. **Compliance**: Meet regulatory requirements (GDPR, SOC 2, HIPAA)
 4. **Defense in Depth**: Multiple layers of encryption (transport + storage)
 
 ### Encryption Types
+
 - **Symmetric Encryption**: Same key for encryption/decryption (AES-256)
 - **Asymmetric Encryption**: Public/private key pairs (RSA-2048/4096)
 - **Hashing**: One-way transformation for integrity verification (SHA-256)
@@ -34,6 +36,7 @@ Comprehensive guide to encryption strategies for data at-rest, in-transit, and k
 Snowflake provides automatic encryption for all data stored in the platform.
 
 #### Standard Encryption
+
 ```sql
 -- Snowflake automatically encrypts all data with AES-256
 -- No additional configuration required for standard encryption
@@ -44,12 +47,14 @@ SHOW PARAMETERS LIKE 'ENCRYPTION' IN ACCOUNT;
 ```
 
 **Features**:
+
 - AES-256 encryption in GCM mode (Galois/Counter Mode)
 - Hierarchical key model (account master key → table keys → file keys)
 - Automatic key rotation managed by Snowflake
 - Zero performance overhead (hardware-accelerated encryption)
 
 #### Tri-Secret Secure (Customer-Managed Keys)
+
 ```sql
 -- Enable Tri-Secret Secure with AWS KMS customer master key
 ALTER ACCOUNT SET ENCRYPTION = 'TRI_SECRET_SECURE';
@@ -63,17 +68,20 @@ SHOW PARAMETERS LIKE 'ENCRYPTION' IN ACCOUNT;
 ```
 
 **Tri-Secret Architecture**:
+
 1. **Snowflake Account Master Key**: Managed by Snowflake
 2. **Customer Master Key (CMK)**: Managed by customer in AWS KMS
 3. **Composite Master Key**: Combination of both keys using XOR operation
 
 **Benefits**:
+
 - Customer retains control over encryption keys
 - Key rotation managed by AWS KMS (automatic annual rotation)
 - Compliance requirements for key management (SOC 2, ISO 27001)
 - Ability to revoke Snowflake's access to data (emergency key rotation)
 
 **Implementation Checklist**:
+
 - [ ] Create AWS KMS customer master key (CMK) with automatic rotation
 - [ ] Grant Snowflake IAM role access to KMS key (kms:Decrypt, kms:DescribeKey)
 - [ ] Enable Tri-Secret Secure on Snowflake account
@@ -83,6 +91,7 @@ SHOW PARAMETERS LIKE 'ENCRYPTION' IN ACCOUNT;
 - [ ] Set up CloudWatch alarms for KMS key usage anomalies
 
 ### S3 Bucket Encryption (Data Lake)
+
 ```bash
 # Enable default S3 bucket encryption with SSE-S3 (AWS-managed keys)
 aws s3api put-bucket-encryption \
@@ -113,6 +122,7 @@ aws s3api get-bucket-encryption --bucket dbt-splash-data-lake
 ```
 
 **S3 Encryption Options**:
+
 - **SSE-S3** (Server-Side Encryption with S3-managed keys): AWS manages keys, AES-256
 - **SSE-KMS** (Server-Side Encryption with KMS): Customer-managed keys in AWS KMS
 - **SSE-C** (Server-Side Encryption with Customer-Provided Keys): Customer provides keys per request
@@ -121,6 +131,7 @@ aws s3api get-bucket-encryption --bucket dbt-splash-data-lake
 **Recommendation**: Use SSE-KMS with S3 Bucket Keys for cost efficiency and compliance.
 
 ### RDS/PostgreSQL Encryption
+
 ```bash
 # Enable encryption at-rest for RDS PostgreSQL (must be set at instance creation)
 aws rds create-db-instance \
@@ -148,6 +159,7 @@ aws rds describe-db-instances \
 ### TLS/SSL Configuration
 
 #### Snowflake TLS
+
 ```python
 # Python Snowflake connector with TLS enforcement
 import snowflake.connector
@@ -170,12 +182,14 @@ print(cursor.fetchone())
 ```
 
 **Snowflake TLS Enforcement**:
+
 - TLS 1.2+ required for all connections (TLS 1.0/1.1 deprecated)
 - Certificate validation enabled by default
 - OCSP (Online Certificate Status Protocol) for certificate revocation checking
 - Perfect Forward Secrecy (PFS) for key exchange (ECDHE ciphers)
 
 #### Metabase TLS
+
 ```yaml
 # docker-compose.yml for Metabase with TLS
 version: '3.8'
@@ -203,12 +217,14 @@ services:
 ```
 
 **Metabase TLS Best Practices**:
+
 - Use AWS Application Load Balancer (ALB) for TLS termination
 - Enforce HTTPS-only (redirect HTTP to HTTPS)
 - Use ACM (AWS Certificate Manager) for SSL certificates
 - Enable HTTP Strict Transport Security (HSTS) headers
 
 #### Airbyte TLS
+
 ```yaml
 # Airbyte connection configuration with TLS
 # Snowflake destination with TLS enforcement
@@ -247,6 +263,7 @@ services:
 ```
 
 **Airbyte TLS Requirements**:
+
 - All database connections must use TLS (PostgreSQL, MySQL, Snowflake)
 - API connections to Stripe, Salesforce, etc. use HTTPS by default
 - Webhook endpoints must use HTTPS with valid certificates
@@ -257,6 +274,7 @@ services:
 ### AWS Key Management Service (KMS)
 
 #### KMS Key Creation
+
 ```bash
 # Create customer master key (CMK) for data encryption
 aws kms create-key \
@@ -281,6 +299,7 @@ aws kms get-key-rotation-status --key-id <key-id>
 ```
 
 #### KMS Key Policy for Snowflake
+
 ```json
 {
   "Version": "2012-10-17",
@@ -334,6 +353,7 @@ aws kms get-key-rotation-status --key-id <key-id>
 ```
 
 #### Key Rotation Policy
+
 ```bash
 # Automatic annual rotation (recommended for compliance)
 aws kms enable-key-rotation --key-id <key-id>
@@ -355,6 +375,7 @@ aws kms schedule-key-deletion --key-id <old-key-id> --pending-window-in-days 30
 ```
 
 **Key Rotation Best Practices**:
+
 - Enable automatic rotation for all production KMS keys
 - Document rotation policy (annual minimum, quarterly recommended)
 - Test rotation procedure in dev/staging before production
@@ -364,6 +385,7 @@ aws kms schedule-key-deletion --key-id <old-key-id> --pending-window-in-days 30
 ### HashiCorp Vault (Alternative Key Management)
 
 #### Vault Encryption Engine
+
 ```bash
 # Enable transit secrets engine for encryption-as-a-service
 vault secrets enable transit
@@ -390,6 +412,7 @@ vault read transit/keys/snowflake-credentials
 ```
 
 **Vault Use Cases**:
+
 - Encrypt API keys and database passwords before storing in config files
 - Dynamic secret generation for short-lived credentials
 - Centralized key management across multiple environments
@@ -410,27 +433,33 @@ vault read transit/keys/snowflake-credentials
 ### Compliance Requirements
 
 #### SOC 2 Type II
+
 **Control**: CC6.7 - The entity restricts the transmission, movement, and removal of information to authorized internal and external users and processes.
 
 **Implementation**:
+
 - TLS 1.2+ for all data in transit (Snowflake, Metabase, Airbyte)
 - AES-256 encryption for all data at rest (S3, RDS, Snowflake)
 - Customer-managed keys (Tri-Secret Secure) for sensitive financial data
 - Quarterly access reviews for KMS key usage
 
 #### GDPR Article 32
+
 **Requirement**: Implement appropriate technical measures to ensure security of processing, including encryption of personal data.
 
 **Implementation**:
+
 - Encrypt all PII fields in Snowflake (email, phone, address)
 - Use Tri-Secret Secure for right to erasure (customer can revoke key access)
 - TLS encryption for all data transfers (EU to US data transfers)
 - Document encryption algorithms and key management procedures
 
 #### ISO 27001 (A.10 Cryptography)
+
 **Control**: A.10.1.1 - Policy on the use of cryptographic controls
 
 **Implementation**:
+
 - Documented encryption policy (this document)
 - Approved cryptographic algorithms (AES-256, RSA-4096, TLS 1.2+)
 - Key management procedures (creation, rotation, revocation)
@@ -439,11 +468,13 @@ vault read transit/keys/snowflake-credentials
 ## Encryption Performance Considerations
 
 ### Snowflake Encryption Performance
+
 - **Zero overhead**: Hardware-accelerated AES-NI instruction set
 - **No configuration needed**: Encryption is always enabled, transparent to users
 - **Tri-Secret Secure**: <5% performance impact for key lookup (negligible for large queries)
 
 ### S3 Encryption Performance
+
 - **SSE-S3**: No performance impact (server-side encryption)
 - **SSE-KMS**: <10ms latency per object for key retrieval (use S3 Bucket Keys to reduce KMS calls)
 - **Client-Side Encryption**: 10-30% performance overhead (CPU-bound encryption)
@@ -451,6 +482,7 @@ vault read transit/keys/snowflake-credentials
 **Recommendation**: Use SSE-KMS with S3 Bucket Keys for optimal performance and compliance.
 
 ### TLS Performance
+
 - **Handshake overhead**: 1-2 RTT (round-trip time) for initial connection
 - **Session resumption**: Reuse TLS session to avoid repeated handshakes
 - **Hardware acceleration**: Modern CPUs have AES-NI and hardware TLS offload
@@ -459,6 +491,7 @@ vault read transit/keys/snowflake-credentials
 ## Encryption Monitoring and Auditing
 
 ### CloudWatch Metrics for KMS
+
 ```bash
 # Create CloudWatch alarm for unauthorized KMS key usage
 aws cloudwatch put-metric-alarm \
@@ -476,6 +509,7 @@ aws cloudwatch put-metric-alarm \
 ```
 
 ### CloudTrail Logging for Encryption Events
+
 ```bash
 # Query CloudTrail for KMS key usage
 aws cloudtrail lookup-events \
@@ -485,6 +519,7 @@ aws cloudtrail lookup-events \
 ```
 
 ### Snowflake Audit Logging
+
 ```sql
 -- Query Snowflake access history for encryption events
 SELECT
@@ -505,6 +540,7 @@ LIMIT 100;
 ## Emergency Procedures
 
 ### Key Compromise Response
+
 1. **Immediate**: Disable compromised KMS key (prevents new encryption operations)
 2. **Within 1 hour**: Create new KMS key with updated access policies
 3. **Within 4 hours**: Update Snowflake/S3 to use new KMS key
@@ -512,6 +548,7 @@ LIMIT 100;
 5. **Within 7 days**: Complete incident report and post-mortem
 
 ### Certificate Expiration
+
 ```bash
 # Check SSL certificate expiration (Metabase, ALB)
 echo | openssl s_client -connect metabase.splash.com:443 2>/dev/null | openssl x509 -noout -dates

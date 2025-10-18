@@ -20,30 +20,37 @@ Privacy engineering is the practice of building privacy protections into systems
 ### Core Principles (Privacy by Design)
 
 **1. Proactive not Reactive; Preventative not Remedial**
+
 - Anticipate privacy risks before they materialize
 - Build safeguards into system design (not after incidents)
 
 **2. Privacy as the Default Setting**
+
 - Maximum privacy protection by default
 - Users shouldn't need to opt-in to privacy
 
 **3. Privacy Embedded into Design**
+
 - Privacy integral to system architecture and business practices
 - Not an add-on module or checkbox
 
 **4. Full Functionality — Positive-Sum, not Zero-Sum**
+
 - Privacy without sacrificing functionality
 - Win-win solutions (not privacy vs. utility trade-off)
 
 **5. End-to-End Security — Full Lifecycle Protection**
+
 - Secure data from collection through deletion
 - Cradle-to-grave data lifecycle management
 
 **6. Visibility and Transparency — Keep it Open**
+
 - Operations subject to independent verification
 - Stakeholders assured that privacy protections are in place
 
 **7. Respect for User Privacy — Keep it User-Centric**
+
 - Strong privacy defaults, user control, notice
 - Empower users to manage their data
 
@@ -54,6 +61,7 @@ Privacy engineering is the practice of building privacy protections into systems
 ### When to Conduct a PIA
 
 **Mandatory Triggers**:
+
 1. **New Data Source Integration**: Third-party APIs, vendor data feeds
 2. **New Processing Purpose**: Using existing data for new purpose (e.g., marketing analytics)
 3. **New Data Sharing**: Sharing data with partners, vendors, or affiliates
@@ -61,6 +69,7 @@ Privacy engineering is the practice of building privacy protections into systems
 5. **Significant System Changes**: Architecture redesign, cloud migration
 
 **Optional but Recommended**:
+
 - Annual review of existing processing activities
 - After regulatory changes (new laws, guidance updates)
 - Following data breaches or security incidents
@@ -68,6 +77,7 @@ Privacy engineering is the practice of building privacy protections into systems
 ### GDPR DPIA (Data Protection Impact Assessment)
 
 **Article 35 Requirements**:
+
 - Mandatory for "high risk" processing:
   - Systematic and extensive automated processing (profiling)
   - Large-scale processing of special categories of data (health, biometrics)
@@ -77,31 +87,37 @@ Privacy engineering is the practice of building privacy protections into systems
 ### PIA Process
 
 **Step 1: Scoping and Planning**
+
 - Define processing activity (what data, what purpose)
 - Identify stakeholders (data subjects, data controllers, processors)
 - Determine PIA type (full vs. simplified)
 
 **Step 2: Data Mapping**
+
 - Document data flows (source → processing → storage → sharing → deletion)
 - Identify data categories (PII types, sensitivity levels)
 - Map data lifecycle stages
 
 **Step 3: Risk Identification**
+
 - Privacy risks to data subjects (unauthorized access, re-identification, function creep)
 - Compliance risks (GDPR violations, CCPA non-compliance)
 - Security risks (data breaches, insider threats)
 
 **Step 4: Risk Assessment**
+
 - Evaluate likelihood and impact of each risk
 - Consider existing controls (encryption, access controls, audit logs)
 - Calculate residual risk after controls
 
 **Step 5: Mitigation Planning**
+
 - Propose additional controls to reduce risk
 - Architectural changes (e.g., separate PII into dedicated schema)
 - Policy changes (e.g., stricter access approval process)
 
 **Step 6: Documentation and Approval**
+
 - Formal PIA report with findings and recommendations
 - Sign-off from data protection officer, legal, and business owner
 - Periodic review schedule (annually or when processing changes)
@@ -121,6 +137,7 @@ Privacy engineering is the practice of building privacy protections into systems
 **Processing Purpose**: [e.g., "Track user behavior across web and mobile apps for product improvement and personalized recommendations"]
 
 **Lawful Basis for Processing** (GDPR):
+
 - [ ] Consent
 - [ ] Contract performance
 - [ ] Legal obligation
@@ -129,6 +146,7 @@ Privacy engineering is the practice of building privacy protections into systems
 - [ ] Public task
 
 **Data Categories Processed**:
+
 - [ ] Identifiers (name, email, phone)
 - [x] User IDs (pseudonymized)
 - [x] Behavioral data (page views, clicks, session duration)
@@ -140,11 +158,13 @@ Privacy engineering is the practice of building privacy protections into systems
 ### Section 2: Data Flow Mapping
 
 **Data Sources**:
+
 1. Segment Web SDK (JavaScript tracking on splash.com)
 2. Segment Mobile SDKs (iOS and Android apps)
 3. Server-side events from backend API
 
 **Data Processing Steps**:
+
 1. Event collection via Segment libraries
 2. Transmission to Segment cloud (TLS encrypted)
 3. Synced to Snowflake via Fivetran connector
@@ -153,16 +173,19 @@ Privacy engineering is the practice of building privacy protections into systems
 6. Consumed by Metabase dashboards and data science models
 
 **Data Storage Locations**:
+
 - Segment Cloud (AWS US-East-1) - 30 days
 - Snowflake (AWS US-West-2) - 90 days active, 1 year archive
 
 **Data Recipients (Third Parties)**:
+
 - Segment (CDP platform, BAA/DPA in place)
 - Fivetran (ETL service, DPA in place)
 - Snowflake (data warehouse, DPA in place)
 - Internal teams (Product, Analytics, Data Science)
 
 **Data Retention**:
+
 - Active: 90 days in production warehouse
 - Archive: 1 year in cold storage (Snowflake Time Travel)
 - Deletion: Automated purge after retention period
@@ -178,6 +201,7 @@ Privacy engineering is the practice of building privacy protections into systems
 | **Non-compliance with user opt-out requests** | Low | High | **Medium** | - Consent tracking in dim_user<br>- Exclusion logic in dbt models |
 
 **Risk Scoring**:
+
 - Likelihood: Low (1), Medium (2), High (3)
 - Impact: Low (1), Medium (2), High (3)
 - Risk Level: Low (1-2), Medium (3-4), High (6-9)
@@ -187,6 +211,7 @@ Privacy engineering is the practice of building privacy protections into systems
 **High Priority (Residual Risk: High)**:
 
 **Risk: Re-identification of pseudonymized users**
+
 - **Mitigation 1**: Implement k-anonymity (ensure ≥5 users per quasi-identifier combination)
   - Technical: Add dbt test for k-anonymity validation
   - Timeline: Before production launch
@@ -200,12 +225,14 @@ Privacy engineering is the practice of building privacy protections into systems
 **Medium Priority (Residual Risk: Medium)**:
 
 **Risk: Function creep**
+
 - **Mitigation**: Formal data access request process
   - Policy: Require business justification and approval for new use cases
   - Technical: Tag models with `business_purpose` metadata
   - Timeline: Q1 2025
 
 **Risk: Non-compliance with opt-out**
+
 - **Mitigation**: Automated consent enforcement
   - Technical: dbt incremental models exclude opted-out users
   - Testing: dbt test validates no opted-out users in marts
@@ -233,6 +260,7 @@ Privacy engineering is the practice of building privacy protections into systems
 **DPA Consultation Required**: No (residual risk is medium, not high)
 
 **PIA Approval**:
+
 - Data Protection Officer: [Signature] [Date]
 - Business Owner: [Signature] [Date]
 - Legal Counsel: [Signature] [Date]
@@ -249,7 +277,7 @@ Privacy engineering is the practice of building privacy protections into systems
 
 **Solution**: Store PII and behavioral data in separate schemas with different access controls.
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │ FINANCE Schema (Restricted Access)         │
 │ - dim_user (PII: email, phone, name)       │
@@ -267,6 +295,7 @@ Privacy engineering is the practice of building privacy protections into systems
 ```
 
 **Benefits**:
+
 - Analysts can work with behavioral data without PII access
 - Finance team has PII access only when needed for transactions
 - Reduces blast radius if analytics schema is compromised
@@ -291,6 +320,7 @@ alter table dim_user modify column email set masking policy email_progressive_ma
 ```
 
 **Role Hierarchy**:
+
 1. **Executive / Compliance**: Full data access (legal/regulatory need)
 2. **Support / Operations**: Partial masking (verify identity, troubleshoot)
 3. **Analysts / Data Scientists**: Domain-level or aggregated (analytics without PII)
@@ -405,36 +435,42 @@ where session_timestamp >= current_date - interval '90 days'  -- Retention filte
 ## Privacy Engineering Checklist
 
 ### Data Collection
+
 - [ ] Collect only data necessary for stated purpose (data minimization)
 - [ ] Obtain valid consent or establish lawful basis (GDPR Article 6)
 - [ ] Provide clear privacy notice at collection time
 - [ ] Avoid "dark patterns" that manipulate user consent
 
 ### Data Storage
+
 - [ ] Encrypt data at rest (Snowflake native encryption)
 - [ ] Separate PII from behavioral/analytical data
 - [ ] Apply masking policies based on role (Snowflake DDM)
 - [ ] Tag tables/columns with sensitivity classification
 
 ### Data Processing
+
 - [ ] Pseudonymize or anonymize data when possible
 - [ ] Implement k-anonymity for quasi-identifiers (k ≥ 5)
 - [ ] Use privacy-preserving joins (aggregate before join)
 - [ ] Add differential privacy noise to published aggregates
 
 ### Data Sharing
+
 - [ ] Data Processing Agreements (DPAs) with all vendors
 - [ ] Validate vendor security controls (SOC2 reports)
 - [ ] Restrict cross-border transfers (GDPR adequacy decisions, SCCs)
 - [ ] Audit third-party access regularly
 
 ### Data Retention
+
 - [ ] Define retention periods for each data category
 - [ ] Automate data deletion after retention period
 - [ ] Implement legal hold for litigation/investigations
 - [ ] Document retention rationale in data catalog
 
 ### Data Subject Rights
+
 - [ ] Right to Access: SQL export script ready
 - [ ] Right to Erasure: Cascading delete implemented
 - [ ] Right to Rectification: Update and audit trail process
@@ -442,6 +478,7 @@ where session_timestamp >= current_date - interval '90 days'  -- Retention filte
 - [ ] Right to Object: Opt-out flag and enforcement logic
 
 ### Audit and Monitoring
+
 - [ ] Log all access to PII (Snowflake access_history)
 - [ ] Alert on unusual data access patterns
 - [ ] Quarterly access reviews and recertification
@@ -461,6 +498,7 @@ where session_timestamp >= current_date - interval '90 days'  -- Retention filte
 ```
 
 **Usage**:
+
 ```sql
 select
     {{ pseudonymize_user_id('user_id') }} as user_hash,
@@ -479,6 +517,7 @@ from {{ source('segment', 'tracks') }}
 ```
 
 **Usage**:
+
 ```sql
 select
     zip_prefix,
@@ -539,6 +578,7 @@ where lower(column_name) in (
 ### Pre-Production PIA Gate
 
 **GitHub Actions Workflow**:
+
 ```yaml
 name: Privacy Compliance Check
 

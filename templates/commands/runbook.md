@@ -27,21 +27,25 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 ### 📊 Data Pipeline Runbooks
 
 **1. dbt Build Failure**
+
 - **Symptoms**: Failed dbt runs, compilation errors, dependency issues
 - **Time**: 15-30 minutes
 - **Access**: dbt Cloud, Snowflake query logs, Git history
 
 **2. dbt Test Failure**
+
 - **Symptoms**: Data quality tests failing, uniqueness violations, referential integrity
 - **Time**: 20-45 minutes
 - **Access**: dbt test results, affected model data, lineage
 
 **3. Airbyte Sync Failure**
+
 - **Symptoms**: Source connectors failing, incomplete syncs, schema drift
 - **Time**: 15-40 minutes
 - **Access**: Airbyte UI, source system logs, connection credentials
 
 **4. Source Schema Change**
+
 - **Symptoms**: Upstream schema evolution breaking downstream models
 - **Time**: 30-60 minutes
 - **Access**: Source schema documentation, dbt models, data lineage
@@ -49,16 +53,19 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 ### ❄️ Snowflake Runbooks
 
 **5. Snowflake Warehouse Timeout**
+
 - **Symptoms**: Query timeouts, long-running queries, warehouse saturation
 - **Time**: 20-45 minutes
 - **Access**: Snowflake ACCOUNT_USAGE, query history, warehouse metrics
 
 **6. Snowflake Credit Exhaustion**
+
 - **Symptoms**: Budget alerts, warehouse suspension, cost overruns
 - **Time**: 15-30 minutes
 - **Access**: Snowflake usage reports, resource monitors, warehouse configs
 
 **7. Slow Query Performance**
+
 - **Symptoms**: Dashboard timeouts, degraded query performance, user complaints
 - **Time**: 30-90 minutes
 - **Access**: Query profiles, execution plans, table statistics
@@ -66,16 +73,19 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 ### 📈 BI & Dashboard Runbooks
 
 **8. Metabase Dashboard Outage**
+
 - **Symptoms**: Dashboards unavailable, error messages, connection failures
 - **Time**: 15-30 minutes
 - **Access**: Metabase logs, Snowflake connection status, database permissions
 
 **9. Metabase Query Timeout**
+
 - **Symptoms**: Dashboard load failures, timeout errors, slow rendering
 - **Time**: 20-45 minutes
 - **Access**: Metabase query logs, underlying SQL, warehouse performance
 
 **10. Dashboard Data Incorrect**
+
 - **Symptoms**: Wrong numbers, missing data, stale metrics
 - **Time**: 30-60 minutes
 - **Access**: Dashboard SQL, source data validation, dbt model lineage
@@ -83,16 +93,19 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 ### 🔍 Data Quality Runbooks
 
 **11. Duplicate Records**
+
 - **Symptoms**: Unexpected duplicates in fact tables, grain violations
 - **Time**: 25-50 minutes
 - **Access**: Affected tables, incremental logic, unique key definitions
 
 **12. Null Values in Required Fields**
+
 - **Symptoms**: Data completeness issues, missing critical fields
 - **Time**: 20-40 minutes
 - **Access**: Source data validation, transformation logic, schema tests
 
 **13. Referential Integrity Failure**
+
 - **Symptoms**: Orphaned foreign keys, missing dimension records
 - **Time**: 30-60 minutes
 - **Access**: Fact/dimension relationships, join analysis, data lineage
@@ -100,11 +113,13 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 ### 🚨 Infrastructure Runbooks
 
 **14. GitHub Actions Build Failure**
+
 - **Symptoms**: CI/CD pipeline failures, deployment blocked
 - **Time**: 15-35 minutes
 - **Access**: GitHub Actions logs, workflow files, test results
 
 **15. Production Deployment Rollback**
+
 - **Symptoms**: Bad deployment causing issues, need to revert
 - **Time**: 10-25 minutes
 - **Access**: Git history, deployment logs, production access
@@ -114,30 +129,35 @@ Execute proven runbooks for common production scenarios with systematic diagnost
 Each runbook follows this systematic pattern:
 
 ### Phase 1: Initial Assessment (3-5 minutes)
+
 - **Gather context**: When did issue start? What changed recently?
 - **Identify scope**: Which systems/models/dashboards affected?
 - **Check monitoring**: Review alerts, logs, metrics
 - **Estimate impact**: User-facing? Data quality? Cost?
 
 ### Phase 2: Diagnostic Investigation (10-20 minutes)
+
 - **Collect evidence**: Logs, error messages, query results
 - **Trace dependencies**: Model lineage, data flows, system connections
 - **Identify root cause**: What broke? Why? When?
 - **Document findings**: Timeline, symptoms, hypothesis
 
 ### Phase 3: Resolution Execution (10-30 minutes)
+
 - **Immediate mitigation**: Stop the bleeding (disable models, upsize warehouse)
 - **Root cause fix**: Address underlying issue
 - **Automated steps**: SQL queries, dbt commands, API calls
 - **Manual steps**: Require user confirmation before execution
 
 ### Phase 4: Validation & Verification (5-15 minutes)
+
 - **Test fix works**: Re-run failed operations
 - **Check downstream**: Verify dependent systems unaffected
 - **Monitor metrics**: Ensure issue resolved
 - **User acceptance**: Confirm stakeholders satisfied
 
 ### Phase 5: Documentation & Learning (5-10 minutes)
+
 - **Update incident timeline**: Record actions taken
 - **Add lessons learned**: What went wrong? How to prevent?
 - **Improve runbook**: Add steps if manual intervention needed
@@ -150,11 +170,13 @@ When `/runbook` is invoked:
 ### Step 1: Runbook Selection
 
 If `runbook_name` argument provided:
+
 1. Load the specified runbook
 2. Display runbook overview (title, estimated time, required access)
 3. Ask user to confirm execution: "Ready to execute [Runbook Name]? (y/n)"
 
 If `runbook_name` is "list" or not provided:
+
 1. Display all available runbooks grouped by category
 2. Show symptoms, time estimate, required access for each
 3. Ask user: "Which runbook would you like to execute?"
@@ -162,6 +184,7 @@ If `runbook_name` is "list" or not provided:
 ### Step 2: Context Gathering
 
 Ask user for incident details:
+
 1. **When did the issue start?** (timestamp, recent changes)
 2. **What symptoms are observed?** (error messages, user reports)
 3. **Which systems/models are affected?** (scope of impact)
@@ -172,24 +195,28 @@ Ask user for incident details:
 Run systematic diagnostic steps from the runbook:
 
 **For dbt failures:**
+
 - Check dbt Cloud run logs or local dbt_build.log
 - Identify failed model(s) and extract error messages
 - Query git history: `git log --oneline --since="2 days ago" -- models/`
 - Check Snowflake warehouse status and query history
 
 **For Snowflake issues:**
+
 - Query ACCOUNT_USAGE views for warehouse metrics
 - Identify long-running queries and resource consumers
 - Check warehouse size vs workload patterns
 - Review recent query performance trends
 
 **For dashboard issues:**
+
 - Check Metabase application logs
 - Test underlying SQL queries directly in Snowflake
 - Validate data freshness and completeness
 - Review dashboard permissions and filters
 
 **For data quality:**
+
 - Query affected table for issue samples
 - Trace data lineage to source systems
 - Check dbt tests and validation logic
@@ -200,21 +227,25 @@ Run systematic diagnostic steps from the runbook:
 Based on runbook type and diagnostic findings, invoke appropriate agents:
 
 **dbt Build Failures:**
+
 - `data-engineer` - Implementation and dbt best practices
 - `snowflake-sql-expert` - SQL syntax and performance
 - `architect` - Model dependencies and lineage
 
 **Warehouse Performance:**
+
 - `snowflake-sql-expert` - Query optimization and execution plans
 - `cost-optimization-agent` - Warehouse sizing and budgets
 - `devops-engineer` - Infrastructure and scaling
 
 **Dashboard Issues:**
+
 - `bi-platform-engineer` - Metabase configuration and troubleshooting
 - `business-intelligence-analyst` - Dashboard design and metrics
 - `snowflake-sql-expert` - SQL query optimization
 
 **Data Quality:**
+
 - `data-engineer` - Data validation and testing
 - `architect` - Data modeling and grain analysis
 - `quality-assurance-expert` - Testing frameworks and standards
@@ -224,12 +255,14 @@ Based on runbook type and diagnostic findings, invoke appropriate agents:
 Follow the runbook's resolution procedure:
 
 **Automated steps** (execute immediately):
+
 - SQL diagnostic queries
 - dbt commands (compile, run, test)
 - Log file analysis
 - Git history checks
 
 **Manual steps** (require confirmation):
+
 - Schema changes
 - Warehouse resizing
 - Model deployment
@@ -237,7 +270,8 @@ Follow the runbook's resolution procedure:
 - Data backfills
 
 **Example confirmation prompt:**
-```
+
+```text
 ⚠️ MANUAL STEP REQUIRED:
 Action: Increase warehouse size from MEDIUM to LARGE
 Impact: +$2/hour compute cost, faster query execution
@@ -251,24 +285,28 @@ Execute this step? (y/n)
 Systematic validation checks:
 
 **For dbt builds:**
+
 1. Re-run failed model: `dbt run --select <failed_model>`
 2. Run downstream tests: `dbt test --select <failed_model>+`
 3. Verify data freshness: Check latest timestamps
 4. Monitor next scheduled run
 
 **For Snowflake performance:**
+
 1. Re-execute previously slow queries
 2. Check warehouse utilization metrics
 3. Verify query execution times within SLA
 4. Monitor for 24 hours to ensure stability
 
 **For dashboards:**
+
 1. Refresh affected dashboards
 2. Verify data loads correctly
 3. Check query execution times acceptable
 4. Confirm with business stakeholders
 
 **For data quality:**
+
 1. Run all dbt tests for affected models
 2. Query for issue samples (should return 0 rows)
 3. Check downstream marts for propagation
@@ -331,6 +369,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 #### Diagnostic Steps
 
 1. **Check dbt logs:**
+
    ```bash
    # Local development
    cat logs/dbt.log | grep ERROR | tail -20
@@ -340,10 +379,12 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 2. **Identify failed model(s):**
+
    - Extract model name from error message
    - Note error type: SQL, schema, dependency, resource
 
 3. **Extract full error message:**
+
    ```sql
    -- Example error types:
    -- "Database 'PROD.FINANCE_STAGING' does not exist" → Schema error
@@ -352,12 +393,14 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 4. **Check recent changes:**
+
    ```bash
    git log --oneline --since="2 days ago" -- models/
    git diff HEAD~5 models/path/to/failed_model.sql
    ```
 
 5. **Query Snowflake warehouse status:**
+
    ```sql
    SELECT
        warehouse_name,
@@ -374,21 +417,25 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 #### Root Cause Classification
 
 **SQL Compilation Error:**
+
 - Invoke: `snowflake-sql-expert` (parse SQL syntax, identify issue)
 - Common causes: Invalid column references, syntax errors, CTE issues
 - Fix approach: Correct SQL, validate against schema
 
 **Schema Error:**
+
 - Invoke: `architect` (trace model dependencies, check schema config)
 - Common causes: Wrong group tag, missing upstream model, schema name typo
 - Fix approach: Correct tags, verify ref() calls, check schema.yml
 
 **Circular Dependency:**
+
 - Invoke: `architect` (analyze dependency graph, identify cycle)
 - Common causes: Mutual ref() calls, incorrect layer hierarchy
 - Fix approach: Refactor model references, respect layer patterns
 
 **Resource Timeout:**
+
 - Invoke: `snowflake-sql-expert` (optimize query), `devops-engineer` (warehouse sizing)
 - Common causes: Large data volumes, inefficient SQL, undersized warehouse
 - Fix approach: Optimize query, increase warehouse size, add incremental logic
@@ -396,24 +443,30 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 #### Resolution Steps
 
 **For SQL errors:**
+
 1. **Automated:** Compile model to see full SQL: `dbt compile --select <model_name>`
 2. **Manual:** Fix SQL syntax or column references
 3. **Automated:** Test fix: `dbt run --select <model_name> --target dev`
 
 **For schema errors:**
+
 1. **Automated:** Check model config:
+
    ```bash
    cat models/path/to/model.sql | grep "config(" -A 10
    ```
+
 2. **Manual:** Correct group tag or schema configuration
 3. **Automated:** Verify schema exists in target environment
 
 **For circular dependencies:**
+
 1. **Automated:** Visualize lineage: `dbt list --select <model_name> --resource-type model`
 2. **Manual:** Refactor model to break cycle (move logic to intermediate layer)
 3. **Automated:** Validate no cycles: `dbt compile`
 
 **For resource timeouts:**
+
 1. **Immediate:** Increase warehouse size (confirm with user)
 2. **Short-term:** Add `where` clause to limit data during development
 3. **Long-term:** Optimize SQL (invoke snowflake-sql-expert for query plan analysis)
@@ -421,18 +474,21 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 #### Validation
 
 1. **Re-run failed model:**
+
    ```bash
    dbt run --select <failed_model> --target dev
    # Expected: ✅ SUCCESS
    ```
 
 2. **Run downstream tests:**
+
    ```bash
    dbt test --select <failed_model>+
    # Expected: All tests pass
    ```
 
 3. **Verify data quality:**
+
    ```sql
    SELECT
        COUNT(*) AS row_count,
@@ -442,6 +498,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 4. **Check downstream impacts:**
+
    ```bash
    dbt list --select <failed_model>+ --resource-type model
    # Verify all downstream models can compile
@@ -464,6 +521,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 #### Diagnostic Steps
 
 1. **Check warehouse utilization:**
+
    ```sql
    SELECT
        warehouse_name,
@@ -479,6 +537,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 2. **Identify long-running queries:**
+
    ```sql
    SELECT
        query_id,
@@ -496,6 +555,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 3. **Check warehouse size vs workload:**
+
    ```sql
    SELECT
        warehouse_name,
@@ -511,6 +571,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 4. **Review recent query patterns:**
+
    ```sql
    SELECT
        DATE_TRUNC('hour', start_time) AS hour,
@@ -526,21 +587,25 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 #### Root Cause Classification
 
 **Undersized Warehouse:**
+
 - Symptoms: Consistent queue buildup, many concurrent queries, peak hour saturation
 - Invoke: `devops-engineer` (warehouse scaling strategy)
 - Fix: Increase warehouse size or enable auto-scaling
 
 **Inefficient Queries:**
+
 - Symptoms: Few queries consuming most time, specific models timing out
 - Invoke: `snowflake-sql-expert` (query optimization, execution plan analysis)
 - Fix: Optimize SQL, add clustering keys, improve join strategies
 
 **High Concurrency:**
+
 - Symptoms: Many users/jobs competing for resources
 - Invoke: `devops-engineer` (multi-cluster warehouse setup)
 - Fix: Enable auto-scaling, separate workloads into dedicated warehouses
 
 **Resource Contention:**
+
 - Symptoms: Timeouts during specific time windows, batch job conflicts
 - Invoke: `devops-engineer` (scheduling optimization)
 - Fix: Stagger batch jobs, separate interactive vs batch warehouses
@@ -550,12 +615,14 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 **Immediate Mitigation (stop the bleeding):**
 
 1. **Upsize warehouse temporarily:**
+
    ```sql
    ALTER WAREHOUSE PROD_DBT SET WAREHOUSE_SIZE = 'LARGE';
    -- Confirm with user: "Upsizing PROD_DBT from MEDIUM to LARGE (+$2/hour). Confirm? (y/n)"
    ```
 
 2. **Cancel blocking queries (if identified):**
+
    ```sql
    -- Only after user confirmation
    SELECT SYSTEM$CANCEL_QUERY('<query_id>');
@@ -564,12 +631,14 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 **Short-term Fix (address immediate cause):**
 
 1. **Optimize expensive queries:**
+
    - Invoke: `snowflake-sql-expert` with query text
    - Get optimized SQL with better join strategies, CTEs, or clustering
    - Test optimized query in dev environment
    - Deploy to production
 
 2. **Adjust warehouse auto-suspend:**
+
    ```sql
    ALTER WAREHOUSE PROD_DBT SET AUTO_SUSPEND = 60;  -- 1 minute idle
    -- Reduces cost while maintaining responsiveness
@@ -578,6 +647,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 **Long-term Solution (prevent recurrence):**
 
 1. **Implement warehouse auto-scaling:**
+
    ```sql
    ALTER WAREHOUSE PROD_DBT SET
        MIN_CLUSTER_COUNT = 1
@@ -587,11 +657,13 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 2. **Separate workloads:**
+
    - Create dedicated warehouse for high-volume Segment models
    - Move critical finance models to separate warehouse
    - Configure dbt profiles to use appropriate warehouses by tag
 
 3. **Schedule batch jobs:**
+
    - Stagger dbt runs to avoid peak concurrency
    - Run high-volume models during off-hours
    - Use dbt Cloud job scheduling
@@ -599,12 +671,14 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 #### Validation
 
 1. **Verify queries complete successfully:**
+
    ```bash
    dbt run --select tag:critical:true --target prod
    # Expected: All models complete within SLA
    ```
 
 2. **Check warehouse utilization returned to normal:**
+
    ```sql
    SELECT
        AVG(avg_running) AS current_avg_running,
@@ -616,11 +690,13 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 3. **Validate cost impact acceptable:**
+
    - Query warehouse credit usage for past 24 hours
    - Compare to baseline and budget
    - Invoke: `cost-optimization-agent` if over budget
 
 4. **Monitor for 24 hours:**
+
    - Set up alerts for queue depth > 5
    - Track query timeouts (should be 0)
    - Review next day's metrics
@@ -635,6 +711,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 #### Diagnostic Steps
 
 1. **Identify duplicate scope:**
+
    ```sql
    -- Find duplicate records
    SELECT
@@ -648,6 +725,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 2. **Analyze duplicate patterns:**
+
    ```sql
    -- Sample duplicate records to understand pattern
    WITH duplicates AS (
@@ -664,18 +742,21 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 3. **Check data lineage:**
+
    ```bash
    dbt list --select +fact_table_name --resource-type model
    # Trace back to source systems
    ```
 
 4. **Review incremental logic:**
+
    ```bash
    cat models/path/to/fact_table_name.sql | grep "is_incremental" -A 20
    # Check merge strategy, unique_key, and filter logic
    ```
 
 5. **Query source data for duplicates:**
+
    ```sql
    -- Check if duplicates exist in source
    SELECT
@@ -689,21 +770,25 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 #### Root Cause Classification
 
 **Incremental Logic Error:**
+
 - Symptoms: Duplicates after incremental runs, full refresh is clean
 - Common causes: Wrong unique_key, missing deduplication, incorrect merge strategy
 - Invoke: `data-engineer` (incremental pattern review)
 
 **Source Data Duplicates:**
+
 - Symptoms: Duplicates in source system propagate downstream
 - Common causes: Application bug, ETL duplicate writes, Airbyte sync issues
 - Invoke: `data-engineer` (source validation), `architect` (data quality strategy)
 
 **Grain Violation:**
+
 - Symptoms: Fact table grain doesn't match unique_key definition
 - Common causes: Missing grain dimensions, incorrect join logic
 - Invoke: `architect` (grain analysis, Kimball methodology review)
 
 **Race Condition:**
+
 - Symptoms: Intermittent duplicates, timing-dependent
 - Common causes: Concurrent dbt runs, overlapping incremental windows
 - Invoke: `devops-engineer` (job scheduling), `data-engineer` (idempotency)
@@ -713,6 +798,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 **Immediate Mitigation:**
 
 1. **Add uniqueness test (if missing):**
+
    ```yaml
    # models/schema.yml
    models:
@@ -725,6 +811,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 2. **Run test to confirm issue:**
+
    ```bash
    dbt test --select fact_table_name
    # Should fail with duplicate count
@@ -733,6 +820,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 **Short-term Fix:**
 
 1. **Deduplicate affected table:**
+
    ```sql
    -- Create temporary deduplicated version
    CREATE OR REPLACE TABLE PROD.SCHEMA.FACT_TABLE_NAME_DEDUPED AS
@@ -756,8 +844,10 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 **Root Cause Fix:**
 
 **For incremental logic errors:**
+
 1. Update unique_key definition in model config
 2. Add deduplication CTE to model SQL:
+
    ```sql
    WITH source_deduped AS (
        SELECT *
@@ -772,7 +862,9 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
        WHERE row_num = 1
    )
    ```
+
 3. Test incremental logic in dev:
+
    ```bash
    dbt run --select fact_table_name --full-refresh --target dev
    dbt run --select fact_table_name --target dev  # Incremental
@@ -780,11 +872,13 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 **For source data duplicates:**
+
 1. Add dbt source test for uniqueness
 2. Implement deduplication in staging layer
 3. Coordinate with source system team to fix root cause
 
 **For grain violations:**
+
 1. Invoke: `architect` to analyze proper grain
 2. Refactor model to match correct grain
 3. Update unique_key to match grain dimensions
@@ -793,6 +887,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 **Long-term Prevention:**
 
 1. **Add monitoring:**
+
    ```sql
    -- Create data quality check
    CREATE OR REPLACE VIEW PROD.MONITORING.DUPLICATE_ALERTS AS
@@ -809,11 +904,13 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 2. **Update dbt tests:**
+
    - Add uniqueness tests to all fact tables
    - Add grain validation tests
    - Add source freshness checks
 
 3. **Improve documentation:**
+
    - Document table grain in schema.yml
    - Add grain validation logic to model
    - Update data quality standards
@@ -821,12 +918,14 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
 #### Validation
 
 1. **Run uniqueness test:**
+
    ```bash
    dbt test --select fact_table_name
    # Expected: ✅ PASS (unique test passes)
    ```
 
 2. **Verify duplicate count = 0:**
+
    ```sql
    SELECT COUNT(*) AS duplicate_count
    FROM (
@@ -839,12 +938,14 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 3. **Check downstream marts not affected:**
+
    ```bash
    dbt test --select fact_table_name+
    # Expected: All downstream tests pass
    ```
 
 4. **Validate business metrics unchanged:**
+
    ```sql
    -- Compare key metrics before/after deduplication
    SELECT
@@ -859,6 +960,7 @@ Suggest runbook improvements if manual steps were needed or diagnostics took lon
    ```
 
 5. **Monitor next incremental run:**
+
    ```bash
    dbt run --select fact_table_name --target prod
    dbt test --select fact_table_name --target prod
