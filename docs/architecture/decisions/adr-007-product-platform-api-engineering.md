@@ -66,7 +66,7 @@ backend-engineer/
 
 ```text
 full-stack-engineer/
-  → Handles: Everything (UI, API, database, deployment, infrastructure)
+→ Handles: Everything (UI, API, database, deployment, infrastructure)
 ```
 
 **Pros**:

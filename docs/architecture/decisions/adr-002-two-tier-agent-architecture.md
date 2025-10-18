@@ -70,7 +70,8 @@ Without a clear architecture, we risk:
 **Description**: Separate user-level knowledge (generic, reusable) from project-level knowledge (specific context)
 
 **Structure**:
-```
+
+```text
 User-Level (generic):
 ~/.claude/agents/{agent}/knowledge/
   - Generic patterns
@@ -107,7 +108,8 @@ Project-Level (specific):
 **Description**: Add organization-level knowledge between user and project
 
 **Structure**:
-```
+
+```text
 ~/.claude/agents/{agent}/knowledge/          (user)
 ~/org/.claude/agents/{agent}/knowledge/      (organization)
 {project}/.claude/agents-global/{agent}/     (project)

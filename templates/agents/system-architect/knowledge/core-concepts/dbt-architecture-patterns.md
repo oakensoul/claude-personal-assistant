@@ -12,7 +12,7 @@ dbt enables analytics engineers to transform data using SQL select statements, t
 
 ### Standard dbt Project Layout
 
-```
+```text
 dbt_project/
 ├── dbt_project.yml          # Project configuration
 ├── packages.yml             # dbt package dependencies
@@ -36,7 +36,7 @@ dbt_project/
 
 dbt projects should follow a three-layer architecture for clarity and maintainability:
 
-```
+```text
 Sources (Raw)
      ↓
 Staging Models (stg_*)

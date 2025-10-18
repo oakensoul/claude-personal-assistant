@@ -60,7 +60,8 @@ Without a skills system, we risk:
 **Description**: Single skills directory, all agents reference it
 
 **Structure**:
-```
+
+```text
 ~/.claude/skills/
   ├── hipaa-compliance/
   ├── pytest-patterns/
@@ -84,7 +85,8 @@ Without a skills system, we risk:
 **Description**: Skills mirror agent two-tier architecture with user-level and project-level
 
 **Structure**:
-```
+
+```text
 User-Level (generic patterns):
 ~/.claude/skills/
   ├── compliance/
@@ -124,7 +126,8 @@ Project-Level (project-specific):
 **Description**: Skills live inside agent directories as shared knowledge
 
 **Structure**:
-```
+
+```text
 ~/.claude/agents/product-engineer/skills/
   ├── react-patterns/
   └── api-design/
@@ -398,13 +401,15 @@ You are a full-stack engineer building user-facing features.
 ```
 
 **On-Demand Loading** (agents reference as needed):
+
 ```markdown
 When building React components, consult the react-patterns skill.
 When implementing HIPAA-compliant features, consult hipaa-compliance skill.
 ```
 
 **Project Override** (project skill overrides user skill):
-```
+
+```text
 User skill: ~/.claude/skills/frameworks/react-patterns/
 Project skill: {project}/.claude/skills/acme-ui-library/
 
@@ -440,7 +445,7 @@ Project skill: {project}/.claude/skills/acme-ui-library/
 
 ### Agent Knowledge vs Skills Decision Tree
 
-```
+```text
 Is this knowledge about HOW to be the agent?
 ├─ Yes → Agent Knowledge
 │  Examples:
@@ -475,6 +480,7 @@ Agents discover skills through:
 ### Promoting Skills
 
 **Project → User** (good pattern becomes reusable):
+
 ```bash
 # Copy project skill to user level
 cp -r {project}/.claude/skills/good-pattern ~/.claude/skills/category/
@@ -484,6 +490,7 @@ cp -r {project}/.claude/skills/good-pattern ~/.claude/skills/category/
 ```
 
 **User → Project** (override generic pattern):
+
 ```bash
 # Copy user skill to project
 cp -r ~/.claude/skills/category/pattern {project}/.claude/skills/

@@ -125,7 +125,8 @@ This document provides a step-by-step plan for migrating AIDA agents from the cu
 **Purpose**: Full-stack feature development for end users
 
 **Knowledge Base**:
-```
+
+```text
 templates/agents/product-engineer/
 ├── instructions.md
 └── knowledge/
@@ -233,7 +234,8 @@ templates/agents/api-engineer/
 **New Agent**: performance-analyst
 
 **Knowledge Base**:
-```
+
+```text
 templates/agents/performance-analyst/
 ├── instructions.md
 └── knowledge/

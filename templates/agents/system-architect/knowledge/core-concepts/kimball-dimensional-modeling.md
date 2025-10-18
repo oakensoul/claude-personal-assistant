@@ -14,7 +14,7 @@ Created by Ralph Kimball, dimensional modeling organizes data into **facts** (bu
 
 The fundamental pattern in dimensional modeling:
 
-```
+```text
        ┌─────────────┐
        │  dim_date   │
        └──────┬──────┘
@@ -39,7 +39,7 @@ The fundamental pattern in dimensional modeling:
 
 Normalized dimension tables:
 
-```
+```text
        ┌─────────────┐      ┌──────────────┐
        │ dim_product │──────│ dim_category │
        └──────┬──────┘      └──────────────┘
@@ -364,7 +364,7 @@ CREATE TABLE marts.dim_customers (
 
 **Normalized (source system)**:
 
-```
+```text
 customer → city → state → country → region
 ```
 

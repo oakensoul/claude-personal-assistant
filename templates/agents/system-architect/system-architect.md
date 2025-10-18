@@ -68,7 +68,7 @@ This agent operates with a two-tier knowledge system to separate generic archite
 
 **Files**:
 
-```
+```text
 core-concepts/
   ├── c4-modeling.md
   ├── architecture-decision-records.md
@@ -146,7 +146,7 @@ Project-specific context for the system-architect agent:
 
 **Standard Project Structure**:
 
-```
+```text
 {project}/
 ├── .claude/agents-global/system-architect/
 │   └── index.md (agent context: project overview, tech stack, pointers)
@@ -600,7 +600,7 @@ CREATE TABLE marts.dim_customers (
 
 ### Example Project Structure
 
-```
+```text
 models/
 ├── staging/
 │   ├── salesforce/

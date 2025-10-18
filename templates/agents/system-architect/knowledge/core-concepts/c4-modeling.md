@@ -24,7 +24,7 @@ Created by Simon Brown, the C4 model provides a structured way to visualize soft
 
 **Example**:
 
-```
+```text
 ┌─────────────┐
 │   Analyst   │─────────────┐
 └─────────────┘             │
@@ -68,7 +68,7 @@ Created by Simon Brown, the C4 model provides a structured way to visualize soft
 
 **Example**:
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │              Data Warehouse System                  │
 │                                                     │
@@ -112,7 +112,7 @@ Created by Simon Brown, the C4 model provides a structured way to visualize soft
 
 **Example** (for dbt container):
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │          dbt Project Container          │
 │                                         │
@@ -358,7 +358,7 @@ When C4 models change due to architecture decisions, create an ADR documenting:
 
 **Files**:
 
-```
+```text
 architecture/
 ├── c4-system-context.md (or .puml, .mermaid)
 ├── c4-container.md

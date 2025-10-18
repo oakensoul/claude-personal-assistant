@@ -30,11 +30,13 @@ Organizing CDK applications into multiple stacks provides better separation of c
 
 ## Pattern 1: Layer-Based Stacks
 
-**Organize by infrastructure layer and update frequency**
+### Description
+
+Organize by infrastructure layer and update frequency
 
 ### Structure
 
-```
+```text
 NetworkStack (changes rarely)
   └── VPC, Subnets, NAT Gateways, VPC Endpoints
 
@@ -208,11 +210,13 @@ cdk deploy --all
 
 ## Pattern 2: Environment-Based Stacks
 
-**Separate stacks per environment (dev, staging, prod)**
+### Description
+
+Separate stacks per environment (dev, staging, prod)
 
 ### Structure
 
-```
+```text
 DevNetworkStack, DevDataStack, DevApplicationStack
 StagingNetworkStack, StagingDataStack, StagingApplicationStack
 ProdNetworkStack, ProdDataStack, ProdApplicationStack
@@ -358,11 +362,13 @@ cdk deploy --all --context environment=prod
 
 ## Pattern 3: Service-Based Stacks
 
-**Organize by microservice or application component**
+### Description
+
+Organize by microservice or application component
 
 ### Structure
 
-```
+```text
 SharedStack (VPC, ALB, ECS Cluster)
   ├── UserServiceStack (User microservice)
   ├── OrderServiceStack (Order microservice)
@@ -504,11 +510,13 @@ cdk deploy --all --exclude Shared
 
 ## Pattern 4: Regional Multi-Stack
 
-**Deploy same infrastructure to multiple regions**
+### Description
+
+Deploy same infrastructure to multiple regions
 
 ### Structure
 
-```
+```text
 US-East-1:
   - NetworkStack-us-east-1
   - ApplicationStack-us-east-1
@@ -582,7 +590,9 @@ cdk deploy Network-us-east-1 Application-us-east-1
 
 ### Pattern A: Direct Property Reference (Preferred)
 
-**Type-safe, automatic dependency management**
+#### Description
+
+Type-safe, automatic dependency management
 
 ```typescript
 const network = new NetworkStack(app, 'Network');
@@ -599,7 +609,9 @@ CDK handles:
 
 ### Pattern B: CloudFormation Exports
 
-**When stacks deployed separately or by different teams**
+#### Description
+
+When stacks deployed separately or by different teams
 
 ```typescript
 // Exporting stack
@@ -617,7 +629,9 @@ const vpc = Vpc.fromLookup(this, 'VPC', { vpcId });
 
 ### Pattern C: SSM Parameter Store
 
-**For loose coupling between stacks**
+#### Description
+
+For loose coupling between stacks
 
 ```typescript
 // Exporting stack
@@ -663,7 +677,7 @@ application.addDependency(database);
 
 ### 4. Name Stacks Consistently
 
-```
+```text
 {Project}-{Environment}-{Layer}
 
 Examples:

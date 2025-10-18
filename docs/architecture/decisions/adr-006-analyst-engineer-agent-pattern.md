@@ -55,7 +55,7 @@ Without a clear separation, we risk:
 
 **Description**: Organize by traditional functional roles:
 
-```
+```text
 frontend-engineer/
 backend-engineer/
 qa-engineer/
@@ -110,7 +110,7 @@ security-engineer/
 
 **Description**: Create highly specialized agents for every concern:
 
-```
+```text
 unit-test-engineer/
 integration-test-engineer/
 e2e-test-engineer/
@@ -235,7 +235,7 @@ etc.
 
 ### Agent Interaction Pattern
 
-```
+```text
 User Request: "Add password reset feature"
     ↓
 product-manager (functional requirements)

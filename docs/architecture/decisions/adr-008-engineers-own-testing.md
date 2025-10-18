@@ -39,7 +39,7 @@ Without clarity, we risk:
 
 **Description**: Separate agent writes all automated tests:
 
-```
+```text
 Engineers write feature code
     ↓
 test-automation-engineer writes tests for that code
@@ -65,7 +65,7 @@ test-automation-engineer writes tests for that code
 
 **Description**: Split testing by type:
 
-```
+```text
 Engineers write unit tests
 qa-engineer writes integration/E2E tests
 ```
@@ -88,7 +88,7 @@ qa-engineer writes integration/E2E tests
 
 **Description**: Engineers write ALL tests, quality-analyst defines WHAT to test:
 
-```
+```text
 quality-analyst identifies test scenarios, edge cases, coverage requirements
     ↓
 Engineers implement ALL tests (unit, integration, E2E, performance)
@@ -230,7 +230,8 @@ Engineers implement ALL tests (unit, integration, E2E, performance)
 - Risk assessments
 
 **Example**:
-```
+
+```text
 User: "Review testing for password reset feature"
 
 quality-analyst output:
@@ -278,7 +279,8 @@ performance test for scenario 10"
 - Performance risk assessment
 
 **Example**:
-```
+
+```text
 User: "What are performance requirements for API?"
 
 performance-analyst output:
@@ -322,7 +324,8 @@ SLA: 99.9% availability, p95 < 200ms response time"
 - `dbt-testing` - dbt data quality tests
 
 **Example**:
-```
+
+```text
 User: "Implement password reset feature"
 
 Workflow:
@@ -351,7 +354,7 @@ Workflow:
 
 ### Testing Workflow
 
-```
+```text
 1. Requirements Phase:
    product-manager → "Users need password reset"
    quality-analyst → "Test these 10 scenarios..."

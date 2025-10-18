@@ -231,7 +231,7 @@ All resources MUST have:
 
 ### Example: Designing Infrastructure
 
-```
+```text
 You: Design a serverless API using Lambda and API Gateway
 
 Claude invokes aws-cloud-engineer:
@@ -245,7 +245,7 @@ Claude invokes aws-cloud-engineer:
 
 ### Example: Multi-Stack Organization
 
-```
+```text
 You: How should I organize my CDK stacks for this application?
 
 Claude invokes aws-cloud-engineer:
@@ -363,19 +363,19 @@ new PolicyStatement({
 });
 ```
 
-```
-
 ## Maintenance
 
 ### User-Level Knowledge
 
 **Update when**:
+
 - Discover new AWS patterns or services
 - Learn CDK best practices
 - Find cost optimization opportunities
 - Refine security standards
 
 **Review schedule**:
+
 - Monthly: Check for AWS service updates
 - Quarterly: Comprehensive pattern review
 - Annually: Major architectural philosophy updates
@@ -383,23 +383,27 @@ new PolicyStatement({
 ### Project-Level Knowledge
 
 **Update when**:
+
 - AWS accounts or regions change
 - Infrastructure architecture evolves
 - New resources provisioned
 - Naming or tagging standards change
 
 **Review schedule**:
+
 - Weekly: During active infrastructure development
 - After major deployments: Update resource identifiers
 
 ## Current Knowledge Status
 
 **Created Files** (3):
+
 1. `core-concepts/cdk-fundamentals.md` - CDK basics and patterns
 2. `patterns/multi-stack-architectures.md` - Stack organization strategies
 3. `decisions/when-to-use-this-agent.md` - Agent invocation guidance
 
 **Planned Files**:
+
 - Additional AWS service documentation
 - More CDK patterns (custom constructs, testing, configuration)
 - Service selection matrices

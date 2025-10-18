@@ -4,7 +4,7 @@ This document clarifies when to use the system-architect agent vs other agents (
 
 ## Quick Decision Tree
 
-```
+```text
 Are you asking about...
 
 ├── System-wide patterns, C4 models, or ADRs?

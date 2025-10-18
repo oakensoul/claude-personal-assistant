@@ -30,7 +30,7 @@ The `aws-cloud-engineer` agent provides AWS-specific infrastructure expertise, f
 
 **Example**:
 
-```
+```text
 User: Design the AWS infrastructure for a web application with a database
 
 → Invoke aws-cloud-engineer
@@ -51,7 +51,7 @@ User: Design the AWS infrastructure for a web application with a database
 
 **Example**:
 
-```
+```text
 User: How do I organize my CDK app with network, database, and application layers?
 
 → Invoke aws-cloud-engineer
@@ -72,7 +72,7 @@ User: How do I organize my CDK app with network, database, and application layer
 
 **Example**:
 
-```
+```text
 User: Should I use Lambda or Fargate for a long-running background job?
 
 → Invoke aws-cloud-engineer
@@ -92,7 +92,7 @@ User: Should I use Lambda or Fargate for a long-running background job?
 
 **Example**:
 
-```
+```text
 User: CDK deploy failing with "Cannot exceed quota for Resources in stack"
 
 → Invoke aws-cloud-engineer
@@ -112,7 +112,7 @@ User: CDK deploy failing with "Cannot exceed quota for Resources in stack"
 
 **Example**:
 
-```
+```text
 User: My Lambda costs are high, how can I reduce them?
 
 → Invoke aws-cloud-engineer
@@ -135,7 +135,7 @@ User: My Lambda costs are high, how can I reduce them?
 
 **Example**:
 
-```
+```text
 User: What IAM permissions does my Lambda need to access S3 and DynamoDB?
 
 → Invoke aws-cloud-engineer
@@ -156,7 +156,7 @@ User: What IAM permissions does my Lambda need to access S3 and DynamoDB?
 
 **Example**:
 
-```
+```text
 User: How do I share a VPC between multiple CDK applications?
 
 → Invoke aws-cloud-engineer
@@ -177,7 +177,7 @@ User: How do I share a VPC between multiple CDK applications?
 
 **Example**:
 
-```
+```text
 User: Create a reusable construct for a Lambda function with API Gateway
 
 → Invoke aws-cloud-engineer
@@ -198,7 +198,7 @@ User: Create a reusable construct for a Lambda function with API Gateway
 
 **Example**:
 
-```
+```text
 User: My Lambda has high cold start latency, how can I fix it?
 
 → Invoke aws-cloud-engineer
@@ -225,7 +225,7 @@ User: My Lambda has high cold start latency, how can I fix it?
 
 **Correct flow**:
 
-```
+```text
 User: Deploy my CDK stack via GitHub Actions
 
 → Invoke devops-engineer (NOT aws-cloud-engineer)
@@ -245,7 +245,7 @@ User: Deploy my CDK stack via GitHub Actions
 
 **Correct flow**:
 
-```
+```text
 User: Write Lambda code to process S3 events
 
 → Invoke tech-lead or nextjs-engineer (NOT aws-cloud-engineer)
@@ -265,7 +265,7 @@ User: Write Lambda code to process S3 events
 
 **Correct flow**:
 
-```
+```text
 User: What architecture should I use for a real-time chat application?
 
 → Invoke tech-lead (NOT aws-cloud-engineer)
@@ -286,7 +286,7 @@ User: What architecture should I use for a real-time chat application?
 
 **Correct flow**:
 
-```
+```text
 User: Deploy my Next.js app to Vercel
 
 → Invoke devops-engineer or nextjs-engineer (NOT aws-cloud-engineer)
@@ -305,7 +305,7 @@ User: Deploy my Next.js app to Vercel
 
 **Correct flow**:
 
-```
+```text
 User: Design my database schema for an e-commerce application
 
 → Invoke data-architect (NOT aws-cloud-engineer)
@@ -375,7 +375,7 @@ User: Design my database schema for an e-commerce application
 
 ### Good Invocations
 
-```
+```text
 ✓ "Design a CDK stack for a serverless API"
 ✓ "How do I share a VPC between multiple stacks?"
 ✓ "Should I use RDS or DynamoDB for this use case?"
@@ -387,7 +387,7 @@ User: Design my database schema for an e-commerce application
 
 ### Poor Invocations (Use Different Agent)
 
-```
+```text
 ✗ "Create GitHub Actions workflow to deploy CDK" → Use devops-engineer
 ✗ "Write Lambda function code for API" → Use tech-lead or specialist engineer
 ✗ "What overall architecture should I use?" → Use tech-lead
@@ -459,7 +459,7 @@ For project-specific recommendations, agent needs:
 
 ## Decision Tree
 
-```
+```text
 Does the task involve AWS infrastructure?
 ├─ No → Use different agent (tech-lead, devops-engineer, etc.)
 └─ Yes
