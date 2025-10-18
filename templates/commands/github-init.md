@@ -33,6 +33,7 @@ This command initializes a GitHub repository with standardized configuration:
 ## Modes of Operation
 
 ### `full` (default)
+
 Run all automated setup, then provide interactive guidance for manual configuration.
 
 ```bash
@@ -43,6 +44,7 @@ Run all automated setup, then provide interactive guidance for manual configurat
 ```
 
 ### `labels-only`
+
 Only create/update GitHub labels without project or automation setup.
 
 ```bash
@@ -52,6 +54,7 @@ Only create/update GitHub labels without project or automation setup.
 ```
 
 ### `verify`
+
 Check configuration without making changes. Report what's missing or incorrect.
 
 ```bash
@@ -61,6 +64,7 @@ Check configuration without making changes. Report what's missing or incorrect.
 ```
 
 ### `reset`
+
 Remove all labels and clear verification cache (requires confirmation).
 
 ```bash
@@ -189,7 +193,7 @@ echo "Created ${LABEL_COUNT} labels"
 
 If mode is `labels-only`, STOP after this step and display:
 
-```
+```text
 
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ ✓ LABELS CREATED                                                          ║
@@ -305,7 +309,7 @@ echo "Verification cache created: .github/.verification-cache.json"
 
 Display summary of automated setup:
 
-```
+```text
 
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ ✓ AUTOMATED SETUP COMPLETE                                                ║
@@ -392,7 +396,7 @@ fi
 
 **Display Instructions:**
 
-```
+```text
 
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ STEP 6: Create GitHub Project Board                                       ║
@@ -474,7 +478,7 @@ fi
 
 **Display Instructions:**
 
-```
+```text
 
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ STEP 7: Configure Status Field                                            ║
@@ -668,7 +672,7 @@ fi
 
 **Display Instructions:**
 
-```
+```text
 
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ STEP 16: Create Board Views                                               ║
@@ -741,7 +745,7 @@ fi
 
 **Display Instructions:**
 
-```
+```text
 
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║ STEP 17: Configure Branch Protection                                      ║
