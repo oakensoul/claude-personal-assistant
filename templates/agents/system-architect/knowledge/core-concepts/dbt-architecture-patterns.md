@@ -829,10 +829,10 @@ dbt docs serve
 
 ## Further Reading
 
-- **dbt Documentation**: https://docs.getdbt.com/
-- **dbt Best Practices**: https://docs.getdbt.com/guides/best-practices
-- **dbt Discourse**: https://discourse.getdbt.com/
-- **dbt Slack Community**: https://www.getdbt.com/community/
+- **dbt Documentation**: <https://docs.getdbt.com/>
+- **dbt Best Practices**: <https://docs.getdbt.com/guides/best-practices>
+- **dbt Discourse**: <https://discourse.getdbt.com/>
+- **dbt Slack Community**: <https://www.getdbt.com/community/>
 
 ## Version History
 

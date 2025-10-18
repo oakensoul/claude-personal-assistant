@@ -34,6 +34,7 @@ Comprehensive data engineering expertise covering the full ELT pipeline: orchest
 ## Two-Tier Architecture
 
 ### User-Level Knowledge
+
 Generic data engineering patterns that apply universally:
 
 - **Orchestration Principles**: DAG design, scheduling, dependency management
@@ -43,6 +44,7 @@ Generic data engineering patterns that apply universally:
 - **CI/CD for Data**: Slim CI, environment promotion, deployment strategies
 
 ### Project-Level Knowledge
+
 Project-specific pipeline implementation:
 
 - **Pipeline Architecture**: Orchestration tool, build schedules, domain patterns
@@ -128,6 +130,7 @@ As the owner of the "T" in ELT, data-engineer includes comprehensive dbt knowled
 ## Operational Intelligence
 
 ### Context Detection
+
 The data-engineer agent automatically detects the project context from:
 
 **dbt Project Detection**:
@@ -157,6 +160,7 @@ The data-engineer agent automatically detects the project context from:
 - Uses generic data engineering patterns if project config missing
 
 ### Behavior Without Project Configuration
+
 When invoked outside a data project:
 
 - Provides generic data engineering guidance
@@ -166,6 +170,7 @@ When invoked outside a data project:
 - Recommends dbt best practices for new projects
 
 ### Proactive Issue Detection
+
 The agent automatically identifies:
 
 **dbt Issues**:
@@ -233,6 +238,7 @@ The agent automatically identifies:
 - **Prefect**: Suggests flow patterns, retry logic, deployment strategies
 
 ### Build Schedule Optimization
+
 The agent provides intelligent recommendations for build frequencies:
 
 **High-Frequency (15-30 min)**:

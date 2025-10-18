@@ -34,17 +34,20 @@ Data classification is the foundation of data governance, enabling appropriate s
 **Definition**: Data intended for public consumption with no confidentiality requirements.
 
 **Characteristics**:
+
 - No harm from unauthorized disclosure
 - Publicly available or intended for publication
 - No access restrictions required
 
 **Examples**:
+
 - Marketing materials, blog posts
 - Public API documentation
 - Published game rules and contest structures
 - Aggregated, anonymized statistics (no PII)
 
 **Controls**:
+
 - Access: Open to all authenticated users
 - Encryption: Optional (TLS in transit)
 - Retention: Business need basis
@@ -63,17 +66,20 @@ Data classification is the foundation of data governance, enabling appropriate s
 **Definition**: General business data for internal use, low to moderate impact if disclosed.
 
 **Characteristics**:
+
 - Not intended for public disclosure
 - Minimal risk if accessed by unauthorized internal users
 - May include aggregated business metrics, internal reports
 
 **Examples**:
+
 - Non-PII user activity logs (pageviews, feature usage)
 - Aggregated contest metrics (without user identification)
 - Internal analytics dashboards (anonymized)
 - Non-financial operational data
 
 **Controls**:
+
 - Access: Authenticated employees, role-based restrictions
 - Encryption: At rest and in transit
 - Retention: 1-2 years typical
@@ -92,17 +98,20 @@ Data classification is the foundation of data governance, enabling appropriate s
 **Definition**: Sensitive business data requiring protection, moderate to high impact if disclosed.
 
 **Characteristics**:
+
 - Competitive advantage or business-sensitive information
 - Financial data, contracts, strategic plans
 - May include pseudonymized user data
 
 **Examples**:
+
 - Revenue reports, financial forecasts
 - Partner agreements and commission structures
 - Detailed contest economics (margins, payouts)
 - Pseudonymized user behavior (hashed user IDs)
 
 **Controls**:
+
 - Access: Need-to-know basis, manager approval
 - Encryption: Strong encryption at rest and in transit
 - Retention: 5-7 years (financial records)
@@ -121,12 +130,14 @@ Data classification is the foundation of data governance, enabling appropriate s
 **Definition**: Highly sensitive data subject to regulatory requirements, severe impact if disclosed.
 
 **Characteristics**:
+
 - Personally Identifiable Information (PII)
 - Payment card data (PCI-DSS)
 - Protected Health Information (HIPAA, if applicable)
 - Authentication credentials
 
 **Examples**:
+
 - User names, emails, phone numbers, addresses
 - Social Security numbers, government IDs
 - Credit card numbers, bank account information
@@ -134,6 +145,7 @@ Data classification is the foundation of data governance, enabling appropriate s
 - Health data (if Splash integrates fitness tracking)
 
 **Controls**:
+
 - Access: Highly restricted, elevated privileges required
 - Encryption: End-to-end encryption, key rotation
 - Masking: Dynamic Data Masking (DDM) in Snowflake
@@ -164,6 +176,7 @@ Data classification is the foundation of data governance, enabling appropriate s
 **Definition**: Data that cannot identify an individual directly or indirectly.
 
 **Examples**:
+
 - Aggregated contest statistics (total entries, average bet size)
 - Device types (iOS vs Android) without user linkage
 - Geographic aggregations (state-level data)
@@ -178,6 +191,7 @@ Data classification is the foundation of data governance, enabling appropriate s
 **Definition**: Data that can re-identify individuals when combined with other data points.
 
 **Examples**:
+
 - Zip code (especially granular 9-digit)
 - Birthdate (month/day/year)
 - Gender
@@ -187,6 +201,7 @@ Data classification is the foundation of data governance, enabling appropriate s
 **Risk**: Medium (re-identification possible with auxiliary data)
 
 **Treatment**:
+
 - Generalization (zip code → state, birthdate → year)
 - Aggregation (age ranges instead of exact age)
 - Suppression (remove low-frequency combinations)
@@ -215,6 +230,7 @@ from dim_user;
 **Definition**: Data that uniquely identifies an individual on its own.
 
 **Examples**:
+
 - Full name (first + last)
 - Email address
 - Phone number
@@ -225,6 +241,7 @@ from dim_user;
 **Risk**: High (direct identification)
 
 **Treatment**:
+
 - **Tokenization**: Replace with random token, store mapping securely
 - **Hashing**: One-way hash with salt (irreversible)
 - **Pseudonymization**: Replace with pseudonym, key stored separately
@@ -249,6 +266,7 @@ alter table dim_user modify column email set masking policy email_mask;
 **Definition**: PII with heightened privacy/security concerns due to potential harm from disclosure.
 
 **Examples**:
+
 - Financial account numbers
 - Credit card numbers (PCI-DSS)
 - Biometric data (fingerprints, facial recognition)
@@ -260,6 +278,7 @@ alter table dim_user modify column email set masking policy email_mask;
 **Risk**: Critical (severe harm from disclosure, regulatory penalties)
 
 **Treatment**:
+
 - **Never store** unless absolutely necessary
 - **Tokenization via third-party**: Payment processors (Stripe tokens), identity providers
 - **Encryption**: Strong encryption with key separation (different key management system)
@@ -343,6 +362,7 @@ from fct_wallet_deposits
 ```
 
 **Example: Staging User Model**:
+
 ```sql
 -- models/dwh/staging/shared/stg_splash_production__users.sql
 {{
@@ -377,6 +397,7 @@ from {{ source('splash_production', 'users') }}
 ```
 
 **Example: De-identified Analytics Model**:
+
 ```sql
 -- models/dwh/marts/analytics/mart_user_demographics.sql
 {{
@@ -440,6 +461,7 @@ alter table prod.finance.dim_user modify column birthdate
 ```
 
 **Query Tags for Governance**:
+
 ```sql
 -- Find all tables with PII
 select
@@ -464,6 +486,7 @@ order by object_database, object_schema, object_name;
 ### Pattern-Based Detection
 
 **Regex Patterns for Common PII**:
+
 ```python
 # Python script for PII detection in dbt models
 
@@ -564,7 +587,7 @@ where not array_contains('pii:true'::variant, t.tags)
 
 ## Data Masking Decision Tree
 
-```
+```text
 ┌─────────────────────────────┐
 │ Does column contain PII?    │
 └──────────┬──────────────────┘
@@ -598,21 +621,25 @@ where not array_contains('pii:true'::variant, t.tags)
 ## Classification Review Workflow
 
 **1. Automated Classification** (dbt build):
+
 - Scan column names against PII catalog
 - Pattern-match sample values for PII
 - Flag models missing required tags
 
 **2. Manual Review** (quarterly):
+
 - Data steward reviews flagged models
 - Validates auto-classification accuracy
 - Documents exceptions and edge cases
 
 **3. Continuous Monitoring**:
+
 - dbt tests fail if PII models lack tags
 - Pre-commit hooks validate tag completeness
 - Snowflake audit logs track access to restricted data
 
 **4. Documentation**:
+
 - Update `pii-field-catalog.md` with new PII fields
 - Document classification decisions in `decisions/classification-taxonomy.md`
 - Maintain lineage of PII propagation (staging → core → marts)

@@ -32,43 +32,43 @@ last_updated: "2025-10-07"
 
 ### Core Principles
 
-**1. Lawfulness, Fairness, Transparency**
+#### 1. Lawfulness, Fairness, Transparency
 
 - Must have lawful basis for processing (consent, contract, legal obligation, vital interests, public task, legitimate interest)
 - Users must understand how their data is used
 - Privacy policies must be clear and accessible
 
-**2. Purpose Limitation**
+#### 2. Purpose Limitation
 
 - Data collected for specific, explicit, legitimate purposes
 - Cannot reuse data for incompatible purposes without new consent
 - Analytics use case must be disclosed at collection time
 
-**3. Data Minimization**
+#### 3. Data Minimization
 
 - Only collect data that is necessary for the purpose
 - Avoid "nice to have" data collection
 - Regularly review and purge unnecessary data
 
-**4. Accuracy**
+#### 4. Accuracy
 
 - Keep personal data accurate and up-to-date
 - Provide mechanisms for users to correct inaccuracies
 - Implement data quality checks
 
-**5. Storage Limitation**
+#### 5. Storage Limitation
 
 - Retain data only as long as necessary for the purpose
 - Define retention periods for each data category
 - Implement automated deletion workflows
 
-**6. Integrity and Confidentiality**
+#### 6. Integrity and Confidentiality
 
 - Protect data against unauthorized access, loss, or damage
 - Encryption, access controls, audit trails
 - Regular security assessments
 
-**7. Accountability**
+#### 7. Accountability
 
 - Demonstrate compliance with all principles
 - Maintain documentation, policies, and records of processing
@@ -76,7 +76,7 @@ last_updated: "2025-10-07"
 
 ### Data Subject Rights
 
-**1. Right to Access (Art. 15)**
+#### 1. Right to Access (Art. 15)
 
 - Users can request copy of their personal data
 - Must provide within 1 month (extendable to 3 months)
@@ -103,12 +103,12 @@ select * from prod.finance.fct_wallet_transactions where user_id = :user_id;
 select * from prod.contests.fct_contest_entries where user_id = :user_id;
 ```
 
-**2. Right to Rectification (Art. 16)**
+#### 2. Right to Rectification (Art. 16)
 
 - Users can request correction of inaccurate data
 - Must update within 1 month
 
-**3. Right to Erasure / "Right to be Forgotten" (Art. 17)**
+#### 3. Right to Erasure / "Right to be Forgotten" (Art. 17)
 
 - Users can request deletion of their data
 - Exceptions: legal obligations, public interest, legitimate interests
@@ -120,23 +120,23 @@ select * from prod.contests.fct_contest_entries where user_id = :user_id;
 - Preserve audit trails (log deletion, retain anonymized aggregates)
 - Notify downstream processors (third-party partners)
 
-**4. Right to Restrict Processing (Art. 18)**
+#### 4. Right to Restrict Processing (Art. 18)
 
 - Users can request suspension of processing
 - Data can be stored but not processed
 - Use case: Dispute over data accuracy
 
-**5. Right to Data Portability (Art. 20)**
+#### 5. Right to Data Portability (Art. 20)
 
 - Users can request data in machine-readable format (JSON, CSV)
 - Must support transfer to another controller
 
-**6. Right to Object (Art. 21)**
+#### 6. Right to Object (Art. 21)
 
 - Users can object to processing based on legitimate interest
 - Absolute right to object to direct marketing
 
-**7. Rights Related to Automated Decision-Making (Art. 22)**
+#### 7. Rights Related to Automated Decision-Making (Art. 22)
 
 - Users can opt-out of fully automated decisions with legal/significant effect
 - Example: AI-based credit scoring, fraud detection
@@ -189,24 +189,24 @@ select * from prod.contests.fct_contest_entries where user_id = :user_id;
 
 ### Consumer Rights
 
-**1. Right to Know**
+#### 1. Right to Know
 
 - What personal information is collected
 - Categories of sources
 - Business/commercial purposes for collection
 - Categories of third parties with whom data is shared
 
-**2. Right to Delete**
+#### 2. Right to Delete
 
 - Request deletion of personal information
 - Exceptions: complete transaction, detect fraud, comply with legal obligations
 
-**3. Right to Opt-Out of Sale**
+#### 3. Right to Opt-Out of Sale
 
 - Must provide "Do Not Sell My Personal Information" link
 - Cannot discriminate against users who opt-out
 
-**4. Right to Non-Discrimination**
+#### 4. Right to Non-Discrimination
 
 - Cannot deny goods/services for exercising CCPA rights
 - Cannot charge different prices or provide different quality
@@ -252,31 +252,31 @@ select * from prod.contests.fct_contest_entries where user_id = :user_id;
 
 ### Trust Services Criteria
 
-**1. Security**
+#### 1. Security
 
 - Protect against unauthorized access (logical and physical)
 - Access controls, authentication, encryption
 - Network security, firewalls, intrusion detection
 
-**2. Availability**
+#### 2. Availability
 
 - System available for operation and use as committed
 - Uptime SLAs, redundancy, disaster recovery
 - Monitoring and incident response
 
-**3. Processing Integrity**
+#### 3. Processing Integrity
 
 - System processing is complete, valid, accurate, timely
 - Data validation, error handling, reconciliation
 - Change management and version control
 
-**4. Confidentiality**
+#### 4. Confidentiality
 
 - Information designated as confidential is protected
 - Data classification, encryption, access controls
 - NDA enforcement, secure data disposal
 
-**5. Privacy**
+#### 5. Privacy
 
 - Personal information collected, used, retained, disclosed per commitments
 - Notice, choice, access, retention, disclosure practices
@@ -421,27 +421,27 @@ select * from prod.contests.fct_contest_entries where user_id = :user_id;
 
 ### Recommended Implementation Order
 
-**Phase 1: Foundation (Months 1-3)**
+#### Phase 1: Foundation (Months 1-3)
 
 - Data classification and PII inventory
 - Snowflake RBAC and access controls
 - Basic audit logging (query history, access history)
 
-**Phase 2: GDPR/CCPA Compliance (Months 3-6)**
+#### Phase 2: GDPR/CCPA Compliance (Months 3-6)
 
 - Data subject request workflows (access, deletion, portability)
 - Consent management system
 - Privacy policy updates
 - Retention policy implementation
 
-**Phase 3: SOC2 Preparation (Months 6-12)**
+#### Phase 3: SOC2 Preparation (Months 6-12)
 
 - Control documentation and evidence collection
 - Change management formalization
 - Backup/recovery testing
 - Vendor management program
 
-**Phase 4: Continuous Compliance (Ongoing)**
+#### Phase 4: Continuous Compliance (Ongoing)
 
 - Quarterly access reviews
 - Annual privacy impact assessments

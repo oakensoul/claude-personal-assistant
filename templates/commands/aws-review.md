@@ -767,6 +767,7 @@ The AWS infrastructure review identified **{total_findings}** opportunities for 
 ## Implementation Roadmap
 
 ### Phase 1: Quick Wins (Week 1)
+
 **Estimated Savings**: ${phase_1_savings}/month
 **Estimated Effort**: {hours} hours
 
@@ -774,6 +775,7 @@ The AWS infrastructure review identified **{total_findings}** opportunities for 
 2. {task_2}
 
 ### Phase 2: Security Hardening (Weeks 2-4)
+
 **Risk Reduction**: {risk_score_improvement}
 **Estimated Effort**: {hours} hours
 
@@ -781,6 +783,7 @@ The AWS infrastructure review identified **{total_findings}** opportunities for 
 2. {task_2}
 
 ### Phase 3: Architecture Optimization (Months 2-3)
+
 **Estimated Savings**: ${phase_3_savings}/month
 **Estimated Effort**: {hours} hours
 
@@ -788,6 +791,7 @@ The AWS infrastructure review identified **{total_findings}** opportunities for 
 2. {task_2}
 
 ### Phase 4: Strategic Initiatives (Months 4-6)
+
 **Long-term Benefits**: {description}
 **Estimated Effort**: {hours} hours
 
@@ -813,6 +817,7 @@ The AWS infrastructure review identified **{total_findings}** opportunities for 
 **Rationale**: {explanation}
 
 **Testing**:
+
 ```bash
 {test_commands}
 ```
@@ -843,6 +848,8 @@ The AWS infrastructure review identified **{total_findings}** opportunities for 
 
 **Review Completed**: {YYYY-MM-DD HH:MM:SS}
 **Reviewed By**: aws-cloud-engineer agent
+
+<!-- markdownlint-disable-next-line MD040 -->
 ```
 
 Save to: `${REVIEW_DIR}/reports/recommendations.md`

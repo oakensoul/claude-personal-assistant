@@ -853,8 +853,8 @@ SELECT * FROM date_dimension;
 ## Further Reading
 
 - **The Data Warehouse Toolkit** by Ralph Kimball
-- **dbt Dimensional Modeling Guide**: https://docs.getdbt.com/guides/best-practices/how-we-structure/4-marts
-- **Kimball Group**: https://www.kimballgroup.com/
+- **dbt Dimensional Modeling Guide**: <https://docs.getdbt.com/guides/best-practices/how-we-structure/4-marts>
+- **Kimball Group**: <https://www.kimballgroup.com/>
 
 ## Version History
 

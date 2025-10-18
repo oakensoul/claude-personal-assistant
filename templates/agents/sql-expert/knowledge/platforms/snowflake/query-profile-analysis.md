@@ -197,6 +197,7 @@ Join [Hash]
 ├─ TableScan [DIM_USER] - 1M rows (build table)
 └─ TableScan [FCT_CONTEST_ENTRIES] - 50M rows (probe table)
 ```
+
 Snowflake builds hash table on smaller table (dim_user), then probes with larger table.
 
 **Bad Join Pattern**:
@@ -472,6 +473,7 @@ If you see `Partitions Scanned: 2,500 of 2,500`, incremental logic is NOT workin
 ### Check Clustering Effectiveness
 
 **Query `system$clustering_information`**:
+
 ```sql
 select system$clustering_information('fct_wallet_transactions', '(transaction_date_et)');
 ```
@@ -524,12 +526,14 @@ Partitions Scanned: 1,200 of 2,500 (clustering not effective)
 ## SnowSQL Commands for Query Profile Analysis
 
 ### Get Query ID
+
 ```bash
 # Execute query and capture query ID
 snowsql -c prod -q "SELECT * FROM table WHERE ..." -o output_format=tsv | head -1
 ```
 
 ### Get Query Statistics
+
 ```sql
 -- In Snowsql or Snowflake UI
 select
@@ -548,6 +552,7 @@ limit 10;
 ```
 
 ### Compare Before/After Optimization
+
 ```sql
 -- Track improvements
 select
@@ -585,6 +590,7 @@ When analyzing a slow query:
 ### Before Optimization
 
 **Query**:
+
 ```sql
 select
     u.user_id,
@@ -620,6 +626,7 @@ Bytes Spilled to Local: 12 GB
 ### After Optimization
 
 **Optimized Query**:
+
 ```sql
 with recent_entries as (
     select

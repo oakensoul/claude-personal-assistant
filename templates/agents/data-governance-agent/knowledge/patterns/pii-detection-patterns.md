@@ -15,6 +15,7 @@ last_updated: "2025-10-07"
 ## Detection Strategy Overview
 
 **Multi-Layered Approach**:
+
 1. **Catalog-Based**: Known PII fields from data dictionary
 2. **Pattern-Based**: Regex patterns for common PII formats
 3. **ML-Based**: Machine learning models for unstructured PII
@@ -642,6 +643,7 @@ echo "✅ PII validation passed"
 ```
 
 **Usage**:
+
 ```bash
 dbt run-operation generate_pii_catalog --target prod
 ```
@@ -651,22 +653,26 @@ dbt run-operation generate_pii_catalog --target prod
 ## Best Practices Summary
 
 **1. Layered Detection**:
+
 - Start with catalog-based (known fields)
 - Add pattern-based (regex) for coverage
 - Use ML-based for unstructured text
 - Manual review for final validation
 
 **2. Continuous Monitoring**:
+
 - Pre-commit hooks for new models
 - CI/CD scans for new data sources
 - Quarterly catalog reviews
 
 **3. Documentation**:
+
 - Maintain central PII catalog (.claude/governance/pii-catalog.yml)
 - Tag all PII models in dbt (pii:true, pii_type:*)
 - Document exceptions and edge cases
 
 **4. Validation**:
+
 - dbt tests enforce tagging completeness
 - Snowflake queries validate masking policies
 - Regular re-identification risk assessments

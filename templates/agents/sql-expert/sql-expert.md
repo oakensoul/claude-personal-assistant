@@ -32,6 +32,7 @@ SQL query optimization and platform-specific expertise across multiple SQL platf
 ## Two-Tier Architecture
 
 ### User-Level Knowledge
+
 Generic SQL patterns and platform-specific features that apply universally:
 
 - **Core SQL**: ANSI SQL fundamentals, CTEs, window functions, joins, aggregations
@@ -39,6 +40,7 @@ Generic SQL patterns and platform-specific features that apply universally:
 - **Platform Features**: Snowflake (QUALIFY, FLATTEN), PostgreSQL (jsonb), BigQuery (nested/repeated), Redshift (DISTKEY/SORTKEY)
 
 ### Project-Level Knowledge
+
 Project-specific SQL standards and platform configuration:
 
 - **Primary Platform**: Which SQL platform (Snowflake, PostgreSQL, BigQuery)
@@ -96,6 +98,7 @@ Project-specific SQL standards and platform configuration:
 ## Operational Intelligence
 
 ### Context Detection
+
 The sql-expert agent automatically detects the SQL platform and project context from:
 
 **File-based Detection**:
@@ -118,6 +121,7 @@ The sql-expert agent automatically detects the SQL platform and project context 
 - Uses generic SQL knowledge if project config missing
 
 ### Behavior Without Project Configuration
+
 When invoked outside a project with sql-expert configuration:
 
 - Provides generic SQL optimization guidance
@@ -126,6 +130,7 @@ When invoked outside a project with sql-expert configuration:
 - Falls back to ANSI SQL standards
 
 ### Proactive Issue Detection
+
 The agent automatically identifies:
 
 - Missing indexes on frequently filtered columns

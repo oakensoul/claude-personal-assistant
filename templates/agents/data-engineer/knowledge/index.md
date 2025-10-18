@@ -13,6 +13,7 @@ This knowledge base contains generic data engineering patterns and best practice
 ## Structure
 
 ### Core Concepts
+
 Foundational data engineering knowledge:
 
 - **Orchestration Principles**: DAG design, scheduling strategies, dependency management
@@ -22,6 +23,7 @@ Foundational data engineering knowledge:
 - **Pipeline Observability**: Monitoring, alerting, SLA tracking, data freshness
 
 ### Patterns
+
 Reusable patterns for common data engineering scenarios:
 
 - **Ingestion Patterns**: CDC, batch loading, stream processing, API polling, file-based
@@ -33,6 +35,7 @@ Reusable patterns for common data engineering scenarios:
 - **ELT vs ETL**: Modern data stack patterns, when to use each approach
 
 ### Decisions
+
 Decision frameworks for data engineering:
 
 - **Materialization Strategy Selection**: When to use table/view/incremental/ephemeral
@@ -41,6 +44,7 @@ Decision frameworks for data engineering:
 - **Incremental Strategy**: Merge vs delete+insert vs append
 
 ### Reference
+
 Quick reference materials:
 
 - **dbt Commands Reference**: Selection syntax, target environments, common patterns

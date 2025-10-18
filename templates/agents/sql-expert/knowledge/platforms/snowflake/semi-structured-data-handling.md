@@ -28,6 +28,7 @@ use_cases:
 Snowflake's semi-structured data support enables efficient processing of JSON, VARIANT, ARRAY, and OBJECT types. This is critical for the dbt-splash-prod-v2 project's high-volume Segment event data (`tag:source:segment`, `tag:volume:high`).
 
 **Key Data Sources**:
+
 - **Segment events**: Web, iOS, Android tracking (JSON event properties)
 - **API responses**: Partner integrations (nested JSON structures)
 - **Configuration data**: Feature flags, settings (JSON storage)
@@ -35,6 +36,7 @@ Snowflake's semi-structured data support enables efficient processing of JSON, V
 ## Core Data Types
 
 ### VARIANT
+
 Universal semi-structured type that can hold JSON objects, arrays, or primitive values:
 
 ```sql
@@ -46,6 +48,7 @@ from {{ ref('stg_segment__web_events') }}
 ```
 
 ### OBJECT
+
 Key-value pairs (JSON object):
 
 ```sql
@@ -57,6 +60,7 @@ from {{ ref('stg_segment__web_events') }}
 ```
 
 ### ARRAY
+
 Ordered list of values:
 
 ```sql
@@ -70,6 +74,7 @@ from {{ ref('stg_segment__web_events') }}
 ## Path Notation for Property Access
 
 ### Dot Notation
+
 ```sql
 -- Access nested properties using colon
 event_properties:user_id                     -- Top-level property
@@ -78,6 +83,7 @@ event_properties:nested:deep:property        -- Multiple levels
 ```
 
 ### Array Indexing
+
 ```sql
 -- Access array elements (0-based indexing)
 event_properties:tags[0]                     -- First tag
@@ -85,6 +91,7 @@ event_properties:tags[array_size(event_properties:tags) - 1]  -- Last tag
 ```
 
 ### Type Casting (CRITICAL)
+
 ```sql
 -- ALWAYS cast VARIANT values to proper types
 event_properties:user_id::string             -- Cast to string
@@ -118,7 +125,7 @@ from table_name,
 
 ### FLATTEN for Segment Event Properties
 
-**Example 1: Extract all event properties as rows**
+#### Example 1: Extract all event properties as rows
 
 ```sql
 -- Staging model for Segment web events with flattened properties
@@ -190,7 +197,7 @@ final as (
 select * from final
 ```
 
-**Example 2: Pivot specific properties into columns**
+#### Example 2: Pivot specific properties into columns
 
 ```sql
 -- Extract specific Segment event properties as columns
@@ -223,7 +230,7 @@ from base_events
 
 ### Nested FLATTEN
 
-**Example: Flatten nested arrays/objects**
+#### Example: Flatten nested arrays/objects
 
 ```sql
 -- Scenario: event_properties contains nested structure
@@ -735,11 +742,13 @@ models:
 ## Additional Resources
 
 **Snowflake Documentation**:
+
 - [Semi-Structured Data Functions](https://docs.snowflake.com/en/sql-reference/functions-semistructured.html)
 - [FLATTEN Function](https://docs.snowflake.com/en/sql-reference/functions/flatten.html)
 - [Working with JSON](https://docs.snowflake.com/en/user-guide/querying-semistructured.html)
 
 **Project Integration**:
+
 - Segment events: High-volume JSON processing (`tag:source:segment`)
 - API integrations: Partner data ingestion
 - Feature flags: Configuration management

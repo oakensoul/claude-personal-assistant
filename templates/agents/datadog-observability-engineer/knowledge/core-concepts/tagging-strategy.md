@@ -108,6 +108,7 @@ These tags provide additional value and should be used where applicable:
 ## CDK Tag Propagation
 
 ### Stack-Level Tags
+
 Apply tags to entire stacks:
 
 ```typescript
@@ -127,6 +128,7 @@ export class MyStack extends Stack {
 ```
 
 ### Resource-Level Tags
+
 Override or add tags to specific resources:
 
 ```typescript
@@ -139,6 +141,7 @@ Tags.of(myFunction).add('version', '1.2.3');
 ```
 
 ### DataDog Unified Service Tagging
+
 For APM and distributed tracing, use these environment variables:
 
 ```typescript
@@ -181,6 +184,7 @@ Tags with limited, known values are safe:
 ## Tag Validation
 
 ### Pre-Deployment Checks
+
 Validate tags before deploying:
 
 ```typescript
@@ -209,6 +213,7 @@ Aspects.of(stack).add(new RequiredTagsAspect());
 ```
 
 ### DataDog Tag Validation
+
 Use DataDog API to find untagged resources:
 
 ```bash

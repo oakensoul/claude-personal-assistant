@@ -592,6 +592,7 @@ const application = new ApplicationStack(app, 'Application', {
 ```
 
 CDK handles:
+
 - CloudFormation exports/imports
 - Stack dependencies
 - Deployment order
@@ -634,6 +635,7 @@ const vpc = Vpc.fromLookup(this, 'VPC', { vpcId });
 ```
 
 **Benefits**:
+
 - Can delete exporting stack
 - No CloudFormation export limits
 - Can update values independently
@@ -643,6 +645,7 @@ const vpc = Vpc.fromLookup(this, 'VPC', { vpcId });
 ### 1. Limit Stack Size
 
 Keep stacks under CloudFormation limits:
+
 - Max 200 resources per stack
 - Max 60 outputs per stack
 - Max 100 parameters per stack
@@ -711,6 +714,7 @@ new CfnOutput(this, 'VpcId', {
 ### 2. Circular Dependencies
 
 **Problem**:
+
 ```typescript
 // Stack A depends on Stack B
 // Stack B depends on Stack A
@@ -721,6 +725,7 @@ new CfnOutput(this, 'VpcId', {
 ### 3. Hardcoded Values
 
 **Problem**:
+
 ```typescript
 const vpcId = 'vpc-12345'; // Hardcoded
 ```

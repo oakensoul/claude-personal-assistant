@@ -42,8 +42,7 @@ poetry add --group dev pytest-cov pytest-mock pytest-asyncio pytest-xdist
 
 ### Recommended Directory Layout
 
-```
-
+```text
 project/
 ├── src/
 │   └── mypackage/

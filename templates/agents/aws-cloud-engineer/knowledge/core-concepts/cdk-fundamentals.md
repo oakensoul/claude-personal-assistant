@@ -22,11 +22,13 @@ Constructs are the basic building blocks of CDK apps. They represent cloud resou
 **What**: Direct 1:1 mapping to CloudFormation resources
 
 **When to use**:
+
 - L2/L3 constructs don't exist for the resource
 - Need precise control over CloudFormation properties
 - Working with new AWS features not yet in L2
 
 **Example**:
+
 ```typescript
 import { CfnBucket } from 'aws-cdk-lib/aws-s3';
 
@@ -39,6 +41,7 @@ new CfnBucket(this, 'MyBucket', {
 ```
 
 **Characteristics**:
+
 - Prefixed with `Cfn` (e.g., `CfnBucket`)
 - Properties match CloudFormation exactly
 - No helper methods or defaults
@@ -49,11 +52,13 @@ new CfnBucket(this, 'MyBucket', {
 **What**: AWS-curated constructs with sensible defaults and helper methods
 
 **When to use**:
+
 - Most common use case (80-90% of resources)
 - Want sensible defaults and less boilerplate
 - Benefit from helper methods and typed properties
 
 **Example**:
+
 ```typescript
 import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 
@@ -65,6 +70,7 @@ new Bucket(this, 'MyBucket', {
 ```
 
 **Characteristics**:
+
 - Sensible defaults (encryption, logging, etc.)
 - Helper methods (`.addLifecycleRule()`, `.grantRead()`)
 - Type-safe configuration
@@ -75,11 +81,13 @@ new Bucket(this, 'MyBucket', {
 **What**: High-level patterns combining multiple resources into common architectures
 
 **When to use**:
+
 - Implementing well-known architectural patterns
 - Want opinionated best practices
 - Rapid prototyping
 
 **Example**:
+
 ```typescript
 import { ApplicationLoadBalancedFargateService } from 'aws-cdk-lib/aws-ecs-patterns';
 
@@ -92,6 +100,7 @@ new ApplicationLoadBalancedFargateService(this, 'Service', {
 ```
 
 **Characteristics**:
+
 - Combines multiple L2 constructs
 - Opinionated best practices
 - Less configuration flexibility
@@ -102,6 +111,7 @@ new ApplicationLoadBalancedFargateService(this, 'Service', {
 Stacks are the unit of deployment in CDK. Each stack produces a CloudFormation template.
 
 **Basic Stack**:
+
 ```typescript
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
@@ -127,6 +137,7 @@ export class MyStack extends Stack {
 The app is the root construct containing all stacks.
 
 **Basic App**:
+
 ```typescript
 import { App } from 'aws-cdk-lib';
 import { MyStack } from './my-stack';
@@ -244,6 +255,7 @@ Object.entries(configs).forEach(([name, config]) => {
 ### Using Exports
 
 **Exporting from one stack**:
+
 ```typescript
 class NetworkStack extends Stack {
   public readonly vpc: Vpc;
@@ -263,6 +275,7 @@ class NetworkStack extends Stack {
 ```
 
 **Importing in another stack**:
+
 ```typescript
 class ApplicationStack extends Stack {
   constructor(scope: Construct, id: string) {
@@ -287,6 +300,7 @@ const application = new ApplicationStack(app, 'Application', {
 ```
 
 CDK automatically:
+
 - Creates CloudFormation exports/imports
 - Sets up stack dependencies
 - Ensures correct deployment order
@@ -309,6 +323,7 @@ new Secret(this, 'DbPassword', {
 ### Context Values
 
 **cdk.json**:
+
 ```json
 {
   "context": {
@@ -321,6 +336,7 @@ new Secret(this, 'DbPassword', {
 ```
 
 **Accessing in code**:
+
 ```typescript
 const environment = this.node.tryGetContext('environment');
 const enableCaching = this.node.tryGetContext('features')?.enableCaching;
@@ -419,6 +435,7 @@ cdk bootstrap --profile prod # Use specific profile
 ### Use L2 Constructs by Default
 
 **Good**:
+
 ```typescript
 new Bucket(this, 'MyBucket', {
   versioned: true,
@@ -427,6 +444,7 @@ new Bucket(this, 'MyBucket', {
 ```
 
 **Avoid** (unless necessary):
+
 ```typescript
 new CfnBucket(this, 'MyBucket', {
   versioningConfiguration: { status: 'Enabled' },
@@ -437,6 +455,7 @@ new CfnBucket(this, 'MyBucket', {
 ### Use Constants for Resource Names
 
 **Good**:
+
 ```typescript
 const BUCKET_NAME = 'my-app-data-bucket';
 
@@ -450,6 +469,7 @@ new BucketPolicy(this, 'DataBucketPolicy', {
 ```
 
 **Avoid** (magic strings):
+
 ```typescript
 new Bucket(this, 'DataBucket', {
   bucketName: 'my-app-data-bucket',
@@ -476,6 +496,7 @@ new Bucket(this, 'TempBucket', {
 ### Use Stack Dependencies
 
 **Explicit dependencies**:
+
 ```typescript
 const network = new NetworkStack(app, 'Network');
 const database = new DatabaseStack(app, 'Database', { vpc: network.vpc });

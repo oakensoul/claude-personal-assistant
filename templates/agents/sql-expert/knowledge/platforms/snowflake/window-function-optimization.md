@@ -22,6 +22,7 @@ QUALIFY is Snowflake-specific syntax that filters window function results **with
 ### Basic QUALIFY Pattern
 
 **❌ TRADITIONAL (Less Efficient):**
+
 ```sql
 -- Subquery required to filter window function results
 select
@@ -42,6 +43,7 @@ where rn = 1
 ```
 
 **✅ OPTIMIZED (QUALIFY):**
+
 ```sql
 -- Direct filtering with QUALIFY - cleaner and more efficient
 select
@@ -54,6 +56,7 @@ qualify row_number() over (partition by user_id order by entry_date) = 1
 ```
 
 **Benefits:**
+
 - No subquery nesting reduces query complexity
 - Snowflake optimizes QUALIFY execution internally
 - Clearer intent (filtering window results, not general WHERE)
@@ -110,7 +113,8 @@ select
 from {{ ref('fct_contest_entries') }}
 ```
 
-**Project Example: First Entry Detection**
+#### Project Example: First Entry Detection
+
 ```sql
 -- Tag first-time contest entries (common BI metric)
 with entry_sequence as (
@@ -163,6 +167,7 @@ qualify rank_with_gaps <= 3  -- Top 3 entries (may return more than 3 if ties)
 ```
 
 **When to Use:**
+
 - **RANK:** Leaderboards, competitive rankings (ties should "count")
 - **DENSE_RANK:** Categorical groupings (no gaps preferred)
 
@@ -205,7 +210,8 @@ final as (
 select * from final
 ```
 
-**Project Example: User Retention Metrics**
+#### Project Example: User Retention Metrics
+
 ```sql
 -- Identify users who returned within 7 days
 select
@@ -241,6 +247,7 @@ from {{ ref('fct_contest_entries') }}
 ```
 
 **Moving Average Pattern:**
+
 ```sql
 -- 7-day moving average of daily entry fees
 select
@@ -259,7 +266,8 @@ from {{ ref('fct_contest_entries') }}
 
 ### 1. Partition Size Matters
 
-**❌ ANTI-PATTERN: Tiny partitions (over-partitioning)**
+#### Anti-Pattern: Tiny partitions (over-partitioning)
+
 ```sql
 -- Creates millions of single-row partitions (slow!)
 select
@@ -268,7 +276,8 @@ select
 from {{ ref('fct_contest_entries') }}
 ```
 
-**✅ OPTIMIZED: Logical partition sizes**
+#### Optimized: Logical partition sizes
+
 ```sql
 -- Reasonable partition sizes (hundreds to thousands of rows per user)
 select
@@ -301,7 +310,8 @@ from recent_entries
 
 ### 3. Avoid Multiple Window Functions with Different Partitions
 
-**❌ LESS EFFICIENT: Multiple window functions, different partitions**
+#### Less Efficient: Multiple window functions, different partitions
+
 ```sql
 select
     user_id,
@@ -312,7 +322,8 @@ select
 from {{ ref('fct_contest_entries') }}
 ```
 
-**✅ OPTIMIZED: Separate CTEs if partitions differ significantly**
+#### Optimized: Separate CTEs if partitions differ significantly
+
 ```sql
 with user_sequences as (
 
@@ -439,6 +450,7 @@ qualify cumulative_spend > 500
 ## Project-Specific Examples
 
 ### Example 1: User Lifecycle Stages
+
 ```sql
 -- Categorize users by entry frequency
 with user_entry_metrics as (
@@ -476,6 +488,7 @@ select * from final
 ```
 
 ### Example 2: Contest Performance Ranking
+
 ```sql
 -- Rank contests by total handle, partition by sport
 select
@@ -498,6 +511,7 @@ qualify sport_rank <= 10  -- Top 10 per sport
 ## Common Pitfalls
 
 ### Pitfall 1: QUALIFY with Aggregates (Doesn't Work)
+
 ```sql
 -- ❌ WRONG: QUALIFY cannot reference aggregates directly
 select
@@ -517,6 +531,7 @@ having count(*) > 10
 ```
 
 ### Pitfall 2: Window Function in WHERE Clause
+
 ```sql
 -- ❌ WRONG: Window functions not allowed in WHERE
 select
@@ -534,6 +549,7 @@ qualify row_number() over (partition by user_id order by entry_date) = 1
 ```
 
 ### Pitfall 3: Inefficient QUALIFY Logic
+
 ```sql
 -- ❌ LESS EFFICIENT: Complex QUALIFY logic
 select *
@@ -560,6 +576,7 @@ select * from top_fees
 ## Summary
 
 **Key Takeaways:**
+
 1. **Always use QUALIFY** instead of subqueries for window function filtering
 2. **Partition size matters** - aim for 100-10,000 rows per partition
 3. **Pre-filter data** before applying window functions to reduce compute
@@ -568,6 +585,7 @@ select * from top_fees
 6. **ROW_NUMBER for deduplication**, RANK for competitive ordering
 
 **Next Steps:**
+
 - Review core-concepts/snowflake-query-optimization-fundamentals.md for clustering
 - Check decisions/performance-anti-patterns.md for common mistakes
 - Apply QUALIFY patterns in dbt core and marts layer models

@@ -12,7 +12,7 @@ Comprehensive guide to building Python scripts for deploying Metabase dashboards
 
 ## Architecture Overview
 
-```
+```text
 ┌─────────────────────┐
 │  YAML Specification │
 │  (Dashboard Def)    │
@@ -605,7 +605,7 @@ METABASE_PROD_PASSWORD=<secret>
 
 ### requirements.txt
 
-```
+```text
 pyyaml>=6.0.1
 requests>=2.31.0
 jsonschema>=4.19.1
@@ -651,30 +651,35 @@ python scripts/validate_specs.py specifications/dashboards/finance/market_maker.
 ## Best Practices
 
 ### Idempotency
+
 - Check if dashboard exists before creating
 - Use find-or-create pattern
 - Support both create and update operations
 - Make deployments repeatable
 
 ### Error Handling
+
 - Catch and log API errors gracefully
 - Provide meaningful error messages
 - Support partial rollback on failure
 - Validate specifications before deployment
 
 ### Performance
+
 - Batch operations when possible
 - Cache database/collection IDs
 - Use connection pooling
 - Implement retry logic with exponential backoff
 
 ### Security
+
 - Never commit credentials
 - Use environment variables
 - Support API key authentication
 - Implement proper session management
 
 ### Logging
+
 - Log all operations
 - Include timestamps
 - Different log levels (DEBUG, INFO, ERROR)
@@ -683,6 +688,7 @@ python scripts/validate_specs.py specifications/dashboards/finance/market_maker.
 ---
 
 **Related Documents**:
+
 - [cicd-pipeline-patterns.md](cicd-pipeline-patterns.md) - CI/CD integration
 - [environment-configuration.md](environment-configuration.md) - Environment setup
 - [api-dashboards.md](../api-reference/api-dashboards.md) - API reference

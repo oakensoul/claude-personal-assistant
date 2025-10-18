@@ -19,37 +19,37 @@ Privacy engineering is the practice of building privacy protections into systems
 
 ### Core Principles (Privacy by Design)
 
-**1. Proactive not Reactive; Preventative not Remedial**
+#### 1. Proactive not Reactive; Preventative not Remedial
 
 - Anticipate privacy risks before they materialize
 - Build safeguards into system design (not after incidents)
 
-**2. Privacy as the Default Setting**
+#### 2. Privacy as the Default Setting
 
 - Maximum privacy protection by default
 - Users shouldn't need to opt-in to privacy
 
-**3. Privacy Embedded into Design**
+#### 3. Privacy Embedded into Design
 
 - Privacy integral to system architecture and business practices
 - Not an add-on module or checkbox
 
-**4. Full Functionality — Positive-Sum, not Zero-Sum**
+#### 4. Full Functionality — Positive-Sum, not Zero-Sum
 
 - Privacy without sacrificing functionality
 - Win-win solutions (not privacy vs. utility trade-off)
 
-**5. End-to-End Security — Full Lifecycle Protection**
+#### 5. End-to-End Security — Full Lifecycle Protection
 
 - Secure data from collection through deletion
 - Cradle-to-grave data lifecycle management
 
-**6. Visibility and Transparency — Keep it Open**
+#### 6. Visibility and Transparency — Keep it Open
 
 - Operations subject to independent verification
 - Stakeholders assured that privacy protections are in place
 
-**7. Respect for User Privacy — Keep it User-Centric**
+#### 7. Respect for User Privacy — Keep it User-Centric
 
 - Strong privacy defaults, user control, notice
 - Empower users to manage their data
@@ -86,37 +86,37 @@ Privacy engineering is the practice of building privacy protections into systems
 
 ### PIA Process
 
-**Step 1: Scoping and Planning**
+#### Step 1: Scoping and Planning
 
 - Define processing activity (what data, what purpose)
 - Identify stakeholders (data subjects, data controllers, processors)
 - Determine PIA type (full vs. simplified)
 
-**Step 2: Data Mapping**
+#### Step 2: Data Mapping
 
 - Document data flows (source → processing → storage → sharing → deletion)
 - Identify data categories (PII types, sensitivity levels)
 - Map data lifecycle stages
 
-**Step 3: Risk Identification**
+#### Step 3: Risk Identification
 
 - Privacy risks to data subjects (unauthorized access, re-identification, function creep)
 - Compliance risks (GDPR violations, CCPA non-compliance)
 - Security risks (data breaches, insider threats)
 
-**Step 4: Risk Assessment**
+#### Step 4: Risk Assessment
 
 - Evaluate likelihood and impact of each risk
 - Consider existing controls (encryption, access controls, audit logs)
 - Calculate residual risk after controls
 
-**Step 5: Mitigation Planning**
+#### Step 5: Mitigation Planning
 
 - Propose additional controls to reduce risk
 - Architectural changes (e.g., separate PII into dedicated schema)
 - Policy changes (e.g., stricter access approval process)
 
-**Step 6: Documentation and Approval**
+#### Step 6: Documentation and Approval
 
 - Formal PIA report with findings and recommendations
 - Sign-off from data protection officer, legal, and business owner
@@ -210,7 +210,7 @@ Privacy engineering is the practice of building privacy protections into systems
 
 **High Priority (Residual Risk: High)**:
 
-**Risk: Re-identification of pseudonymized users**
+#### Risk: Re-identification of pseudonymized users
 
 - **Mitigation 1**: Implement k-anonymity (ensure ≥5 users per quasi-identifier combination)
   - Technical: Add dbt test for k-anonymity validation
@@ -224,14 +224,14 @@ Privacy engineering is the practice of building privacy protections into systems
 
 **Medium Priority (Residual Risk: Medium)**:
 
-**Risk: Function creep**
+#### Risk: Function creep
 
 - **Mitigation**: Formal data access request process
   - Policy: Require business justification and approval for new use cases
   - Technical: Tag models with `business_purpose` metadata
   - Timeline: Q1 2025
 
-**Risk: Non-compliance with opt-out**
+#### Risk: Non-compliance with opt-out
 
 - **Mitigation**: Automated consent enforcement
   - Technical: dbt incremental models exclude opted-out users

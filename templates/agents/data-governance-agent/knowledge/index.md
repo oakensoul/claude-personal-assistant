@@ -18,7 +18,7 @@ Foundational knowledge on compliance frameworks, data classification, audit arch
 
 ### [compliance-frameworks.md](core-concepts/compliance-frameworks.md)
 
-**GDPR, CCPA, SOC2, and HIPAA requirements for data governance**
+#### GDPR, CCPA, SOC2, and HIPAA requirements for data governance
 
 - GDPR principles and data subject rights (access, erasure, portability)
 - CCPA consumer rights and business obligations
@@ -35,7 +35,7 @@ Foundational knowledge on compliance frameworks, data classification, audit arch
 
 ### [data-classification.md](core-concepts/data-classification.md)
 
-**Data sensitivity levels, PII types, and classification tagging strategy**
+#### Data sensitivity levels, PII types, and classification tagging strategy
 
 - Four-level sensitivity framework (Public, Internal, Confidential, Restricted)
 - PII classification hierarchy (Direct, Quasi-Identifier, Sensitive)
@@ -52,7 +52,7 @@ Foundational knowledge on compliance frameworks, data classification, audit arch
 
 ### [audit-trail-architecture.md](core-concepts/audit-trail-architecture.md)
 
-**Comprehensive logging frameworks, compliance reporting, and access tracking**
+#### Comprehensive logging frameworks, compliance reporting, and access tracking
 
 - The 5 W's of audit logging (Who, What, When, Where, Why)
 - Snowflake audit data sources (QUERY_HISTORY, ACCESS_HISTORY, LOGIN_HISTORY, GRANTS)
@@ -69,7 +69,7 @@ Foundational knowledge on compliance frameworks, data classification, audit arch
 
 ### [privacy-engineering.md](core-concepts/privacy-engineering.md)
 
-**Privacy Impact Assessments, privacy-by-design, and proactive privacy engineering**
+#### Privacy Impact Assessments, privacy-by-design, and proactive privacy engineering
 
 - Privacy by Design principles (Proactive, Default Privacy, Embedded)
 - Privacy Impact Assessment (PIA) process (6-step methodology)
@@ -92,7 +92,7 @@ Reusable implementation patterns for PII detection, data masking, retention auto
 
 ### [pii-detection-patterns.md](patterns/pii-detection-patterns.md)
 
-**Automated and manual methods for discovering PII in data warehouse**
+#### Automated and manual methods for discovering PII in data warehouse
 
 - Multi-layered detection strategy (catalog, pattern, ML, manual review)
 - Catalog-based detection with known PII field registry
@@ -111,7 +111,7 @@ Reusable implementation patterns for PII detection, data masking, retention auto
 
 ### [data-masking-strategies.md](patterns/data-masking-strategies.md)
 
-**Tokenization, anonymization, pseudonymization, and Snowflake DDM implementation**
+#### Tokenization, anonymization, pseudonymization, and Snowflake DDM implementation
 
 - Masking techniques comparison (static, dynamic, tokenization, pseudonymization, anonymization)
 - Snowflake Dynamic Data Masking (DDM) patterns (progressive masking by role, conditional masking)
@@ -128,7 +128,7 @@ Reusable implementation patterns for PII detection, data masking, retention auto
 
 ### [retention-policy-implementation.md](patterns/retention-policy-implementation.md)
 
-**Automated data lifecycle management and retention enforcement**
+#### Automated data lifecycle management and retention enforcement
 
 - dbt incremental models with retention filters
 - Snowflake scheduled tasks for automated deletion
@@ -143,7 +143,7 @@ Reusable implementation patterns for PII detection, data masking, retention auto
 
 ### [compliance-automation.md](patterns/compliance-automation.md)
 
-**Policy-as-code and automated governance workflows**
+#### Policy-as-code and automated governance workflows
 
 - dbt tests for PII tagging enforcement
 - GitHub Actions compliance checks (PII scan, DDM validation)
@@ -165,7 +165,7 @@ Documented governance decisions, classification taxonomy, retention standards, a
 
 ### [classification-taxonomy.md](decisions/classification-taxonomy.md)
 
-**Chosen classification framework and rationale**
+#### Chosen classification framework and rationale
 
 - Four-level sensitivity framework decision (Public → Internal → Confidential → Restricted)
 - PII type hierarchy (Direct → Quasi → Sensitive)
@@ -175,7 +175,7 @@ Documented governance decisions, classification taxonomy, retention standards, a
 
 ### [retention-standards.md](decisions/retention-standards.md)
 
-**Default retention periods by data type**
+#### Default retention periods by data type
 
 - Financial transactions: 7 years (IRS, SOX compliance)
 - User activity logs: 90 days active, 1 year archive
@@ -187,7 +187,7 @@ Documented governance decisions, classification taxonomy, retention standards, a
 
 ### [compliance-priorities.md](decisions/compliance-priorities.md)
 
-**Implementation roadmap for regulatory compliance**
+#### Implementation roadmap for regulatory compliance
 
 - **Phase 1 (Q1 2025)**: GDPR & CCPA baseline (CRITICAL)
   - Data classification, DDM policies, data subject request workflows
@@ -206,7 +206,7 @@ Quick reference materials including checklists, field catalogs, and schema docum
 
 ### [gdpr-compliance-checklist.md](reference/gdpr-compliance-checklist.md)
 
-**Actionable checklist for GDPR compliance in data warehouse**
+#### Actionable checklist for GDPR compliance in data warehouse
 
 - Legal basis for processing documentation
 - Data subject rights implementation (access, erasure, rectification, portability)
@@ -217,7 +217,7 @@ Quick reference materials including checklists, field catalogs, and schema docum
 
 ### [pii-field-catalog.md](reference/pii-field-catalog.md)
 
-**Comprehensive inventory of PII fields across all data sources**
+#### Comprehensive inventory of PII fields across all data sources
 
 - `splash_production.users`: email, phone, first_name, last_name, birthdate, zip_code, ip_address
 - `segment.tracks`: user_id, anonymous_id, context_ip, context_device_id
@@ -226,7 +226,7 @@ Quick reference materials including checklists, field catalogs, and schema docum
 
 ### [audit-log-schema.md](reference/audit-log-schema.md)
 
-**Database schemas for audit tables and compliance reporting**
+#### Database schemas for audit tables and compliance reporting
 
 - `prod.audit.fct_data_access`: Query and access tracking fact table
 - `prod.audit.data_subject_requests`: GDPR/CCPA request management

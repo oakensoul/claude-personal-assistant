@@ -401,10 +401,10 @@ architecture/
 
 ## Further Reading
 
-- **Official C4 Model Website**: https://c4model.com/
+- **Official C4 Model Website**: <https://c4model.com/>
 - **Simon Brown's Book**: Software Architecture for Developers
-- **Structurizr**: https://structurizr.com/
-- **Mermaid C4 Docs**: https://mermaid.js.org/syntax/c4c.html
+- **Structurizr**: <https://structurizr.com/>
+- **Mermaid C4 Docs**: <https://mermaid.js.org/syntax/c4c.html>
 
 ## Version History
 

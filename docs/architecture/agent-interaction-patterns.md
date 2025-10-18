@@ -19,11 +19,13 @@ This document describes how AIDA agents interact, delegate, and collaborate to a
 Agents are organized into two clear categories:
 
 **Analysts** (Requirements Definition):
+
 - Define WHAT needs to be done
 - Output requirements, scenarios, constraints
 - Do NOT implement
 
 **Engineers** (Implementation):
+
 - Implement HOW based on all analyst requirements
 - Own code, tests, deployment, monitoring
 - Write all implementation artifacts
@@ -34,7 +36,7 @@ See [ADR-006](./decisions/adr-006-analyst-engineer-agent-pattern.md) for rationa
 
 A single engineer receives requirements from multiple analysts:
 
-```
+```text
 quality-analyst ─────┐
 security-analyst ────┤
 governance-analyst ──┼──> product-engineer ──> Implementation
@@ -48,7 +50,7 @@ The engineer integrates ALL requirements into a cohesive implementation.
 
 Skills are reusable patterns that multiple agents can use:
 
-```
+```text
 Skill: hipaa-compliance
 
 Used by:
@@ -66,7 +68,7 @@ Used by:
 
 **Example**: "Add password reset feature"
 
-```
+```text
 ┌──────────────────┐
 │ product-manager  │ → "Users need password reset via email"
 └────────┬─────────┘
@@ -110,6 +112,7 @@ Used by:
 ```
 
 **Key Points**:
+
 - Engineer receives requirements from multiple analysts
 - Engineer owns complete implementation (feature + tests + security + monitoring)
 - Skills provide reusable patterns
@@ -121,7 +124,7 @@ Used by:
 
 **Example**: "/review code" command
 
-```
+```text
 User: /review code
 
 Command orchestrates:
@@ -153,6 +156,7 @@ All feedback combined into single review report
 ```
 
 **Key Points**:
+
 - Multiple analysts each provide specialized perspective
 - No single "code-reviewer" agent (distributed responsibility)
 - Command orchestrates multiple analyst reviews
@@ -164,7 +168,7 @@ All feedback combined into single review report
 
 **Example**: "Build authentication service"
 
-```
+```text
 Step 1: Requirements from analysts
 ┌──────────────────┐
 │ security-analyst │ → "Use OAuth2, JWT tokens, secure storage,
@@ -202,6 +206,7 @@ Step 3: Other engineers consume
 ```
 
 **Key Points**:
+
 - platform-engineer builds reusable capabilities
 - Other engineers consume platform capabilities
 - Avoids duplicate implementation
@@ -213,7 +218,7 @@ Step 3: Other engineers consume
 
 **Example**: "Create partner API for data access"
 
-```
+```text
 Step 1: Requirements
 ┌──────────────────┐
 │ product-manager  │ → "Partners need to query user data, real-time
@@ -253,6 +258,7 @@ Step 2: api-engineer implements
 ```
 
 **Key Points**:
+
 - api-engineer focuses on external developer experience
 - Includes documentation, SDKs, versioning
 - Different from internal service APIs (which platform-engineer handles)
@@ -264,7 +270,7 @@ Step 2: api-engineer implements
 
 **Example**: "Build pipeline to ingest Salesforce data"
 
-```
+```text
 Step 1: Requirements
 ┌──────────────────┐
 │ product-manager  │ → "Need Salesforce opportunities, contacts, accounts
@@ -312,6 +318,7 @@ Step 3: BI consumption
 ```
 
 **Key Points**:
+
 - data-engineer owns complete pipeline (ingestion → transformation → quality)
 - Governance integrated (PII masking in dbt)
 - Quality integrated (dbt tests)
@@ -323,7 +330,7 @@ Step 3: BI consumption
 
 **Example**: HIPAA compliance skill
 
-```
+```text
 Skill: hipaa-compliance
 ├── requirements.md          (HIPAA rules and requirements)
 ├── patient-data-handling.md (How to handle PHI)
@@ -358,6 +365,7 @@ Used by different agents:
 ```
 
 **Key Points**:
+
 - Single skill, multiple consumers
 - Analysts use skills to define requirements
 - Engineers use skills to implement requirements
@@ -369,7 +377,7 @@ Used by different agents:
 
 **Example**: "/implement" command
 
-```
+```text
 User: /implement "Add multi-factor authentication"
 
 Command orchestrates workflow:
@@ -411,6 +419,7 @@ Git commit with changes
 ```
 
 **Key Points**:
+
 - Commands provide high-level workflow orchestration
 - Commands invoke multiple agents in sequence
 - Each agent contributes their expertise
@@ -421,31 +430,38 @@ Git commit with changes
 ### When to Delegate
 
 **Analysts delegate to engineers**:
+
 - analyst defines requirements → engineer implements
 
 **Engineers delegate to other engineers**:
+
 - product-engineer needs auth → platform-engineer provides auth service
 - product-engineer needs external API → api-engineer designs API
 
 **Architects coordinate**:
+
 - system-architect coordinates cross-cutting concerns
 - tech-lead enforces standards across all engineers
 
 **Commands orchestrate**:
+
 - Complex workflows involving multiple agents
 - Standardized processes (implement, review, deploy)
 
 ### When NOT to Delegate
 
 **Don't delegate within same tier**:
+
 - quality-analyst should NOT delegate to security-analyst (same tier)
 - Instead, both provide requirements to engineer independently
 
 **Don't create circular dependencies**:
+
 - engineer → analyst → engineer (avoid ping-pong)
 - Instead, analyst provides complete requirements upfront
 
 **Don't fragment implementation**:
+
 - ONE engineer owns feature (not split across multiple engineers)
 - Exception: Platform capabilities consumed by product engineers
 
@@ -454,13 +470,15 @@ Git commit with changes
 ### Anti-Pattern 1: Analyst Implements
 
 **Wrong**:
-```
+
+```text
 quality-analyst writes tests
 security-analyst implements security features
 ```
 
 **Right**:
-```
+
+```text
 quality-analyst defines test scenarios
 security-analyst defines security requirements
 engineer implements BOTH
@@ -469,13 +487,15 @@ engineer implements BOTH
 ### Anti-Pattern 2: Engineer Defines Requirements
 
 **Wrong**:
-```
+
+```text
 product-engineer decides what to test
 product-engineer decides security requirements
 ```
 
 **Right**:
-```
+
+```text
 quality-analyst defines what to test
 security-analyst defines security requirements
 product-engineer implements both
@@ -484,13 +504,15 @@ product-engineer implements both
 ### Anti-Pattern 3: Split Implementation
 
 **Wrong**:
-```
+
+```text
 product-engineer writes feature code
 test-automation-engineer writes tests (HANDOFF)
 ```
 
 **Right**:
-```
+
+```text
 quality-analyst defines test scenarios
 product-engineer writes feature code AND tests (NO HANDOFF)
 ```
@@ -498,13 +520,15 @@ product-engineer writes feature code AND tests (NO HANDOFF)
 ### Anti-Pattern 4: Unclear Agent Selection
 
 **Wrong**:
-```
+
+```text
 User: "Build API"
 → Which engineer? product? platform? api?
 ```
 
 **Right**:
-```
+
+```text
 User: "Build API for partners" → api-engineer (external audience)
 User: "Build API for user dashboard" → product-engineer (internal to product)
 User: "Build API for service-to-service" → platform-engineer (internal platform)
@@ -514,7 +538,7 @@ User: "Build API for service-to-service" → platform-engineer (internal platfor
 
 ### Which Engineer for Implementation?
 
-```
+```text
 Is this data/analytics work?
 ├─ Yes → data-engineer
 └─ No → Who is the primary audience?
@@ -525,7 +549,7 @@ Is this data/analytics work?
 
 ### Which Analyst for Requirements?
 
-```
+```text
 What type of requirements?
 ├─ Functional (features, user stories) → product-manager
 ├─ Quality (test scenarios, coverage) → quality-analyst
@@ -536,7 +560,7 @@ What type of requirements?
 
 ### Skill vs Agent?
 
-```
+```text
 Is this reusable knowledge?
 ├─ Yes → Skill (e.g., hipaa-compliance, react-patterns)
 │
@@ -552,14 +576,17 @@ Is this a workflow?
 Both analysts and engineers use two-tier architecture:
 
 **User-Level** (`~/.claude/agents/{agent}/`):
+
 - Generic knowledge for that agent type
 - Reusable patterns and frameworks
 
 **Project-Level** (`{project}/.claude/agents-global/{agent}/`):
+
 - Project-specific context
 - Project standards and decisions
 
 **Skills** (`~/.claude/skills/` or project-level):
+
 - Reusable patterns shared across agents
 - Can also be two-tier (user + project)
 
@@ -569,7 +596,7 @@ See [ADR-002](./decisions/adr-002-two-tier-agent-architecture.md) for details.
 
 ### Example 1: Simple Feature
 
-```
+```text
 User: "Add dark mode toggle"
 
 Flow:
@@ -580,7 +607,7 @@ Flow:
 
 ### Example 2: Complex Security Feature
 
-```
+```text
 User: "Implement OAuth2 authentication"
 
 Flow:
@@ -594,7 +621,7 @@ Flow:
 
 ### Example 3: Data Pipeline
 
-```
+```text
 User: "Build customer analytics pipeline"
 
 Flow:

@@ -123,6 +123,7 @@ ${CLAUDE_CONFIG_DIR}/agents-global/{agent-name}/
 **Examples**: product-manager, tech-lead (when global agent needs project context)
 
 **Key Distinction**:
+
 - `agents/` contains **complete agent definitions** (with frontmatter: name, description, model)
 - `agents-global/` contains **project knowledge only** for agents defined in `~/.claude/agents/`
 

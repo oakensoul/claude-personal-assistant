@@ -36,6 +36,7 @@ Comprehensive guide to API security patterns including OAuth 2.0, JWT tokens, AP
 ## OAuth 2.0
 
 ### OAuth 2.0 Fundamentals
+
 OAuth 2.0 is an authorization framework that enables third-party applications to obtain limited access to resources without exposing user credentials.
 
 **Key Components**:
@@ -59,7 +60,7 @@ Authorization Server → Client: Return access_token + refresh_token
 Client → Resource Server: API request with Authorization: Bearer <access_token>
 ```
 
-**Example: Metabase OAuth with Okta**
+Example: Metabase OAuth with Okta
 
 ```bash
 # Step 1: User clicks "Sign in with Okta" in Metabase
@@ -112,7 +113,7 @@ Authorization Server → Client: Return access_token
 Client → Resource Server: API request with Authorization: Bearer <access_token>
 ```
 
-**Example: dbt Cloud to Snowflake OAuth**
+Example: dbt Cloud to Snowflake OAuth
 
 ```bash
 # dbt Cloud service account authenticates with Snowflake OAuth
@@ -138,6 +139,7 @@ curl -X POST https://xyz12345.snowflakecomputing.com/oauth/token-request \
 ### Snowflake OAuth Configuration
 
 #### Create OAuth Integration
+
 ```sql
 -- Create OAuth integration for dbt Cloud (client credentials flow)
 CREATE SECURITY INTEGRATION DBT_CLOUD_OAUTH

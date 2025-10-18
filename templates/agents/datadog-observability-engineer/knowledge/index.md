@@ -18,6 +18,7 @@ This knowledge base provides comprehensive reference material for DataDog monito
 ## Knowledge Organization
 
 ### Core Concepts
+
 Fundamental DataDog architecture, agent types, and integration patterns that apply universally.
 
 - **datadog-architecture.md** - DataDog platform overview, agent types, data flow
@@ -26,6 +27,7 @@ Fundamental DataDog architecture, agent types, and integration patterns that app
 - **observability-pillars.md** - Metrics, logs, traces, and how they interconnect
 
 ### AWS Integrations
+
 Service-specific guides for instrumenting AWS resources with DataDog.
 
 - **lambda-instrumentation.md** - DataDog Lambda Extension, layers, async log forwarding
@@ -37,6 +39,7 @@ Service-specific guides for instrumenting AWS resources with DataDog.
 - **step-functions-monitoring.md** - Execution tracing and state metrics
 
 ### Cost Optimization
+
 Strategies and techniques for optimizing DataDog spend without sacrificing visibility.
 
 - **log-cost-optimization.md** - Sampling, exclusion filters, retention policies
@@ -46,6 +49,7 @@ Strategies and techniques for optimizing DataDog spend without sacrificing visib
 - **retention-policies.md** - Appropriate retention by data type and compliance needs
 
 ### Alert Patterns
+
 Common alert configurations, anti-patterns, and best practices for reducing alert fatigue.
 
 - **alert-design-principles.md** - Threshold selection, evaluation windows, recovery
@@ -55,6 +59,7 @@ Common alert configurations, anti-patterns, and best practices for reducing aler
 - **slo-monitoring.md** - Service Level Objective tracking and error budgets
 
 ### Dashboard Templates
+
 Reusable dashboard examples and design patterns for different audiences.
 
 - **service-health-dashboard.md** - RED/USE metrics for engineering teams
@@ -64,6 +69,7 @@ Reusable dashboard examples and design patterns for different audiences.
 - **sla-compliance-dashboard.md** - SLA tracking and reporting
 
 ### Troubleshooting
+
 Common issues, debugging techniques, and resolution steps.
 
 - **agent-connectivity-issues.md** - Diagnosing DataDog agent connection problems
@@ -75,7 +81,9 @@ Common issues, debugging techniques, and resolution steps.
 ## How This Knowledge Base is Used
 
 ### During Agent Invocation
+
 When the `datadog-observability-engineer` agent is invoked, it can reference these knowledge files to:
+
 - Provide detailed, service-specific instrumentation guidance
 - Offer cost optimization strategies based on current spend patterns
 - Suggest alert configurations from proven patterns
@@ -83,6 +91,7 @@ When the `datadog-observability-engineer` agent is invoked, it can reference the
 - Troubleshoot monitoring issues systematically
 
 ### Relationship to CLAUDE.md
+
 - **CLAUDE.md** (always loaded): High-level agent description, when to use, core capabilities
 - **Knowledge Base** (reference): Detailed how-to guides, code examples, troubleshooting steps
 
@@ -91,19 +100,24 @@ This separation keeps the always-loaded context lean while maintaining comprehen
 ## Knowledge Maintenance
 
 ### Adding New Knowledge
+
 When adding new knowledge files:
+
 1. Place in appropriate category directory
 2. Add frontmatter with title, description, last_updated
 3. Update this index.md with file description
 4. Increment knowledge_count in frontmatter
 
 ### Updating Existing Knowledge
+
 When updating knowledge files:
+
 1. Update the last_updated date in file frontmatter
 2. Update last_updated in this index if significant changes
 3. Maintain backward compatibility with existing references
 
 ### Knowledge Sources
+
 - DataDog official documentation
 - AWS service integration guides
 - Real-world production experience
@@ -113,6 +127,7 @@ When updating knowledge files:
 ## Future Knowledge Areas
 
 Potential areas for expansion:
+
 - **Security Monitoring**: SIEM integration, threat detection, compliance
 - **Multi-Cloud**: Azure and GCP monitoring patterns
 - **Kubernetes**: EKS/K8s cluster monitoring and helm charts

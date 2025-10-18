@@ -139,7 +139,7 @@ service:lambda AND status:info AND sample:1
 
 Create multiple indexes with different retention policies:
 
-**Index: critical-logs (30-day retention)**
+#### Index: critical-logs (30-day retention)
 
 - Errors and warnings from production
 - Security events
@@ -147,14 +147,14 @@ Create multiple indexes with different retention policies:
 - Payment processing logs
 - Data quality issues
 
-**Index: standard-logs (7-day retention)**
+#### Index: standard-logs (7-day retention)
 
 - Info-level production logs
 - Successful API requests (sampled)
 - Application events
 - Non-critical warnings
 
-**Index: short-term-logs (3-day retention)**
+#### Index: short-term-logs (3-day retention)
 
 - Development and staging logs
 - Verbose debug logs

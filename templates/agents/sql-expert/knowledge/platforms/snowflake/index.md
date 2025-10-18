@@ -29,7 +29,9 @@ This directory contains Snowflake-specific SQL features, optimization techniques
 ## Snowflake-Specific Features
 
 ### QUALIFY Clause
+
 Filter window function results without subquery:
+
 ```sql
 SELECT customer_id, order_date, order_amount,
        ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC) as rn
@@ -38,7 +40,9 @@ QUALIFY rn = 1  -- Get most recent order per customer
 ```
 
 ### FLATTEN Function
+
 Expand semi-structured data:
+
 ```sql
 SELECT
     f.value:name::STRING as event_name,
@@ -48,14 +52,18 @@ LATERAL FLATTEN(input => event_data:events) f
 ```
 
 ### Time Travel
+
 Query historical data:
+
 ```sql
 SELECT * FROM orders
 AT(TIMESTAMP => '2025-01-01 00:00:00'::TIMESTAMP)
 ```
 
 ### Zero-Copy Cloning
+
 Instant table/database copies:
+
 ```sql
 CREATE DATABASE dev_clone CLONE production
 ```
@@ -71,6 +79,7 @@ CREATE DATABASE dev_clone CLONE production
 ## Integration with dbt
 
 Snowflake features work seamlessly with dbt:
+
 - Use QUALIFY in dbt models for cleaner code
 - FLATTEN in staging models for semi-structured data
 - Clustering keys in dbt model config

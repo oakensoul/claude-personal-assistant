@@ -111,6 +111,7 @@ reference/
 #### Agent Context File (`index.md`)
 
 Project-specific context for the system-architect agent:
+
 - Project type (software vs data)
 - Technology stack overview
 - Architecture patterns in use
@@ -120,6 +121,7 @@ Project-specific context for the system-architect agent:
 #### Architecture Documentation (`docs/architecture/`)
 
 **For Software Projects**:
+
 - C4 models (system context, container, component diagrams)
 - Architecture decision records (ADRs)
 - Non-functional requirements specifications
@@ -128,6 +130,7 @@ Project-specific context for the system-architect agent:
 - Technology stack rationale
 
 **For Data Projects (dbt/Snowflake)**:
+
 - Dimensional model design (ERDs, fact/dimension schemas)
 - dbt project structure and layering decisions
 - Naming conventions and standards
@@ -441,6 +444,7 @@ System Architect Agent Ready
 ### When to Create an ADR
 
 **Always**:
+
 - Technology stack changes
 - Architectural pattern adoption
 - Data modeling approach selection
@@ -448,12 +452,14 @@ System Architect Agent Ready
 - Security architecture changes
 
 **Sometimes**:
+
 - dbt incremental strategy choices
 - Warehouse optimization decisions
 - API design patterns
 - Cross-cutting concern implementations
 
 **Never**:
+
 - Coding style preferences (use tech-lead)
 - Feature implementation details (use tech-lead)
 - Tactical refactoring decisions (use tech-lead)
@@ -497,12 +503,14 @@ System Architect Agent Ready
 ### Fact Tables
 
 **Characteristics**:
+
 - Measure numeric business events
 - Foreign keys to dimension tables
 - Grain: Most atomic level of detail
 - Additive, semi-additive, or non-additive measures
 
 **Types**:
+
 - **Transaction Facts**: One row per event (orders, payments, page views)
 - **Periodic Snapshot Facts**: Regular intervals (daily balances, monthly metrics)
 - **Accumulating Snapshot Facts**: Process lifecycle (order fulfillment pipeline)
@@ -527,12 +535,14 @@ CREATE TABLE marts.fct_orders (
 ### Dimension Tables
 
 **Characteristics**:
+
 - Descriptive attributes for context
 - Surrogate keys (not natural keys)
 - Denormalized for query performance
 - Support filtering, grouping, labeling
 
 **Types**:
+
 - **Conformed Dimensions**: Shared across fact tables (customer, product, date)
 - **Role-Playing Dimensions**: Same dimension used multiple ways (order_date, ship_date)
 - **Junk Dimensions**: Low-cardinality flags bundled together
@@ -565,6 +575,7 @@ CREATE TABLE marts.dim_customers (
 ### Layering Strategy
 
 **Staging Layer** (`stg_`):
+
 - **Purpose**: Light transformations from raw sources
 - **Grain**: Same as source (1:1 mapping)
 - **Naming**: `stg_{source}__{table}.sql`
@@ -572,6 +583,7 @@ CREATE TABLE marts.dim_customers (
 - **Logic**: Renaming, type casting, basic filtering
 
 **Intermediate Layer** (`int_`):
+
 - **Purpose**: Business logic, joins, aggregations
 - **Grain**: Can differ from source
 - **Naming**: `int_{entity}__{verb}.sql`
@@ -579,6 +591,7 @@ CREATE TABLE marts.dim_customers (
 - **Logic**: Complex transformations, deduplication, pivots
 
 **Marts Layer** (`fct_`, `dim_`):
+
 - **Purpose**: Analytics-ready models for BI tools
 - **Grain**: Business-defined
 - **Naming**: `fct_{entity}.sql` or `dim_{entity}.sql`
@@ -615,6 +628,7 @@ models/
 ### Incremental Strategies
 
 **When to Use Incremental Models**:
+
 - Large fact tables (> 1M rows)
 - Long-running transformations (> 5 minutes)
 - Append-only data (event streams, logs)

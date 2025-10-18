@@ -14,8 +14,7 @@ Understanding Metabase's internal architecture is essential for effective API op
 
 ## High-Level Architecture
 
-```
-
+```text
 ┌─────────────────────────────────────────────────────┐
 │                  Metabase Web UI                    │
 │            (React Frontend Application)             │
@@ -46,8 +45,7 @@ Understanding Metabase's internal architecture is essential for effective API op
 
 ### Hierarchy
 
-```
-
+```text
 Database Connection
   └── Schema
       └── Table/View
@@ -68,8 +66,7 @@ Collection
 
 Collections organize dashboards and questions hierarchically.
 
-```
-
+```text
 Root Collection (Your company)
 ├── Finance
 │   ├── Executive Dashboards
@@ -130,8 +127,7 @@ Dashboard cards represent question instances placed on a dashboard with position
 
 **Grid System**: 12 columns, variable rows
 
-```
-
+```text
 ┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
 │ 0  │ 1  │ 2  │ 3  │ 4  │ 5  │ 6  │ 7  │ 8  │ 9  │ 10 │ 11 │
 ├────┴────┴────┴────┼────┴────┴────┴────┼────┴────┴────┴────┤
@@ -237,8 +233,7 @@ After connecting a database, Metabase syncs schema metadata.
 
 **Schema Hierarchy**:
 
-```
-
+```text
 Database: Snowflake DWH
 ├── Schema: PUBLIC
 │   ├── Table: finance_revenue_daily
@@ -288,8 +283,7 @@ Database: Snowflake DWH
 
 ### Access Control Best Practice
 
-```
-
+```text
 Group: Finance Team
 ├── Collection: Finance → Edit
 ├── Database: Snowflake DWH → Unrestricted

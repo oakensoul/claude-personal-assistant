@@ -19,6 +19,7 @@ This knowledge base provides the `aws-cloud-engineer` agent with AWS and CDK exp
 **Purpose**: Generic AWS knowledge that applies to all projects
 
 **Contains**:
+
 - AWS service documentation and selection guidance
 - CDK patterns and best practices
 - Well-Architected Framework principles
@@ -34,6 +35,7 @@ This knowledge base provides the `aws-cloud-engineer` agent with AWS and CDK exp
 **Purpose**: Project-specific AWS configuration and architecture
 
 **Contains**:
+
 - AWS account IDs, profiles, and regions
 - VPC IDs, subnet IDs, security group IDs
 - Stack architecture and dependencies
@@ -360,6 +362,7 @@ new PolicyStatement({
   resources: ['arn:aws:logs:*:*:*'],
 });
 ```
+
 ```
 
 ## Maintenance

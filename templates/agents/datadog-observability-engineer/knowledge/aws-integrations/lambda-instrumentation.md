@@ -12,6 +12,7 @@ Comprehensive guide for instrumenting AWS Lambda functions with DataDog monitori
 ## Instrumentation Methods
 
 ### 1. DataDog Lambda Extension (Recommended)
+
 The DataDog Lambda Extension is the preferred method for modern Lambda instrumentation.
 
 **Advantages**:
@@ -30,6 +31,7 @@ The DataDog Lambda Extension is the preferred method for modern Lambda instrumen
 - No additional Lambda functions required
 
 ### 2. DataDog Forwarder (Legacy)
+
 An older pattern using a separate Lambda function to forward CloudWatch logs.
 
 **When to Use**:
@@ -46,6 +48,7 @@ An older pattern using a separate Lambda function to forward CloudWatch logs.
 - More complex VPC networking
 
 ### 3. Manual Instrumentation
+
 Direct use of DataDog SDKs without extension or forwarder.
 
 **When to Use**:
@@ -65,6 +68,7 @@ npm install --save datadog-cdk-constructs-v2
 ```
 
 Basic implementation:
+
 ```typescript
 import { Datadog } from 'datadog-cdk-constructs-v2';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -162,6 +166,7 @@ datadogApiKey.grantRead(myFunction);
 ## Runtime-Specific Configuration
 
 ### Python 3.11
+
 ```typescript
 const pythonFunction = new lambda.Function(this, 'PythonFunction', {
   runtime: lambda.Runtime.PYTHON_3_11,
@@ -176,6 +181,7 @@ const pythonFunction = new lambda.Function(this, 'PythonFunction', {
 ```
 
 Python code with manual instrumentation:
+
 ```python
 from datadog_lambda.wrapper import datadog_lambda_wrapper
 from datadog_lambda.metric import lambda_metric
@@ -198,6 +204,7 @@ def handler(event, context):
 ```
 
 ### Node.js 18.x
+
 ```typescript
 const nodeFunction = new lambda.Function(this, 'NodeFunction', {
   runtime: lambda.Runtime.NODEJS_18_X,
@@ -212,6 +219,7 @@ const nodeFunction = new lambda.Function(this, 'NodeFunction', {
 ```
 
 Node.js code:
+
 ```javascript
 const { datadog } = require('datadog-lambda-js');
 const { sendDistributionMetric } = require('datadog-lambda-js');
@@ -241,6 +249,7 @@ exports.handler = datadog(async (event, context) => {
 When one Lambda calls another, propagate trace context:
 
 **Invoking Lambda**:
+
 ```python
 import boto3
 import json
@@ -266,6 +275,7 @@ response = lambda_client.invoke(
 ```
 
 **Receiving Lambda**:
+
 ```python
 from ddtrace import tracer
 
@@ -306,6 +316,7 @@ const rule = new events.Rule(this, 'MyRule', {
 ## Custom Metrics
 
 ### Distribution Metrics (Recommended)
+
 Use distributions for percentile calculations:
 
 ```python
@@ -319,6 +330,7 @@ lambda_metric(
 ```
 
 ### Gauges and Counters
+
 ```python
 # Gauge (latest value)
 lambda_metric('survivor.atlas.active.connections', 42)
@@ -330,6 +342,7 @@ lambda_metric('survivor.atlas.errors', 1, tags=['error_type:timeout'])
 ## Logging Best Practices
 
 ### Structured Logging
+
 ```python
 import json
 import logging
@@ -348,9 +361,11 @@ def handler(event, context):
 ```
 
 ### Log Correlation
+
 DataDog automatically injects trace IDs into logs when `DD_LOGS_INJECTION=true`.
 
 ### Log Sampling
+
 For high-volume functions, sample logs to reduce costs:
 
 ```python
@@ -392,6 +407,7 @@ DataDog layers add ~20-50ms to cold start time:
 ## Cost Optimization
 
 ### APM Trace Sampling
+
 Don't trace every invocation for high-volume functions:
 
 ```typescript
@@ -401,6 +417,7 @@ environment: {
 ```
 
 ### Log Exclusion
+
 Exclude verbose or unnecessary logs:
 
 ```typescript
@@ -419,6 +436,7 @@ In DataDog UI, create exclusion filters:
 - Retain ERROR and WARN logs
 
 ### Payload Capture
+
 Disable request/response payload capture unless debugging:
 
 ```typescript
@@ -459,6 +477,7 @@ environment: {
 - Rotate API keys regularly
 
 ### Log Scrubbing
+
 Remove sensitive data from logs:
 
 ```python

@@ -13,6 +13,7 @@ This knowledge base contains generic SQL patterns and platform-specific features
 ## Structure
 
 ### Core Concepts
+
 Foundational SQL knowledge that applies to all platforms:
 
 - SQL fundamentals (ANSI SQL standard)
@@ -21,6 +22,7 @@ Foundational SQL knowledge that applies to all platforms:
 - Transaction management
 
 ### Patterns
+
 Reusable SQL patterns for common scenarios:
 
 - CTE patterns (WITH clauses)
@@ -29,6 +31,7 @@ Reusable SQL patterns for common scenarios:
 - Aggregation patterns (GROUP BY, HAVING, rollups)
 
 ### Platforms
+
 Platform-specific features and optimizations:
 
 - **Snowflake**: QUALIFY, FLATTEN, time travel, clustering, warehouse optimization
@@ -37,6 +40,7 @@ Platform-specific features and optimizations:
 - **Redshift**: DISTKEY, SORTKEY, Spectrum, WLM
 
 ### Decisions
+
 Decision frameworks for SQL architecture:
 
 - When to use which optimization technique
@@ -44,6 +48,7 @@ Decision frameworks for SQL architecture:
 - Materialization strategy selection
 
 ### Reference
+
 Quick reference materials:
 
 - SQL syntax reference by platform

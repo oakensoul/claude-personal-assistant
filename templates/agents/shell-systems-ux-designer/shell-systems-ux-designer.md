@@ -489,7 +489,7 @@ Step 3/3: Integration setup
 
 #### Visual Hierarchy
 
-```
+```text
 # # Headers and sections
 # Main Section Header
 ## Subsection Header
@@ -497,7 +497,7 @@ Step 3/3: Integration setup
   Additional context indented
 
 [STATUS] Colored status indicator
-```text
+```
 
 #### Color Usage
 

@@ -161,6 +161,7 @@ This agent should be PROACTIVE when:
 ## CDK Patterns for DataDog
 
 ### Lambda Function with DataDog
+
 ```typescript
 import { DatadogLambda } from 'datadog-cdk-constructs-v2';
 
@@ -178,6 +179,7 @@ const datadogLambda = new DatadogLambda(this, 'DatadogLambda', {
 ```
 
 ### ECS Task with DataDog Sidecar
+
 ```typescript
 taskDefinition.addContainer('datadog-agent', {
   image: ecs.ContainerImage.fromRegistry('public.ecr.aws/datadog/agent:latest'),

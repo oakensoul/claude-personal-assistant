@@ -15,6 +15,7 @@ Guide for effective collaboration between `metabase-engineer` and `sql-expert` a
 ### metabase-engineer
 
 **Owns**:
+
 - Metabase YAML specifications
 - Dashboard layout and UX
 - Visualization configuration
@@ -23,6 +24,7 @@ Guide for effective collaboration between `metabase-engineer` and `sql-expert` a
 - Metabase-specific features (filters, parameters, drill-through)
 
 **Does NOT own**:
+
 - Complex SQL query logic
 - Data model selection decisions
 - Advanced Snowflake optimization
@@ -31,6 +33,7 @@ Guide for effective collaboration between `metabase-engineer` and `sql-expert` a
 ### sql-expert
 
 **Owns**:
+
 - SQL query logic and optimization
 - Data model selection (which table/mart to use)
 - JOIN strategies and performance
@@ -38,6 +41,7 @@ Guide for effective collaboration between `metabase-engineer` and `sql-expert` a
 - Window functions, CTEs, complex aggregations
 
 **Does NOT own**:
+
 - Metabase visualization settings
 - Dashboard layout decisions
 - Metabase API operations
@@ -99,13 +103,14 @@ questions:
 
 # 4. metabase-engineer: Deploys and tests
 # 5. If performance issues, return to step 2
-```
+```text
 
 ### Workflow 2: Optimizing Slow Dashboard
 
 **Scenario**: Existing dashboard loading slowly, need to optimize queries.
 
 **metabase-engineer Provides**:
+
 ```yaml
 Issue: Market Maker dashboard taking 20+ seconds to load
 
@@ -135,9 +140,10 @@ Context:
   - Dashboard filters: last 30 days (default)
   - Visualization: Line chart showing daily totals
   - Users: Finance team (not technical)
-```
+```text
 
 **sql-expert Returns**:
+
 ```sql
 -- OPTIMIZED: Use pre-aggregated mart instead of fact table
 -- Performance improvement: ~50x faster (15s → 300ms)
@@ -159,9 +165,10 @@ ORDER BY date_actual DESC;
 
 -- Alternative if user-level detail is required:
 -- Add drill-through question that uses fct_house_slips with date filter
-```
+```text
 
 **metabase-engineer Integrates**:
+
 ```yaml
 # Update YAML specification
 - name: "Daily P&L Breakdown"
@@ -194,13 +201,14 @@ ORDER BY date_actual DESC;
   drill_through:
     target_question: "User-Level P&L Detail"
     pass_parameters: ["date_actual"]
-```
+```text
 
 ### Workflow 3: Complex Metric Definition
 
 **Scenario**: Need to implement a business metric with unclear SQL implementation.
 
 **metabase-engineer Requests**:
+
 ```yaml
 Metric: "Assisted Fill Rate %"
 
@@ -227,9 +235,10 @@ Test case:
   - Total filled contests: 1,000
   - Contests with autodrafts: 350
   - Expected result: 35%
-```
+```text
 
 **sql-expert Returns**:
+
 ```sql
 -- Assisted Fill Rate %
 -- Definition: % of successfully filled contests that required autodrafts
@@ -261,9 +270,10 @@ SELECT
 FROM MART_CONTEST_FILL_ANALYSIS
 WHERE date_actual = '2025-10-01'
 GROUP BY date_actual, fill_type;
-```
+```text
 
 **metabase-engineer Integrates**:
+
 ```yaml
 - name: "Assisted Fill Rate"
   type: "scalar"
@@ -294,7 +304,7 @@ GROUP BY date_actual, fill_type;
       - name: "end_date"
         type: "date"
         default: "today"
-```
+```text
 
 ## Handoff Templates
 
@@ -314,28 +324,33 @@ Current Performance:
 Current SQL:
 ```sql
 [Paste SQL here]
-```
+```text
 
 Context:
-  - Visualization type: [scalar/line/bar/table]
-  - Dashboard filters: [date range, categories]
-  - Expected result set size: [N rows]
-  - User audience: [executives/operations/analysts]
-  - Update frequency: [real-time/hourly/daily]
+
+- Visualization type: [scalar/line/bar/table]
+- Dashboard filters: [date range, categories]
+- Expected result set size: [N rows]
+- User audience: [executives/operations/analysts]
+- Update frequency: [real-time/hourly/daily]
 
 Performance target:
-  - Execution time: <[X] seconds
-  - Dashboard load: <10 seconds total
+
+- Execution time: <[X] seconds
+- Dashboard load: <10 seconds total
 
 Available data models:
-  - [List relevant tables/marts]
+
+- [List relevant tables/marts]
 
 Please provide:
+
   1. Optimized SQL query
   2. Explanation of changes
   3. Expected performance improvement
   4. Any caveats or limitations
-```
+
+```text
 
 ### Template: Request Complex Metric SQL
 
@@ -369,7 +384,7 @@ Please provide:
   2. Explanation of logic
   3. Validation query to verify correctness
   4. Performance considerations
-```
+```text
 
 ### Template: Review SQL Before Deployment
 
@@ -401,7 +416,7 @@ Please review for:
   - Performance optimization opportunities
   - Best practices compliance
   - Potential edge cases or issues
-```
+```text
 
 ## Common Collaboration Patterns
 
@@ -410,6 +425,7 @@ Please review for:
 **When**: Dashboard exists but can be improved.
 
 **Process**:
+
 1. metabase-engineer identifies slowest queries
 2. sql-expert optimizes one query at a time
 3. metabase-engineer deploys and tests
@@ -422,6 +438,7 @@ Please review for:
 **When**: Before building complex dashboard.
 
 **Process**:
+
 1. metabase-engineer drafts YAML specification (without SQL)
 2. sql-expert reviews data model selection
 3. sql-expert suggests marts vs facts for each question
@@ -436,6 +453,7 @@ Please review for:
 **When**: Implementing critical business metrics.
 
 **Process**:
+
 1. metabase-engineer implements metric based on requirements
 2. sql-expert provides validation query
 3. metabase-engineer runs both queries, compares results
@@ -446,7 +464,7 @@ Please review for:
 
 ## Decision Tree: When to Involve sql-expert
 
-```
+```text
 Is the query straightforward?
 ├─ Yes → metabase-engineer implements directly
 │         (Simple SELECT from mart, basic aggregation)
@@ -464,11 +482,12 @@ Is the query straightforward?
                     │         "Should I use mart X or fact Y?"
                     │
                     └─ No → metabase-engineer proceeds
-```
+```text
 
 ## Success Metrics
 
 **Effective Collaboration When**:
+
 - Dashboard queries execute in <2 seconds (avg)
 - Zero metric accuracy issues reported
 - Clear documentation of SQL logic in YAML
@@ -476,6 +495,7 @@ Is the query straightforward?
 - Both agents understand their boundaries
 
 **Poor Collaboration When**:
+
 - Same query optimized multiple times
 - Metric definitions disputed after deployment
 - Unclear who owns what
@@ -495,6 +515,7 @@ Is the query straightforward?
 ---
 
 **Related Documents**:
+
 - [query-performance-optimization.md](../troubleshooting/query-performance-optimization.md) - Performance guidelines
 - [agent-coordination-patterns.md](agent-coordination-patterns.md) - Other agent integrations
 - [yaml-specification-schema.md](../core-concepts/yaml-specification-schema.md) - YAML format

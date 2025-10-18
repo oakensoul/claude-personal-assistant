@@ -26,6 +26,7 @@ use_cases:
 `MATCH_RECOGNIZE` is a powerful Snowflake SQL clause for detecting patterns in sequential data. It's particularly valuable for time-series analysis in contests, user behavior tracking, and event stream processing.
 
 **Key Use Cases in dbt-splash-prod-v2**:
+
 - Contest performance patterns (winning streaks, losing streaks)
 - User engagement sequences (signup → deposit → first contest)
 - Wallet transaction patterns (rapid deposits, withdrawal sequences)
@@ -52,6 +53,7 @@ FROM source_table
 ## Core Components Explained
 
 ### 1. PARTITION BY
+
 Groups rows into separate sequences for pattern matching:
 
 ```sql
@@ -59,6 +61,7 @@ PARTITION BY user_id  -- Each user analyzed independently
 ```
 
 ### 2. ORDER BY
+
 Defines the sequence order (typically timestamp):
 
 ```sql
@@ -66,6 +69,7 @@ ORDER BY contest_entry_timestamp
 ```
 
 ### 3. MEASURES
+
 Defines the output columns from the matched pattern:
 
 ```sql
@@ -77,6 +81,7 @@ MEASURES
 ```
 
 ### 4. PATTERN
+
 Defines the sequence pattern using regular expression-like syntax:
 
 ```sql
@@ -85,6 +90,7 @@ PATTERN (deposit_event free_contest_event+ paid_contest_event)  -- Specific sequ
 ```
 
 ### 5. DEFINE
+
 Specifies conditions for each pattern variable:
 
 ```sql
@@ -103,7 +109,7 @@ DEFINE
 | `{n}` | Exactly n | `win_event{5}` (exactly 5 wins) |
 | `{n,}` | n or more | `win_event{3,}` (3+ wins) |
 | `{n,m}` | Between n and m | `win_event{2,5}` (2-5 wins) |
-| `|` | Alternation | `(win_event | loss_event)` |
+| `\|` | Alternation | `(win_event \| loss_event)` |
 
 ## Practical Examples for dbt-splash-prod-v2
 
@@ -357,6 +363,7 @@ pattern (win_event{3,}? loss_event)  -- Stops at first loss after 3 wins
 ## Performance Optimization Tips
 
 ### 1. Partition Wisely
+
 ```sql
 -- ✅ GOOD: Reasonable partition size
 PARTITION BY user_id  -- Thousands of users, manageable sequences
@@ -366,6 +373,7 @@ PARTITION BY contest_type  -- Only a few partitions, very long sequences
 ```
 
 ### 2. Order by Indexed/Clustered Columns
+
 ```sql
 -- ✅ GOOD: Use clustered timestamp column
 ORDER BY transaction_timestamp  -- Clustered in fct_wallet_transactions
@@ -375,6 +383,7 @@ ORDER BY secondary_sort_key
 ```
 
 ### 3. Use Time Windows to Limit Pattern Search
+
 ```sql
 -- ✅ GOOD: Time-bounded pattern matching
 define
@@ -384,6 +393,7 @@ define
 ```
 
 ### 4. Filter Before MATCH_RECOGNIZE
+
 ```sql
 -- ✅ GOOD: Pre-filter to reduce input rows
 with recent_contests as (
@@ -400,6 +410,7 @@ from recent_contests
 ## Common Pitfalls
 
 ### 1. Forgetting PARTITION BY
+
 ```sql
 -- ❌ WRONG: No partition, analyzes ALL users as one sequence
 select *
@@ -420,6 +431,7 @@ from user_events
 ```
 
 ### 2. Incorrect Quantifier Usage
+
 ```sql
 -- ❌ WRONG: {3,} requires 3 or more, won't match 1-2 wins
 pattern (win_event{3,})
@@ -429,6 +441,7 @@ pattern (win_event+)
 ```
 
 ### 3. Missing DEFINE for All Pattern Variables
+
 ```sql
 -- ❌ WRONG: Pattern uses 'loss_event' but DEFINE doesn't include it
 pattern (win_event+ loss_event)
@@ -446,9 +459,11 @@ define
 ## Integration with dbt Models
 
 ### Staging Layer
+
 MATCH_RECOGNIZE is NOT typically used in staging - staging should be 1:1 with source.
 
 ### Core Layer (Facts/Dimensions)
+
 Use MATCH_RECOGNIZE for derived facts:
 
 ```sql
@@ -504,6 +519,7 @@ from contest_results
 ```
 
 ### Marts Layer
+
 Use MATCH_RECOGNIZE for business intelligence aggregations:
 
 ```sql
@@ -572,10 +588,12 @@ models:
 ## Additional Resources
 
 **Snowflake Documentation**:
+
 - [MATCH_RECOGNIZE Official Docs](https://docs.snowflake.com/en/sql-reference/constructs/match_recognize.html)
 - [Pattern Matching Tutorial](https://docs.snowflake.com/en/user-guide/querying-pattern-matching.html)
 
 **Project Integration**:
+
 - Contests domain: User behavior analysis, streak detection
 - Finance domain: Transaction fraud patterns, wallet analysis
 - Analytics domain: User engagement funnels, session analysis

@@ -27,6 +27,7 @@ last_updated: "2025-10-07"
 ## Decision Rationale
 
 **Why OAuth for Snowflake instead of username/password?**
+
 - Short-lived tokens (10 minutes) reduce credential theft risk
 - Automatic rotation, no manual password changes
 - Revoke access by disabling OAuth integration (no password reset)

@@ -13,6 +13,7 @@ last_updated: "2025-10-07"
 **Focus**: GDPR & CCPA baseline compliance
 
 **Deliverables**:
+
 - [ ] Data classification and PII inventory complete
 - [ ] Snowflake RBAC and DDM policies deployed
 - [ ] Data subject request workflows (access, deletion)
@@ -26,6 +27,7 @@ last_updated: "2025-10-07"
 **Focus**: Enterprise customer requirements
 
 **Deliverables**:
+
 - [ ] Control documentation and evidence collection (6-12 months)
 - [ ] Change management formalization (PR approvals, testing)
 - [ ] Backup/recovery testing and DR plan

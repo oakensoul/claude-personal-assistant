@@ -548,22 +548,18 @@ limit 10;
 
 **Before clustering**:
 
-```
-
+```text
 Partitions Scanned: 2,500 of 2,500 (100%)
 Bytes Scanned: 52 GB
 Execution Time: 2m 15s
-
 ```
 
 **After clustering**:
 
-```
-
+```text
 Partitions Scanned: 50 of 2,500 (2%)
 Bytes Scanned: 1.2 GB
 Execution Time: 2.8s
-
 ```
 
 ### Example 2: Segment Events with Multi-Column Clustering
@@ -646,8 +642,7 @@ where user_id = 123456;  -- Point lookup
 
 ## Decision Tree
 
-```
-
+```text
 Is table > 1 GB?
 ├─ No → Don't cluster
 └─ Yes → Are queries filtered by date/time?
@@ -658,7 +653,6 @@ Is table > 1 GB?
     └─ No → Are there frequent point lookups (WHERE id = value)?
         ├─ Yes → Consider search optimization
         └─ No → Monitor query patterns, may not need optimization
-
 ```
 
 ## Additional Resources

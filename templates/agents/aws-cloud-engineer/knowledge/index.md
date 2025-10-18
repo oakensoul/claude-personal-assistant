@@ -46,30 +46,35 @@ Decision frameworks and matrices:
 Service-specific deep-dive documentation organized by category:
 
 #### Compute (4 files planned)
+
 - EC2 instance selection and configuration
 - ECS/Fargate container orchestration
 - Lambda serverless patterns
 - Auto-scaling strategies
 
 #### Storage (4 files planned)
+
 - S3 bucket policies and lifecycle rules
 - EBS volume optimization
 - EFS file system configuration
 - Glacier archival strategies
 
 #### Networking (4 files planned)
+
 - VPC design patterns
 - Route53 DNS configuration
 - CloudFront CDN optimization
 - Load balancer selection (ALB/NLB)
 
 #### Database (4 files planned)
+
 - RDS vs Aurora selection
 - DynamoDB table design
 - Database performance tuning
 - Backup and recovery strategies
 
 #### Security (4 files planned)
+
 - IAM policy design patterns
 - KMS encryption strategies
 - Secrets Manager integration
@@ -107,6 +112,7 @@ The aws-cloud-engineer agent automatically loads knowledge from this directory w
 ## Maintenance
 
 **Update when**:
+
 - New AWS services or features released
 - CDK patterns proven across projects
 - AWS best practices evolve
@@ -114,6 +120,7 @@ The aws-cloud-engineer agent automatically loads knowledge from this directory w
 - Security patterns refined
 
 **Review schedule**:
+
 - Monthly: AWS service updates
 - Quarterly: Comprehensive CDK pattern review
 - Annually: Well-Architected Framework updates
@@ -129,6 +136,7 @@ The aws-cloud-engineer agent automatically loads knowledge from this directory w
    - Security baselines
 
 2. **For each CDK project**, create project-specific knowledge:
+
    ```bash
    cd /path/to/cdk/project
    mkdir -p .claude/agents/aws-cloud-engineer/knowledge/{project-context,standards,cost}

@@ -87,6 +87,7 @@ LIMIT 100;
 #### Warehouse Sizing Strategy
 
 **Size Selection Guidelines**:
+
 - **X-Small**: Development, light testing, low-volume marts (< 1K rows/sec)
 - **Small**: Standard development, medium marts (1K-10K rows/sec)
 - **Medium**: Production analytics, standard ETL (10K-50K rows/sec)
@@ -129,6 +130,7 @@ ORDER BY avg_hourly_credits DESC;
 #### Auto-Suspend Configuration
 
 **Best Practices**:
+
 - **Interactive Warehouses**: 60-300 seconds (balance startup time vs idle cost)
 - **ETL Warehouses**: 60 seconds (minimal idle time between dbt runs)
 - **Reporting Warehouses**: 300-600 seconds (user sessions with pauses)
@@ -151,6 +153,7 @@ ORDER BY total_credits DESC;
 #### Query Acceleration Service
 
 **When to Enable**:
+
 - Unpredictable workloads with occasional complex queries
 - Dashboards with mixed simple/complex query patterns
 - Cost-effective alternative to constant warehouse upsize
@@ -177,6 +180,7 @@ HAVING accelerated_queries > 0;
 #### Clustering Key Strategy
 
 **Cost Considerations**:
+
 - **Automatic Clustering Credits**: Background process consumes warehouse credits
 - **Query Performance Gains**: Faster queries reduce compute time
 - **ROI Analysis**: Clustering maintenance cost vs query performance improvement
@@ -200,11 +204,13 @@ ORDER BY clustering_credits_30d DESC;
 #### Data Retention Policies
 
 **Time Travel vs Storage Costs**:
+
 - **0 Days**: Minimum storage cost, no recovery capability
 - **1 Day** (Standard): Balance cost and disaster recovery (Enterprise feature)
 - **7-90 Days** (Enterprise): Extended compliance/audit requirements
 
 **Fail-Safe Storage**:
+
 - Automatic 7-day fail-safe after time travel period
 - Non-configurable, charged at higher rate
 - Factor into retention policy decisions
@@ -271,6 +277,7 @@ LIMIT 50;
 #### Query Optimization Recommendations
 
 **Common Cost Patterns**:
+
 1. **SELECT * with large tables**: Specify required columns only
 2. **Missing clustering keys**: Add clustering for frequently filtered columns
 3. **Unnecessary DISTINCT**: Remove if data is already unique
@@ -282,6 +289,7 @@ LIMIT 50;
 #### Table vs View Tradeoff
 
 **Considerations**:
+
 - **Table Storage Cost**: Monthly storage fees
 - **Table Refresh Cost**: Incremental vs full refresh compute
 - **View Query Cost**: On-demand computation per query
@@ -369,6 +377,7 @@ FROM trend_analysis;
 #### Executive Cost Summary
 
 Key metrics for stakeholder reporting:
+
 - **Monthly Spend Trend**: Total credits, YoY growth, forecast
 - **Cost by Business Unit**: Team/project attribution via tags
 - **Top Cost Drivers**: Most expensive warehouses, queries, tables
@@ -416,21 +425,25 @@ ORDER BY ABS(z_score) DESC;
 ## Coordination with Other Agents
 
 ### Works with snowflake-sql-expert
+
 - **Query Optimization**: Expensive query rewrites, execution plan analysis
 - **SQL Best Practices**: Performance-optimized SQL patterns
 - **Advanced Features**: QUALIFY, MATCH_RECOGNIZE for efficient computation
 
 ### Works with architect
+
 - **Materialization Strategy**: Incremental vs full refresh decisions
 - **Data Model Design**: Clustering key selection, SCD implementation costs
 - **Layer Optimization**: Staging vs intermediate layer tradeoffs
 
 ### Works with devops-engineer
+
 - **CI/CD Optimization**: dbt build frequency, warehouse sizing for pipelines
 - **Resource Monitors**: Budget alerts integrated with deployment workflows
 - **Performance Testing**: Cost benchmarks in pre-production environments
 
 ### Works with bi-platform-engineer (Metabase)
+
 - **Dashboard Query Costs**: Optimize expensive dashboard queries
 - **Caching Strategies**: Reduce redundant query execution
 - **Warehouse Selection**: Right-size warehouses for BI workloads
@@ -438,12 +451,14 @@ ORDER BY ABS(z_score) DESC;
 ## Technology Stack
 
 ### Snowflake Cost Tools
+
 - **ACCOUNT_USAGE Schema**: Query history, warehouse metering, storage metrics
 - **INFORMATION_SCHEMA**: Real-time table sizes, clustering depth
 - **Resource Monitors**: Credit quotas, spend alerts
 - **Query Profile**: Execution plan analysis for optimization
 
 ### Analysis & Monitoring
+
 - **Snowflake Worksheets**: Ad-hoc cost analysis queries
 - **dbt**: Cost-aware model configuration (materialization, clustering)
 - **Metabase**: Cost dashboards, executive reporting
@@ -452,6 +467,7 @@ ORDER BY ABS(z_score) DESC;
 ## Best Practices
 
 ### Warehouse Management
+
 1. **Right-size warehouses** based on actual query patterns, not peak capacity
 2. **Enable auto-suspend** with appropriate timeouts for each use case
 3. **Use multi-cluster warehouses** for concurrency, not single large warehouse
@@ -459,6 +475,7 @@ ORDER BY ABS(z_score) DESC;
 5. **Monitor query queuing** as indicator for warehouse upsize
 
 ### Query Optimization
+
 1. **Avoid SELECT *** - specify only required columns
 2. **Filter early** in CTEs to reduce intermediate result sizes
 3. **Use clustering keys** for frequently filtered columns
@@ -466,6 +483,7 @@ ORDER BY ABS(z_score) DESC;
 5. **Limit DISTINCT** usage - expensive operation, verify necessity
 
 ### Storage Management
+
 1. **Set appropriate time travel retention** - balance recovery needs vs cost
 2. **Archive historical data** to separate databases with lower access frequency
 3. **Drop unused tables** - fail-safe storage charged for 7 days after drop
@@ -473,6 +491,7 @@ ORDER BY ABS(z_score) DESC;
 5. **Review table sizes regularly** - identify candidates for partitioning/archival
 
 ### Materialization Strategy
+
 1. **Incremental models** for large, append-heavy datasets
 2. **Views** for low-query-frequency, simple transformations
 3. **Tables** for high-query-frequency, complex aggregations
@@ -480,6 +499,7 @@ ORDER BY ABS(z_score) DESC;
 5. **Periodic review** - materialization strategy should evolve with usage patterns
 
 ### Budget Governance
+
 1. **Resource monitors** on all production warehouses
 2. **Cost alerts** at 75% and 90% of budget thresholds
 3. **Tagging strategy** for cost attribution to teams/projects

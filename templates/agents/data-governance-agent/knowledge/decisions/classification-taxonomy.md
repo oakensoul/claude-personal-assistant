@@ -13,6 +13,7 @@ last_updated: "2025-10-07"
 **Chosen Approach**: Public, Internal, Confidential, Restricted
 
 **Rationale**:
+
 - Aligns with industry standards (NIST, ISO 27001)
 - Simple enough for consistent application
 - Maps cleanly to RBAC roles in Snowflake
@@ -23,6 +24,7 @@ last_updated: "2025-10-07"
 **Direct Identifiers** → **Quasi-Identifiers** → **Sensitive PII**
 
 **Rationale**:
+
 - Direct PII requires strongest controls (DDM, encryption)
 - Quasi-identifiers need aggregation/generalization
 - Sensitive PII (health, financial) has additional regulatory requirements
@@ -32,6 +34,7 @@ last_updated: "2025-10-07"
 **Tags**: `pii:true`, `pii_type:direct`, `sensitivity:restricted`
 
 **Rationale**:
+
 - Integrates with existing dbt tagging strategy (DA-257)
 - Enables selective builds (exclude PII in dev)
 - Supports automated validation via dbt tests

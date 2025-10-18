@@ -44,7 +44,7 @@ This agent operates with a two-tier knowledge system to separate generic AWS kno
 
 **Files**:
 
-```
+```text
 core-concepts/
   ├── aws-services-overview.md
   ├── cdk-fundamentals.md
@@ -88,7 +88,7 @@ services/
 
 **Example Structure**:
 
-```
+```text
 project-context/
   ├── aws-accounts.md (account IDs, roles, profiles)
   ├── stack-architecture.md (stack dependencies, outputs)
@@ -332,18 +332,21 @@ Customize ~/.claude/agents/aws-cloud-engineer/knowledge/ to align with your AWS 
 ## Differentiation from DevOps Engineer
 
 **AWS Cloud Engineer** (this agent):
+
 - **Focus**: Infrastructure **definition** (what to build with CDK)
 - **Scope**: AWS service selection, CDK stack design, CloudFormation templates
 - **Output**: CDK code, stack architectures, resource configurations
 - **Example**: "Design a CDK stack for a serverless API with Lambda, API Gateway, and DynamoDB"
 
 **DevOps Engineer**:
+
 - **Focus**: Infrastructure **deployment** (how to deploy via CI/CD)
 - **Scope**: CI/CD pipelines, deployment automation, GitHub Actions
 - **Output**: GitHub workflows, deployment scripts, monitoring setup
 - **Example**: "Create GitHub Actions workflow to deploy CDK stack to production"
 
 **Collaboration Pattern**:
+
 1. AWS Cloud Engineer designs the CDK stack
 2. DevOps Engineer creates the CI/CD pipeline to deploy it
 
@@ -409,20 +412,24 @@ The aws-cloud-engineer agent coordinates with:
 ### Construct Levels
 
 **L1 (CFN Resources)**:
+
 - Direct CloudFormation mapping
 - Use when L2/L3 doesn't exist or insufficient control needed
 
 **L2 (Intent-based)**:
+
 - AWS-provided constructs with sensible defaults
 - Primary choice for most resources
 
 **L3 (Patterns)**:
+
 - High-level patterns combining multiple resources
 - Use for common architectural patterns
 
 ### Multi-Stack Patterns
 
 **Separate Concerns**:
+
 ```typescript
 // Network stack (rarely changes)
 const networkStack = new NetworkStack(app, 'Network');
@@ -434,6 +441,7 @@ const appStack = new ApplicationStack(app, 'App', {
 ```
 
 **Cross-Stack References**:
+
 ```typescript
 // Export from one stack
 this.database.connectionString.export('DbConnectionString');
@@ -443,6 +451,7 @@ const dbConnection = Fn.importValue('DbConnectionString');
 ```
 
 **Stack Dependencies**:
+
 ```typescript
 // Explicit dependency
 appStack.addDependency(networkStack);
@@ -451,6 +460,7 @@ appStack.addDependency(networkStack);
 ### Custom Constructs
 
 **Reusable Patterns**:
+
 ```typescript
 export class MonitoredApi extends Construct {
   constructor(scope: Construct, id: string, props: MonitoredApiProps) {
@@ -476,6 +486,7 @@ export class MonitoredApi extends Construct {
 ### Configuration Management
 
 **Environment-Specific Config**:
+
 ```typescript
 interface StackConfig {
   environment: 'dev' | 'staging' | 'prod';
@@ -571,6 +582,7 @@ const config: Record<string, StackConfig> = {
 ### IAM Policy Design
 
 **Principle of Least Privilege**:
+
 ```typescript
 new PolicyStatement({
   effect: Effect.ALLOW,
@@ -585,6 +597,7 @@ new PolicyStatement({
 ```
 
 **Service Control Policies (SCP)**:
+
 - Prevent deletion of critical resources
 - Enforce encryption requirements
 - Restrict region usage
@@ -593,6 +606,7 @@ new PolicyStatement({
 ### Encryption Patterns
 
 **S3 Encryption**:
+
 ```typescript
 new Bucket(this, 'SecureBucket', {
   encryption: BucketEncryption.KMS,
@@ -602,6 +616,7 @@ new Bucket(this, 'SecureBucket', {
 ```
 
 **RDS Encryption**:
+
 ```typescript
 new DatabaseInstance(this, 'Database', {
   storageEncrypted: true,
@@ -612,6 +627,7 @@ new DatabaseInstance(this, 'Database', {
 ### Network Security
 
 **Security Group Restrictions**:
+
 ```typescript
 securityGroup.addIngressRule(
   Peer.ipv4('10.0.0.0/16'), // Specific CIDR only
@@ -621,6 +637,7 @@ securityGroup.addIngressRule(
 ```
 
 **VPC Endpoints**:
+
 ```typescript
 // Avoid internet gateway for AWS service access
 vpc.addGatewayEndpoint('S3Endpoint', {

@@ -13,12 +13,14 @@ KPI scorecards are the most important visualization type for executive dashboard
 ## When to Use Scorecards
 
 **Best For**:
+
 - Single metric that tells a story
 - Executive dashboards (top of page)
 - Operational dashboards (alert indicators)
 - High-level health checks
 
 **Avoid When**:
+
 - Need to show trends over time (use line chart)
 - Comparing multiple categories (use bar chart)
 - Showing distributions (use histogram)
@@ -45,17 +47,18 @@ KPI scorecards are the most important visualization type for executive dashboard
       - field: "date_actual"
         operator: "between"
         value: "{{date_range}}"
-```
+```text
 
 **Visual Result**:
-```
+
+```text
 ┌─────────────────┐
 │ Total Revenue   │
 │                 │
 │   $2,458,392    │
 │                 │
 └─────────────────┘
-```
+```text
 
 ## Comparison Patterns
 
@@ -83,10 +86,11 @@ Most common pattern: Compare current period to previous period.
       - field: "date_actual"
         operator: "between"
         value: "{{date_range}}"
-```
+```text
 
 **Visual Result**:
-```
+
+```text
 ┌─────────────────┐
 │ Daily Active    │
 │ Users           │
@@ -94,7 +98,7 @@ Most common pattern: Compare current period to previous period.
 │    12,453       │
 │    ↑ 8.5%       │ ← Green, up arrow
 └─────────────────┘
-```
+```text
 
 ### Goal-Based Comparison
 
@@ -121,10 +125,11 @@ Compare metric to a target/goal.
       - field: "date_actual"
         operator: "between"
         value: ["2025-10-01", "2025-10-31"]
-```
+```text
 
 **Visual Result**:
-```
+
+```text
 ┌─────────────────┐
 │ Monthly Revenue │
 │ Target          │
@@ -132,7 +137,7 @@ Compare metric to a target/goal.
 │  $4,245,000     │
 │  85% of goal    │ ← Progress indicator
 └─────────────────┘
-```
+```text
 
 ### Multiple Comparisons
 
@@ -163,10 +168,11 @@ Show multiple comparison contexts.
       - field: "date_actual"
         operator: "between"
         value: "{{date_range}}"
-```
+```text
 
 **Visual Result**:
-```
+
+```text
 ┌───────────────────────┐
 │ Contest Fill Rate     │
 │                       │
@@ -176,7 +182,7 @@ Show multiple comparison contexts.
 │ ↓ 1.5% vs Last Year   │
 │ 97% of Target         │
 └───────────────────────┘
-```
+```text
 
 ## Alert Patterns
 
@@ -206,20 +212,22 @@ Highlight when metric crosses critical threshold.
       - field: "date_actual"
         operator: "between"
         value: "{{date_range}}"
-```
+```text
 
 **Visual Result (Normal)**:
-```
+
+```text
 ┌─────────────────┐
 │ House ROI %     │
 │                 │
 │    -12.45%      │ ← Green background
 │                 │
 └─────────────────┘
-```
+```text
 
 **Visual Result (Alert)**:
-```
+
+```text
 ┌─────────────────┐
 │ House ROI %     │
 │ ⚠ ALERT         │
@@ -229,7 +237,7 @@ Highlight when metric crosses critical threshold.
 │ House is losing │
 │ money!          │
 └─────────────────┘
-```
+```text
 
 ### Multi-Level Alerts
 
@@ -261,7 +269,7 @@ Different alert levels based on severity.
       - field: "timestamp"
         operator: "between"
         value: "last-1-hour"
-```
+```text
 
 ## Formatting Patterns
 
@@ -276,9 +284,10 @@ settings:
   prefix: "$"
   suffix: ""
   compact: true  # $2.5M instead of $2,500,000
-```
+```text
 
 **Examples**:
+
 - `$2,458,392` (standard)
 - `$2.5M` (compact)
 - `$2.46M` (compact with decimals)
@@ -291,9 +300,10 @@ settings:
   decimals: 1  # One decimal place
   multiply_by_100: true  # If raw value is 0.923
   suffix: "%"
-```
+```text
 
 **Examples**:
+
 - `92.3%` (standard)
 - `92%` (no decimals)
 - `+8.5%` (with sign)
@@ -307,9 +317,10 @@ settings:
   decimals: 0
   thousands_separator: ","
   compact: false
-```
+```text
 
 **Examples**:
+
 - `12,453` (standard)
 - `12.5K` (compact)
 - `12.453K` (compact with decimals)
@@ -321,9 +332,10 @@ settings:
   display: "duration"
   format: "seconds"  # or "minutes", "hours"
   decimals: 1
-```
+```text
 
 **Examples**:
+
 - `2.5 seconds`
 - `45 minutes`
 - `3.2 hours`
@@ -346,10 +358,11 @@ questions:
 
   - name: "House ROI %"
     position: {row: 0, col: 9, sizeX: 3, sizeY: 2}
-```
+```text
 
 **Visual Layout**:
-```
+
+```text
 ┌────────┬────────┬────────┬────────┐
 │ Total  │ Daily  │Contest │ House  │
 │Revenue │ Active │  Fill  │ ROI %  │
@@ -357,7 +370,7 @@ questions:
 │$2.5M   │12,453  │ 92.3%  │-12.5%  │
 │↑ 8.5%  │↑ 3.2%  │↓ 1.1%  │↑ 2.3%  │
 └────────┴────────┴────────┴────────┘
-```
+```text
 
 ### Financial Dashboard (3 + Details)
 
@@ -379,7 +392,7 @@ questions:
 
   - name: "Handle Trend"
     position: {row: 2, col: 6, sizeX: 6, sizeY: 4}
-```
+```text
 
 ### Operational Dashboard (6 KPIs)
 
@@ -403,7 +416,7 @@ questions:
 
   - name: "Entries/Hour"
     position: {row: 0, col: 10, sizeX: 2, sizeY: 2}
-```
+```text
 
 ## Color Strategy
 
@@ -424,14 +437,17 @@ Use colors that convey meaning:
 For metrics where direction matters:
 
 **Positive is Good** (Revenue, Users, Fill Rate):
+
 - Increase = Green
 - Decrease = Red
 
 **Negative is Good** (Costs, Errors, Cancel Rate):
+
 - Increase = Red
 - Decrease = Green
 
 **Neutral** (Descriptive metrics):
+
 - No color coding
 
 ## Advanced Patterns
@@ -462,10 +478,11 @@ Show mini trend line alongside number.
       - field: "date_actual"
         operator: "between"
         value: "last-30-days"
-```
+```text
 
 **Visual Result**:
-```
+
+```text
 ┌───────────────────────┐
 │ Revenue               │
 │                       │
@@ -474,7 +491,7 @@ Show mini trend line alongside number.
 │   ╱╲    ╱╲  ╱         │ ← Sparkline
 │  ╱  ╲  ╱  ╲╱          │
 └───────────────────────┘
-```
+```text
 
 ### Progress Bar
 
@@ -500,10 +517,11 @@ Show progress toward goal as bar.
       - field: "date_actual"
         operator: "between"
         value: ["2025-10-01", "2025-10-31"]
-```
+```text
 
 **Visual Result**:
-```
+
+```text
 ┌───────────────────────┐
 │ Monthly Target        │
 │ Progress              │
@@ -512,28 +530,32 @@ Show progress toward goal as bar.
 │                       │
 │ ████████████░░░░ 85%  │ ← Progress bar
 └───────────────────────┘
-```
+```text
 
 ## Best Practices
 
 ### Content
+
 1. **One metric per scorecard** - Don't try to show multiple metrics in one card
 2. **Meaningful comparisons** - Always show context (vs. goal, vs. previous period)
 3. **Clear labels** - Metric name should be immediately understandable
 4. **Appropriate precision** - Don't show 8 decimal places for revenue
 
 ### Design
+
 1. **Consistent sizing** - Use same size for similar metrics (usually 3x2 or 4x2)
 2. **Logical order** - Most important metrics leftmost and top
 3. **Color coding** - Use semantic colors for alerts
 4. **White space** - Don't cram too much information
 
 ### Performance
+
 1. **Pre-aggregated data** - Use marts, not raw fact tables
 2. **Appropriate filters** - Always include date range
 3. **Caching** - Enable caching for scorecards (they update infrequently)
 
 ### Accessibility
+
 1. **Don't rely on color alone** - Use icons/symbols too (↑↓⚠)
 2. **High contrast** - Ensure text is readable
 3. **Screen reader text** - Include descriptions
@@ -541,6 +563,7 @@ Show progress toward goal as bar.
 ---
 
 **Related Documents**:
+
 - [dashboard-layout-patterns.md](dashboard-layout-patterns.md) - Overall layout design
 - [time-series-patterns.md](time-series-patterns.md) - Trend visualization
 - [executive-dashboard-templates.md](executive-dashboard-templates.md) - Complete templates

@@ -477,6 +477,7 @@ visualization:
 ## Validation Rules
 
 ### Required Frontmatter
+
 All YAML specifications MUST include frontmatter with:
 
 - `name` (unique within collection)

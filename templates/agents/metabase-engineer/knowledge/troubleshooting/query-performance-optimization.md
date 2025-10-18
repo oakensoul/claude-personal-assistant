@@ -13,6 +13,7 @@ Comprehensive guide to diagnosing and fixing slow Metabase queries and dashboard
 ## Quick Diagnosis Checklist
 
 **When a dashboard is loading slowly**:
+
 - [ ] Check how many questions are on the dashboard (>15-20 is too many)
 - [ ] Look at query execution times in Metabase admin
 - [ ] Verify queries have WHERE clauses on date columns
@@ -27,6 +28,7 @@ Comprehensive guide to diagnosing and fixing slow Metabase queries and dashboard
 **Problem**: Query scans entire table without date range filter.
 
 **Bad Example**:
+
 ```sql
 SELECT
   SUM(amount) as total_handle
@@ -35,6 +37,7 @@ WHERE user_tier = 'premium'
 ```
 
 **Fixed Example**:
+
 ```sql
 SELECT
   SUM(amount) as total_handle
@@ -46,6 +49,7 @@ WHERE user_tier = 'premium'
 **Why It Matters**: Date filters enable partition pruning in Snowflake, dramatically reducing data scanned.
 
 **Always include**:
+
 - Date range filter for time-series data
 - Use dashboard date parameter
 - Default to reasonable range (last 30 days)
@@ -55,6 +59,7 @@ WHERE user_tier = 'premium'
 **Problem**: Querying large fact tables instead of pre-aggregated marts.
 
 **Bad Example**:
+
 ```sql
 -- Scanning millions of rows
 SELECT
@@ -67,6 +72,7 @@ GROUP BY date_actual
 ```
 
 **Fixed Example**:
+
 ```sql
 -- Using pre-aggregated mart
 SELECT
@@ -77,16 +83,19 @@ WHERE date_actual >= '2025-01-01'
 ```
 
 **Benefits**:
+
 - 100-1000x faster queries
 - Consistent business logic
 - Reduced Snowflake costs
 
 **When to use marts**:
+
 - Dashboard KPI scorecards
 - Time-series trend charts
 - Executive summaries
 
 **When to use fact tables**:
+
 - Detailed drill-down queries
 - Ad-hoc analysis
 - One-off reports
@@ -96,12 +105,14 @@ WHERE date_actual >= '2025-01-01'
 **Problem**: Selecting all columns when only a few are needed.
 
 **Bad Example**:
+
 ```sql
 SELECT * FROM dim_user
 WHERE user_tier = 'premium'
 ```
 
 **Fixed Example**:
+
 ```sql
 SELECT
   user_id,
@@ -113,6 +124,7 @@ WHERE user_tier = 'premium'
 ```
 
 **Why It Matters**:
+
 - Transfers less data over network
 - Faster result set processing
 - More efficient Snowflake warehouse usage
@@ -122,6 +134,7 @@ WHERE user_tier = 'premium'
 **Problem**: Returning millions of rows to Metabase.
 
 **Bad Example**:
+
 ```sql
 SELECT
   transaction_id,
@@ -133,6 +146,7 @@ WHERE date_actual >= '2025-01-01'
 ```
 
 **Fixed Example**:
+
 ```sql
 SELECT
   transaction_id,
@@ -146,6 +160,7 @@ LIMIT 1000  -- Reasonable limit for UI display
 ```
 
 **Best Practices**:
+
 - Always LIMIT table visualizations
 - Use pagination for large datasets
 - Consider drill-through instead of one huge table
@@ -156,6 +171,7 @@ LIMIT 1000  -- Reasonable limit for UI display
 **Problem**: JOINing large tables without proper filters.
 
 **Bad Example**:
+
 ```sql
 SELECT
   u.username,
@@ -166,6 +182,7 @@ GROUP BY u.username
 ```
 
 **Fixed Example**:
+
 ```sql
 SELECT
   u.username,
@@ -179,6 +196,7 @@ LIMIT 100
 ```
 
 **Optimization Techniques**:
+
 - Filter large tables before JOIN
 - Use appropriate JOIN type (INNER vs LEFT)
 - Filter dimensions to reduce JOIN cardinality
@@ -189,6 +207,7 @@ LIMIT 100
 **Problem**: Window functions scanning entire table.
 
 **Bad Example**:
+
 ```sql
 SELECT
   date_actual,
@@ -199,6 +218,7 @@ ORDER BY date_actual
 ```
 
 **Fixed Example**:
+
 ```sql
 SELECT
   date_actual,
@@ -214,6 +234,7 @@ ORDER BY date_actual
 ```
 
 **Best Practices**:
+
 - Always include PARTITION BY when possible
 - Use explicit frame clause (ROWS BETWEEN)
 - Filter data before windowing
@@ -224,6 +245,7 @@ ORDER BY date_actual
 **Problem**: Correlated subqueries execute for each row.
 
 **Bad Example**:
+
 ```sql
 SELECT
   u.user_id,
@@ -237,6 +259,7 @@ FROM dim_user u
 ```
 
 **Fixed Example**:
+
 ```sql
 SELECT
   u.user_id,
@@ -258,6 +281,7 @@ GROUP BY u.user_id, u.username
 **Problem**: Dashboard with 30+ questions loads slowly.
 
 **Solution**:
+
 1. Combine related metrics into single table question
 2. Remove low-value visualizations
 3. Split into multiple dashboards by audience
@@ -278,6 +302,7 @@ questions:
 ```
 
 **Cache Strategy**:
+
 - **Hourly updates**: 3600s (1 hour)
 - **Daily updates**: 86400s (24 hours)
 - **Real-time**: 60s or disable cache
@@ -309,6 +334,7 @@ questions:
 ```
 
 **Benefits**:
+
 - Users can't accidentally query all data
 - Consistent filtering across questions
 - Single parameter change updates all questions
@@ -345,11 +371,13 @@ WHERE date_actual BETWEEN '2025-10-01' AND '2025-10-31'
 ### Appropriate Warehouse Sizing
 
 **Metabase Query Characteristics**:
+
 - Many small queries (KPI scorecards)
 - Occasional large queries (detail tables)
 - Dashboard loads = burst of queries
 
 **Recommended**:
+
 - Use X-Small or Small warehouse for Metabase
 - Enable auto-suspend (1 minute)
 - Auto-resume enabled
@@ -360,6 +388,7 @@ WHERE date_actual BETWEEN '2025-10-01' AND '2025-10-31'
 Snowflake caches query results for 24 hours.
 
 **Leverage Caching**:
+
 - Use consistent query patterns
 - Identical queries return cached results
 - Works across Metabase users
@@ -369,12 +398,14 @@ Snowflake caches query results for 24 hours.
 ### Step 1: Identify Slow Queries
 
 **Metabase Admin Panel**:
+
 1. Go to Settings → Admin → Performance
 2. Review query execution times
 3. Sort by duration descending
 4. Identify queries >5 seconds
 
 **Snowflake Query History**:
+
 ```sql
 -- Review Metabase query performance
 SELECT
@@ -394,12 +425,14 @@ LIMIT 100;
 ### Step 2: Analyze Query Plan
 
 **In Snowflake**:
+
 ```sql
 EXPLAIN
 SELECT ...  -- Your slow query
 ```
 
 **Look For**:
+
 - Table scans without pruning
 - Large number of partitions scanned
 - Inefficient JOIN orders
@@ -408,6 +441,7 @@ SELECT ...  -- Your slow query
 ### Step 3: Apply Optimizations
 
 **Priority Order**:
+
 1. Add date filter (biggest impact)
 2. Use mart instead of fact table
 3. Add LIMIT clause
@@ -418,12 +452,14 @@ SELECT ...  -- Your slow query
 ### Step 4: Measure Improvement
 
 **Before/After Comparison**:
+
 - Query execution time
 - Data scanned (GB)
 - Partitions scanned
 - Dashboard load time
 
 **Target**:
+
 - Queries <2 seconds
 - KPIs <500ms
 - Dashboard load <10 seconds
@@ -431,6 +467,7 @@ SELECT ...  -- Your slow query
 ## When to Involve sql-expert Agent
 
 **Escalate to sql-expert when**:
+
 - Query requires complex optimization
 - Need to refactor SQL structure
 - Performance issues despite following guidelines
@@ -438,6 +475,7 @@ SELECT ...  -- Your slow query
 - Advanced Snowflake features needed (clustering, materialization)
 
 **Handoff Pattern**:
+
 ```yaml
 # metabase-engineer identifies slow query
 "This Market Maker dashboard query is taking 15 seconds. Here's the SQL:
@@ -503,6 +541,7 @@ ORDER BY hour DESC;
 ---
 
 **Related Documents**:
+
 - [sql-expert-integration.md](../integrations/sql-expert-integration.md) - When to get SQL help
 - [dashboard-load-issues.md](dashboard-load-issues.md) - Dashboard-specific issues
 - [common-api-errors.md](common-api-errors.md) - API performance issues

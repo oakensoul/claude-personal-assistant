@@ -19,7 +19,9 @@ last_updated: "2025-10-07"
 ## P0: Data Breach Response (Active Exfiltration)
 
 ### Phase 1: Contain (0-30 minutes)
+
 1. **Isolate Affected Systems**:
+
    ```bash
    # Revoke Snowflake user access immediately
    ALTER USER <compromised_user> SET DISABLED = TRUE;
@@ -32,6 +34,7 @@ last_updated: "2025-10-07"
    ```
 
 2. **Enable Enhanced Logging**:
+
    ```sql
    -- Capture all queries from suspected compromised account
    SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY
@@ -40,12 +43,15 @@ last_updated: "2025-10-07"
    ```
 
 3. **Notify Stakeholders**:
+
    - Security Lead (immediate)
    - CTO (within 15 minutes)
    - Legal/Compliance (within 30 minutes)
 
 ### Phase 2: Eradicate (30 minutes - 2 hours)
+
 1. **Rotate All Credentials**:
+
    ```bash
    # Emergency KMS key rotation
    aws kms create-key --description "Emergency rotation 2025-10-07"
@@ -55,10 +61,12 @@ last_updated: "2025-10-07"
    ```
 
 2. **Patch Vulnerability**:
+
    - Apply security patches
    - Fix SQL injection, authentication bypass, etc.
 
 3. **Review Access Logs**:
+
    ```sql
    -- Find all tables accessed by compromised account
    SELECT DISTINCT base_objects_accessed
@@ -68,15 +76,19 @@ last_updated: "2025-10-07"
    ```
 
 ### Phase 3: Recover (2-6 hours)
+
 1. **Restore Service**:
+
    - Re-enable accounts with new credentials
    - Validate data integrity (no tampering)
 
 2. **Communication**:
+
    - Internal: Status updates every 30 minutes
    - External: Customer notification if PII affected (within 72 hours per GDPR)
 
 ### Phase 4: Post-Incident Review (1 week)
+
 1. **Root Cause Analysis**: How did breach occur?
 2. **Lessons Learned**: What controls failed?
 3. **Remediation Plan**: Prevent recurrence
@@ -85,6 +97,7 @@ last_updated: "2025-10-07"
 ## P1: Unauthorized Access to PII
 
 ### Immediate Actions
+
 1. **Verify Access**: Check `ACCOUNT_USAGE.ACCESS_HISTORY` for table access
 2. **Disable Account**: `ALTER USER <user> SET DISABLED = TRUE;`
 3. **Review Masking Policies**: Ensure PII masking is active
@@ -93,6 +106,7 @@ last_updated: "2025-10-07"
 ## P2: Critical CVE in Snowflake/Metabase
 
 ### Response Steps
+
 1. **Assess Impact**: Does CVE affect our deployment?
 2. **Apply Patch**: Within 7 days for critical CVEs
 3. **Test in Dev**: Validate no breaking changes
@@ -102,6 +116,7 @@ last_updated: "2025-10-07"
 ## P3: Policy Violation (e.g., hardcoded secret in Git)
 
 ### Response Steps
+
 1. **Revoke Secret**: Immediately rotate exposed credential
 2. **Remove from Git History**: `git filter-branch` or BFG Repo-Cleaner
 3. **Security Training**: Educate team on secret management

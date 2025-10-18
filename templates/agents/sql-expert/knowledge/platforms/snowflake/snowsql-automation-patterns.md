@@ -288,6 +288,7 @@ snowsql -c prod \
 ```
 
 **Query file** (queries/daily_finance_report.sql):
+
 ```sql
 -- Variable substitution using &{variable_name}
 select
@@ -777,6 +778,7 @@ echo "Cleanup complete"
 ## Best Practices Summary
 
 ### Security
+
 - [ ] Store credentials in environment variables or CI/CD secrets
 - [ ] Never commit passwords to version control
 - [ ] Use role-based access control (RBAC)
@@ -784,6 +786,7 @@ echo "Cleanup complete"
 - [ ] Use named connections for local development only
 
 ### Error Handling
+
 - [ ] Always use `set -euo pipefail` in bash scripts
 - [ ] Implement retry logic for transient failures
 - [ ] Log all executions with timestamps
@@ -791,6 +794,7 @@ echo "Cleanup complete"
 - [ ] Capture exit codes and handle appropriately
 
 ### Performance
+
 - [ ] Use parallel execution for independent queries
 - [ ] Limit parallelism to avoid overwhelming warehouse
 - [ ] Use appropriate warehouse size for workload
@@ -798,6 +802,7 @@ echo "Cleanup complete"
 - [ ] Page large result sets to avoid memory issues
 
 ### Maintainability
+
 - [ ] Use meaningful log file names with timestamps
 - [ ] Document variable substitution patterns
 - [ ] Keep scripts modular and reusable
@@ -807,11 +812,13 @@ echo "Cleanup complete"
 ## Additional Resources
 
 **SnowSQL Documentation**:
+
 - [SnowSQL Command Reference](https://docs.snowflake.com/en/user-guide/snowsql-use.html)
 - [SnowSQL Configuration](https://docs.snowflake.com/en/user-guide/snowsql-config.html)
 - [Exit Codes](https://docs.snowflake.com/en/user-guide/snowsql-use.html#exit-codes)
 
 **Project Integration**:
+
 - CI/CD: GitHub Actions for data validation
 - Monitoring: Daily report generation
 - Operations: Warehouse management, cleanup tasks

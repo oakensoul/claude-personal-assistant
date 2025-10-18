@@ -14,6 +14,7 @@ last_updated: "2025-10-16"
 This skill provides pytest testing patterns, configuration, and best practices for Python projects. pytest is the most popular Python testing framework, known for its simple syntax, powerful fixtures, and excellent plugin ecosystem.
 
 Use this skill when:
+
 - Setting up pytest in a new Python project
 - Writing unit tests for Python code
 - Creating reusable test fixtures

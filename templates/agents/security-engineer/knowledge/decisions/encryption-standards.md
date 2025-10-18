@@ -31,11 +31,13 @@ last_updated: "2025-10-07"
 ## Decision Rationale
 
 **Why AES-256-GCM instead of AES-256-CBC?**
+
 - GCM provides authenticated encryption (integrity + confidentiality)
 - Hardware acceleration on modern CPUs (AES-NI)
 - Snowflake default, no configuration needed
 
 **Why TLS 1.2+ (deprecate TLS 1.0/1.1)?**
+
 - TLS 1.0/1.1 vulnerable to BEAST, POODLE attacks
 - PCI DSS 4.0 requires TLS 1.2+ as of March 2025
 - All modern browsers and clients support TLS 1.2+

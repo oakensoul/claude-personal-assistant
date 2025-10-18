@@ -17,17 +17,19 @@ The `aws-cloud-engineer` agent provides AWS-specific infrastructure expertise, f
 - **Cost Optimization**: How to reduce AWS costs
 - **Security Hardening**: How to secure AWS resources
 
-## Invoke This Agent When...
+## Invoke This Agent When
 
 ### 1. Designing AWS Infrastructure
 
 **Scenarios**:
+
 - "Design a serverless API using Lambda and API Gateway"
 - "What's the best way to host a containerized application on AWS?"
 - "Design a multi-tier web application on AWS"
 - "I need to store and process large amounts of data on AWS"
 
 **Example**:
+
 ```
 User: Design the AWS infrastructure for a web application with a database
 
@@ -41,12 +43,14 @@ User: Design the AWS infrastructure for a web application with a database
 ### 2. Implementing or Optimizing CDK Stacks
 
 **Scenarios**:
+
 - "How do I create a CDK stack for this infrastructure?"
 - "My CDK deployment is failing with dependency issues"
 - "How do I share a VPC between multiple CDK stacks?"
 - "Optimize this CDK code for better maintainability"
 
 **Example**:
+
 ```
 User: How do I organize my CDK app with network, database, and application layers?
 
@@ -60,12 +64,14 @@ User: How do I organize my CDK app with network, database, and application layer
 ### 3. Selecting AWS Services
 
 **Scenarios**:
+
 - "Should I use RDS or DynamoDB for this use case?"
 - "What's the difference between ECS and EKS?"
 - "Which storage service should I use: S3, EBS, or EFS?"
 - "Lambda vs Fargate vs EC2 for this workload?"
 
 **Example**:
+
 ```
 User: Should I use Lambda or Fargate for a long-running background job?
 
@@ -78,12 +84,14 @@ User: Should I use Lambda or Fargate for a long-running background job?
 ### 4. Troubleshooting CloudFormation Deployments
 
 **Scenarios**:
+
 - "My CDK deployment failed with 'resource limit exceeded'"
 - "CloudFormation stack is stuck in UPDATE_ROLLBACK_FAILED"
 - "Cross-stack reference error during deployment"
 - "IAM permission denied during CDK deploy"
 
 **Example**:
+
 ```
 User: CDK deploy failing with "Cannot exceed quota for Resources in stack"
 
@@ -96,12 +104,14 @@ User: CDK deploy failing with "Cannot exceed quota for Resources in stack"
 ### 5. Optimizing AWS Costs
 
 **Scenarios**:
+
 - "How can I reduce my EC2 costs?"
 - "What are cost-effective options for this workload?"
 - "Analyze my infrastructure for cost optimization opportunities"
 - "Should I use Reserved Instances or Savings Plans?"
 
 **Example**:
+
 ```
 User: My Lambda costs are high, how can I reduce them?
 
@@ -117,12 +127,14 @@ User: My Lambda costs are high, how can I reduce them?
 ### 6. Hardening Security Configurations
 
 **Scenarios**:
+
 - "Design IAM policies with least privilege"
 - "How do I encrypt data at rest and in transit?"
 - "Secure S3 bucket configuration"
 - "VPC security group rules best practices"
 
 **Example**:
+
 ```
 User: What IAM permissions does my Lambda need to access S3 and DynamoDB?
 
@@ -136,12 +148,14 @@ User: What IAM permissions does my Lambda need to access S3 and DynamoDB?
 ### 7. Designing Multi-Stack or Multi-Account Architectures
 
 **Scenarios**:
+
 - "How do I organize CDK stacks for a large application?"
 - "Design a multi-account AWS setup for dev/staging/prod"
 - "Share VPC across multiple applications"
 - "Cross-account access patterns"
 
 **Example**:
+
 ```
 User: How do I share a VPC between multiple CDK applications?
 
@@ -156,11 +170,13 @@ User: How do I share a VPC between multiple CDK applications?
 ### 8. Creating Custom CDK Constructs
 
 **Scenarios**:
+
 - "Create a reusable CDK construct for a common pattern"
 - "How do I encapsulate multiple resources into a construct?"
 - "Design a construct library for my organization"
 
 **Example**:
+
 ```
 User: Create a reusable construct for a Lambda function with API Gateway
 
@@ -174,12 +190,14 @@ User: Create a reusable construct for a Lambda function with API Gateway
 ### 9. Performance Tuning and Scaling
 
 **Scenarios**:
+
 - "How do I auto-scale this ECS service?"
 - "Optimize Lambda cold start times"
 - "Design caching strategy for API"
 - "RDS performance tuning recommendations"
 
 **Example**:
+
 ```
 User: My Lambda has high cold start latency, how can I fix it?
 
@@ -193,11 +211,12 @@ User: My Lambda has high cold start latency, how can I fix it?
   - Consider switching to Node.js or Python if using Java
 ```
 
-## DO NOT Invoke This Agent When...
+## DO NOT Invoke This Agent When
 
 ### 1. Deployment Automation (Use devops-engineer instead)
 
 **Scenarios**:
+
 - "Create a GitHub Actions workflow to deploy CDK"
 - "Setup CI/CD pipeline for AWS deployments"
 - "Automate deployment to multiple environments"
@@ -205,6 +224,7 @@ User: My Lambda has high cold start latency, how can I fix it?
 **Why**: DevOps engineer handles CI/CD, deployment automation, and GitHub Actions
 
 **Correct flow**:
+
 ```
 User: Deploy my CDK stack via GitHub Actions
 
@@ -216,6 +236,7 @@ User: Deploy my CDK stack via GitHub Actions
 ### 2. Application Code (Use tech-lead or specialist engineers)
 
 **Scenarios**:
+
 - "Write the Lambda function code for this API"
 - "Debug application code running in ECS"
 - "Implement business logic for the service"
@@ -223,6 +244,7 @@ User: Deploy my CDK stack via GitHub Actions
 **Why**: AWS cloud engineer focuses on infrastructure, not application code
 
 **Correct flow**:
+
 ```
 User: Write Lambda code to process S3 events
 
@@ -234,6 +256,7 @@ User: Write Lambda code to process S3 events
 ### 3. General Technical Questions (Use tech-lead)
 
 **Scenarios**:
+
 - "What architecture should I use for this project?"
 - "Review my overall system design"
 - "Technology selection for a new project"
@@ -241,6 +264,7 @@ User: Write Lambda code to process S3 events
 **Why**: Tech-lead handles overall technical architecture, not just AWS
 
 **Correct flow**:
+
 ```
 User: What architecture should I use for a real-time chat application?
 
@@ -253,6 +277,7 @@ User: What architecture should I use for a real-time chat application?
 ### 4. Non-AWS Cloud Platforms
 
 **Scenarios**:
+
 - "Deploy to Vercel"
 - "Configure Google Cloud Platform"
 - "Azure infrastructure design"
@@ -260,6 +285,7 @@ User: What architecture should I use for a real-time chat application?
 **Why**: This agent is AWS-specific
 
 **Correct flow**:
+
 ```
 User: Deploy my Next.js app to Vercel
 
@@ -270,6 +296,7 @@ User: Deploy my Next.js app to Vercel
 ### 5. Database Schema Design (Use data-architect)
 
 **Scenarios**:
+
 - "Design the database schema for my application"
 - "Optimize SQL queries"
 - "Data modeling and normalization"
@@ -277,6 +304,7 @@ User: Deploy my Next.js app to Vercel
 **Why**: Data-architect handles database design; aws-cloud-engineer handles AWS database service selection and configuration
 
 **Correct flow**:
+
 ```
 User: Design my database schema for an e-commerce application
 
@@ -297,6 +325,7 @@ User: Design my database schema for an e-commerce application
 | **Example** | "Design ECS cluster stack" | "Deploy ECS via GitHub Actions" |
 
 **Collaboration**:
+
 1. AWS Cloud Engineer designs CDK stack
 2. DevOps Engineer creates CI/CD to deploy it
 
@@ -310,6 +339,7 @@ User: Design my database schema for an e-commerce application
 | **Example** | "Use Aurora Serverless" | "Use serverless architecture" |
 
 **Collaboration**:
+
 1. Tech Lead defines overall architecture
 2. AWS Cloud Engineer implements AWS infrastructure
 
@@ -323,6 +353,7 @@ User: Design my database schema for an e-commerce application
 | **Example** | "Encrypt S3 with KMS" | "HIPAA compliance audit" |
 
 **Collaboration**:
+
 1. AWS Cloud Engineer implements baseline security
 2. Security Engineer performs deep security review
 
@@ -336,6 +367,7 @@ User: Design my database schema for an e-commerce application
 | **Example** | "Use Spot Instances" | "Analyze 6-month cost trends" |
 
 **Collaboration**:
+
 1. AWS Cloud Engineer builds cost-aware infrastructure
 2. Cost Optimization Agent analyzes and optimizes costs
 
@@ -381,6 +413,7 @@ Agent can provide generic AWS/CDK guidance without project context:
 For project-specific recommendations, agent needs:
 
 **From project-level knowledge** (`.claude/agents/aws-cloud-engineer/knowledge/`):
+
 - AWS account IDs and profiles
 - Existing VPC and subnet IDs
 - Stack architecture and dependencies
@@ -389,6 +422,7 @@ For project-specific recommendations, agent needs:
 - Security requirements
 
 **From codebase**:
+
 - `cdk.json` configuration
 - Existing stack definitions
 - Current AWS resources

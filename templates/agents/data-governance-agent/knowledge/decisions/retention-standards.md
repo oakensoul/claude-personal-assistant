@@ -24,6 +24,7 @@ last_updated: "2025-10-07"
 **Chosen**: Automated deletion with manual override capability
 
 **Rationale**:
+
 - Reduces compliance risk (no forgotten data)
 - Scales better than manual processes
 - Legal hold mechanism preserves data when needed

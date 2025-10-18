@@ -133,6 +133,7 @@ dbt run --target build
 ## Testing Framework
 
 ### Schema Tests (built-in)
+
 ```yaml
 models:
   - name: stg_orders
@@ -149,6 +150,7 @@ models:
 ```
 
 ### Data Tests (custom SQL)
+
 ```sql
 -- tests/assert_positive_order_amounts.sql
 SELECT *
@@ -157,6 +159,7 @@ WHERE order_amount <= 0
 ```
 
 ### Singular Tests
+
 One-off tests for specific business logic.
 
 ## Jinja Templating
@@ -202,7 +205,7 @@ SELECT {{ cents_to_dollars('order_amount') }} AS order_amount
 
 ## Project Structure
 
-```
+```text
 dbt_project/
 ├── dbt_project.yml       # Project configuration
 ├── profiles.yml          # Connection profiles

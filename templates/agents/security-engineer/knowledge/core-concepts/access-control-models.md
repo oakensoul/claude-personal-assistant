@@ -34,6 +34,7 @@ Comprehensive guide to access control models (RBAC, ABAC), least privilege princ
 ## Role-Based Access Control (RBAC)
 
 ### RBAC Principles
+
 RBAC is the most common access control model for data platforms, assigning permissions to roles instead of individual users.
 
 **Key Components**:
@@ -152,6 +153,7 @@ WHERE expires_at < CURRENT_TIMESTAMP()
 ### Metabase RBAC Implementation
 
 #### Metabase Group Permissions
+
 ```yaml
 # Metabase Groups and Permissions Configuration
 # (Configured via Metabase Admin UI or API)
@@ -215,6 +217,7 @@ Groups:
 ```
 
 #### Row-Level Security (RLS) in Metabase
+
 ```sql
 -- Metabase Sandboxing: Restrict data access based on user attributes
 -- Example: Finance analysts can only see data for their assigned region
@@ -244,6 +247,7 @@ Groups:
 ### AWS IAM RBAC
 
 #### IAM Role for Snowflake Integration
+
 ```json
 {
   "Version": "2012-10-17",
@@ -281,6 +285,7 @@ Groups:
 ```
 
 #### IAM Role for dbt Cloud Service Account
+
 ```json
 {
   "Version": "2012-10-17",
@@ -314,14 +319,17 @@ Groups:
 ## Attribute-Based Access Control (ABAC)
 
 ### ABAC Principles
+
 ABAC grants access based on attributes of the user, resource, and environment (context).
 
 **Attributes**:
+
 - **User Attributes**: Department, job title, clearance level, location
 - **Resource Attributes**: Data classification (public, confidential, PII), domain (finance, operations)
 - **Environment Attributes**: Time of day, IP address, device type, MFA status
 
 **Example Policy**:
+
 ```text
 Allow access to PII data IF:
   - User has "data_steward" role
@@ -333,6 +341,7 @@ Allow access to PII data IF:
 ### Snowflake ABAC with Tags
 
 #### Tag-Based Access Control (TBAC)
+
 ```sql
 -- Create tags for data classification
 CREATE TAG DATA_CLASSIFICATION ALLOWED_VALUES 'PUBLIC', 'INTERNAL', 'CONFIDENTIAL', 'PII';
@@ -379,6 +388,7 @@ ALTER TABLE PROD.FINANCE.FCT_WALLET_TRANSACTIONS
 ### AWS IAM ABAC with Tags
 
 #### IAM Policy with Tag-Based Conditions
+
 ```json
 {
   "Version": "2012-10-17",
@@ -419,6 +429,7 @@ ALTER TABLE PROD.FINANCE.FCT_WALLET_TRANSACTIONS
 ## Least Privilege Implementation
 
 ### Snowflake Least Privilege Checklist
+
 - [ ] Users have only the roles required for their job function (no ACCOUNTADMIN/SYSADMIN for analysts)
 - [ ] Service accounts have explicit permissions (no role inheritance)
 - [ ] Read-only roles for reporting users (REPORTER, ANALYST)
@@ -429,6 +440,7 @@ ALTER TABLE PROD.FINANCE.FCT_WALLET_TRANSACTIONS
 - [ ] MFA required for all human users accessing production
 
 ### Metabase Least Privilege Checklist
+
 - [ ] Executives have no self-service SQL access (dashboard view-only)
 - [ ] Analysts have read-only database access (cannot CREATE/DROP tables)
 - [ ] Data engineers have full access but in separate sandbox environment
@@ -438,6 +450,7 @@ ALTER TABLE PROD.FINANCE.FCT_WALLET_TRANSACTIONS
 - [ ] Sensitive dashboards require additional approval (PII, financials)
 
 ### Service Account Least Privilege
+
 ```sql
 -- dbt Cloud Service Account (production builds only)
 CREATE USER DBT_CLOUD_PROD
@@ -480,6 +493,7 @@ GRANT SELECT ON ALL VIEWS IN SCHEMA PROD.FINANCE_MARTS TO ROLE METABASE_READER;
 ### Single Sign-On (SSO) Integration
 
 #### Snowflake SSO with Okta (SAML 2.0)
+
 ```sql
 -- Configure Snowflake as Service Provider (SP) for Okta
 ALTER ACCOUNT SET SAML_IDENTITY_PROVIDER = '{
@@ -497,6 +511,7 @@ SHOW PARAMETERS LIKE 'SAML%' IN ACCOUNT;
 ```
 
 #### Metabase SSO with Okta (SAML 2.0)
+
 ```bash
 # Metabase environment variables for SAML SSO
 MB_SAML_ENABLED=true
@@ -513,6 +528,7 @@ MB_SAML_GROUP_MAPPINGS='{"Finance Analysts": [1], "Data Engineers": [2]}'
 ### Multi-Factor Authentication (MFA)
 
 #### Snowflake MFA with Duo Security
+
 ```sql
 -- Enable MFA for all users in production
 ALTER USER john.doe SET EXT_AUTHN_DUO = TRUE;
@@ -528,6 +544,7 @@ WHERE deleted_on IS NULL;
 ```
 
 #### Time-Based One-Time Password (TOTP)
+
 ```bash
 # Google Authenticator, Authy, or 1Password for TOTP
 # User scans QR code during Snowflake login
@@ -537,6 +554,7 @@ WHERE deleted_on IS NULL;
 ## Access Control Auditing
 
 ### Snowflake Access History
+
 ```sql
 -- Query access history for sensitive tables (last 30 days)
 SELECT
@@ -568,6 +586,7 @@ ORDER BY access_count DESC;
 ```
 
 ### Snowflake Grants Audit
+
 ```sql
 -- Review all grants for a specific role
 SHOW GRANTS TO ROLE FINANCE_ANALYST;
@@ -591,6 +610,7 @@ WHERE deleted_on IS NULL
 ```
 
 ### Metabase Audit Logging
+
 ```sql
 -- Metabase audit log (stored in Metabase application database)
 SELECT

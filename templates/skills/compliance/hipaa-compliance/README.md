@@ -16,6 +16,7 @@ This skill provides Health Insurance Portability and Accountability Act (HIPAA) 
 HIPAA is a U.S. federal law that establishes national standards for protecting sensitive patient health information. Any system that creates, receives, maintains, or transmits PHI must comply with HIPAA regulations.
 
 Use this skill when:
+
 - Building healthcare applications that handle patient data
 - Designing systems that store or transmit PHI
 - Auditing healthcare applications for HIPAA compliance
@@ -91,6 +92,7 @@ Use this skill when:
 ### Privacy Rule
 
 Establishes national standards for protecting PHI:
+
 - **Minimum Necessary**: Only access/use minimum PHI needed
 - **Patient Rights**: Access, amendment, accounting of disclosures
 - **Authorization**: Written authorization for most PHI disclosures
@@ -99,6 +101,7 @@ Establishes national standards for protecting PHI:
 ### Security Rule
 
 Protects electronic PHI (ePHI) with technical safeguards:
+
 - **Access Control**: Unique user IDs, emergency access, encryption
 - **Audit Controls**: Logs of system activity
 - **Integrity Controls**: Ensure ePHI not improperly altered
@@ -107,6 +110,7 @@ Protects electronic PHI (ePHI) with technical safeguards:
 ### Breach Notification Rule
 
 Requires notification of PHI breaches:
+
 - **Affected individuals**: Within 60 days
 - **HHS**: For breaches affecting 500+ individuals
 - **Media**: For large breaches
@@ -117,11 +121,13 @@ Requires notification of PHI breaches:
 ### Encryption
 
 **At Rest**:
+
 - AES-256 encryption for databases storing PHI
 - Encrypted file systems or volumes
 - Encrypted backups
 
 **In Transit**:
+
 - TLS 1.2+ for all PHI transmissions
 - VPNs for internal network traffic
 - Encrypted email for PHI communications
@@ -137,6 +143,7 @@ Requires notification of PHI breaches:
 ### Audit Logging
 
 Must log and retain:
+
 - PHI access (who, what, when, where)
 - PHI modifications
 - System access (logins, logouts, failed attempts)
@@ -274,12 +281,14 @@ def de_identify_patient(patient_data):
 ## Penalties for Non-Compliance
 
 **Civil Penalties** (per violation):
+
 - Tier 1 (Unknowing): $100 - $50,000
 - Tier 2 (Reasonable cause): $1,000 - $50,000
 - Tier 3 (Willful neglect, corrected): $10,000 - $50,000
 - Tier 4 (Willful neglect, not corrected): $50,000 - $1.9M
 
 **Criminal Penalties**:
+
 - Up to $50,000 and 1 year in prison
 - Up to $100,000 and 5 years (under false pretenses)
 - Up to $250,000 and 10 years (with intent to sell PHI)
