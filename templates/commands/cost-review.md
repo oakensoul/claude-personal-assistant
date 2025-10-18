@@ -485,6 +485,7 @@ Error_Scenarios:
 ```
 
 **Output:**
+
 ```yaml
 Cost_Review_Report:
   Period: "October 2025 (MTD through 10/07)"
@@ -588,6 +589,7 @@ Cost_Review_Report:
 ```
 
 **Output:**
+
 ```yaml
 Cost_Review_Report:
   Period: "September 2025"
@@ -646,6 +648,7 @@ Cost_Review_Report:
 ```
 
 **Output:**
+
 ```yaml
 Cost_Review_Report:
   Period: "Last 7 Days (2025-10-01 to 2025-10-07)"

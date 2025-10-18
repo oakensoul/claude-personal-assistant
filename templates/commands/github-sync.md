@@ -16,6 +16,7 @@ Verify and synchronize GitHub configuration against the specification defined in
 The `/github-sync` command ensures your GitHub repository configuration matches the documented specification. It verifies labels, validates configuration files, checks cache freshness, and detects symptoms of missing automations.
 
 **When to run:**
+
 - Weekly as part of maintenance routine
 - After manual GitHub configuration changes
 - Before important PR workflows
@@ -29,6 +30,7 @@ The `/github-sync` command ensures your GitHub repository configuration matches 
 ### check (default)
 
 Non-destructive verification mode:
+
 - Verify labels exist with correct colors and descriptions
 - Check workflow-config.json validity
 - Verify verification cache freshness (<30 days)
@@ -36,6 +38,7 @@ Non-destructive verification mode:
 - Exit with status code (0=synced, 1=drift detected)
 
 **Usage:**
+
 ```bash
 /github-sync
 /github-sync check

@@ -21,10 +21,12 @@ Optimize Snowflake warehouse configuration by analyzing utilization patterns, pr
 ## Options
 
 **Warehouse Selection**:
+
 - `WAREHOUSE_NAME` - Specific warehouse to analyze
 - `--all` - Analyze all warehouses in the account
 
 **Analysis Period**:
+
 - `--analysis-period 7` - Last 7 days (default)
 - `--analysis-period 30` - Last 30 days (recommended for trend analysis)
 - `--analysis-period 90` - Quarterly analysis (best for seasonal patterns)

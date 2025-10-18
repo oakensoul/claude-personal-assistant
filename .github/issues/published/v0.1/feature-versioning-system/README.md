@@ -15,6 +15,7 @@ blocks: ["work-command", "workflow-commands", "operations-commands", "quality-co
 ## Problem
 
 As AIDA evolves, we need a way to:
+
 - Track command structure versions
 - Ensure compatibility between AIDA versions
 - Provide smooth migration paths

@@ -12,6 +12,7 @@ Comprehensive metric validation across dashboards, semantic layer, and ad-hoc re
 ## Purpose
 
 Ensure metric consistency and prevent metric sprawl by:
+
 1. Validating metric definitions across all sources (dbt, Metabase, notebooks)
 2. Detecting inconsistencies in formulas, filters, and grain
 3. Identifying duplicate/conflicting metric definitions
@@ -749,6 +750,7 @@ Semantic_Layer_Coverage_Report:
 ### With Agents
 
 This command primarily invokes the **data-governance-agent** for:
+
 - dbt metrics implementation guidance
 - Dashboard SQL migration and optimization
 - Business logic validation and testing

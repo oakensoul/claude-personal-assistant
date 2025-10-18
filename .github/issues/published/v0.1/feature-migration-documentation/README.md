@@ -15,6 +15,7 @@ depends_on: ["versioning-system", "work-command", "workflow-commands", "operatio
 ## Problem
 
 As we launch v0.1.0 with the new consolidated command structure:
+
 - Need clear documentation for all new commands
 - Need migration guide for any early adopters
 - Need comprehensive examples for all workflows
@@ -27,7 +28,7 @@ Create comprehensive documentation suite and migration system for v0.1.0 launch.
 
 ### Documentation Structure
 
-```
+```text
 docs/
 ├── getting-started/
 │   ├── installation.md
@@ -262,6 +263,7 @@ docs/
 ## Dependencies
 
 Depends on all other v0.1.0 issues being completed:
+
 - versioning-system (#1)
 - work-command (#2)
 - workflow-commands (#3)
