@@ -197,6 +197,377 @@ When you:
 
 **Why**: Documentation is a byproduct of work, not a separate task.
 
+## 7. Team Reporting and Communication Workflows
+
+### Context: Work Documentation and Executive Communication
+
+**Source**: Requirements extracted from "ETL and Tell" team journaling system
+
+**Problem**: Engineering teams need to document daily work, compile team reports, and communicate technical achievements to executives in accessible language.
+
+**Current pain points**:
+- Individual daily work is lost without documentation
+- Team accomplishments are hard to surface for leadership
+- Technical reports don't translate well for executive consumption
+- No systematic way to track time, blockers, and non-code work
+- Git commits don't tell the full story (meetings, planning, troubleshooting)
+
+### Core Requirements
+
+#### 1. Daily Work Journaling
+
+**Purpose**: Document daily engineering work with factual accuracy
+
+**Requirements**:
+- **Git commit analysis** - Scan multiple repositories for user commits in time range
+- **Time tracking** - day_start, day_end, break_time, hours_worked (prevents double-counting)
+- **Conversational interviewing** - Ask about meetings, code reviews, non-commit work
+- **Multi-source integration** - Git + JIRA/work tracker + direct user input
+- **Strict factual accuracy** - NEVER make up statistics, metrics, or claims
+- **Structured output** - Obsidian-compatible markdown with frontmatter
+- **User configuration** - Git identifiers, default hours, timezone per team member
+
+**Data sources**:
+- Git commits (local and remote, all configured repos)
+- Work tracker activity (JIRA, Linear, GitHub Issues, etc.)
+- Direct user input via conversational interview
+
+**Captured information**:
+- Code commits with context (what, why, not just message)
+- Meetings attended (what, when, outcomes)
+- Code reviews performed
+- Non-commit work (planning, documentation, troubleshooting, mentoring)
+- Blockers and challenges encountered
+- Key accomplishments
+
+**Output structure**:
+```markdown
+daily/{username}/{YYYY}/{MM}/{YYYY-MM-DD}.md
+
+Frontmatter:
+- title, date, author, type: daily
+- day_start, day_end, break_time, hours_worked
+- timezone, tags
+
+Sections:
+- Summary (2-3 sentences)
+- Git Activity (by repository)
+- Meetings
+- Code Reviews
+- Other Work
+- Accomplishments
+- Blockers & Challenges
+```
+
+#### 2. Team Reporting
+
+**Purpose**: Compile individual entries into team-wide reports
+
+**Weekly summaries** (personal):
+- Compile individual's daily entries for the week
+- Identify patterns and themes
+- Highlight major accomplishments
+- Document challenges overcome
+
+**Monthly summaries** (personal):
+- Roll up weekly summaries
+- High-level accomplishments and projects
+- Growth and learning
+- Key themes
+
+**Team reports** (compiled):
+- Aggregate all team members' entries
+- Executive summary of team activities
+- Individual team member sections with attribution
+- Team-wide patterns and collective achievements
+
+#### 3. Executive Communication
+
+**Purpose**: Transform technical reports into executive-friendly summaries
+
+**Requirements**:
+- **Audience-aware writing** - Different tone for executives vs technical teams
+- **Business impact framing** - Focus on "so what" and business value
+- **Cultural adaptation** - Match company culture (professional, startup, sports company, etc.)
+- **Still factual** - No made-up metrics even in executive summaries
+- **Configurable personality** - Light commentary if appropriate for culture
+- **Highlight extraction** - Pull key sections for landing pages/wikis
+
+**Tone configuration** (per company culture):
+- Professional (traditional corporate)
+- Engaging (startup, casual)
+- Light commentary (sports companies, creative industries)
+- Humor level: minimal → moderate → enthusiastic
+
+**Output examples**:
+```markdown
+Executive Weekly:
+- Opening with engaging hook
+- High-level achievements (3-5 major items)
+- Team momentum indicators
+- Notable individual contributions
+- Forward-looking statement
+
+Executive Monthly:
+- Month's theme/narrative
+- Major accomplishments
+- Key themes and focus areas
+- Business impact
+```
+
+#### 4. Integration and Publishing
+
+**Purpose**: Connect to external systems (work trackers, wikis, etc.)
+
+**Requirements**:
+- **MCP-based integrations** - Use Model Context Protocol for tool integration
+- **Wiki publishing** - Confluence, Notion, GitBook, etc.
+- **Work tracker sync** - JIRA, Linear, GitHub Issues
+- **Page hierarchy management** - Maintain organized wiki structures
+- **Markdown conversion** - Transform to wiki-native format
+- **Automated workflows** - Publish on schedule or trigger
+
+### Generalized Concepts
+
+**Remove company-specific references**:
+- ❌ "Splash Sports" → ✅ Configurable company name
+- ❌ "sports commentary" → ✅ Configurable cultural tone
+- ❌ "Data Engineering Squad" → ✅ Team name from config
+
+**Make integrations pluggable**:
+- Git analysis (any git repository)
+- Work tracker (JIRA, Linear, GitHub, etc.)
+- Wiki system (Confluence, Notion, GitBook, etc.)
+
+**Configuration-driven**:
+```yaml
+team_reporting:
+  company_name: "Your Company"
+  team_name: "Engineering Team"
+  cultural_tone: "professional"  # professional | engaging | light-commentary
+  humor_level: "minimal"         # minimal | moderate | enthusiastic
+  max_puns_per_summary: 2
+  git_repos:
+    - /path/to/repo1
+    - /path/to/repo2
+  work_tracker:
+    type: jira  # jira | linear | github
+    project_key: "PROJ"
+  wiki:
+    type: confluence  # confluence | notion | gitbook
+    space_key: "TEAM"
+```
+
+### Proposed Command Structure
+
+Using our workflow-oriented naming and noun-verb convention:
+
+**Journal Workflow** (individual work documentation):
+```
+/journal-daily          Create daily journal entry with git analysis
+/journal-weekly         Compile week's daily entries into summary
+/journal-monthly        Compile month's weekly summaries
+```
+
+**Team Report Workflow** (team-wide compilation):
+```
+/team-report-weekly     Compile all team members' weekly summaries
+/team-report-monthly    Compile team's monthly report
+```
+
+**Executive Summary Workflow** (leadership communication):
+```
+/executive-summary-weekly   Transform team report → executive summary
+/executive-summary-monthly  Transform monthly report → executive summary
+```
+
+**Publishing Workflow** (external integration):
+```
+/wiki-publish-summary   Publish executive summary to wiki
+/wiki-update-index      Update landing page with latest highlights
+```
+
+**Configuration & Setup**:
+```
+/journal-configure      Set up user preferences (git identifiers, hours, timezone)
+/team-configure         Set up team reporting config
+```
+
+### Skills Structure
+
+Following ADR-009 (Skills System Architecture), create reusable skills:
+
+```
+~/.claude/skills/
+├── work-documentation/
+│   ├── daily-journaling/
+│   │   ├── README.md
+│   │   ├── git-analysis.md
+│   │   ├── time-tracking.md
+│   │   ├── interview-questions.md
+│   │   └── frontmatter-templates.md
+│   ├── team-reporting/
+│   │   ├── README.md
+│   │   ├── compilation-patterns.md
+│   │   ├── attribution-guidelines.md
+│   │   └── aggregation-rules.md
+│   └── git-commit-analysis/
+│       ├── README.md
+│       ├── multi-repo-scanning.md
+│       ├── commit-message-parsing.md
+│       └── time-range-filtering.md
+├── communication/
+│   ├── executive-summaries/
+│   │   ├── README.md
+│   │   ├── business-impact-framing.md
+│   │   ├── audience-adaptation.md
+│   │   ├── highlight-extraction.md
+│   │   └── cultural-tone-matching.md
+│   ├── technical-to-business-translation/
+│   │   ├── README.md
+│   │   ├── framing-technical-work.md
+│   │   ├── avoiding-jargon.md
+│   │   └── business-value-language.md
+│   └── factual-accuracy/
+│       ├── README.md
+│       ├── no-made-up-statistics.md
+│       └── evidence-based-claims.md
+└── integrations/
+    ├── mcp-atlassian/
+    │   ├── README.md
+    │   ├── jira-operations.md
+    │   └── confluence-publishing.md
+    ├── git-analysis/
+    │   ├── README.md
+    │   ├── repo-scanning.md
+    │   └── commit-extraction.md
+    └── wiki-publishing/
+        ├── README.md
+        ├── markdown-conversion.md
+        └── page-hierarchy.md
+```
+
+### Agent Candidates
+
+**Potential future agents** (to be designed):
+
+1. **team-chronicler** - Daily/weekly work documentation
+   - Uses: daily-journaling, git-commit-analysis, time-tracking skills
+   - Responsibilities: Conduct interviews, analyze git activity, create structured entries
+   - Tone: Factual, professional, conversational
+
+2. **executive-communicator** - Transform technical → business language
+   - Uses: executive-summaries, technical-to-business-translation skills
+   - Responsibilities: Create executive summaries, frame business impact, match cultural tone
+   - Tone: Configurable (professional, engaging, light commentary)
+
+3. **work-tracker-specialist** - Integration with JIRA/Linear/GitHub
+   - Uses: mcp-atlassian, work tracker integration skills
+   - Responsibilities: Sync work tracker activity, manage tickets, update wikis
+   - Tone: Efficient, meticulous
+
+**Note**: These could alternatively be modes/personalities of existing agents (tech-lead, product-manager) rather than separate agents. Design decision deferred.
+
+### Implementation Considerations
+
+**Phase 1: Skills Development** (foundational)
+- Create skills in `~/.claude/skills/` structure
+- Document patterns and best practices
+- Make them available to all agents
+
+**Phase 2: Command Design** (workflow)
+- Design `/journal-*` commands
+- Design `/team-report-*` commands
+- Design `/executive-summary-*` commands
+- Follow noun-verb convention
+
+**Phase 3: Agent Decision** (later)
+- Decide if dedicated agents needed or if existing agents can handle
+- Consider: tech-lead uses team-reporting skills for status updates
+- Consider: product-manager uses executive-communication skills for stakeholder updates
+
+**Phase 4: Integration** (final)
+- MCP integrations (JIRA, Confluence, etc.)
+- Wiki publishing workflows
+- Automated publishing pipelines
+
+### Key Principles (from ETL and Tell)
+
+1. **Factual Accuracy is Sacred**
+   - NEVER make up statistics, metrics, or performance claims
+   - All numbers must come from actual data (git, JIRA, user input)
+   - If information is missing, ask the user - don't invent
+
+2. **Time Tracking Prevents Double-Counting**
+   - Use day_start/day_end to define work boundaries
+   - Track break_time separately
+   - hours_worked = (day_end - day_start) - break_time
+   - User's stated hours are authoritative, not git commit timestamps
+
+3. **Conversational Interviewing**
+   - Ask open-ended questions to gather context
+   - Probe for non-commit work (meetings, planning, troubleshooting)
+   - Be thorough but respectful of user's time
+   - Don't re-ask what user already provided
+
+4. **Attribution Matters**
+   - Give credit to individuals for their contributions
+   - Maintain attribution through all compilation levels
+   - Team reports should celebrate individual achievements
+
+5. **Cultural Adaptation**
+   - Executive summaries should match company culture
+   - Configuration-driven tone (professional, engaging, light commentary)
+   - Humor level configurable (some cultures appreciate it, others don't)
+
+6. **Comprehensive Documentation**
+   - Capture both code work AND non-code work
+   - Include "why" context, not just "what"
+   - Document blockers and challenges, not just wins
+   - Provide both summaries AND detailed information
+
+### Benefits
+
+**For Individual Engineers**:
+- Daily work is documented for future reference
+- Easier performance reviews (comprehensive work log)
+- Clearer communication of accomplishments
+- Time tracking for billing/planning
+
+**For Engineering Managers**:
+- Team visibility without micromanagement
+- Easy compilation of team reports for leadership
+- Identify patterns, blockers, and bottlenecks
+- Recognition and attribution of team contributions
+
+**For Executives**:
+- Technical work explained in business terms
+- High-level awareness without technical details
+- Team momentum and progress visibility
+- Engaging summaries that respect their time
+
+### Success Metrics
+
+- Individual engineers create daily entries (adoption)
+- Weekly team reports generated consistently
+- Executive summaries published on schedule
+- Leadership engagement with summaries (readership)
+- Reduced time spent on status reports (efficiency)
+- Team satisfaction with recognition/attribution
+
+### References
+
+- ETL and Tell: https://github.com/betterpool/etl-and-tell (internal)
+- Original agents: The Journalist, The Sportscaster, The Atlassian Specialist
+- Key insight: "Factual accuracy + cultural adaptation + attribution = valuable team reporting"
+
+---
+
+**Decision**: Add team reporting and executive communication workflows to AIDA command structure. Implement as skills first, then design commands, defer agent decision.
+
+**Status**: Requirements captured, skills structure designed, command naming proposed. Implementation deferred to future milestone.
+
+
 ## Command Structure
 
 ### Issue Workflow Commands (13)
