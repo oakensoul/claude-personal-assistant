@@ -16,6 +16,7 @@ Project-specific shell scripting standards and requirements for the AIDA framewo
 ### Critical Compatibility Requirements
 
 **Bash 3.2 Compatibility (macOS Default)**:
+
 ```bash
 # NEVER use Bash 4+ features
 # ✗ NO: Associative arrays (Bash 4+)
@@ -34,6 +35,7 @@ find . -name "*.sh" -type f | while IFS= read -r file; do
 ```
 
 **Cross-Platform Commands**:
+
 ```bash
 # readlink differs between macOS and Linux
 # ✗ NO: readlink -f (Linux-specific)
@@ -55,6 +57,7 @@ fi
 ### install.sh Structure
 
 **Main Installation Script**:
+
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -104,6 +107,7 @@ main "$@"
 ### Template Processing
 
 **Variable Substitution**:
+
 ```bash
 # Process install-time variables ONLY
 process_template() {
@@ -127,6 +131,7 @@ process_template() {
 ### Error Handling
 
 **AIDA Error Standards**:
+
 ```bash
 # Function for consistent error messages
 error() {
@@ -150,6 +155,7 @@ test -w "$HOME" || error "HOME directory is not writable"
 ### CLI Structure
 
 **Main CLI Entry Point**:
+
 ```bash
 #!/usr/bin/env bash
 # ~/.aida/bin/aida
@@ -183,6 +189,7 @@ main "$@"
 ### Subcommand Implementation
 
 **Personality Management**:
+
 ```bash
 # ~/.aida/lib/personality.sh
 
@@ -232,6 +239,7 @@ switch_personality() {
 ```
 
 **Status Display**:
+
 ```bash
 # ~/.aida/lib/status.sh
 
@@ -277,6 +285,7 @@ EOF
 ### Validation Scripts
 
 **Configuration Validation**:
+
 ```bash
 #!/usr/bin/env bash
 # ~/.aida/bin/validate-config
@@ -335,6 +344,7 @@ main "$@"
 ### Git Hooks
 
 **Pre-commit Hook**:
+
 ```bash
 #!/usr/bin/env bash
 # .git/hooks/pre-commit
@@ -365,6 +375,7 @@ echo "✓ Pre-commit checks passed"
 ### Path Handling
 
 **Portable Path Operations**:
+
 ```bash
 # Handle spaces in paths
 safe_path_op() {
@@ -395,6 +406,7 @@ expand_path() {
 ### Platform Detection
 
 **Detect macOS vs Linux**:
+
 ```bash
 detect_platform() {
     case "$(uname -s)" in
@@ -427,6 +439,7 @@ fi
 ### Script Testing
 
 **Test Framework**:
+
 ```bash
 # tests/test_install.sh
 

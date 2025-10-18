@@ -278,11 +278,13 @@ Debug_Report:
 ### Example 1: dbt Compilation Error
 
 **User Request:**
+
 ```bash
 /debug "fct_wallet_transactions compilation failed"
 ```
 
 **Orchestration:**
+
 ```yaml
 Step_1: Error Analysis
   - Detected: SQL compilation error
@@ -310,6 +312,7 @@ Step_4: Prevention
 ```
 
 **Output:**
+
 ```yaml
 Debug_Report:
   Error_Type: SQL_Compilation
@@ -330,11 +333,13 @@ Debug_Report:
 ### Example 2: Schema Change Cascade
 
 **User Request:**
+
 ```bash
 /debug mart_daily_revenue
 ```
 
 **Orchestration:**
+
 ```yaml
 Step_1: Error Analysis
   - Detected: Schema error in mart layer
@@ -367,6 +372,7 @@ Step_4: Prevention
 ```
 
 **Output:**
+
 ```yaml
 Debug_Report:
   Error_Type: Schema_Change
@@ -399,11 +405,13 @@ Debug_Report:
 ### Example 3: Warehouse Timeout (P1 Incident)
 
 **User Request:**
+
 ```bash
 /debug "All dbt models timing out"
 ```
 
 **Orchestration:**
+
 ```yaml
 Step_1: Error Analysis
   - Detected: Resource limit / warehouse timeout
@@ -446,6 +454,7 @@ Step_5: Postmortem
 ```
 
 **Output:**
+
 ```yaml
 Debug_Report:
   Error_Type: Resource_Limit
@@ -493,11 +502,13 @@ Debug_Report:
 ### Example 4: Data Quality Failure
 
 **User Request:**
+
 ```bash
 /debug "fct_contest_entries has duplicate keys"
 ```
 
 **Orchestration:**
+
 ```yaml
 Step_1: Error Analysis
   - Detected: Data quality issue (unique test failure)
@@ -525,6 +536,7 @@ Step_3: Resolution
 ```
 
 **Output:**
+
 ```yaml
 Debug_Report:
   Error_Type: Data_Quality

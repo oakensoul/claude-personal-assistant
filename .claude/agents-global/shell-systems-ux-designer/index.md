@@ -28,6 +28,7 @@ Project-specific CLI UX design standards and requirements for the AIDA framework
 ### Primary Commands
 
 **Status Command**:
+
 ```bash
 # Show current AIDA state
 $ aida status
@@ -47,6 +48,7 @@ Recent:
 ```
 
 **Personality Management**:
+
 ```bash
 # List available personalities
 $ aida personality list
@@ -70,6 +72,7 @@ Good day. Alfred at your service. How may I assist you today?
 ```
 
 **Knowledge Management**:
+
 ```bash
 # Search knowledge base
 $ aida knowledge search "git workflow"
@@ -94,6 +97,7 @@ $ aida knowledge show workflows/git-workflow.md
 ```
 
 **Help System**:
+
 ```bash
 # Main help
 $ aida help
@@ -184,6 +188,7 @@ Heads up! You've got some changes that aren't committed yet. Wanna check 'em out
 ### Error Message Design
 
 **Bad Error (Generic, Unhelpful)**:
+
 ```bash
 $ aida personality invalid
 
@@ -191,6 +196,7 @@ Error: Personality not found
 ```
 
 **Good Error (JARVIS - Professional)**:
+
 ```bash
 $ aida personality invalid
 
@@ -209,6 +215,7 @@ For more information: aida help personality
 ```
 
 **Good Error (Alfred - Supportive)**:
+
 ```bash
 $ aida personality invalid
 
@@ -231,6 +238,7 @@ May I be of further assistance? Type 'aida help personality' for more details.
 ### Recovery Guidance
 
 **Command Not Found**:
+
 ```bash
 $ aida personlity jarvis
                ↑
@@ -247,6 +255,7 @@ For a list of commands: aida help
 ```
 
 **Missing Arguments**:
+
 ```bash
 $ aida personality switch
 
@@ -321,6 +330,7 @@ Next steps:
 ### Color and Formatting
 
 **AIDA Color Scheme**:
+
 ```bash
 # Success (green)
 ✓ Operation completed successfully
@@ -341,6 +351,7 @@ Next steps:
 ### Output Formats
 
 **Default (Human-Readable)**:
+
 ```bash
 $ aida status
 
@@ -352,6 +363,7 @@ Project:     claude-personal-assistant
 ```
 
 **JSON Output (Machine-Readable)**:
+
 ```bash
 $ aida status --json
 
@@ -368,6 +380,7 @@ $ aida status --json
 ```
 
 **Prompt Output (For Shell Integration)**:
+
 ```bash
 $ aida status --prompt
 
@@ -379,6 +392,7 @@ $ aida status --prompt
 ### Git Workflow Commands
 
 **Start Work on Issue**:
+
 ```bash
 $ aida start-work 42
 
@@ -403,6 +417,7 @@ Recommended next steps:
 ```
 
 **Open Pull Request**:
+
 ```bash
 $ aida open-pr
 
@@ -444,6 +459,7 @@ Next steps:
 ### Context-Sensitive Help
 
 **In Project Directory**:
+
 ```bash
 $ aida help
 
@@ -462,6 +478,7 @@ For project-specific workflows: aida help workflows
 ```
 
 **Outside Project**:
+
 ```bash
 $ aida help
 

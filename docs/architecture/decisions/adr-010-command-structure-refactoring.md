@@ -16,6 +16,7 @@ informed: []
 ## Context
 
 AIDA currently has 29 commands with inconsistent naming and organization. After implementing:
+
 - ADR-006: Analyst/Engineer Agent Pattern
 - ADR-007: Product/Platform/API Engineering Model
 - ADR-008: Engineers Own Testing Philosophy
@@ -37,11 +38,11 @@ We need to refactor commands to align with these architectural decisions and pro
 
 When working, developers don't think:
 
-
 - ❌ "I need to interact with GitHub issues"
 - ✅ "I need to plan my work"
 
 When managing AIDA, developers don't think:
+
 - ❌ "I need the Claude agent manager"
 - ✅ "I need to optimize my agents"
 
@@ -63,7 +64,7 @@ When managing AIDA, developers don't think:
 
 Developers move through adoption stages:
 
-**Stage 1: "I don't trust AI at all"**
+#### Stage 1: "I don't trust AI at all"
 
 ```text
 /issue-create       # I'll write my own issue
@@ -73,7 +74,7 @@ Developers move through adoption stages:
 
 → **Trust building**: AI handles low-risk setup tasks
 
-**Stage 2: "AI can help, but I verify everything"**
+#### Stage 2: "AI can help, but I verify everything"
 
 ```text
 /issue-analyze      # AI analyzes → I review → iterate
@@ -83,7 +84,7 @@ Developers move through adoption stages:
 
 → **Trust building**: AI provides value, human retains control
 
-**Stage 3: "I'm building confidence"**
+#### Stage 3: "I'm building confidence"
 
 ```text
 /issue-pause        # AI manages context switching (low risk)
@@ -93,7 +94,7 @@ Developers move through adoption stages:
 
 → **Trust building**: AI handles more, but with transparency
 
-**Stage 4: "I trust the workflow"**
+#### Stage 4: "I trust the workflow"
 
 ```text
 /issue-submit       # AI handles PR creation (I've verified everything)
@@ -604,7 +605,7 @@ Following ADR-009 (Skills System Architecture), create reusable skills:
 
 ### References
 
-- ETL and Tell: https://github.com/betterpool/etl-and-tell (internal)
+- ETL and Tell: <https://github.com/betterpool/etl-and-tell> (internal)
 - Original agents: The Journalist, The Sportscaster, The Atlassian Specialist
 - Key insight: "Factual accuracy + cultural adaptation + attribution = valuable team reporting"
 
@@ -1351,7 +1352,7 @@ Added three commands for flexible work patterns:
 
 ### The Key Architectural Principle
 
-**"Granularity builds trust"**
+#### "Granularity builds trust"
 
 The 11-step issue workflow (vs a single "do issue X" command) is **intentional product design for AI adoption**:
 
@@ -1623,7 +1624,7 @@ During this discussion, identified missing **business-metrics** skill category (
 
 - `/aws-review [scope]` - Review AWS infrastructure (all|cdk|cost|security|stack-name)
 
-**Total: 70 commands**
+#### Total: 70 commands
 
 - **Core workflow**: 32 commands (issue, repository, SSH, PR)
 - **AIDA meta**: 23 commands (agent, skill, command, system, GitHub)
