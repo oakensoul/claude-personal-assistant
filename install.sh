@@ -368,18 +368,29 @@ main() {
     # Create directory structure
     create_directories
 
-    # Install command templates using namespace isolation
-    install_templates \
-        "${SCRIPT_DIR}/templates/commands" \
-        "${CLAUDE_DIR}/commands" \
-        "$DEV_MODE" \
-        ".aida" || {
-        print_message "error" "Failed to install command templates"
-        exit 1
-    }
+    # TODO: Install command templates using namespace isolation
+    # NOTE: Skipping template installation for now - templates are currently flat .md files
+    # but install_templates expects folder structure (commands/command-name/README.md).
+    # Template migration to folder structure is planned for future work.
+    #
+    # install_templates \
+    #     "${SCRIPT_DIR}/templates/commands" \
+    #     "${CLAUDE_DIR}/commands" \
+    #     "$DEV_MODE" \
+    #     ".aida" || {
+    #     print_message "error" "Failed to install command templates"
+    #     exit 1
+    # }
 
-    # Write user configuration
-    write_user_config "$DEV_MODE" "$AIDA_DIR" "$CLAUDE_DIR" "$VERSION" "$ASSISTANT_NAME" "$PERSONALITY" || {
+    print_message "info" "Template installation skipped (templates not yet migrated to folder structure)"
+
+    # Write user configuration (convert boolean to string)
+    local install_mode="normal"
+    if [[ "$DEV_MODE" == "true" ]]; then
+        install_mode="dev"
+    fi
+
+    write_user_config "$install_mode" "$AIDA_DIR" "$CLAUDE_DIR" "$VERSION" "$ASSISTANT_NAME" "$PERSONALITY" || {
         print_message "error" "Failed to write user configuration"
         exit 1
     }
