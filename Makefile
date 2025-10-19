@@ -178,3 +178,80 @@ ci: lint test-all validate ## Run all CI checks
 ci-fast: lint-shell test-unit ## Run fast CI checks (skip integration tests)
 	@echo ""
 	@echo "✓ Fast CI checks passed!"
+
+#######################################
+# Docker testing targets
+#######################################
+
+.PHONY: docker-build
+docker-build: ## Build Docker test image
+	@echo "Building Docker test image..."
+	@cd .github/testing && docker build -t aida-test .
+	@echo "✓ Docker image built: aida-test"
+
+.PHONY: docker-test-fresh
+docker-test-fresh: ## Run fresh install test in Docker
+	@echo "Running fresh install test..."
+	@cd .github/testing && docker-compose --profile fresh run --rm fresh-install
+
+.PHONY: docker-test-upgrade
+docker-test-upgrade: ## Run upgrade test in Docker
+	@echo "Running upgrade test..."
+	@cd .github/testing && docker-compose --profile upgrade run --rm upgrade
+
+.PHONY: docker-test-migration
+docker-test-migration: ## Run migration test in Docker
+	@echo "Running migration test..."
+	@cd .github/testing && docker-compose --profile migration run --rm migration
+
+.PHONY: docker-test-dev
+docker-test-dev: ## Run dev mode test in Docker
+	@echo "Running dev mode test..."
+	@cd .github/testing && docker-compose --profile dev run --rm dev-mode
+
+.PHONY: docker-test-all
+docker-test-all: ## Run all Docker tests in sequence
+	@echo "Running all Docker test scenarios..."
+	@cd .github/testing && docker-compose --profile full run --rm test-all
+	@echo "✓ All Docker tests completed!"
+
+.PHONY: docker-test-parallel
+docker-test-parallel: ## Run Docker tests in parallel
+	@echo "Running Docker tests in parallel..."
+	@cd .github/testing && \
+		docker-compose --profile fresh run --rm fresh-install & \
+		docker-compose --profile upgrade run --rm upgrade & \
+		docker-compose --profile migration run --rm migration & \
+		docker-compose --profile dev run --rm dev-mode & \
+		wait
+	@echo "✓ All parallel Docker tests completed!"
+
+.PHONY: docker-debug
+docker-debug: ## Enter Docker debug shell
+	@echo "Entering Docker debug shell..."
+	@cd .github/testing && docker-compose --profile debug run --rm debug
+
+.PHONY: docker-clean
+docker-clean: ## Clean Docker test artifacts
+	@echo "Cleaning Docker test artifacts..."
+	@docker rmi aida-test 2>/dev/null || true
+	@rm -rf .github/testing/results/*
+	@echo "✓ Docker artifacts cleaned"
+
+.PHONY: docker-results
+docker-results: ## Show Docker test results
+	@echo "Docker Test Results:"
+	@echo ""
+	@if [ -d .github/testing/results ] && [ -n "$$(ls -A .github/testing/results 2>/dev/null)" ]; then \
+		ls -lh .github/testing/results/; \
+		echo ""; \
+		for file in .github/testing/results/*.tap; do \
+			if [ -f "$$file" ]; then \
+				echo "=== $$(basename $$file) ==="; \
+				cat "$$file"; \
+				echo ""; \
+			fi; \
+		done; \
+	else \
+		echo "No test results found. Run 'make docker-test-all' first."; \
+	fi

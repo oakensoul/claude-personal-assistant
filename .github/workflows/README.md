@@ -3,7 +3,7 @@ title: "GitHub Actions Workflows"
 description: "Automated CI/CD workflows for AIDA framework"
 category: "ci-cd"
 tags: ["github-actions", "ci", "cd", "automation"]
-last_updated: "2025-10-05"
+last_updated: "2025-10-18"
 status: "published"
 audience: "developers"
 ---
@@ -12,7 +12,144 @@ audience: "developers"
 
 Automated CI/CD workflows for the AIDA (Agentic Intelligence Digital Assistant) framework.
 
+## Workflow Overview
+
+| Workflow | Purpose | Triggers | Duration |
+|----------|---------|----------|----------|
+| **Lint** | Code quality checks | Push, PR | ~1 min |
+| **Installer Tests** | Unit, integration, installation tests | Push, PR | ~8-10 min |
+| **Installation Tests** | End-to-end installation validation | Push, PR | ~5-7 min |
+
 ## Available Workflows
+
+### Lint (`lint.yml`)
+
+**Purpose:** Runs pre-commit hooks for code quality validation.
+
+**Triggers:**
+
+- Push to `main` or `develop` branches
+- Pull requests to `main` or `develop`
+
+**Jobs:**
+
+1. **`lint`** - Runs all pre-commit hooks
+   - shellcheck for shell scripts
+   - yamllint for YAML files
+   - markdownlint for markdown files
+   - gitleaks for secret scanning
+
+**Fast feedback:** Completes in ~1 minute.
+
+### Installer Tests (`test-installer.yml`)
+
+**Purpose:** Comprehensive testing of modular installer across platforms and scenarios.
+
+**Triggers:**
+
+- Push to `main` or `milestone-*` branches
+- Pull requests to `main` or `milestone-*`
+- Manual dispatch (workflow_dispatch)
+- Changes to:
+  - `lib/**`
+  - `install.sh`
+  - `tests/**`
+  - `Makefile`
+  - `.github/workflows/test-installer.yml`
+
+**Test Stages:**
+
+#### Stage 1: Lint & Validation
+
+- **lint-shell** - Shellcheck all scripts
+- **validate-templates** - Verify template frontmatter
+
+#### Stage 2: Unit Tests (Matrix)
+
+**Platforms:** ubuntu-22.04, ubuntu-24.04, macos-13, macos-14
+
+Tests all installer modules:
+
+- `lib/installer-common/prompts.sh`
+- `lib/installer-common/config.sh`
+- `lib/installer-common/directories.sh`
+- `lib/installer-common/summary.sh`
+- `lib/installer-common/templates.sh`
+- `lib/installer-common/deprecation.sh`
+
+**Total:** 168+ unit tests per platform
+
+#### Stage 3: Integration Tests (Matrix)
+
+**Scenarios:**
+
+- `fresh-install` - New installation
+- `upgrade-v0.1` - Upgrade from v0.1.x
+- `upgrade-with-content` - Preserve user content
+
+Tests upgrade paths and content preservation.
+
+#### Stage 4: Installation Tests (Matrix)
+
+**Matrix:** `{ubuntu-22.04, macos-13} × {normal, dev}`
+
+End-to-end installation testing:
+
+- Normal mode (copied files)
+- Dev mode (symlinked files)
+- Upgrade scenarios
+- Installation verification
+
+#### Stage 5: Docker Tests (Matrix)
+
+**Platforms:** ubuntu-22.04, ubuntu-24.04, debian-12
+
+Containerized cross-platform testing:
+
+- Unit tests in container
+- Installation in container
+- Platform compatibility
+
+#### Stage 6: Coverage Analysis
+
+- Test coverage report
+- Module coverage statistics
+- Coverage trends
+
+#### Stage 7: Test Summary
+
+- Aggregate all test results
+- Generate summary report
+- Fail if any stage fails
+
+#### Stage 8: PR Comment
+
+Posts test summary to PR with:
+
+- Stage-by-stage results
+- Overall pass/fail status
+- Links to detailed logs
+
+**Test Matrix:**
+
+| Platform | Unit Tests | Integration | Installation | Docker |
+|----------|-----------|-------------|--------------|--------|
+| **ubuntu-22.04** | ✅ | ✅ | ✅ | ✅ |
+| **ubuntu-24.04** | ✅ | - | - | ✅ |
+| **macos-13** | ✅ | - | ✅ | - |
+| **macos-14** | ✅ | - | - | - |
+| **debian-12** | - | - | - | ✅ |
+
+**Artifacts Generated:**
+
+- `unit-test-results-{os}` - Unit test results per platform
+- `integration-test-results-{scenario}` - Integration test results
+- `integration-test-logs-{scenario}` - Detailed integration logs
+- `installation-logs-{mode}-{os}` - Installation verification logs
+- `docker-test-logs-{platform}` - Docker test logs
+- `coverage-report` - Test coverage analysis (30 day retention)
+
+**Execution Time:** ~8-10 minutes (parallel execution)
 
 ### Installation Tests (`test-installation.yml`)
 
@@ -225,60 +362,120 @@ Fix:
 
 ## Adding New Tests
 
-### Add New Test Job
+### Add New Unit Test
 
-1. Edit `test-installation.yml`
+1. Create test file in `tests/unit/`:
 
-2. Add new job:
+   ```bash
+   # tests/unit/test_new_module.bats
+   #!/usr/bin/env bats
 
-   ```yaml
-   test-new-platform:
-     name: Test on New Platform
-     runs-on: platform-runner
-     needs: lint
-     steps:
-       - uses: actions/checkout@v4
-       # ... test steps ...
+   load ../helpers/test_helpers
+
+   setup() {
+     source "${PROJECT_ROOT}/lib/installer-common/new_module.sh"
+   }
+
+   @test "new module test case" {
+     run new_function "input"
+     [ "$status" -eq 0 ]
+   }
    ```
 
-3. Update `test-summary` needs:
+2. Test runs automatically in workflow (no changes needed)
 
-   ```yaml
-   needs:
-     - lint
-     - test-macos
-     - test-windows-wsl
-     - test-linux-docker
-     - test-full-suite
-     - test-new-platform  # Add here
+### Add New Integration Test Scenario
+
+1. Create fixture in `.github/testing/fixtures/`:
+
+   ```bash
+   .github/testing/fixtures/new-scenario/
+   ├── .aida/
+   └── .claude/
    ```
 
-4. Update result check:
+2. Update workflow matrix in `test-installer.yml`:
 
    ```yaml
-   if [ "${{ needs.test-new-platform.result }}" != "success" ]; then
-     echo "❌ New platform tests failed"
-     exit 1
-   fi
+   integration-tests:
+     strategy:
+       matrix:
+         scenario:
+           - fresh-install
+           - upgrade-v0.1
+           - upgrade-with-content
+           - new-scenario  # Add here
    ```
 
-### Add New Docker Environment
+### Add New Docker Platform
 
-1. Create Dockerfile in `.github/docker/`
+1. Create Dockerfile:
 
-2. Add to `docker-compose.yml`
+   ```bash
+   # .github/testing/Dockerfile.new-platform
+   FROM new-platform:latest
+   RUN apt-get update && apt-get install -y bash git rsync jq bats
+   ```
 
-3. Add to test matrix in workflow:
+2. Update workflow matrix:
 
    ```yaml
-   matrix:
-     environment:
-       - ubuntu-22
-       - ubuntu-20
-       - debian-12
-       - ubuntu-minimal
-       - new-environment  # Add here
+   docker-tests:
+     strategy:
+       matrix:
+         platform:
+           - ubuntu-22.04
+           - ubuntu-24.04
+           - debian-12
+           - new-platform  # Add here
    ```
+
+## Local Testing
+
+Run the same tests locally before pushing:
+
+### Unit Tests
+
+```bash
+# All unit tests
+make test-unit
+
+# Specific test file
+bats tests/unit/test_prompts.bats
+
+# Verbose output
+bats --verbose tests/unit/test_prompts.bats
+```
+
+### Integration Tests
+
+```bash
+# All integration tests
+make test-integration
+
+# Specific scenario
+TEST_SCENARIO=upgrade-v0.1 bats tests/integration/test_upgrade_scenarios.bats
+```
+
+### Docker Tests
+
+```bash
+# Build test image
+docker build -t aida-test:ubuntu-22.04 -f .github/testing/Dockerfile.ubuntu-22.04 .github/testing/
+
+# Run tests in container
+docker run --rm -v $(pwd):/workspace -w /workspace aida-test:ubuntu-22.04 make test-all
+```
+
+### Full CI Suite
+
+```bash
+# Run all checks (same as CI)
+make ci
+
+# Fast checks (skip integration)
+make ci-fast
+```
 
 ## Performance Optimization
 
@@ -337,6 +534,51 @@ permissions:
   contents: read
 ```
 
+## Viewing Test Results
+
+### GitHub Actions UI
+
+1. Navigate to repository
+2. Click "Actions" tab
+3. Select workflow run
+4. View detailed logs for each job
+5. Download artifacts for offline analysis
+
+### PR Comments
+
+For pull requests, `test-installer.yml` automatically posts a summary:
+
+```markdown
+## 🧪 Installer Test Results
+
+| Stage | Status |
+|-------|--------|
+| Shell Linting | ✅ |
+| Template Validation | ✅ |
+| Unit Tests | ✅ |
+| Integration Tests | ✅ |
+| Installation Tests | ✅ |
+| Docker Tests | ✅ |
+
+**Overall Status:** ✅ All tests passed!
+```
+
+### Test Artifacts
+
+Download artifacts from workflow run:
+
+- **Unit test results** - Test output per platform
+- **Integration test logs** - Detailed scenario logs
+- **Installation logs** - Installation verification
+- **Coverage report** - Module coverage statistics
+
+```bash
+# Using GitHub CLI
+gh run download <run-id>
+
+# Or from GitHub UI: Actions → Run → Artifacts section
+```
+
 ## Monitoring
 
 ### Email Notifications
@@ -362,22 +604,63 @@ Use workflow notifications:
 
 ## Related Documentation
 
-- [Docker Testing Guide](../docker/README.md)
-- [Testing Documentation](../testing/README.md)
+- [Unit Testing Guide](../../docs/testing/UNIT_TESTING.md)
+- [Bats Setup Guide](../../docs/testing/BATS_SETUP.md)
+- [Test Suite Overview](../../tests/README.md)
 - [Test Scenarios](../testing/test-scenarios.md)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
+
+## Workflow Status Badges
+
+Add to README.md:
+
+```markdown
+[![Lint](https://github.com/oakensoul/claude-personal-assistant/workflows/Lint/badge.svg)](https://github.com/oakensoul/claude-personal-assistant/actions/workflows/lint.yml)
+[![Installer Tests](https://github.com/oakensoul/claude-personal-assistant/workflows/Installer%20Tests/badge.svg)](https://github.com/oakensoul/claude-personal-assistant/actions/workflows/test-installer.yml)
+[![Installation Tests](https://github.com/oakensoul/claude-personal-assistant/workflows/Installation%20Tests/badge.svg)](https://github.com/oakensoul/claude-personal-assistant/actions/workflows/test-installation.yml)
+```
+
+## Manual Workflow Dispatch
+
+Trigger workflows manually:
+
+### Using GitHub UI
+
+1. Navigate to Actions tab
+2. Select workflow (e.g., "Installer Tests")
+3. Click "Run workflow"
+4. Select branch
+5. Click "Run workflow" button
+
+### Using GitHub CLI
+
+```bash
+# Trigger installer tests
+gh workflow run test-installer.yml
+
+# Trigger on specific branch
+gh workflow run test-installer.yml --ref feature-branch
+
+# Trigger installation tests
+gh workflow run test-installation.yml
+```
 
 ## Support
 
 For workflow issues:
 
-1. Check workflow run logs
+1. Check workflow run logs in GitHub Actions UI
 2. Download and review artifacts
 3. Test locally with same environment
-4. File issue with workflow run link
+4. Reproduce in Docker container
+5. File issue with:
+   - Workflow run link
+   - Platform/OS information
+   - Error logs
+   - Local test results
 
 ---
 
-**Last Updated:** 2025-10-05
+**Last Updated:** 2025-10-18
 **Maintainer:** oakensoul
 **Status:** Active

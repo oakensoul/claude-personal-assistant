@@ -1,0 +1,52 @@
+# Docker build context ignore file
+# Minimizes context size for faster builds
+
+# Git metadata
+.git/
+.gitignore
+.gitattributes
+
+# Test results (created at runtime)
+results/
+
+# Documentation (not needed in image)
+*.md
+!README.md
+
+# CI/CD configs
+.github/workflows/
+../.github/workflows/
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.backup
+
+# Node modules (if any)
+node_modules/
+
+# Python cache (if any)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build artifacts
+*.tar.gz
+*.zip
+dist/
+build/

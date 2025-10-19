@@ -1,0 +1,30 @@
+FROM ubuntu:24.04
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install base dependencies
+RUN apt-get update && apt-get install -y \
+    bash \
+    git \
+    rsync \
+    jq \
+    bats \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set bash as default shell
+SHELL ["/bin/bash", "-c"]
+
+# Create test user (non-root)
+RUN useradd -m -s /bin/bash testuser
+
+# Switch to test user
+USER testuser
+WORKDIR /home/testuser
+
+# Set up environment
+ENV HOME=/home/testuser
+ENV PATH=/home/testuser/.local/bin:$PATH
+
+CMD ["/bin/bash"]

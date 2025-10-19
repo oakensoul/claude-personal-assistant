@@ -1,0 +1,6 @@
+# Test results are generated at runtime
+# Do not commit test outputs
+
+*
+!.gitignore
+!README.md
