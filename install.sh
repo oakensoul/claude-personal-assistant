@@ -368,21 +368,15 @@ main() {
     # Create directory structure
     create_directories
 
-    # TODO: Install command templates using namespace isolation
-    # NOTE: Skipping template installation for now - templates are currently flat .md files
-    # but install_templates expects folder structure (commands/command-name/README.md).
-    # Template migration to folder structure is planned for future work.
-    #
-    # install_templates \
-    #     "${SCRIPT_DIR}/templates/commands" \
-    #     "${CLAUDE_DIR}/commands" \
-    #     "$DEV_MODE" \
-    #     ".aida" || {
-    #     print_message "error" "Failed to install command templates"
-    #     exit 1
-    # }
-
-    print_message "info" "Template installation skipped (templates not yet migrated to folder structure)"
+    # Install command templates using namespace isolation
+    install_templates \
+        "${SCRIPT_DIR}/templates/commands" \
+        "${CLAUDE_DIR}/commands" \
+        "$DEV_MODE" \
+        ".aida" || {
+        print_message "error" "Failed to install command templates"
+        exit 1
+    }
 
     # Write user configuration (convert boolean to string)
     local install_mode="normal"
