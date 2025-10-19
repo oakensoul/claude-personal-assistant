@@ -86,7 +86,7 @@ print_message() {
             log_to_file "SUCCESS" "$message"
             ;;
         warning)
-            echo -e "$(color_yellow '⚠') ${message}"
+            echo -e "$(color_yellow '⚠') ${message}" >&2
             log_to_file "WARNING" "$message"
             ;;
         error)
