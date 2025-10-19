@@ -25,3 +25,8 @@ node_modules/
 
 # Test logs (build artifacts)
 .github/testing/logs/
+
+# Development artifacts
+*.backup.*
+.implementation-state.json
+.implementation-state.json.tmp
