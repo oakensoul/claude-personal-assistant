@@ -285,7 +285,7 @@ validate_version_file() {
 
     # Read version
     local version
-    version=$(cat "$version_file" 2>/dev/null | head -1 | tr -d '[:space:]')
+    version=$(head -1 "$version_file" 2>/dev/null | tr -d '[:space:]')
 
     if [[ -z "$version" ]]; then
         print_message "error" "VERSION file is empty: ${version_file}"

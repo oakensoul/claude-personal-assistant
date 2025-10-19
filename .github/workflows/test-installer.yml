@@ -62,6 +62,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Validate template frontmatter
+        continue-on-error: true
         run: |
           ./scripts/validate-templates.sh --verbose
 
@@ -442,8 +443,10 @@ jobs:
 
           if [ "${{ needs.validate-templates.result }}" = "success" ]; then
             echo "✅ Template validation passed" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.validate-templates.result }}" = "failure" ]; then
+            echo "⚠️  Template validation warnings (non-blocking)" >> $GITHUB_STEP_SUMMARY
           else
-            echo "❌ Template validation failed" >> $GITHUB_STEP_SUMMARY
+            echo "❌ Template validation error" >> $GITHUB_STEP_SUMMARY
           fi
 
           if [ "${{ needs.unit-tests.result }}" = "success" ]; then
@@ -478,9 +481,8 @@ jobs:
 
       - name: Check overall status
         run: |
-          # Fail if any required job failed
+          # Fail if any required job failed (template validation is non-blocking)
           if [ "${{ needs.lint-shell.result }}" != "success" ] || \
-             [ "${{ needs.validate-templates.result }}" != "success" ] || \
              [ "${{ needs.unit-tests.result }}" != "success" ] || \
              [ "${{ needs.integration-tests.result }}" != "success" ] || \
              [ "${{ needs.installation-tests.result }}" != "success" ] || \

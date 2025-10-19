@@ -306,7 +306,7 @@ display_error() {
 
     if [[ -n "$recovery_steps" ]]; then
         echo "" >&2
-        echo "$(apply_color "$COLOR_BOLD" "Recovery steps:")" >&2
+        apply_color "$COLOR_BOLD" "Recovery steps:" >&2
         echo "" >&2
         echo "$recovery_steps" | while IFS= read -r step; do
             if [[ -n "$step" ]]; then
