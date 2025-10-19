@@ -909,7 +909,7 @@ Create `.security-audits/audit-config.json` for custom audit settings:
   "notification": {
     "enabled": true,
     "channels": ["email", "slack"],
-    "recipients": ["security@splash.com", "#security-alerts"]
+    "recipients": ["security@example.com", "#security-alerts"]
   }
 }
 ```

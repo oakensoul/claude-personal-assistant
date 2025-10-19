@@ -75,14 +75,14 @@ last_updated: 2025-10-09
 ## Development Account
 
 - **Account ID**: 123456789012
-- **Profile**: my-project-dev
+- **Profile**: {project-name}-dev
 - **Region**: us-east-1
 - **Purpose**: Development and testing
 
 ## Production Account
 
 - **Account ID**: 987654321098
-- **Profile**: my-project-prod
+- **Profile**: {project-name}-prod
 - **Region**: us-east-1
 - **Purpose**: Production workloads
 
@@ -181,10 +181,10 @@ last_updated: 2025-10-09
 
 ## Examples
 
-- **S3 Bucket**: my-project-prod-data-bucket
-- **Lambda Function**: my-project-prod-api-function
-- **RDS Cluster**: my-project-prod-db-cluster
-- **ECS Service**: my-project-prod-web-service
+- **S3 Bucket**: {project-name}-prod-data-bucket
+- **Lambda Function**: {project-name}-prod-api-function
+- **RDS Cluster**: {project-name}-prod-db-cluster
+- **ECS Service**: {project-name}-prod-web-service
 
 ## Stack Names
 
@@ -214,11 +214,11 @@ last_updated: 2025-10-09
 
 All resources MUST have:
 
-- **Project**: my-project
+- **Project**: {project-name}
 - **Environment**: dev | staging | prod
 - **ManagedBy**: cdk
 - **CostCenter**: engineering
-- **Owner**: team-infra@example.com
+- **Owner**: team@example.com
 
 ## Optional Tags
 

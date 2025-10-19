@@ -86,8 +86,6 @@ validate_template_structure() {
         print_message "info" "  Expected: README.md or ${template_name}.md"
         return 1
     fi
-
-    return 0
 }
 
 #######################################

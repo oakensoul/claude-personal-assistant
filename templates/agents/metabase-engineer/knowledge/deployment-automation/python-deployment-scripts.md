@@ -588,18 +588,18 @@ if __name__ == "__main__":
 
 ```bash
 # Development
-METABASE_DEV_URL=https://metabase-dev.betterpool.com
-METABASE_DEV_USER=deployer@betterpool.com
+METABASE_DEV_URL=https://metabase-dev.example.com
+METABASE_DEV_USER=deployer@example.com
 METABASE_DEV_PASSWORD=<secret>
 
 # Staging
-METABASE_STAGING_URL=https://metabase-staging.betterpool.com
-METABASE_STAGING_USER=deployer@betterpool.com
+METABASE_STAGING_URL=https://metabase-staging.example.com
+METABASE_STAGING_USER=deployer@example.com
 METABASE_STAGING_PASSWORD=<secret>
 
 # Production
-METABASE_PROD_URL=https://metabase.betterpool.com
-METABASE_PROD_USER=deployer@betterpool.com
+METABASE_PROD_URL=https://metabase.example.com
+METABASE_PROD_USER=deployer@example.com
 METABASE_PROD_PASSWORD=<secret>
 ```
 

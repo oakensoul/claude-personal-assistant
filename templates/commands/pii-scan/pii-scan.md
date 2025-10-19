@@ -600,7 +600,7 @@ SOC2_CC7_2_System_Monitoring:
 ```yaml
 PII_Scan_Audit_Log:
   Timestamp: 2025-10-07T14:32:15Z
-  Operator: rob@betterpool.com
+  Operator: user@example.com
   Action: PII_SCAN
   Target: staging.stg_new_users
   PII_Detected: 5 columns
@@ -621,7 +621,7 @@ PII_Scan_Audit_Log:
 PII_Scan_Report:
   Scan_ID: "pii-scan-20251007-143215"
   Timestamp: "2025-10-07T14:32:15Z"
-  Operator: "rob@betterpool.com"
+  Operator: "user@example.com"
   Target: "finance_staging.stg_wallet_transactions"
 
   Table_Summary:

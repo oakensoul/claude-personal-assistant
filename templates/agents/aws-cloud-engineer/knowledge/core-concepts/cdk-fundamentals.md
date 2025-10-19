@@ -516,7 +516,7 @@ import { Tags } from 'aws-cdk-lib';
 
 const stack = new MyStack(app, 'MyStack');
 
-Tags.of(stack).add('Project', 'my-project');
+Tags.of(stack).add('Project', '{project-name}');
 Tags.of(stack).add('Environment', 'production');
 Tags.of(stack).add('ManagedBy', 'cdk');
 Tags.of(stack).add('CostCenter', 'engineering');

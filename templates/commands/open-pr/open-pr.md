@@ -655,7 +655,7 @@ Automates the pull request creation process including atomic commits, versioning
 
       ```bash
       # Get project information from workflow-config.json
-      PROJECT_NAME=$(jq -r '.workflow.github.project.name' /Users/rob/.claude/workflow-config.json)
+      PROJECT_NAME=$(jq -r '.workflow.github.project.name' {{CLAUDE_CONFIG_DIR}}/workflow-config.json)
 
       # Update PR to "In progress" status
       gh pr edit {pr-number} --add-project "$PROJECT_NAME"

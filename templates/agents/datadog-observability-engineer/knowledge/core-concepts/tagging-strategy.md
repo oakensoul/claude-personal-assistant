@@ -70,7 +70,7 @@ These tags provide additional value and should be used where applicable:
 
 - **Values**: Email or username of primary owner
 - **Purpose**: Contact for technical issues
-- **Example**: `owner:platform-team@company.com`
+- **Example**: `owner:platform-team@example.com`
 
 ### component (Architectural Component)
 
@@ -254,7 +254,7 @@ team:data-platform
 team:analytics
 team:infrastructure
 
-owner:platform-team@company.com
+owner:platform-team@example.com
 cost-center:engineering
 ```
 

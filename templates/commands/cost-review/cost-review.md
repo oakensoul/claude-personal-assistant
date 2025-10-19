@@ -693,12 +693,12 @@ Cost_Review_Report:
       Query_Type: Ad-hoc
       Spike: "+$450 (3.2x normal ad-hoc spend)"
       Top_Expensive_Queries:
-        - User: analyst@company.com
+        - User: analyst@example.com
           Query: "Full table scan on segment_tracks (6 months)"
           Credits: 180
           Recommendation: "Add date filter, use incremental mart"
 
-        - User: bi-team@company.com
+        - User: bi-team@example.com
           Query: "Cross-database join with no filter"
           Credits: 125
           Recommendation: "Use pre-joined mart, add filters"

@@ -634,7 +634,7 @@ When user requests data deletion (GDPR Right to Erasure):
 insert into prod.audit.data_subject_requests (
     request_id, user_id, request_type, requested_at, requested_by, status
 ) values (
-    uuid_string(), 12345, 'ERASURE', current_timestamp(), 'support@splash.com', 'PENDING'
+    uuid_string(), 12345, 'ERASURE', current_timestamp(), 'support@example.com', 'PENDING'
 );
 ```
 

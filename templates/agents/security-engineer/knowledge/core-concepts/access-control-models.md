@@ -504,7 +504,7 @@ ALTER ACCOUNT SET SAML_IDENTITY_PROVIDER = '{
 }';
 
 -- Enable SAML for specific users
-ALTER USER john.doe SET EXT_AUTHN_DUO = FALSE, SAML_IDENTITY = 'john.doe@splash.com';
+ALTER USER john.doe SET EXT_AUTHN_DUO = FALSE, SAML_IDENTITY = 'john.doe@example.com';
 
 -- View SAML configuration
 SHOW PARAMETERS LIKE 'SAML%' IN ACCOUNT;
