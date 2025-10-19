@@ -368,13 +368,45 @@ main() {
     # Create directory structure
     create_directories
 
-    # Install command templates using namespace isolation
+    # Install templates using namespace isolation (.aida/)
+
+    # Commands
     install_templates \
         "${SCRIPT_DIR}/templates/commands" \
         "${CLAUDE_DIR}/commands" \
         "$DEV_MODE" \
         ".aida" || {
         print_message "error" "Failed to install command templates"
+        exit 1
+    }
+
+    # Agents
+    install_templates \
+        "${SCRIPT_DIR}/templates/agents" \
+        "${CLAUDE_DIR}/agents" \
+        "$DEV_MODE" \
+        ".aida" || {
+        print_message "error" "Failed to install agent templates"
+        exit 1
+    }
+
+    # Skills
+    install_templates \
+        "${SCRIPT_DIR}/templates/skills" \
+        "${CLAUDE_DIR}/skills" \
+        "$DEV_MODE" \
+        ".aida" || {
+        print_message "error" "Failed to install skill templates"
+        exit 1
+    }
+
+    # Documents (knowledge/templates)
+    install_templates \
+        "${SCRIPT_DIR}/templates/documents" \
+        "${CLAUDE_DIR}/knowledge" \
+        "$DEV_MODE" \
+        ".aida" || {
+        print_message "error" "Failed to install document templates"
         exit 1
     }
 
