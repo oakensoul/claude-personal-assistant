@@ -280,10 +280,5 @@ setup() {
   [[ "$output" =~ "Installation starting" ]]
 }
 
-@test "prompt_info waits for user when requested" {
-  skip "Interactive read prompts cannot be tested with bats - test design limitation"
-  # Note: The 'read -rp' command sends its prompt to stderr, not stdout.
-  # Bats captures stdout in $output by default, making interactive prompts
-  # difficult to test. The actual function works correctly in practice.
-  # Manual testing confirms proper behavior.
-}
+# Note: prompt_info with wait_for_user=true uses interactive 'read -rp' which
+# cannot be reliably tested in automated tests. Verified through manual testing.

@@ -34,14 +34,6 @@ teardown() {
   [ "$status" -eq 0 ]
 }
 
-@test "check_config_helper fails if config helper missing" {
-  skip "Cannot override readonly CONFIG_HELPER variable - test design limitation"
-  # Note: CONFIG_HELPER is defined as readonly in config.sh for immutability
-  # This test would require removing the readonly constraint which would
-  # weaken the module's guarantees. The actual error handling works correctly
-  # in practice when sourcing fails.
-}
-
 #######################################
 # Tests for write_user_config
 #######################################
