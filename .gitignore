@@ -31,3 +31,7 @@ node_modules/
 *.backup.*
 .implementation-state.json
 .implementation-state.json.tmp
+
+# Dev mode installation artifacts
+logs/
+templates/*/.aida/
