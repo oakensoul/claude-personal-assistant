@@ -1,0 +1,277 @@
+{
+  "name": "Migration from Flat to Namespace Structure",
+  "description": "Migrate existing flat structure to namespace isolation while handling deprecated commands",
+  "scenario_id": "scenario-3-migration",
+  "version": "1.0.0",
+  "preconditions": {
+    "aida_exists": true,
+    "aida_version": "0.1.6",
+    "structure_type": "flat",
+    "claude_dir_exists": true,
+    "has_deprecated_commands": true,
+    "deprecated_commands": [
+      "create-issue",
+      "publish-issue"
+    ],
+    "mixed_content": true,
+    "framework_files": [
+      ".claude/commands/start-work.md",
+      ".claude/commands/create-issue.md",
+      ".claude/agents/secretary.md"
+    ],
+    "user_files": [
+      ".claude/commands/my-workflow.md"
+    ],
+    "config_exists": true,
+    "config_structure": "flat",
+    "environment": {
+      "os": "linux",
+      "shell": "bash",
+      "home_dir": "/home/testuser"
+    }
+  },
+  "setup_steps": [
+    {
+      "step": 1,
+      "action": "copy_v0.1_installation",
+      "description": "Set up v0.1.6 flat structure",
+      "source": "fixtures/v0.1-installation/",
+      "destination": "~/",
+      "includes": [
+        ".claude/",
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "step": 2,
+      "action": "add_user_content",
+      "description": "Add some user content to mix",
+      "files": [
+        {
+          "source": "fixtures/user-content/commands/my-workflow.md",
+          "destination": "~/.claude/commands/my-workflow.md"
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": "verify_flat_structure",
+      "description": "Verify flat structure exists",
+      "checks": [
+        "All templates in top-level directories",
+        "No .aida/ subdirectories",
+        "Deprecated command names present",
+        "Mix of framework and user content"
+      ]
+    },
+    {
+      "step": 4,
+      "action": "run_installer",
+      "description": "Run migration to namespace structure",
+      "command": "./install.sh",
+      "expected_exit_code": 0
+    }
+  ],
+  "expected_outcome": {
+    "namespace_structure_created": true,
+    "namespace_directories": [
+      "~/.claude/commands/.aida/",
+      "~/.claude/agents/.aida/",
+      "~/.claude/skills/.aida/"
+    ],
+    "aida_templates_in_namespace": true,
+    "namespace_framework_files": [
+      "~/.claude/commands/.aida/start-work.md",
+      "~/.claude/commands/.aida/issue-create.md",
+      "~/.claude/agents/.aida/secretary.md"
+    ],
+    "deprecated_templates_handled": true,
+    "deprecated_migration": {
+      "create-issue": {
+        "action": "migrated",
+        "from": ".claude/commands/create-issue.md",
+        "to": ".claude/commands/.aida/issue-create.md",
+        "canonical_name": "issue-create"
+      },
+      "publish-issue": {
+        "action": "migrated",
+        "from": ".claude/commands/publish-issue.md",
+        "to": ".claude/commands/.aida/issue-publish.md",
+        "canonical_name": "issue-publish"
+      }
+    },
+    "user_templates_untouched": true,
+    "user_content_location": "top_level",
+    "user_content_preserved": [
+      "~/.claude/commands/my-workflow.md"
+    ],
+    "old_flat_framework_removed": true,
+    "structure_separation": {
+      "framework": "in .aida/ namespace",
+      "user": "in top-level directories"
+    },
+    "config_updated": true,
+    "config_changes": {
+      "version": "0.2.0",
+      "structure_type": "namespace",
+      "migration_metadata": {
+        "from_version": "0.1.6",
+        "migration_date": "auto-generated",
+        "deprecated_commands_migrated": true
+      }
+    },
+    "backward_compatibility": true,
+    "compatibility_method": "symlinks_for_deprecated_names"
+  },
+  "validation_checks": [
+    {
+      "check": "namespace_structure",
+      "description": "Verify namespace structure created",
+      "commands": [
+        "test -d ~/.claude/commands/.aida",
+        "test -d ~/.claude/agents/.aida",
+        "test -d ~/.claude/skills/.aida"
+      ],
+      "expected_exit_code": 0
+    },
+    {
+      "check": "framework_in_namespace",
+      "description": "Verify framework templates moved to namespace",
+      "commands": [
+        "test -f ~/.claude/commands/.aida/start-work.md",
+        "test -f ~/.claude/commands/.aida/issue-create.md",
+        "test -f ~/.claude/agents/.aida/secretary.md"
+      ],
+      "expected_exit_code": 0
+    },
+    {
+      "check": "deprecated_migrated",
+      "description": "Verify deprecated commands migrated to canonical names",
+      "commands": [
+        "test -f ~/.claude/commands/.aida/issue-create.md",
+        "test -f ~/.claude/commands/.aida/issue-publish.md",
+        "! test -f ~/.claude/commands/.aida/create-issue.md",
+        "! test -f ~/.claude/commands/.aida/publish-issue.md"
+      ],
+      "expected_exit_code": 0,
+      "note": "Canonical names in namespace, deprecated names NOT in namespace"
+    },
+    {
+      "check": "user_content_preserved",
+      "description": "Verify user content untouched in top-level",
+      "commands": [
+        "test -f ~/.claude/commands/my-workflow.md",
+        "! test -f ~/.claude/commands/.aida/my-workflow.md"
+      ],
+      "expected_exit_code": 0,
+      "note": "User content stays in top-level, not moved to namespace"
+    },
+    {
+      "check": "flat_framework_removed",
+      "description": "Verify old flat framework files removed",
+      "commands": [
+        "! test -f ~/.claude/commands/start-work.md || test -L ~/.claude/commands/start-work.md",
+        "! test -f ~/.claude/commands/create-issue.md",
+        "! test -f ~/.claude/agents/secretary.md || test -L ~/.claude/agents/secretary.md"
+      ],
+      "expected_exit_code": 0,
+      "note": "Old framework files removed or replaced with symlinks"
+    },
+    {
+      "check": "separation_maintained",
+      "description": "Verify framework/user separation",
+      "validation": "directory_structure",
+      "expected_structure": {
+        "~/.claude/commands/": {
+          ".aida/": "framework templates only",
+          "*.md": "user templates only"
+        },
+        "~/.claude/agents/": {
+          ".aida/": "framework agents only",
+          "*.md": "user agents only"
+        }
+      }
+    },
+    {
+      "check": "config_migration",
+      "description": "Verify config reflects namespace structure",
+      "command": "jq -e '.structure.type == \"namespace\" and .version == \"0.2.0\"' ~/.claude/aida-config.json",
+      "expected_exit_code": 0
+    },
+    {
+      "check": "backward_compat",
+      "description": "Verify backward compatibility maintained",
+      "tests": [
+        {
+          "name": "deprecated_name_works",
+          "command": "/create-issue --help",
+          "expected": "shows deprecation warning but works"
+        },
+        {
+          "name": "canonical_name_works",
+          "command": "/issue-create --help",
+          "expected": "works without warning"
+        }
+      ]
+    }
+  ],
+  "migration_metadata": {
+    "template_mapping": [
+      {
+        "old_path": "~/.claude/commands/start-work.md",
+        "new_path": "~/.claude/commands/.aida/start-work.md",
+        "action": "move",
+        "reason": "framework template"
+      },
+      {
+        "old_path": "~/.claude/commands/create-issue.md",
+        "new_path": "~/.claude/commands/.aida/issue-create.md",
+        "action": "rename_and_move",
+        "reason": "deprecated name to canonical"
+      },
+      {
+        "old_path": "~/.claude/commands/my-workflow.md",
+        "new_path": "~/.claude/commands/my-workflow.md",
+        "action": "preserve",
+        "reason": "user content"
+      }
+    ],
+    "deprecated_handling": [
+      {
+        "deprecated_name": "create-issue",
+        "canonical_name": "issue-create",
+        "migration_strategy": "rename_to_canonical_in_namespace",
+        "backward_compat": "symlink_or_alias"
+      },
+      {
+        "deprecated_name": "publish-issue",
+        "canonical_name": "issue-publish",
+        "migration_strategy": "rename_to_canonical_in_namespace",
+        "backward_compat": "symlink_or_alias"
+      }
+    ]
+  },
+  "edge_cases": [
+    {
+      "case": "user_has_custom_create_issue",
+      "description": "User created their own create-issue.md",
+      "expected_behavior": "preserve user version, install canonical to namespace",
+      "validation": [
+        "~/.claude/commands/create-issue.md (user version preserved)",
+        "~/.claude/commands/.aida/issue-create.md (canonical installed)"
+      ]
+    },
+    {
+      "case": "partial_migration_failure",
+      "description": "Migration fails partway through",
+      "expected_behavior": "rollback to previous state",
+      "validation": "verify backup restored, no partial migration"
+    }
+  ],
+  "test_metadata": {
+    "test_duration_estimate": "90 seconds",
+    "complexity": "very-high",
+    "prerequisite_scenarios": ["scenario-1-fresh", "scenario-2-upgrade"],
+    "tags": ["migration", "namespace", "deprecated-commands", "critical", "complex"]
+  }
+}

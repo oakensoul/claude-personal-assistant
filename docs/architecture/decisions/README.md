@@ -10,6 +10,10 @@ This directory contains architecture decision records (ADRs) for the AIDA framew
 - [ADR-007: Product/Platform/API Engineering Model](adr-007-product-platform-api-engineering.md) - Accepted - 2025-10-16
 - [ADR-008: Engineers Own Testing Philosophy](adr-008-engineers-own-testing.md) - Accepted - 2025-10-16
 - [ADR-009: Skills System Architecture](adr-009-skills-system-architecture.md) - Accepted - 2025-10-16
+- [ADR-010: Command Structure Refactoring](adr-010-command-structure-refactoring.md) - Accepted - 2025-10-17
+- [ADR-011: Modular Installer Architecture](adr-011-modular-installer-architecture.md) - Proposed - 2025-10-18
+- [ADR-012: Universal Config Aggregator Pattern](adr-012-universal-config-aggregator-pattern.md) - Proposed - 2025-10-18
+- [ADR-013: Namespace Isolation for User Content Protection](adr-013-namespace-isolation-user-content-protection.md) - Proposed - 2025-10-18
 
 ## Proposed ADRs
 
@@ -50,6 +54,16 @@ None currently
 ### Knowledge Management
 
 - ADR-009: Skills System Architecture
+
+### Command & Template System
+
+- ADR-010: Command Structure Refactoring
+
+### Installation & Configuration
+
+- ADR-011: Modular Installer Architecture
+- ADR-012: Universal Config Aggregator Pattern
+- ADR-013: Namespace Isolation for User Content Protection
 
 ### Integration
 

@@ -1,0 +1,210 @@
+{
+  "name": "Upgrade with User Content",
+  "description": "Upgrade from v0.1.x to v0.2.0 while preserving user-created custom templates",
+  "scenario_id": "scenario-2-upgrade",
+  "version": "1.0.0",
+  "preconditions": {
+    "aida_exists": true,
+    "aida_version": "0.1.6",
+    "claude_dir_exists": true,
+    "user_content_exists": true,
+    "user_content_files": [
+      ".claude/commands/my-workflow.md",
+      ".claude/commands/team-standup.md",
+      ".claude/agents/project-manager.md",
+      ".claude/skills/python-expert.md"
+    ],
+    "framework_files": [
+      ".claude/commands/start-work.md",
+      ".claude/commands/create-issue.md",
+      ".claude/agents/secretary.md"
+    ],
+    "structure_type": "flat",
+    "config_exists": true,
+    "config_file": ".claude/aida-config.json",
+    "environment": {
+      "os": "linux",
+      "shell": "bash",
+      "home_dir": "/home/testuser"
+    }
+  },
+  "setup_steps": [
+    {
+      "step": 1,
+      "action": "copy_v0.1_installation",
+      "description": "Copy v0.1.6 installation fixture to test location",
+      "source": "fixtures/v0.1-installation/",
+      "destination": "~/",
+      "includes": [
+        ".claude/",
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "step": 2,
+      "action": "copy_user_content",
+      "description": "Copy user-created templates to test location",
+      "source": "fixtures/user-content/",
+      "destination": "~/.claude/",
+      "preserve_structure": true
+    },
+    {
+      "step": 3,
+      "action": "verify_preconditions",
+      "description": "Verify v0.1.x state with user content",
+      "checks": [
+        "~/.claude/aida-config.json exists",
+        "~/.claude/commands/my-workflow.md exists (user content)",
+        "~/.claude/commands/start-work.md exists (framework)",
+        "No namespace directories exist"
+      ]
+    },
+    {
+      "step": 4,
+      "action": "run_installer",
+      "description": "Run upgrade installation",
+      "command": "./install.sh",
+      "expected_exit_code": 0
+    }
+  ],
+  "expected_outcome": {
+    "aida_symlink_updated": true,
+    "namespace_dirs_created": true,
+    "namespace_structure": {
+      "commands": "~/.claude/commands/.aida/",
+      "agents": "~/.claude/agents/.aida/",
+      "skills": "~/.claude/skills/.aida/"
+    },
+    "templates_installed_to_namespace": true,
+    "framework_templates_in_namespace": [
+      "~/.claude/commands/.aida/start-work.md",
+      "~/.claude/commands/.aida/issue-create.md",
+      "~/.claude/agents/.aida/secretary.md"
+    ],
+    "user_content_preserved": true,
+    "user_content_unchanged": [
+      "~/.claude/commands/my-workflow.md",
+      "~/.claude/commands/team-standup.md",
+      "~/.claude/agents/project-manager.md",
+      "~/.claude/skills/python-expert.md"
+    ],
+    "old_flat_templates_handled": true,
+    "flat_template_behavior": "replaced_with_namespace_versions",
+    "deprecated_commands_migrated": true,
+    "deprecated_to_canonical": {
+      "create-issue": "issue-create"
+    },
+    "config_updated": true,
+    "config_version": "0.2.0",
+    "backup_created": true,
+    "backup_location": "~/.claude/.backups/pre-0.2.0-upgrade/"
+  },
+  "validation_checks": [
+    {
+      "check": "namespace_created",
+      "description": "Verify namespace directories created",
+      "commands": [
+        "test -d ~/.claude/commands/.aida",
+        "test -d ~/.claude/agents/.aida",
+        "test -d ~/.claude/skills/.aida"
+      ],
+      "expected_exit_code": 0
+    },
+    {
+      "check": "framework_in_namespace",
+      "description": "Verify framework templates in namespace",
+      "commands": [
+        "test -f ~/.claude/commands/.aida/start-work.md",
+        "test -f ~/.claude/commands/.aida/issue-create.md",
+        "test -f ~/.claude/agents/.aida/secretary.md"
+      ],
+      "expected_exit_code": 0
+    },
+    {
+      "check": "user_content_preserved",
+      "description": "Verify user content untouched",
+      "commands": [
+        "test -f ~/.claude/commands/my-workflow.md",
+        "test -f ~/.claude/commands/team-standup.md",
+        "test -f ~/.claude/agents/project-manager.md",
+        "test -f ~/.claude/skills/python-expert.md"
+      ],
+      "expected_exit_code": 0
+    },
+    {
+      "check": "user_content_unchanged",
+      "description": "Verify user content not modified",
+      "validation": "checksum_comparison",
+      "files": [
+        {
+          "file": "~/.claude/commands/my-workflow.md",
+          "original_checksum": "fixtures/user-content/commands/my-workflow.md"
+        },
+        {
+          "file": "~/.claude/agents/project-manager.md",
+          "original_checksum": "fixtures/user-content/agents/project-manager.md"
+        }
+      ]
+    },
+    {
+      "check": "old_flat_replaced",
+      "description": "Verify old flat framework templates replaced",
+      "commands": [
+        "! test -f ~/.claude/commands/start-work.md || test -L ~/.claude/commands/start-work.md",
+        "! test -f ~/.claude/commands/create-issue.md"
+      ],
+      "expected_exit_code": 0,
+      "note": "Old flat templates should be removed or replaced with symlinks"
+    },
+    {
+      "check": "deprecated_migrated",
+      "description": "Verify deprecated commands migrated to canonical names",
+      "commands": [
+        "test -f ~/.claude/commands/.aida/issue-create.md",
+        "! test -f ~/.claude/commands/.aida/create-issue.md"
+      ],
+      "expected_exit_code": 0
+    },
+    {
+      "check": "config_updated",
+      "description": "Verify config updated to v0.2.0",
+      "command": "jq -e '.version == \"0.2.0\" and .structure.type == \"namespace\"' ~/.claude/aida-config.json",
+      "expected_exit_code": 0
+    },
+    {
+      "check": "backup_created",
+      "description": "Verify backup of old installation created",
+      "commands": [
+        "test -d ~/.claude/.backups/pre-0.2.0-upgrade",
+        "test -f ~/.claude/.backups/pre-0.2.0-upgrade/aida-config.json"
+      ],
+      "expected_exit_code": 0
+    }
+  ],
+  "rollback_procedure": {
+    "description": "How to rollback if upgrade fails",
+    "steps": [
+      {
+        "step": 1,
+        "action": "restore_backup",
+        "command": "cp -r ~/.claude/.backups/pre-0.2.0-upgrade/* ~/.claude/"
+      },
+      {
+        "step": 2,
+        "action": "remove_namespace",
+        "command": "rm -rf ~/.claude/commands/.aida ~/.claude/agents/.aida ~/.claude/skills/.aida"
+      },
+      {
+        "step": 3,
+        "action": "verify_rollback",
+        "command": "test -f ~/.claude/commands/start-work.md && ! test -d ~/.claude/commands/.aida"
+      }
+    ]
+  },
+  "test_metadata": {
+    "test_duration_estimate": "60 seconds",
+    "complexity": "high",
+    "prerequisite_scenarios": ["scenario-1-fresh"],
+    "tags": ["upgrade", "user-content-preservation", "namespace-migration", "critical"]
+  }
+}

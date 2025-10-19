@@ -1,0 +1,108 @@
+{
+  "name": "Fresh Installation",
+  "description": "Clean install on system with no existing AIDA installation or configuration",
+  "scenario_id": "scenario-1-fresh",
+  "version": "1.0.0",
+  "preconditions": {
+    "aida_exists": false,
+    "aida_version": null,
+    "claude_dir_exists": false,
+    "user_content_exists": false,
+    "structure_type": null,
+    "dotfiles_integration": false,
+    "environment": {
+      "os": "linux",
+      "shell": "bash",
+      "home_dir": "/home/testuser"
+    }
+  },
+  "setup_steps": [
+    {
+      "step": 1,
+      "action": "verify_clean_state",
+      "description": "Verify no existing AIDA or Claude directories",
+      "checks": [
+        "~/.aida does not exist",
+        "~/.claude does not exist",
+        "~/CLAUDE.md does not exist"
+      ]
+    },
+    {
+      "step": 2,
+      "action": "run_installer",
+      "description": "Run fresh installation",
+      "command": "./install.sh",
+      "expected_exit_code": 0
+    }
+  ],
+  "expected_outcome": {
+    "aida_symlink_created": true,
+    "aida_symlink_target": "/path/to/claude-personal-assistant",
+    "namespace_dirs_created": true,
+    "namespace_structure": {
+      "commands": "~/.claude/commands/.aida/",
+      "agents": "~/.claude/agents/.aida/",
+      "skills": "~/.claude/skills/.aida/"
+    },
+    "templates_installed": true,
+    "template_count": {
+      "commands": 15,
+      "agents": 5,
+      "skills": 0
+    },
+    "user_content_preserved": "n/a",
+    "config_created": true,
+    "config_file": "~/.claude/aida-config.json",
+    "entry_point_created": true,
+    "entry_point_file": "~/CLAUDE.md"
+  },
+  "validation_checks": [
+    {
+      "check": "aida_symlink",
+      "description": "Verify ~/.aida symlink created",
+      "command": "test -L ~/.aida",
+      "expected_exit_code": 0
+    },
+    {
+      "check": "namespace_structure",
+      "description": "Verify namespace directories exist",
+      "commands": [
+        "test -d ~/.claude/commands/.aida",
+        "test -d ~/.claude/agents/.aida",
+        "test -d ~/.claude/skills/.aida"
+      ],
+      "expected_exit_code": 0
+    },
+    {
+      "check": "templates_installed",
+      "description": "Verify templates installed to namespace",
+      "commands": [
+        "test -f ~/.claude/commands/.aida/start-work.md",
+        "test -f ~/.claude/commands/.aida/issue-create.md",
+        "test -f ~/.claude/agents/.aida/secretary.md"
+      ],
+      "expected_exit_code": 0
+    },
+    {
+      "check": "config_valid",
+      "description": "Verify configuration file created and valid",
+      "commands": [
+        "test -f ~/.claude/aida-config.json",
+        "jq -e '.version' ~/.claude/aida-config.json"
+      ],
+      "expected_exit_code": 0
+    },
+    {
+      "check": "entry_point",
+      "description": "Verify CLAUDE.md entry point created",
+      "command": "test -f ~/CLAUDE.md",
+      "expected_exit_code": 0
+    }
+  ],
+  "test_metadata": {
+    "test_duration_estimate": "30 seconds",
+    "complexity": "low",
+    "prerequisite_scenarios": [],
+    "tags": ["fresh-install", "baseline", "namespace-structure"]
+  }
+}
