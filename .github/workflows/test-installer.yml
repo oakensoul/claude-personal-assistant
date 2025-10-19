@@ -301,6 +301,75 @@ jobs:
           if-no-files-found: ignore
 
   # ============================================================
+  # Stage 5: WSL Tests (Windows Subsystem for Linux)
+  # ============================================================
+  wsl-tests:
+    name: WSL Tests (Ubuntu on Windows)
+    runs-on: windows-latest
+    needs: [unit-tests, integration-tests]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup WSL
+        uses: Vampire/setup-wsl@v2
+        with:
+          distribution: Ubuntu-22.04
+
+      - name: Install test dependencies in WSL
+        shell: wsl-bash {0}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats shellcheck jq
+
+      - name: Run unit tests in WSL
+        shell: wsl-bash {0}
+        run: |
+          make test-unit
+
+      - name: Run integration tests in WSL
+        shell: wsl-bash {0}
+        run: |
+          make test-integration
+
+      - name: Test installation in WSL (normal mode)
+        shell: wsl-bash {0}
+        run: |
+          echo -e "testassistant\n1" | ./install.sh
+
+      - name: Clean installation for dev mode test
+        shell: wsl-bash {0}
+        run: |
+          rm -rf ~/.aida ~/.claude ~/CLAUDE.md
+
+      - name: Test installation in WSL (dev mode)
+        shell: wsl-bash {0}
+        run: |
+          echo -e "testassistant\n1" | ./install.sh --dev
+
+      - name: Verify WSL installation structure
+        shell: wsl-bash {0}
+        run: |
+          # Verify dev mode creates correct symlinks
+          test -L ~/.claude/agents/.aida
+          test -L ~/.claude/commands/.aida
+          test -L ~/.claude/skills/.aida
+          test -L ~/.claude/documents/.aida
+
+          # Verify symlinks point to correct targets
+          readlink ~/.claude/agents/.aida | grep -q "templates/agents"
+          readlink ~/.claude/commands/.aida | grep -q "templates/commands"
+
+      - name: Upload WSL test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wsl-test-logs
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ============================================================
   # Stage 6: Performance & Coverage
   # ============================================================
   coverage:
@@ -348,6 +417,7 @@ jobs:
       - integration-tests
       - installation-tests
       - docker-tests
+      - wsl-tests
       - coverage
     if: always()
     steps:

@@ -118,6 +118,7 @@ ubuntu-24.04  ████████░░░░░░░░ Unit, Docker
 macos-13      ████████████░░░░ Unit, Install
 macos-14      ████░░░░░░░░░░░░ Unit only
 debian-12     ████░░░░░░░░░░░░ Docker only
+WSL (Win)     ████████████████ Unit, Integration, Install (Ubuntu 22.04 on Windows)
 ```
 
 ## Artifacts Reference
@@ -218,9 +219,10 @@ Parallel matrix execution
   Integration:       3 scenarios × 1.8 min = ~1.8 min (parallel)
   Installation:      4 configs × 2.5 min   = ~2.5 min (parallel)
   Docker:            3 platforms × 2.2 min = ~2.2 min (parallel)
+  WSL:               1 platform × 3.5 min  = ~3.5 min (setup + tests)
 
-Total: ~9 min (with parallelization)
-      vs ~27 min (sequential)
+Total: ~10 min (with parallelization)
+      vs ~30 min (sequential)
 Speedup: 3x
 
 Installation Tests Workflow
