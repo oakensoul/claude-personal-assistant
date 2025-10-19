@@ -358,9 +358,32 @@ create_claude_dirs() {
         "$claude_dir/memory/history"
     )
 
-    # Create directories
+    # Create directories (convert old symlink structure if needed)
     for dir in "${dirs[@]}"; do
-        if [[ -d "$dir" ]]; then
+        # Check if path is a symlink (old installation structure)
+        if [[ -L "$dir" ]]; then
+            local timestamp
+            timestamp=$(date +%Y%m%d-%H%M%S)
+            local backup_path="${dir}.backup.${timestamp}"
+
+            print_message "warning" "Converting old symlink structure to namespace isolation"
+            print_message "info" "Backing up: ${dir}"
+
+            # Backup the symlink
+            mv "$dir" "$backup_path" || {
+                print_message "error" "Failed to backup symlink: ${dir}"
+                return 1
+            }
+
+            # Create as regular directory
+            mkdir -p "$dir" || {
+                print_message "error" "Failed to create directory: ${dir}"
+                return 1
+            }
+            chmod 755 "$dir"
+            print_message "success" "Converted to directory: ${dir}"
+
+        elif [[ -d "$dir" ]]; then
             print_message "info" "Directory already exists: ${dir}"
         else
             mkdir -p "$dir" || {
