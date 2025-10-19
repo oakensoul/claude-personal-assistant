@@ -537,3 +537,46 @@ teardown() {
   [ "$status" -eq 1 ]
   [[ "$output" =~ "expected_target required" ]]
 }
+
+#######################################
+# Tests for upgrade path
+#######################################
+
+@test "create_claude_dirs converts old symlink structure to namespace isolation" {
+  local claude_dir="$TEST_DIR/claude"
+  local old_agents_target="$TEST_DIR/repo/agents"
+  local old_commands_target="$TEST_DIR/repo/commands"
+
+  # Create fake repo directories
+  mkdir -p "$old_agents_target" "$old_commands_target"
+
+  # Create old-style installation (entire directories are symlinks)
+  mkdir -p "$claude_dir"
+  ln -s "$old_agents_target" "$claude_dir/agents"
+  ln -s "$old_commands_target" "$claude_dir/commands"
+
+  # Verify old structure
+  [ -L "$claude_dir/agents" ]
+  [ -L "$claude_dir/commands" ]
+
+  # Run create_claude_dirs to convert to new structure
+  run create_claude_dirs "$claude_dir"
+
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ "Converting old symlink structure" ]]
+
+  # Verify new structure: directories are no longer symlinks
+  [ -d "$claude_dir/agents" ]
+  [ ! -L "$claude_dir/agents" ]
+  [ -d "$claude_dir/commands" ]
+  [ ! -L "$claude_dir/commands" ]
+
+  # Verify backups were created
+  local agents_backup_count
+  agents_backup_count=$(find "$claude_dir" -maxdepth 1 -name "agents.backup.*" -type l | wc -l)
+  [ "$agents_backup_count" -eq 1 ]
+
+  local commands_backup_count
+  commands_backup_count=$(find "$claude_dir" -maxdepth 1 -name "commands.backup.*" -type l | wc -l)
+  [ "$commands_backup_count" -eq 1 ]
+}

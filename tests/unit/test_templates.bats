@@ -290,7 +290,7 @@ teardown() {
   [ -f "$dst/.aida/template1/file.txt" ]
 }
 
-@test "install_templates skips non-directory items" {
+@test "install_templates copies entire directory including files" {
   local src="$TEST_DIR/src"
   local dst="$TEST_DIR/dst"
 
@@ -302,14 +302,15 @@ teardown() {
 
   [ "$status" -eq 0 ]
   [ -d "$dst/.aida/template1" ]
-  [ ! -e "$dst/.aida/file.txt" ]
+  # With cp -a, everything gets copied including files
+  [ -f "$dst/.aida/file.txt" ]
 }
 
 #######################################
 # Tests for install_templates (dev mode)
 #######################################
 
-@test "install_templates creates symlinks in dev mode" {
+@test "install_templates creates directory symlink in dev mode" {
   local src="$TEST_DIR/src"
   local dst="$TEST_DIR/dst"
 
@@ -320,10 +321,14 @@ teardown() {
   run install_templates "$src" "$dst" true ".aida"
 
   [ "$status" -eq 0 ]
-  [ -L "$dst/.aida/template1" ]
-  [ -L "$dst/.aida/template2" ]
-  assert_symlink_target "$dst/.aida/template1" "$src/template1"
-  assert_symlink_target "$dst/.aida/template2" "$src/template2"
+
+  # .aida itself should be a symlink (not individual templates)
+  [ -L "$dst/.aida" ]
+  assert_symlink_target "$dst/.aida" "$src"
+
+  # Templates should be accessible through the symlink
+  [ -f "$dst/.aida/template1/README.md" ]
+  [ -f "$dst/.aida/template2/README.md" ]
 }
 
 #######################################
@@ -446,20 +451,26 @@ teardown() {
   [[ "$output" == *"Installed 2 template(s)"* ]]
 }
 
-@test "install_templates reports failures for invalid templates" {
+@test "install_templates copies entire directory without per-template validation" {
   local src="$TEST_DIR/src"
   local dst="$TEST_DIR/dst"
 
   mkdir -p "$src/valid" "$src/invalid"
   echo "# Valid" > "$src/valid/README.md"
-  # invalid has no README.md
+  # invalid has no README.md (but still gets copied)
 
   run install_templates "$src" "$dst" false ".aida"
 
-  [ "$status" -eq 1 ]
-  [[ "$output" == *"Failed to install template"* ]]
-  [[ "$output" == *"Installed: 1"* ]]
-  [[ "$output" == *"Failed:    1"* ]]
+  # Should succeed - copies entire directory without validation
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Installed 2 template(s)"* ]]
+
+  # Both directories should be copied
+  [ -d "$dst/.aida/valid" ]
+  [ -d "$dst/.aida/invalid" ]
+
+  # Note: Template validation should happen at a different layer
+  # (e.g., during template creation or CI validation)
 }
 
 #######################################
@@ -550,23 +561,38 @@ teardown() {
   local src="$TEST_DIR/src"
   local dst="$TEST_DIR/dst"
 
-  mkdir -p "$src/template1"
+  mkdir -p "$src/template1" "$src/template2"
   echo "# Template 1" > "$src/template1/README.md"
+  echo "# Template 2" > "$src/template2/README.md"
 
-  # Install in dev mode (symlink)
+  # Install in dev mode (directory-level symlink)
   install_templates "$src" "$dst" true ".aida" >/dev/null
-  [ -L "$dst/.aida/template1" ]
 
-  # Convert to normal mode (copy)
+  # Verify .aida itself is a symlink to src
+  [ -L "$dst/.aida" ]
+  [ "$(readlink "$dst/.aida")" = "$src" ]
+
+  # Templates should be accessible through symlink
+  [ -f "$dst/.aida/template1/README.md" ]
+  [ -f "$dst/.aida/template2/README.md" ]
+
+  # Convert to normal mode (copy entire directory)
   run install_templates "$src" "$dst" false ".aida"
 
   [ "$status" -eq 0 ]
-  [ -d "$dst/.aida/template1" ]
-  [ ! -L "$dst/.aida/template1" ]
 
-  # Check backup of symlink was created
+  # .aida should now be a regular directory (not a symlink)
+  [ -d "$dst/.aida" ]
+  [ ! -L "$dst/.aida" ]
+
+  # Templates should be copied as directories
+  [ -d "$dst/.aida/template1" ]
+  [ -d "$dst/.aida/template2" ]
+  [ -f "$dst/.aida/template1/README.md" ]
+
+  # Check backup of directory symlink was created
   local backup_count
-  backup_count=$(find "$dst/.aida" -name "template1.backup.*" | wc -l)
+  backup_count=$(find "$dst" -maxdepth 1 -name ".aida.backup.*" -type l | wc -l)
   [ "$backup_count" -eq 1 ]
 }
 
