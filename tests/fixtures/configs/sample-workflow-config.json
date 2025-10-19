@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "workflow": {
+    "auto_commit": true,
+    "commit_after_each_task": true,
+    "branch_naming": "feature/{issue_number}-{description}",
+    "default_base_branch": "main"
+  },
+  "tasks": {
+    "max_retries": 3,
+    "timeout_seconds": 300
+  },
+  "github": {
+    "issue_template": "default",
+    "pr_template": "default",
+    "auto_label": true
+  }
+}

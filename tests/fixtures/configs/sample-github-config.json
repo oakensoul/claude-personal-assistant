@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "repository": {
+    "owner": "test-user",
+    "name": "test-repo",
+    "default_branch": "main"
+  },
+  "labels": {
+    "bug": "#d73a4a",
+    "enhancement": "#a2eeef",
+    "documentation": "#0075ca",
+    "question": "#d876e3"
+  },
+  "milestones": {
+    "v0.1": {
+      "title": "Version 0.1",
+      "description": "Initial release",
+      "state": "open"
+    }
+  },
+  "automation": {
+    "auto_assign": true,
+    "auto_milestone": false,
+    "close_stale_issues": false
+  }
+}

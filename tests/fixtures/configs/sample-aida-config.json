@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "install_mode": "normal",
+  "installed_at": "2025-01-15T10:30:00Z",
+  "updated_at": "2025-01-15T10:30:00Z",
+  "paths": {
+    "aida_home": "/home/testuser/.aida",
+    "claude_config_dir": "/home/testuser/.claude",
+    "home": "/home/testuser"
+  },
+  "user": {
+    "assistant_name": "JARVIS",
+    "personality": "professional"
+  },
+  "deprecation": {
+    "include_deprecated": false
+  }
+}
