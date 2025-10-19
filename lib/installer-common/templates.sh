@@ -69,9 +69,21 @@ validate_template_structure() {
         return 1
     fi
 
-    # Check for README.md (required for all templates)
-    if [[ ! -f "${template_dir}/README.md" ]]; then
-        print_message "error" "Template missing README.md: ${template_dir}"
+    # Check for valid template file
+    # Commands/Documents use README.md
+    # Agents use {agent-name}.md
+    local template_name
+    template_name=$(basename "$template_dir")
+
+    if [[ -f "${template_dir}/README.md" ]]; then
+        # Standard template (commands, documents, skills)
+        return 0
+    elif [[ -f "${template_dir}/${template_name}.md" ]]; then
+        # Agent template (agent-name/agent-name.md)
+        return 0
+    else
+        print_message "error" "Template missing required file: ${template_dir}"
+        print_message "info" "  Expected: README.md or ${template_name}.md"
         return 1
     fi
 
