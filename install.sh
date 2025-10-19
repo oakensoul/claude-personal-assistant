@@ -400,10 +400,10 @@ main() {
         exit 1
     }
 
-    # Documents (knowledge/templates)
+    # Documents
     install_templates \
         "${SCRIPT_DIR}/templates/documents" \
-        "${CLAUDE_DIR}/knowledge" \
+        "${CLAUDE_DIR}/documents" \
         "$DEV_MODE" \
         ".aida" || {
         print_message "error" "Failed to install document templates"

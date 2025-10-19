@@ -351,6 +351,7 @@ create_claude_dirs() {
         "$claude_dir/commands"
         "$claude_dir/agents"
         "$claude_dir/skills"
+        "$claude_dir/documents"
         "$claude_dir/config"
         "$claude_dir/knowledge"
         "$claude_dir/memory"
