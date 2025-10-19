@@ -275,41 +275,109 @@ install_templates() {
         print_message "warning" "Unusual namespace: ${namespace} (expected .aida or .aida-deprecated)"
     fi
 
-    # Create namespace directory
     local namespace_dir="${dst_dir}/${namespace}"
-    if [[ ! -d "$namespace_dir" ]]; then
-        mkdir -p "$namespace_dir" || {
-            print_message "error" "Failed to create namespace directory: ${namespace_dir}"
-            return 1
-        }
-        print_message "success" "Created namespace directory: ${namespace_dir}"
-    fi
-
-    # Count templates to install
-    local template_count=0
-    local installed_count=0
-    local failed_count=0
 
     print_message "info" "Installing templates from ${src_dir}..."
 
-    # Install each template folder
-    for template in "$src_dir"/*; do
-        # Skip if not a directory
-        [[ -d "$template" ]] || continue
-
-        template_count=$((template_count + 1))
-
-        local template_name
-        template_name=$(basename "$template")
-        local dst_template="${namespace_dir}/${template_name}"
-
-        # Install template folder
-        if install_template_folder "$template" "$dst_template" "$dev_mode"; then
-            installed_count=$((installed_count + 1))
-        else
-            failed_count=$((failed_count + 1))
-            print_message "error" "Failed to install template: ${template_name}"
+    # Dev mode: symlink entire namespace directory to source
+    if [[ "$dev_mode" == "true" ]]; then
+        # Create parent directory if needed
+        if [[ ! -d "$dst_dir" ]]; then
+            mkdir -p "$dst_dir" || {
+                print_message "error" "Failed to create directory: ${dst_dir}"
+                return 1
+            }
         fi
+
+        # Check if namespace already exists
+        if [[ -e "$namespace_dir" ]]; then
+            if [[ -L "$namespace_dir" ]]; then
+                # It's a symlink - check if it points to correct target
+                local current_target
+                if current_target=$(readlink "$namespace_dir" 2>/dev/null); then
+                    if [[ "$current_target" == "$src_dir" ]]; then
+                        # Count templates for reporting
+                        local template_count=0
+                        for template in "$src_dir"/*; do
+                            [[ -d "$template" ]] || continue
+                            template_count=$((template_count + 1))
+                        done
+                        print_message "info" "Namespace already symlinked correctly: ${namespace_dir}"
+                        print_message "success" "Verified ${template_count} template(s) at ${namespace_dir}"
+                        return 0
+                    else
+                        print_message "warning" "Namespace symlink points to wrong target, recreating"
+                        rm "$namespace_dir" || {
+                            print_message "error" "Failed to remove incorrect symlink"
+                            return 1
+                        }
+                    fi
+                fi
+            else
+                # It's a regular directory - backup and remove
+                local timestamp
+                timestamp=$(date +%Y%m%d-%H%M%S)
+                local backup_path="${namespace_dir}.backup.${timestamp}"
+                print_message "warning" "Backing up existing namespace directory before symlinking"
+                mv "$namespace_dir" "$backup_path" || {
+                    print_message "error" "Failed to backup namespace directory"
+                    return 1
+                }
+                print_message "info" "Backup created: ${backup_path}"
+            fi
+        fi
+
+        # Create symlink
+        ln -s "$src_dir" "$namespace_dir" || {
+            print_message "error" "Failed to create namespace symlink: ${namespace_dir} -> ${src_dir}"
+            return 1
+        }
+
+        # Count templates for reporting
+        local template_count=0
+        for template in "$src_dir"/*; do
+            [[ -d "$template" ]] || continue
+            template_count=$((template_count + 1))
+        done
+
+        print_message "success" "Symlinked ${template_count} template(s): ${namespace_dir} -> ${src_dir}"
+        return 0
+    fi
+
+    # Normal mode: copy entire templates directory to namespace
+    # Create parent directory if needed
+    if [[ ! -d "$dst_dir" ]]; then
+        mkdir -p "$dst_dir" || {
+            print_message "error" "Failed to create directory: ${dst_dir}"
+            return 1
+        }
+    fi
+
+    # Check if namespace directory already exists
+    if [[ -e "$namespace_dir" ]]; then
+        # Backup existing namespace directory
+        local timestamp
+        timestamp=$(date +%Y%m%d-%H%M%S)
+        local backup_path="${namespace_dir}.backup.${timestamp}"
+        print_message "warning" "Backing up existing namespace directory"
+        mv "$namespace_dir" "$backup_path" || {
+            print_message "error" "Failed to backup namespace directory"
+            return 1
+        }
+        print_message "info" "Backup created: ${backup_path}"
+    fi
+
+    # Copy entire source directory to namespace (recursive, preserve attributes)
+    cp -a "$src_dir" "$namespace_dir" || {
+        print_message "error" "Failed to copy templates: ${src_dir} -> ${namespace_dir}"
+        return 1
+    }
+
+    # Count templates for reporting
+    local template_count=0
+    for template in "$namespace_dir"/*; do
+        [[ -d "$template" ]] || continue
+        template_count=$((template_count + 1))
     done
 
     # Check if any templates were found
@@ -318,16 +386,8 @@ install_templates() {
         return 0
     fi
 
-    # Report results
-    if [[ $failed_count -eq 0 ]]; then
-        print_message "success" "Installed ${installed_count} template(s) to ${namespace_dir}"
-        return 0
-    else
-        print_message "error" "Template installation completed with errors"
-        print_message "info" "  Installed: ${installed_count}"
-        print_message "info" "  Failed:    ${failed_count}"
-        return 1
-    fi
+    print_message "success" "Installed ${template_count} template(s) to ${namespace_dir}"
+    return 0
 }
 
 #######################################
