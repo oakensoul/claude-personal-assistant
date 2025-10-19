@@ -61,51 +61,6 @@ check_config_helper() {
 }
 
 #######################################
-# Get full merged configuration
-# Globals:
-#   CONFIG_HELPER
-# Arguments:
-#   None
-# Returns:
-#   0 on success, 1 on error
-# Outputs:
-#   Full merged JSON config to stdout
-#######################################
-get_config() {
-    check_config_helper || return 1
-
-    "$CONFIG_HELPER" || {
-        print_message "error" "Failed to get merged config"
-        return 1
-    }
-}
-
-#######################################
-# Get specific config value by key path
-# Arguments:
-#   $1 - Key path (e.g., "paths.aida_home")
-# Returns:
-#   0 on success, 1 on error
-# Outputs:
-#   Value to stdout
-#######################################
-get_config_value() {
-    local key="$1"
-
-    if [[ -z "$key" ]]; then
-        print_message "error" "Config key cannot be empty"
-        return 1
-    fi
-
-    check_config_helper || return 1
-
-    "$CONFIG_HELPER" --key "$key" || {
-        print_message "error" "Failed to get config value for key: $key"
-        return 1
-    }
-}
-
-#######################################
 # Create or update user config file
 # Arguments:
 #   $1 - Install mode ("normal" or "dev")
@@ -181,44 +136,4 @@ EOF
 
     print_message "success" "Created config: ${config_file}"
     return 0
-}
-
-#######################################
-# Validate configuration has required keys
-# Globals:
-#   CONFIG_HELPER
-# Arguments:
-#   None
-# Returns:
-#   0 if valid, 1 if validation fails
-#######################################
-validate_config() {
-    check_config_helper || return 1
-
-    "$CONFIG_HELPER" --validate || {
-        print_message "error" "Configuration validation failed"
-        return 1
-    }
-}
-
-#######################################
-# Check if config file exists
-# Arguments:
-#   $1 - Path to config file
-# Returns:
-#   0 if exists, 1 if not
-#######################################
-config_exists() {
-    local config_path="$1"
-
-    if [[ -z "$config_path" ]]; then
-        print_message "error" "Config path cannot be empty"
-        return 1
-    fi
-
-    if [[ -f "$config_path" ]]; then
-        return 0
-    else
-        return 1
-    fi
 }
