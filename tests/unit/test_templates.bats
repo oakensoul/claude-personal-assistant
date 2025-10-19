@@ -467,12 +467,12 @@ teardown() {
 #######################################
 
 @test "generate_claude_md creates CLAUDE.md file" {
-  local output="$TEST_DIR/CLAUDE.md"
+  local output_file="$TEST_DIR/CLAUDE.md"
 
-  run generate_claude_md "$output" "JARVIS" "professional" "0.1.6"
+  run generate_claude_md "$output_file" "JARVIS" "professional" "0.1.6"
 
   [ "$status" -eq 0 ]
-  [ -f "$output" ]
+  [ -f "$output_file" ]
 }
 
 @test "generate_claude_md includes frontmatter" {

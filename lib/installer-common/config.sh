@@ -118,12 +118,12 @@ get_config_value() {
 #   0 on success, 1 on error
 #######################################
 write_user_config() {
-    local install_mode="$1"
-    local aida_dir="$2"
-    local claude_dir="$3"
-    local version="$4"
-    local assistant_name="$5"
-    local personality="$6"
+    local install_mode="${1:-}"
+    local aida_dir="${2:-}"
+    local claude_dir="${3:-}"
+    local version="${4:-}"
+    local assistant_name="${5:-}"
+    local personality="${6:-}"
 
     # Validate required arguments
     if [[ -z "$install_mode" ]] || [[ -z "$aida_dir" ]] || [[ -z "$claude_dir" ]] || [[ -z "$version" ]]; then

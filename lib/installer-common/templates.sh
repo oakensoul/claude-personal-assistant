@@ -175,20 +175,23 @@ install_template_folder() {
 
     else
         # Normal mode: copy files
-        if [[ -d "$dst_folder" ]]; then
-            # Directory already exists - check if update needed
+        if [[ -e "$dst_folder" ]]; then
+            # Destination already exists - backup and remove
+            local timestamp
+            timestamp=$(date +%Y%m%d-%H%M%S)
+            local backup_path="${dst_folder}.backup.${timestamp}"
+
             if [[ -L "$dst_folder" ]]; then
-                # Convert symlink to directory - backup symlink first
-                local timestamp
-                timestamp=$(date +%Y%m%d-%H%M%S)
-                local backup_path="${dst_folder}.backup.${timestamp}"
                 print_message "warning" "Converting symlink to directory: ${template_name}"
-                mv "$dst_folder" "$backup_path"
-                print_message "info" "Backup created: ${backup_path}"
             else
-                # Directory exists - will overwrite with fresh copy
                 print_message "info" "Updating existing template: ${template_name}"
             fi
+
+            mv "$dst_folder" "$backup_path" || {
+                print_message "error" "Failed to backup existing template: ${template_name}"
+                return 1
+            }
+            print_message "info" "Backup created: ${backup_path}"
         fi
 
         # Copy template (recursive, preserve attributes)
