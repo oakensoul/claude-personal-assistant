@@ -314,15 +314,17 @@ main() {
     echo "Requirements: lowercase, no spaces, 3-20 characters"
     echo ""
 
-    ASSISTANT_NAME=$(prompt_input_validated \
+    ASSISTANT_NAME=$(prompt_input \
         "Enter assistant name (e.g., 'jarvis', 'alfred')" \
+        "" \
         "^[a-z][a-z0-9-]*$" \
         "Name must start with a letter and contain only lowercase letters, numbers, and hyphens")
 
     while [[ ${#ASSISTANT_NAME} -lt 3 || ${#ASSISTANT_NAME} -gt 20 ]]; do
         print_message "warning" "Name must be 3-20 characters (got ${#ASSISTANT_NAME})"
-        ASSISTANT_NAME=$(prompt_input_validated \
+        ASSISTANT_NAME=$(prompt_input \
             "Enter assistant name (e.g., 'jarvis', 'alfred')" \
+            "" \
             "^[a-z][a-z0-9-]*$" \
             "Name must start with a letter and contain only lowercase letters, numbers, and hyphens")
     done
