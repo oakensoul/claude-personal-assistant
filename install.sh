@@ -368,14 +368,12 @@ main() {
     # Create directory structure
     create_directories
 
-    # Install command templates (use module function with all required parameters)
-    copy_command_templates \
+    # Install command templates using namespace isolation
+    install_templates \
         "${SCRIPT_DIR}/templates/commands" \
         "${CLAUDE_DIR}/commands" \
-        "$AIDA_DIR" \
-        "$CLAUDE_DIR" \
-        "$HOME" \
-        "$DEV_MODE" || {
+        "$DEV_MODE" \
+        ".aida" || {
         print_message "error" "Failed to install command templates"
         exit 1
     }
