@@ -131,8 +131,8 @@ EOF
 
   [ "$status" -eq 0 ]
   [[ "$output" =~ "deprecated=true" ]]
-  [[ "$output" =~ "deprecated_in=0.2.0" ]]
-  [[ "$output" =~ "remove_in=0.4.0" ]]
+  [[ "$output" =~ deprecated_in=0.2.0 ]]
+  [[ "$output" =~ remove_in=0.4.0 ]]
   [[ "$output" =~ "canonical=issue-create" ]]
   [[ "$output" =~ "reason=Renamed to noun-verb convention" ]]
 }
@@ -223,7 +223,7 @@ EOF
 
   [ "$status" -eq 0 ]
   # Values should be returned without quotes
-  [[ "$output" =~ 'deprecated_in=0.2.0' ]]
+  [[ "$output" =~ deprecated_in=0.2.0 ]]
   [[ "$output" =~ 'canonical=issue-create' ]]
 }
 
@@ -493,10 +493,10 @@ EOF
 
   [ "$status" -eq 0 ]
   # Should find both deprecated templates
-  [[ "$output" =~ "deprecated1.md" ]]
-  [[ "$output" =~ "deprecated2.md" ]]
+  [[ "$output" =~ deprecated1.md ]]
+  [[ "$output" =~ deprecated2.md ]]
   # Should not find active template
-  [[ ! "$output" =~ "active.md" ]]
+  [[ ! "$output" =~ active.md ]]
 }
 
 @test "scan_deprecated_templates: returns 0 even if no deprecated templates found" {
@@ -548,7 +548,7 @@ EOF
 
   [ "$status" -eq 0 ]
   # Should find deprecated template in subdirectory
-  [[ "$output" =~ "subdir/deprecated.md" ]]
+  [[ "$output" =~ subdir/deprecated.md ]]
 }
 
 @test "scan_deprecated_templates: ignores non-.md files" {
@@ -577,8 +577,8 @@ EOF
 
   [ "$status" -eq 0 ]
   # Should only find .md file
-  [[ "$output" =~ "deprecated.md" ]]
-  [[ ! "$output" =~ "deprecated.txt" ]]
+  [[ "$output" =~ deprecated.md ]]
+  [[ ! "$output" =~ deprecated.txt ]]
 }
 
 #######################################
@@ -1081,7 +1081,7 @@ EOF
   deprecated_list=$(scan_deprecated_templates "$templates_dir")
 
   # Should find both deprecated templates
-  [[ "$deprecated_list" =~ "create-issue-draft.md" ]]
-  [[ "$deprecated_list" =~ "start-issue-work.md" ]]
-  [[ ! "$deprecated_list" =~ "issue-create.md" ]]
+  [[ "$deprecated_list" =~ create-issue-draft.md ]]
+  [[ "$deprecated_list" =~ start-issue-work.md ]]
+  [[ ! "$deprecated_list" =~ issue-create.md ]]
 }

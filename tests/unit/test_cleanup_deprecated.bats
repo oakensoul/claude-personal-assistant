@@ -131,7 +131,7 @@ run_cleanup_script() {
   run bash -c "cat ${TEST_DIR}/VERSION"
 
   [ "$status" -eq 0 ]
-  [[ "$output" =~ "0.4.0" ]]
+  [[ "$output" =~ 0.4.0 ]]
 }
 
 @test "cleanup: fails if VERSION file missing" {
@@ -271,8 +271,8 @@ EOF
 
   [ "$status" -eq 0 ]
   [[ "$output" =~ "deprecated=true" ]]
-  [[ "$output" =~ "deprecated_in=0.2.0" ]]
-  [[ "$output" =~ "remove_in=0.4.0" ]]
+  [[ "$output" =~ deprecated_in=0.2.0 ]]
+  [[ "$output" =~ remove_in=0.4.0 ]]
   [[ "$output" =~ "canonical=new-test-cmd" ]]
 }
 

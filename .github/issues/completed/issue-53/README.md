@@ -786,7 +786,7 @@ Successfully refactored the monolithic AIDA installer (625 lines) into a modular
 
 **Modular Architecture** (8 library modules):
 - `lib/installer-common/colors.sh` - Terminal color output
-- `lib/installer-common/logging.sh` - Message formatting  
+- `lib/installer-common/logging.sh` - Message formatting
 - `lib/installer-common/validation.sh` - Input validation
 - `lib/installer-common/prompts.sh` - User interaction (34 bats tests)
 - `lib/installer-common/directories.sh` - Directory management

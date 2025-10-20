@@ -50,7 +50,7 @@ teardown() {
   # Should point to PROJECT_ROOT
   [[ "$target" == "$PROJECT_ROOT" ]]
 
-  debug "~/.aida symlink created correctly"
+  debug "$HOME/.aida symlink created correctly"
 }
 
 @test "fresh install generates CLAUDE.md" {
