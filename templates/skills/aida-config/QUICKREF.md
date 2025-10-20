@@ -226,11 +226,11 @@ done
 {
   "system": {"config_version": "1.0", "cache_enabled": true},
   "paths": {
-    "aida_home": "/Users/user/.aida",
-    "claude_config_dir": "/Users/user/.claude",
+    "aida_home": "${HOME}/.aida",
+    "claude_config_dir": "${HOME}/.claude",
     "project_root": "/path/to/project",
     "git_root": "/path/to/project",
-    "home": "/Users/user"
+    "home": "${HOME}"
   },
   "user": {
     "assistant_name": "jarvis",

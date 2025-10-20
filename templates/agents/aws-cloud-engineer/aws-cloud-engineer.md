@@ -816,7 +816,7 @@ All resources MUST have:
 - **Environment**: dev | staging | prod
 - **ManagedBy**: cdk
 - **CostCenter**: engineering
-- **Owner**: team@example.com
+- **Owner**: team-infra@example.com
 
 ## Optional Tags
 

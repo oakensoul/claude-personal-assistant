@@ -317,10 +317,11 @@ check_learned_patterns() {
 
     # Check for references to specific projects (that might be personal)
     # This is a heuristic - may need tuning
-    if echo "${line}" | grep -qE '(my-project|personal-project|client-name)'; then
+    # Note: "my-project" is an acceptable generic placeholder, not flagged
+    if echo "${line}" | grep -qE '(personal-project|client-name)'; then
       log_error "${file}" "${line_num}" \
         "Found reference to specific project" \
-        "Use generic placeholder or {project-name} variable"
+        "Use generic placeholder like 'my-project' or {project-name} variable"
     fi
   done < "$file"
 }

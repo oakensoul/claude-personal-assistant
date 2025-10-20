@@ -167,7 +167,7 @@ import { DatadogLambda } from 'datadog-cdk-constructs-v2';
 
 const datadogLambda = new DatadogLambda(this, 'DatadogLambda', {
   lambda: myLambdaFunction,
-  apiKey: 'YOUR_DATADOG_API_KEY_HERE',
+  apiKey: process.env.DD_API_KEY,
   extensionLayerVersion: 58,
   enableDatadogTracing: true,
   enableDatadogLogs: true,

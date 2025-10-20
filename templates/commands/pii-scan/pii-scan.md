@@ -668,7 +668,7 @@ PII_Scan_Report:
         - Pattern_Match: ✅ (Ethereum address regex)
         - Column_Name: ✅ (contains "wallet")
         - Sample_Analysis: ✅ (850/1000 rows match)
-      Sample_Data: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb" (masked)
+      Sample_Data: "0x1234567890abcdef1234567890abcdef12345678" (masked)
       Classification: "Level 3 - Sensitive Data"
       Recommended_Masking: "Partial (0x742d***bEb)"
       Masking_Policy: "mask_wallet_partial"

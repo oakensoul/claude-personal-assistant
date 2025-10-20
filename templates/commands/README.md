@@ -59,8 +59,8 @@ These variables use double-brace syntax (e.g., `{{AIDA_HOME}}`) and are substitu
 
 **Install-time variables:**
 
-- `{{AIDA_HOME}}`: Replaced with AIDA installation directory (e.g., `{{HOME}}/.aida`)
-- `{{CLAUDE_CONFIG_DIR}}`: Replaced with Claude config directory (e.g., `{{HOME}}/.claude`)
+- `{{AIDA_HOME}}`: Replaced with AIDA installation directory (e.g., `${HOME}/.aida`)
+- `{{CLAUDE_CONFIG_DIR}}`: Replaced with Claude config directory (e.g., `${HOME}/.claude`)
 - `{{HOME}}`: Replaced with user's home directory (e.g., `${HOME}`)
 
 **When to use:** For paths that are fixed at installation and don't change between command invocations.
@@ -110,7 +110,7 @@ This hybrid approach provides:
 
 AIDA currently includes 32 commands for workflow automation. The core workflow commands are documented below, with additional specialized commands for quality assurance, security, operations, and domain-specific tasks.
 
-**Note**: In milestone v0.1.0, these commands will be consolidated into 10 logical command groups with subcommands for better organization and discoverability. See [GitHub milestone 0.1.0](https://github.com/{github-org}/claude-personal-assistant/milestone/16) for details.
+**Note**: In milestone v0.1.0, these commands will be consolidated into 10 logical command groups with subcommands for better organization and discoverability. See [GitHub milestone 0.1.0](https://github.com/username/claude-personal-assistant/milestone/16) for details.
 
 ### Core Workflow Commands
 
@@ -609,7 +609,7 @@ Beyond the core workflow commands documented above, AIDA includes specialized co
 - `/cost-review` - Cost analysis and optimization
 - `/sla-report` - SLA compliance reporting
 
-**Note**: These specialized commands will be consolidated into `/quality`, `/security`, `/incident`, `/debug`, `/project`, `/review`, `/docs`, and `/aida` command groups in v0.1.0. See [issue #44](https://github.com/{github-org}/claude-personal-assistant/issues/44) and related issues for the consolidation plan.
+**Note**: These specialized commands will be consolidated into `/quality`, `/security`, `/incident`, `/debug`, `/project`, `/review`, `/docs`, and `/aida` command groups in v0.1.0. See [issue #44](https://github.com/username/claude-personal-assistant/issues/44) and related issues for the consolidation plan.
 
 ## Runtime Behavior
 

@@ -326,7 +326,7 @@ company_data:
 
 system_paths:
   - pattern: '/Users/[^/]+/'
-    replacement: '~/REDACTED/'
+    replacement: '${HOME}/REDACTED/'
     description: User home directories
 
   - pattern: '\b[A-Za-z]:\\Users\\[^\\]+\\'

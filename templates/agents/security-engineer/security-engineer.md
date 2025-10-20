@@ -464,7 +464,7 @@ Agent Response:
 
 3. Implementation:
    ALTER ACCOUNT SET ENCRYPTION = 'TRI_SECRET_SECURE';
-   ALTER ACCOUNT SET AWS_KMS_KEY_ARN = 'arn:aws:kms:...';
+   ALTER ACCOUNT SET AWS_KMS_KEY_ARN = 'arn:aws:kms:us-east-1:123456789012:key/12345678-abcd-1234-abcd-1234567890ab';
 
 4. Compliance:
    - Document encryption standards (AES-256-GCM)

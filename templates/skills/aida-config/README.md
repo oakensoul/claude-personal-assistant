@@ -216,11 +216,11 @@ echo "Default reviewers: ${DEFAULT_REVIEWERS}"
     "cache_enabled": true
   },
   "paths": {
-    "aida_home": "/Users/rob/.aida",
-    "claude_config_dir": "/Users/rob/.claude",
-    "project_root": "/Users/rob/projects/myapp",
-    "git_root": "/Users/rob/projects/myapp",
-    "home": "/Users/rob"
+    "aida_home": "${HOME}/.aida",
+    "claude_config_dir": "${HOME}/.claude",
+    "project_root": "/path/to/project",
+    "git_root": "/path/to/project",
+    "home": "${HOME}"
   },
   "user": {
     "assistant_name": "jarvis",
@@ -233,8 +233,8 @@ echo "Default reviewers: ${DEFAULT_REVIEWERS}"
     }
   },
   "github": {
-    "owner": "oakensoul",
-    "repo": "claude-personal-assistant",
+    "owner": "username",
+    "repo": "repository",
     "main_branch": "main",
     "default_reviewers": ["teammate1", "teammate2"]
   },
@@ -270,8 +270,8 @@ echo "Default reviewers: ${DEFAULT_REVIEWERS}"
 
 #### `paths.*` - File System Paths
 
-- `aida_home`: AIDA installation directory (e.g., `~/.aida`)
-- `claude_config_dir`: Claude configuration directory (e.g., `~/.claude`)
+- `aida_home`: AIDA installation directory (e.g., `${HOME}/.aida`)
+- `claude_config_dir`: Claude configuration directory (e.g., `${HOME}/.claude`)
 - `project_root`: Current project root directory
 - `git_root`: Git repository root directory
 - `home`: User's home directory
