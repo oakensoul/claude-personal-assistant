@@ -113,8 +113,9 @@ write_user_config() {
 
     if [[ -f "$config_file" ]] && jq empty "$config_file" 2>/dev/null; then
         # Config exists and is valid JSON - this is an upgrade, preserve user settings
-        final_name=$(jq -r '.user.assistant_name // .assistant_name' "$config_file")
-        final_personality=$(jq -r '.user.personality // .personality' "$config_file")
+        # Prioritize top-level fields (what users manually edit) over nested fields
+        final_name=$(jq -r '.assistant_name // .user.assistant_name // empty' "$config_file")
+        final_personality=$(jq -r '.personality // .user.personality // empty' "$config_file")
 
         # Handle old config format (v0.1.x used install_date, v0.2.x uses installed_at)
         local old_installed_at

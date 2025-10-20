@@ -312,16 +312,13 @@ install_templates() {
                     fi
                 fi
             else
-                # It's a regular directory - backup and remove
-                local timestamp
-                timestamp=$(date +%Y%m%d-%H%M%S)
-                local backup_path="${namespace_dir}.backup.${timestamp}"
-                print_message "warning" "Backing up existing namespace directory before symlinking"
-                mv "$namespace_dir" "$backup_path" || {
-                    print_message "error" "Failed to backup namespace directory"
+                # It's a regular directory - remove and convert to symlink
+                # Namespace directories contain only AIDA-managed templates, safe to remove
+                print_message "info" "Converting directory to symlink (dev mode): ${namespace_dir}"
+                rm -rf "$namespace_dir" || {
+                    print_message "error" "Failed to remove namespace directory"
                     return 1
                 }
-                print_message "info" "Backup created: ${backup_path}"
             fi
         fi
 
@@ -353,16 +350,18 @@ install_templates() {
 
     # Check if namespace directory already exists
     if [[ -e "$namespace_dir" ]]; then
-        # Backup existing namespace directory
-        local timestamp
-        timestamp=$(date +%Y%m%d-%H%M%S)
-        local backup_path="${namespace_dir}.backup.${timestamp}"
-        print_message "warning" "Backing up existing namespace directory"
-        mv "$namespace_dir" "$backup_path" || {
-            print_message "error" "Failed to backup namespace directory"
+        # Namespace directories contain only AIDA-managed templates
+        # They can be safely removed and recreated without backup
+        # User content should never be inside namespace directories
+        if [[ -L "$namespace_dir" ]]; then
+            print_message "info" "Removing existing symlink: ${namespace_dir}"
+        else
+            print_message "info" "Updating namespace directory: ${namespace_dir}"
+        fi
+        rm -rf "$namespace_dir" || {
+            print_message "error" "Failed to remove existing namespace directory"
             return 1
         }
-        print_message "info" "Backup created: ${backup_path}"
     fi
 
     # Copy entire source directory to namespace (recursive, preserve attributes)

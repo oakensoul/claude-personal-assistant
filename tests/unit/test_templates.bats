@@ -592,10 +592,11 @@ teardown() {
   [ -d "$dst/.aida/template2" ]
   [ -f "$dst/.aida/template1/README.md" ]
 
-  # Check backup of directory symlink was created
+  # No backup should be created - namespace directories are AIDA-managed
+  # and can be safely removed/replaced without backup
   local backup_count
-  backup_count=$(find "$dst" -maxdepth 1 -name ".aida.backup.*" -type l | wc -l)
-  [ "$backup_count" -eq 1 ]
+  backup_count=$(find "$dst" -maxdepth 1 -name ".aida.backup.*" | wc -l)
+  [ "$backup_count" -eq 0 ]
 }
 
 @test "install_templates handles complex template structures" {
