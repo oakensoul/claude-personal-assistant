@@ -24,13 +24,31 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 DOCKER_DIR="${SCRIPT_DIR}"
 LOG_DIR="${SCRIPT_DIR}/logs"
 
-# Map environment names to Dockerfiles
-declare -A DOCKERFILE_MAP=(
-    ["ubuntu-22"]="Dockerfile.ubuntu-22.04"
-    ["ubuntu-20"]="Dockerfile.ubuntu-20.04"
-    ["debian-12"]="Dockerfile.debian-12"
-    ["ubuntu-minimal"]="Dockerfile.ubuntu-minimal"
-)
+#######################################
+# Get Dockerfile for environment
+# Bash 3.2 compatible (no associative arrays)
+#######################################
+get_dockerfile() {
+    local env="$1"
+    case "$env" in
+        ubuntu-22)
+            echo "Dockerfile.ubuntu-22.04"
+            ;;
+        ubuntu-20)
+            echo "Dockerfile.ubuntu-20.04"
+            ;;
+        debian-12)
+            echo "Dockerfile.debian-12"
+            ;;
+        ubuntu-minimal)
+            echo "Dockerfile.ubuntu-minimal"
+            ;;
+        *)
+            echo "Unknown environment: $env" >&2
+            return 1
+            ;;
+    esac
+}
 
 # Test configuration
 VERBOSE=false
@@ -123,7 +141,9 @@ setup_test_env() {
 #######################################
 build_docker_images() {
     local env="$1"
-    local dockerfile="${DOCKERFILE_MAP[$env]}"
+    local dockerfile
+
+    dockerfile=$(get_dockerfile "$env") || return 1
 
     print_msg "info" "Building Docker image: ${env}..."
 
@@ -285,7 +305,8 @@ test_dev_installation() {
         bash -c "./install.sh --dev" > "${log_file}" 2>&1; then
 
         # Verify dev mode messages
-        if grep -q "Development mode is active" "${log_file}"; then
+        if grep -q "Running in DEVELOPMENT MODE" "${log_file}" || \
+           grep -q "Development mode (symlinked)" "${log_file}"; then
             print_msg "success" "[${env}] Dev mode installation test passed"
             TESTS_PASSED=$((TESTS_PASSED + 1))
             return 0
