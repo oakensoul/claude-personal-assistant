@@ -76,6 +76,12 @@ source "${INSTALLER_COMMON}/templates.sh" || {
     exit 1
 }
 
+# shellcheck source=lib/installer-common/migrations.sh
+source "${INSTALLER_COMMON}/migrations.sh" || {
+    print_message "error" "Failed to source migrations.sh from ${INSTALLER_COMMON}"
+    exit 1
+}
+
 # Script version
 VERSION_FILE="${SCRIPT_DIR}/VERSION"
 if [[ -f "$VERSION_FILE" ]]; then
@@ -398,6 +404,9 @@ main() {
     # Backup existing installation if found
     check_existing_install
 
+    # Run migrations for backward compatibility
+    run_migrations
+
     # Create directory structure
     create_directories
 
@@ -440,6 +449,16 @@ main() {
         "$DEV_MODE" \
         ".aida" || {
         print_message "error" "Failed to install document templates"
+        exit 1
+    }
+
+    # Scripts
+    install_templates \
+        "${SCRIPT_DIR}/scripts" \
+        "${CLAUDE_DIR}/scripts" \
+        "$DEV_MODE" \
+        ".aida" || {
+        print_message "error" "Failed to install CLI scripts"
         exit 1
     }
 
