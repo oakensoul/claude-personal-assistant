@@ -64,7 +64,6 @@ readonly NC='\033[0m' # No Color
 # Test results
 TESTS_PASSED=0
 TESTS_FAILED=0
-TESTS_SKIPPED=0
 
 #######################################
 # Print formatted message
@@ -199,14 +198,6 @@ test_dependency_validation() {
     local image_name="aida-test-${env}"
     local log_file="${LOG_DIR}/test-deps-${env}.log"
 
-    if [[ "$env" != "ubuntu-minimal" ]]; then
-        if [[ "$VERBOSE" == true ]]; then
-            print_msg "info" "[${env}] Skipping dependency validation test (only runs on ubuntu-minimal)"
-        fi
-        TESTS_SKIPPED=$((TESTS_SKIPPED + 1))
-        return 0
-    fi
-
     if [[ "$VERBOSE" == true ]]; then
         print_msg "info" "Testing dependency validation in ${env}..."
     fi
@@ -243,15 +234,6 @@ test_normal_installation() {
     local image_name="aida-test-${env}"
     local log_file="${LOG_DIR}/test-install-${env}.log"
 
-    # Skip minimal environment (it should fail dependency checks)
-    if [[ "$env" == "ubuntu-minimal" ]]; then
-        if [[ "$VERBOSE" == true ]]; then
-            print_msg "info" "[${env}] Skipping normal installation test (missing dependencies by design)"
-        fi
-        TESTS_SKIPPED=$((TESTS_SKIPPED + 1))
-        return 0
-    fi
-
     if [[ "$VERBOSE" == true ]]; then
         print_msg "info" "Testing normal installation in ${env}..."
     fi
@@ -283,15 +265,6 @@ test_dev_installation() {
     local env="$1"
     local image_name="aida-test-${env}"
     local log_file="${LOG_DIR}/test-dev-${env}.log"
-
-    # Skip minimal environment
-    if [[ "$env" == "ubuntu-minimal" ]]; then
-        if [[ "$VERBOSE" == true ]]; then
-            print_msg "info" "[${env}] Skipping dev mode installation test (missing dependencies by design)"
-        fi
-        TESTS_SKIPPED=$((TESTS_SKIPPED + 1))
-        return 0
-    fi
 
     if [[ "$VERBOSE" == true ]]; then
         print_msg "info" "Testing dev mode installation in ${env}..."
@@ -332,15 +305,22 @@ test_environment() {
     # Build image first
     if ! build_docker_images "${env}"; then
         print_msg "error" "Skipping tests for ${env} due to build failure"
-        TESTS_FAILED=$((TESTS_FAILED + 4))
+        TESTS_FAILED=$((TESTS_FAILED + 3))
         return 1
     fi
 
-    # Run test suite
+    # All environments test help flag
     test_help_flag "${env}"
-    test_dependency_validation "${env}"
-    test_normal_installation "${env}"
-    test_dev_installation "${env}"
+
+    # Environment-specific test suites
+    if [[ "$env" == "ubuntu-minimal" ]]; then
+        # Minimal environment: Test dependency validation only
+        test_dependency_validation "${env}"
+    else
+        # Full environments: Test installation
+        test_normal_installation "${env}"
+        test_dev_installation "${env}"
+    fi
 
     echo ""
 }
@@ -356,16 +336,7 @@ display_summary() {
     echo ""
     print_msg "success" "Passed:  ${TESTS_PASSED}"
     print_msg "error"   "Failed:  ${TESTS_FAILED}"
-    print_msg "warning" "Skipped: ${TESTS_SKIPPED}"
     echo ""
-
-    if [[ ${TESTS_SKIPPED} -gt 0 ]]; then
-        echo "Why tests are skipped:"
-        echo "  • ubuntu-minimal: Skips install tests (tests dependency validation only)"
-        echo "  • Full environments: Skip dependency tests (all dependencies present)"
-        echo "  This is expected behavior - each environment tests different scenarios."
-        echo ""
-    fi
 
     echo "Logs saved to: ${LOG_DIR}"
     echo ""
