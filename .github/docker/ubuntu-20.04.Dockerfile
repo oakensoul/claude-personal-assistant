@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     bash \
     git \
     rsync \
+    jq \
     coreutils \
     findutils \
     && rm -rf /var/lib/apt/lists/*
