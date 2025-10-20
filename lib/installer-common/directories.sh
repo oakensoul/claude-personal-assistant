@@ -544,12 +544,9 @@ create_aida_dir() {
                 return 0
             else
                 print_message "warning" "AIDA directory is symlink but points to wrong target"
-                print_message "info" "Creating backup and recreating symlink..."
+                print_message "info" "Recreating symlink..."
+                # backup_existing removes symlinks, so no need to rm after
                 backup_existing "$aida_dir" || return 1
-                rm "$aida_dir" || {
-                    print_message "error" "Failed to remove incorrect symlink: ${aida_dir}"
-                    return 1
-                }
             fi
         else
             # Not a symlink - backup before replacing

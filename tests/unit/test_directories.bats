@@ -417,10 +417,8 @@ teardown() {
   [ "$status" -eq 0 ]
   assert_symlink_target "$aida_dir" "$repo_dir"
 
-  # Backup of old symlink should exist
-  local backup
-  backup=$(ls -L -d "${aida_dir}.backup."* 2>/dev/null | head -n1)
-  [ -n "$backup" ]
+  # Note: backup_existing removes symlinks without creating backups
+  # since they don't contain data, just metadata about the target
 }
 
 @test "create_aida_dir fails if repo does not exist" {
