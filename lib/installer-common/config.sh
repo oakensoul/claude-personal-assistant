@@ -115,7 +115,13 @@ write_user_config() {
         # Config exists and is valid JSON - this is an upgrade, preserve user settings
         final_name=$(jq -r '.user.assistant_name // .assistant_name' "$config_file")
         final_personality=$(jq -r '.user.personality // .personality' "$config_file")
-        final_installed_at=$(jq -r '.installed_at' "$config_file")
+
+        # Handle old config format (v0.1.x used install_date, v0.2.x uses installed_at)
+        local old_installed_at
+        old_installed_at=$(jq -r '.installed_at // .install_date // empty' "$config_file")
+        if [[ -n "$old_installed_at" ]] && [[ "$old_installed_at" != "null" ]]; then
+            final_installed_at="$old_installed_at"
+        fi
 
         print_message "info" "Preserving existing configuration: ${final_name} (${final_personality})"
     fi
@@ -142,9 +148,33 @@ write_user_config() {
 }
 EOF
 
-    # Validate JSON
+    # Validate JSON was created successfully
+    if [[ ! -f "$config_file" ]]; then
+        print_message "error" "Config file was not created: ${config_file}"
+        print_message "error" "This may indicate a filesystem or permissions issue"
+        return 1
+    fi
+
+    # Validate JSON syntax
     if ! jq empty "$config_file" 2>/dev/null; then
         print_message "error" "Failed to create valid JSON config"
+        print_message "error" "Config file location: ${config_file}"
+        print_message "error" "File size: $(wc -c < "$config_file" 2>/dev/null || echo "unknown") bytes"
+        print_message "error" ""
+        print_message "error" "Config file contents:"
+        cat "$config_file" >&2 || print_message "error" "(unable to read file)"
+        print_message "error" ""
+        print_message "error" "JQ validation output:"
+        jq empty "$config_file" >&2 2>&1 || true
+        print_message "error" ""
+        print_message "error" "Variables used:"
+        print_message "error" "  version=${version}"
+        print_message "error" "  install_mode=${install_mode}"
+        print_message "error" "  aida_dir=${aida_dir}"
+        print_message "error" "  claude_dir=${claude_dir}"
+        print_message "error" "  final_name=${final_name}"
+        print_message "error" "  final_personality=${final_personality}"
+        print_message "error" "  final_installed_at=${final_installed_at}"
         return 1
     fi
 

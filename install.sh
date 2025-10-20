@@ -166,19 +166,41 @@ check_existing_install() {
             fi
         fi
 
-        backup_existing "${AIDA_DIR}"
+        backup_existing "${AIDA_DIR}" || return 1
+        # backup_existing removes symlinks but not directories, so remove if it's a directory
+        if [[ -d "${AIDA_DIR}" ]]; then
+            rm -rf "${AIDA_DIR}" || {
+                print_message "error" "Failed to remove existing AIDA directory after backup"
+                return 1
+            }
+        fi
         backup_made=true
     fi
 
     # Check Claude directory
     if [[ -e "${CLAUDE_DIR}" ]]; then
-        backup_existing "${CLAUDE_DIR}"
+        backup_existing "${CLAUDE_DIR}" || return 1
+        # backup_existing creates a copy but doesn't remove the original directory
+        # Remove it so we can start fresh
+        if [[ -d "${CLAUDE_DIR}" ]]; then
+            rm -rf "${CLAUDE_DIR}" || {
+                print_message "error" "Failed to remove existing Claude directory after backup"
+                return 1
+            }
+        fi
         backup_made=true
     fi
 
     # Check CLAUDE.md
     if [[ -e "${CLAUDE_MD}" ]]; then
-        backup_existing "${CLAUDE_MD}"
+        backup_existing "${CLAUDE_MD}" || return 1
+        # Remove the original file after backup
+        if [[ -f "${CLAUDE_MD}" ]]; then
+            rm -f "${CLAUDE_MD}" || {
+                print_message "error" "Failed to remove existing CLAUDE.md after backup"
+                return 1
+            }
+        fi
         backup_made=true
     fi
 
