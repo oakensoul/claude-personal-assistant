@@ -109,7 +109,7 @@ jobs:
         shell: wsl-bash {0}
         run: |
           sudo apt-get update
-          sudo apt-get install -y git rsync
+          sudo apt-get install -y git rsync jq
 
       - name: Check bash version
         shell: wsl-bash {0}

@@ -114,8 +114,18 @@ write_user_config() {
     if [[ -f "$config_file" ]] && jq empty "$config_file" 2>/dev/null; then
         # Config exists and is valid JSON - this is an upgrade, preserve user settings
         # Prioritize top-level fields (what users manually edit) over nested fields
-        final_name=$(jq -r '.assistant_name // .user.assistant_name // empty' "$config_file")
-        final_personality=$(jq -r '.personality // .user.personality // empty' "$config_file")
+        local saved_name
+        local saved_personality
+        saved_name=$(jq -r '.assistant_name // .user.assistant_name // empty' "$config_file")
+        saved_personality=$(jq -r '.personality // .user.personality // empty' "$config_file")
+
+        # Only use saved values if they're non-empty and not null
+        if [[ -n "$saved_name" ]] && [[ "$saved_name" != "null" ]]; then
+            final_name="$saved_name"
+        fi
+        if [[ -n "$saved_personality" ]] && [[ "$saved_personality" != "null" ]]; then
+            final_personality="$saved_personality"
+        fi
 
         # Handle old config format (v0.1.x used install_date, v0.2.x uses installed_at)
         local old_installed_at
@@ -128,12 +138,17 @@ write_user_config() {
     fi
 
     # Create config JSON
+    # Note: We write to both top-level AND nested fields for:
+    # - Top-level: Easy for users to manually edit
+    # - Nested: Backwards compatibility with older code
     cat > "$config_file" <<EOF
 {
   "version": "${version}",
   "install_mode": "${install_mode}",
   "installed_at": "${final_installed_at}",
   "updated_at": "${timestamp}",
+  "assistant_name": "${final_name}",
+  "personality": "${final_personality}",
   "paths": {
     "aida_home": "${aida_dir}",
     "claude_config_dir": "${claude_dir}",
