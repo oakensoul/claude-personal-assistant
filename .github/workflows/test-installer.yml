@@ -220,20 +220,36 @@ jobs:
 
       - name: Verify installation mode
         run: |
+          # Both modes: ~/.aida should always be a symlink to the repo
+          if [ -L ~/.aida ]; then
+            echo "✓ ~/.aida is symlinked to repository"
+          else
+            echo "✗ ~/.aida should be a symlink"
+            exit 1
+          fi
+
+          # Verify lib directory is accessible through symlink
+          if [ -d ~/.aida/lib ]; then
+            echo "✓ lib directory accessible"
+          else
+            echo "✗ lib directory not found"
+            exit 1
+          fi
+
           if [ "${{ matrix.mode }}" = "dev" ]; then
-            # In dev mode, check for symlinks
-            if [ -L ~/.aida/lib ]; then
-              echo "✓ Dev mode: lib is symlinked"
+            # In dev mode, template namespace directories should be symlinks
+            if [ -L ~/.claude/commands/.aida ]; then
+              echo "✓ Dev mode: template namespaces are symlinked"
             else
-              echo "✗ Dev mode: lib is not symlinked"
+              echo "✗ Dev mode: template namespaces should be symlinked"
               exit 1
             fi
           else
-            # In normal mode, check for copied files
-            if [ ! -L ~/.aida/lib ]; then
-              echo "✓ Normal mode: lib is copied"
+            # In normal mode, template namespace directories should be copied
+            if [ ! -L ~/.claude/commands/.aida ] && [ -d ~/.claude/commands/.aida ]; then
+              echo "✓ Normal mode: template namespaces are copied"
             else
-              echo "✗ Normal mode: lib should not be symlinked"
+              echo "✗ Normal mode: template namespaces should be copied, not symlinked"
               exit 1
             fi
           fi
