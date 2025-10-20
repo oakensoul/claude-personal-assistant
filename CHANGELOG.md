@@ -5,10 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.0] - 2025-10-20
+## [0.1.7] - 2025-10-20
 
 ### Added
 
+- **Scripts Installation Fix**:
+  - Scripts now install to `~/.claude/scripts/.aida/` following namespace pattern
+  - Consistent with commands, agents, skills installation structure
+  - Dev mode uses symlinks, normal mode copies files
+- **Pre-commit Setup**:
+  - Added pre-commit installation instructions to CONTRIBUTING.md
+  - Documented Homebrew (macOS) and pip (Linux) installation methods
+  - Fixed markdown linting issues across all templates
 - **Discoverability Commands** (Issue #54):
   - `/command-list` - List all available commands with category filtering
   - `/agent-list` - List all available agents
