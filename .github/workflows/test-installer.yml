@@ -1,0 +1,556 @@
+name: Installer Tests
+
+on:
+  push:
+    branches:
+      - main
+      - 'milestone-*'
+    paths:
+      - 'lib/**'
+      - 'install.sh'
+      - 'tests/**'
+      - 'Makefile'
+      - '.github/workflows/test-installer.yml'
+  pull_request:
+    branches:
+      - main
+      - 'milestone-*'
+    paths:
+      - 'lib/**'
+      - 'install.sh'
+      - 'tests/**'
+      - 'Makefile'
+      - '.github/workflows/test-installer.yml'
+  workflow_dispatch:
+
+# Prevent duplicate workflow runs on PR pushes
+# - PR pushes: Share group using head_ref (only latest run completes)
+# - Branch pushes: Unique group per branch using ref_name
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================
+  # Stage 1: Lint & Validation
+  # ============================================================
+  lint-shell:
+    name: Lint Shell Scripts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run shellcheck on installer
+        run: |
+          shellcheck install.sh
+
+      - name: Run shellcheck on lib modules
+        run: |
+          find lib -name "*.sh" -type f -exec shellcheck {} +
+
+      - name: Check bash syntax
+        run: |
+          bash -n install.sh
+          find lib -name "*.sh" -type f -exec bash -n {} \;
+
+  validate-templates:
+    name: Validate Templates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate template frontmatter
+        continue-on-error: true
+        run: |
+          ./scripts/validate-templates.sh --verbose
+
+  # ============================================================
+  # Stage 2: Unit Tests (Matrix: Multiple Platforms)
+  # ============================================================
+  unit-tests:
+    name: Unit Tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    needs: [lint-shell, validate-templates]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04, macos-13, macos-14]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Bats (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+
+      - name: Install Bats (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install bats-core
+
+      - name: Install jq (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y jq
+
+      - name: Install jq (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install jq
+
+      - name: Verify Bats installation
+        run: |
+          bats --version
+
+      - name: Run unit tests
+        run: |
+          make test-unit
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results-${{ matrix.os }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ============================================================
+  # Stage 3: Integration Tests (Matrix: Multiple Scenarios)
+  # ============================================================
+  integration-tests:
+    name: Integration Tests (${{ matrix.scenario }})
+    runs-on: ubuntu-22.04
+    needs: unit-tests
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - fresh-install
+          - upgrade-v0.1
+          - upgrade-with-content
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Bats
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+
+      - name: Install jq
+        run: |
+          sudo apt-get install -y jq
+
+      - name: Setup test fixtures
+        run: |
+          # Copy test fixtures to expected locations
+          mkdir -p /tmp/test-fixtures
+          cp -r .github/testing/fixtures/* /tmp/test-fixtures/
+
+      - name: Run integration tests
+        run: |
+          make test-integration
+        env:
+          TEST_SCENARIO: ${{ matrix.scenario }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results-${{ matrix.scenario }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-logs-${{ matrix.scenario }}
+          path: tests/tmp/logs/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ============================================================
+  # Stage 4: Installation Tests (Full End-to-End)
+  # ============================================================
+  installation-tests:
+    name: Installation Test (${{ matrix.mode }} mode, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    needs: [unit-tests, integration-tests]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, macos-13]
+        mode: [normal, dev]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install jq (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Install bash 5.x and jq (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install bash jq
+          echo "/opt/homebrew/bin/bash" | sudo tee -a /etc/shells
+
+      - name: Test fresh installation
+        run: |
+          if [ "${{ matrix.mode }}" = "dev" ]; then
+            echo -e "testassistant\n1\n" | ./install.sh --dev
+          else
+            echo -e "testassistant\n1\n" | ./install.sh
+          fi
+
+      - name: Verify installation
+        run: |
+          test -d ~/.aida && echo "✓ ~/.aida exists" || exit 1
+          test -d ~/.claude && echo "✓ ~/.claude exists" || exit 1
+          test -f ~/CLAUDE.md && echo "✓ CLAUDE.md exists" || exit 1
+
+      - name: Verify installation mode
+        run: |
+          # Both modes: ~/.aida should always be a symlink to the repo
+          if [ -L ~/.aida ]; then
+            echo "✓ ~/.aida is symlinked to repository"
+          else
+            echo "✗ ~/.aida should be a symlink"
+            exit 1
+          fi
+
+          # Verify lib directory is accessible through symlink
+          if [ -d ~/.aida/lib ]; then
+            echo "✓ lib directory accessible"
+          else
+            echo "✗ lib directory not found"
+            exit 1
+          fi
+
+          if [ "${{ matrix.mode }}" = "dev" ]; then
+            # In dev mode, template namespace directories should be symlinks
+            if [ -L ~/.claude/commands/.aida ]; then
+              echo "✓ Dev mode: template namespaces are symlinked"
+            else
+              echo "✗ Dev mode: template namespaces should be symlinked"
+              exit 1
+            fi
+          else
+            # In normal mode, template namespace directories should be copied
+            if [ ! -L ~/.claude/commands/.aida ] && [ -d ~/.claude/commands/.aida ]; then
+              echo "✓ Normal mode: template namespaces are copied"
+            else
+              echo "✗ Normal mode: template namespaces should be copied, not symlinked"
+              exit 1
+            fi
+          fi
+
+      - name: Test upgrade scenario
+        run: |
+          # Simulate upgrade by running installer again
+          echo -e "testassistant\n1\n" | ./install.sh
+          test -d ~/.aida && echo "✓ Upgrade preserved ~/.aida" || exit 1
+
+      - name: Upload installation logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: installation-logs-${{ matrix.mode }}-${{ matrix.os }}
+          path: |
+            ~/.aida/install.log
+            ~/CLAUDE.md
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ============================================================
+  # Stage 5: Cross-Platform Docker Tests
+  # ============================================================
+  docker-tests:
+    name: Docker Tests (${{ matrix.platform }})
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests]
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - ubuntu-22.04
+          - ubuntu-24.04
+          - debian-12
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build test image
+        run: |
+          docker build --no-cache -t aida-test:${{ matrix.platform }} \
+            -f .github/testing/Dockerfile.${{ matrix.platform }} \
+            .github/testing/
+
+      - name: Run tests in container
+        run: |
+          docker run --rm \
+            -v $(pwd):/workspace \
+            -w /workspace \
+            aida-test:${{ matrix.platform }} \
+            make test-all
+
+      - name: Test installation in container
+        run: |
+          docker run --rm \
+            -v $(pwd):/workspace \
+            -w /workspace \
+            aida-test:${{ matrix.platform }} \
+            bash -c 'echo -e "testassistant\n1\n" | ./install.sh'
+
+      - name: Upload Docker test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-test-logs-${{ matrix.platform }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ============================================================
+  # Stage 5: WSL Tests (Windows Subsystem for Linux)
+  # ============================================================
+  wsl-tests:
+    name: WSL Tests (Ubuntu on Windows)
+    runs-on: windows-latest
+    needs: [unit-tests, integration-tests]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup WSL
+        uses: Vampire/setup-wsl@v2
+        with:
+          distribution: Ubuntu-22.04
+
+      - name: Install test dependencies in WSL
+        shell: wsl-bash {0}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats shellcheck jq make
+
+      - name: Run unit tests in WSL
+        shell: wsl-bash {0}
+        run: |
+          make test-unit
+
+      - name: Run integration tests in WSL
+        shell: wsl-bash {0}
+        run: |
+          make test-integration
+
+      - name: Test installation in WSL (normal mode)
+        shell: wsl-bash {0}
+        run: |
+          echo -e "testassistant\n1" | ./install.sh
+
+      - name: Clean installation for dev mode test
+        shell: wsl-bash {0}
+        run: |
+          rm -rf ~/.aida ~/.claude ~/CLAUDE.md
+
+      - name: Test installation in WSL (dev mode)
+        shell: wsl-bash {0}
+        run: |
+          echo -e "testassistant\n1" | ./install.sh --dev
+
+      - name: Verify WSL installation structure
+        shell: wsl-bash {0}
+        run: |
+          # Verify dev mode creates correct symlinks
+          test -L ~/.claude/agents/.aida
+          test -L ~/.claude/commands/.aida
+          test -L ~/.claude/skills/.aida
+          test -L ~/.claude/documents/.aida
+
+          # Verify symlinks point to correct targets
+          readlink ~/.claude/agents/.aida | grep -q "templates/agents"
+          readlink ~/.claude/commands/.aida | grep -q "templates/commands"
+
+      - name: Upload WSL test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wsl-test-logs
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ============================================================
+  # Stage 6: Performance & Coverage
+  # ============================================================
+  coverage:
+    name: Test Coverage Analysis
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Bats
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+
+      - name: Install jq
+        run: |
+          sudo apt-get install -y jq
+
+      - name: Generate coverage report
+        run: |
+          make test-coverage > coverage-report.txt
+
+      - name: Display coverage
+        run: |
+          cat coverage-report.txt
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report.txt
+          retention-days: 30
+
+  # ============================================================
+  # Stage 7: Test Summary & Status Reporting
+  # ============================================================
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs:
+      - lint-shell
+      - validate-templates
+      - unit-tests
+      - integration-tests
+      - installation-tests
+      - docker-tests
+      - wsl-tests
+      - coverage
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Generate test summary
+        run: |
+          echo "# Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Check each job result
+          if [ "${{ needs.lint-shell.result }}" = "success" ]; then
+            echo "✅ Shell linting passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Shell linting failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.validate-templates.result }}" = "success" ]; then
+            echo "✅ Template validation passed" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.validate-templates.result }}" = "failure" ]; then
+            echo "⚠️  Template validation warnings (non-blocking)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Template validation error" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.unit-tests.result }}" = "success" ]; then
+            echo "✅ Unit tests passed (all platforms)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Unit tests failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.integration-tests.result }}" = "success" ]; then
+            echo "✅ Integration tests passed (all scenarios)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Integration tests failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.installation-tests.result }}" = "success" ]; then
+            echo "✅ Installation tests passed (all modes)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Installation tests failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.docker-tests.result }}" = "success" ]; then
+            echo "✅ Docker tests passed (all platforms)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Docker tests failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.coverage.result }}" = "success" ]; then
+            echo "✅ Coverage analysis completed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Coverage analysis failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check overall status
+        run: |
+          # Fail if any required job failed (template validation is non-blocking)
+          if [ "${{ needs.lint-shell.result }}" != "success" ] || \
+             [ "${{ needs.unit-tests.result }}" != "success" ] || \
+             [ "${{ needs.integration-tests.result }}" != "success" ] || \
+             [ "${{ needs.installation-tests.result }}" != "success" ] || \
+             [ "${{ needs.docker-tests.result }}" != "success" ]; then
+            echo "❌ One or more test stages failed"
+            exit 1
+          fi
+          echo "✅ All test stages passed!"
+
+  # ============================================================
+  # Stage 8: PR Comment (for pull requests only)
+  # ============================================================
+  pr-comment:
+    name: Post PR Comment
+    runs-on: ubuntu-latest
+    needs: test-summary
+    if: github.event_name == 'pull_request' && always()
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Create PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = `## 🧪 Installer Test Results
+
+            | Stage | Status |
+            |-------|--------|
+            | Shell Linting | ${{ needs.lint-shell.result == 'success' && '✅' || '❌' }} |
+            | Template Validation | ${{ needs.validate-templates.result == 'success' && '✅' || '❌' }} |
+            | Unit Tests | ${{ needs.unit-tests.result == 'success' && '✅' || '❌' }} |
+            | Integration Tests | ${{ needs.integration-tests.result == 'success' && '✅' || '❌' }} |
+            | Installation Tests | ${{ needs.installation-tests.result == 'success' && '✅' || '❌' }} |
+            | Docker Tests | ${{ needs.docker-tests.result == 'success' && '✅' || '❌' }} |
+
+            **Overall Status:** ${
+              '${{ needs.test-summary.result }}' === 'success'
+                ? '✅ All tests passed!'
+                : '❌ Some tests failed'
+            }
+
+            [View detailed logs](${context.payload.pull_request.html_url}/checks)`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });

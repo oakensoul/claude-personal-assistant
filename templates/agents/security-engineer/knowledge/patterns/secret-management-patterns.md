@@ -40,7 +40,7 @@ aws secretsmanager create-secret \
   --secret-string '{
 
     "username": "dbt_cloud_prod",
-    "password": "initial_password_123",
+    "password": "${INITIAL_PASSWORD}",
     "account": "xyz12345.us-east-1",
     "warehouse": "TRANSFORMING",
     "database": "PROD",
@@ -94,7 +94,7 @@ vault write database/config/snowflake \
   allowed_roles="dbt-readonly,dbt-readwrite" \
   connection_url="{{username}}:{{password}}@xyz12345.us-east-1.snowflakecomputing.com" \
   username="vault_admin" \
-  password="vault_admin_password"
+  password="${VAULT_ADMIN_PASSWORD}"  # Use environment variable
 
 # Create role for read-only access (24-hour TTL)
 vault write database/roles/dbt-readonly \

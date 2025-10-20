@@ -458,7 +458,7 @@ dbt docs generate && dbt docs serve
 ```bash
 # Use env vars in profiles.yml
 export DBT_USER=my_username
-export DBT_PASSWORD=my_password
+export DBT_PASSWORD='${DBT_PASSWORD}'
 
 # Reference in profiles.yml
 user: "{{ env_var('DBT_USER') }}"

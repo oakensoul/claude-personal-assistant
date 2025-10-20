@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 #
-# install.sh - AIDA Framework Installation Script
+# install.sh - AIDA Framework Installation Script (Orchestrator)
 #
 # Description:
-#   Core installation script for the AIDA (Agentic Intelligence Digital Assistant) framework.
-#   Handles directory creation, template copying, variable substitution, and initial setup.
+#   Thin orchestration layer for AIDA framework installation.
+#   Sources modular components from lib/installer-common/ and coordinates installation flow.
+#   All business logic has been extracted to reusable modules.
 #
 # Usage:
 #   ./install.sh           # Normal installation
@@ -25,6 +26,7 @@ readonly SCRIPT_DIR
 # Source shared utilities from installer-common library
 readonly INSTALLER_COMMON="${SCRIPT_DIR}/lib/installer-common"
 
+# Core utilities (order matters - colors and logging first)
 # shellcheck source=lib/installer-common/colors.sh
 source "${INSTALLER_COMMON}/colors.sh" || {
     echo "Error: Failed to source colors.sh from ${INSTALLER_COMMON}"
@@ -39,7 +41,38 @@ source "${INSTALLER_COMMON}/logging.sh" || {
 
 # shellcheck source=lib/installer-common/validation.sh
 source "${INSTALLER_COMMON}/validation.sh" || {
-    echo "Error: Failed to source validation.sh from ${INSTALLER_COMMON}"
+    print_message "error" "Failed to source validation.sh from ${INSTALLER_COMMON}"
+    exit 1
+}
+
+# Installer modules (extracted business logic)
+# shellcheck source=lib/installer-common/prompts.sh
+source "${INSTALLER_COMMON}/prompts.sh" || {
+    print_message "error" "Failed to source prompts.sh from ${INSTALLER_COMMON}"
+    exit 1
+}
+
+# shellcheck source=lib/installer-common/directories.sh
+source "${INSTALLER_COMMON}/directories.sh" || {
+    print_message "error" "Failed to source directories.sh from ${INSTALLER_COMMON}"
+    exit 1
+}
+
+# shellcheck source=lib/installer-common/config.sh
+source "${INSTALLER_COMMON}/config.sh" || {
+    print_message "error" "Failed to source config.sh from ${INSTALLER_COMMON}"
+    exit 1
+}
+
+# shellcheck source=lib/installer-common/summary.sh
+source "${INSTALLER_COMMON}/summary.sh" || {
+    print_message "error" "Failed to source summary.sh from ${INSTALLER_COMMON}"
+    exit 1
+}
+
+# shellcheck source=lib/installer-common/templates.sh
+source "${INSTALLER_COMMON}/templates.sh" || {
+    print_message "error" "Failed to source templates.sh from ${INSTALLER_COMMON}"
     exit 1
 }
 
@@ -108,166 +141,70 @@ For more information, visit:
 EOF
 }
 
-#######################################
-# Prompt user for assistant name with validation
-# Globals:
-#   ASSISTANT_NAME
-# Arguments:
-#   None
-# Returns:
-#   0 on success
-# Outputs:
-#   Writes prompts to stdout, reads from stdin
-#######################################
-prompt_assistant_name() {
-    print_message "info" "Configure your assistant name"
-    echo ""
-    echo "The assistant name will be used throughout the AIDA framework."
-    echo "Requirements: lowercase, no spaces, 3-20 characters"
-    echo ""
-
-    while true; do
-        read -rp "Enter assistant name (e.g., 'jarvis', 'alfred'): " name
-
-        # Validate name
-        if [[ -z "$name" ]]; then
-            print_message "warning" "Assistant name cannot be empty"
-            continue
-        fi
-
-        if [[ ${#name} -lt 3 || ${#name} -gt 20 ]]; then
-            print_message "warning" "Name must be 3-20 characters (got ${#name})"
-            continue
-        fi
-
-        if [[ "$name" =~ [[:space:]] ]]; then
-            print_message "warning" "Name cannot contain spaces"
-            continue
-        fi
-
-        # Convert to lowercase for comparison (Bash 3.2 compatible)
-        local name_lower
-        name_lower=$(echo "$name" | tr '[:upper:]' '[:lower:]')
-        if [[ "$name" != "$name_lower" ]]; then
-            print_message "warning" "Name must be lowercase"
-            continue
-        fi
-
-        if [[ ! "$name" =~ ^[a-z][a-z0-9-]*$ ]]; then
-            print_message "warning" "Name must start with a letter and contain only lowercase letters, numbers, and hyphens"
-            continue
-        fi
-
-        # Valid name
-        ASSISTANT_NAME="$name"
-        print_message "success" "Assistant name set to: ${ASSISTANT_NAME}"
-        echo ""
-        break
-    done
-}
-
-#######################################
-# Prompt user to select personality
-# Globals:
-#   PERSONALITY
-# Arguments:
-#   None
-# Returns:
-#   0 on success
-# Outputs:
-#   Writes prompts to stdout, reads from stdin
-#######################################
-prompt_personality() {
-    print_message "info" "Select your assistant personality"
-    echo ""
-    echo "Available personalities:"
-    echo "  1) jarvis         - Snarky British AI (helpful but judgmental)"
-    echo "  2) alfred         - Dignified butler (professional, respectful)"
-    echo "  3) friday         - Enthusiastic helper (upbeat, encouraging)"
-    echo "  4) sage           - Zen guide (calm, mindful)"
-    echo "  5) drill-sergeant - No-nonsense coach (intense, demanding)"
-    echo ""
-
-    local personalities=("jarvis" "alfred" "friday" "sage" "drill-sergeant")
-
-    while true; do
-        read -rp "Select personality [1-5]: " choice
-
-        if [[ ! "$choice" =~ ^[1-5]$ ]]; then
-            print_message "warning" "Invalid choice. Please enter a number between 1 and 5"
-            continue
-        fi
-
-        # Convert choice to array index (0-based)
-        local index=$((choice - 1))
-        PERSONALITY="${personalities[$index]}"
-
-        print_message "success" "Personality set to: ${PERSONALITY}"
-        echo ""
-        break
-    done
-}
 
 #######################################
 # Check for existing installation and create backup
+# Delegates to directories.sh module for actual implementation
 # Globals:
-#   AIDA_DIR, CLAUDE_DIR, CLAUDE_MD, DEV_MODE
+#   AIDA_DIR, CLAUDE_DIR, CLAUDE_MD, DEV_MODE, SCRIPT_DIR
 # Arguments:
 #   None
 # Returns:
 #   0 on success
-# Outputs:
-#   Writes status messages to stdout
 #######################################
 check_existing_install() {
-    local backup_needed=false
-    local backup_timestamp
-    backup_timestamp=$(date +%Y%m%d_%H%M%S)
-
     print_message "info" "Checking for existing installation..."
 
-    # Check for existing AIDA directory
-    if [[ -e "${AIDA_DIR}" ]]; then
-        print_message "warning" "Existing AIDA installation found at ${AIDA_DIR}"
+    local backup_made=false
 
-        # In dev mode, check if it's already a symlink to this directory
+    # Check AIDA directory - use validate_symlink if in dev mode
+    if [[ -e "${AIDA_DIR}" ]]; then
         if [[ "$DEV_MODE" == true ]] && [[ -L "${AIDA_DIR}" ]]; then
-            local link_target
-            link_target=$(readlink "${AIDA_DIR}")
-            if [[ "$link_target" == "$SCRIPT_DIR" ]]; then
-                print_message "info" "AIDA directory already symlinked to this repository"
+            if validate_symlink "${AIDA_DIR}" "${SCRIPT_DIR}"; then
+                print_message "info" "AIDA directory already symlinked correctly"
                 return 0
             fi
         fi
 
-        backup_needed=true
-        local backup_dir="${AIDA_DIR}.backup.${backup_timestamp}"
-        print_message "info" "Creating backup: ${backup_dir}"
-        mv "${AIDA_DIR}" "${backup_dir}"
-        print_message "success" "Backup created"
+        backup_existing "${AIDA_DIR}" || return 1
+        # backup_existing removes symlinks but not directories, so remove if it's a directory
+        if [[ -d "${AIDA_DIR}" ]]; then
+            rm -rf "${AIDA_DIR}" || {
+                print_message "error" "Failed to remove existing AIDA directory after backup"
+                return 1
+            }
+        fi
+        backup_made=true
     fi
 
-    # Check for existing Claude directory
-    if [[ -d "${CLAUDE_DIR}" ]]; then
-        print_message "warning" "Existing Claude configuration found at ${CLAUDE_DIR}"
-        backup_needed=true
-        local backup_dir="${CLAUDE_DIR}.backup.${backup_timestamp}"
-        print_message "info" "Creating backup: ${backup_dir}"
-        mv "${CLAUDE_DIR}" "${backup_dir}"
-        print_message "success" "Backup created"
+    # Check Claude directory
+    # NOTE: We do NOT delete ~/.claude/ - it may contain user files!
+    # The namespace design installs AIDA templates to ~/.claude/*/.aida/
+    # User files remain at the top level: ~/.claude/commands/my-file.md
+    # AIDA files go in subdirs: ~/.claude/commands/.aida/start-work.md
+    if [[ -e "${CLAUDE_DIR}" ]]; then
+        if [[ ! -d "${CLAUDE_DIR}" ]]; then
+            print_message "error" "${CLAUDE_DIR} exists but is not a directory"
+            return 1
+        fi
+        print_message "info" "Found existing ${CLAUDE_DIR} directory (user content will be preserved)"
+        backup_made=true
     fi
 
-    # Check for existing CLAUDE.md
-    if [[ -f "${CLAUDE_MD}" ]]; then
-        print_message "warning" "Existing CLAUDE.md found at ${CLAUDE_MD}"
-        backup_needed=true
-        local backup_file="${CLAUDE_MD}.backup.${backup_timestamp}"
-        print_message "info" "Creating backup: ${backup_file}"
-        mv "${CLAUDE_MD}" "${backup_file}"
-        print_message "success" "Backup created"
+    # Check CLAUDE.md
+    if [[ -e "${CLAUDE_MD}" ]]; then
+        backup_existing "${CLAUDE_MD}" || return 1
+        # Remove the original file after backup
+        if [[ -f "${CLAUDE_MD}" ]]; then
+            rm -f "${CLAUDE_MD}" || {
+                print_message "error" "Failed to remove existing CLAUDE.md after backup"
+                return 1
+            }
+        fi
+        backup_made=true
     fi
 
-    if [[ "$backup_needed" == false ]]; then
+    if [[ "$backup_made" == false ]]; then
         print_message "success" "No existing installation found"
     fi
 
@@ -276,289 +213,85 @@ check_existing_install() {
 
 #######################################
 # Create required directory structure
+# Delegates to directories.sh module for actual implementation
 # Globals:
 #   AIDA_DIR, CLAUDE_DIR, DEV_MODE, SCRIPT_DIR
 # Arguments:
 #   None
 # Returns:
 #   0 on success
-# Outputs:
-#   Writes status messages to stdout
 #######################################
 create_directories() {
     print_message "info" "Creating directory structure..."
 
-    # Create AIDA directory (or symlink in dev mode)
-    if [[ "$DEV_MODE" == true ]]; then
-        print_message "info" "Creating symlink: ${AIDA_DIR} -> ${SCRIPT_DIR}"
-        ln -s "${SCRIPT_DIR}" "${AIDA_DIR}"
-        print_message "success" "AIDA directory symlinked (dev mode)"
-    else
-        print_message "info" "Creating directory: ${AIDA_DIR}"
-        mkdir -p "${AIDA_DIR}"
+    # Create AIDA directory using module function
+    create_aida_dir "$SCRIPT_DIR" "$AIDA_DIR" "$DEV_MODE" || {
+        print_message "error" "Failed to create AIDA directory"
+        return 1
+    }
 
-        # Copy repository contents to AIDA directory
-        print_message "info" "Copying framework files..."
+    # Create Claude configuration directories using module function
+    create_claude_dirs "$CLAUDE_DIR" || {
+        print_message "error" "Failed to create Claude directories"
+        return 1
+    }
 
-        # Copy directories and files, excluding .git and other dev files
-        rsync -av --exclude='.git' \
-                  --exclude='.github' \
-                  --exclude='.idea' \
-                  --exclude='*.backup.*' \
-                  "${SCRIPT_DIR}/" "${AIDA_DIR}/"
+    # Set proper permissions (only on AIDA-managed files, not user content)
+    print_message "info" "Setting permissions on AIDA-managed files..."
 
-        print_message "success" "Framework files copied"
-    fi
-
-    # Create Claude configuration directories
-    print_message "info" "Creating Claude configuration directories..."
-
-    local claude_dirs=(
-        "${CLAUDE_DIR}"
-        "${CLAUDE_DIR}/config"
-        "${CLAUDE_DIR}/knowledge"
-        "${CLAUDE_DIR}/memory"
-        "${CLAUDE_DIR}/memory/history"
-        "${CLAUDE_DIR}/agents"
-    )
-
-    for dir in "${claude_dirs[@]}"; do
-        mkdir -p "$dir"
-        chmod 755 "$dir"
+    # Set permissions only on AIDA namespace directories (preserves user file permissions)
+    for namespace_dir in "${CLAUDE_DIR}/commands/.aida" "${CLAUDE_DIR}/agents/.aida" \
+                         "${CLAUDE_DIR}/skills/.aida" "${CLAUDE_DIR}/documents/.aida"; do
+        if [[ -d "$namespace_dir" ]]; then
+            find "$namespace_dir" -type f -exec chmod 644 {} \; 2>/dev/null || true
+            find "$namespace_dir" -type d -exec chmod 755 {} \; 2>/dev/null || true
+        fi
     done
 
-    print_message "success" "Claude configuration directories created"
-
-    # Set proper permissions
-    print_message "info" "Setting permissions..."
-    find "${CLAUDE_DIR}" -type f -exec chmod 644 {} \;
-    find "${CLAUDE_DIR}" -type d -exec chmod 755 {} \;
+    # Set permissions on config file and CLAUDE.md
+    chmod 644 "${CLAUDE_DIR}/aida-config.json" 2>/dev/null || true
+    chmod 644 "${HOME}/CLAUDE.md" 2>/dev/null || true
 
     if [[ "$DEV_MODE" == false ]]; then
-        find "${AIDA_DIR}" -type f -exec chmod 644 {} \;
-        find "${AIDA_DIR}" -type d -exec chmod 755 {} \;
-        chmod 755 "${AIDA_DIR}/install.sh"
+        find "${AIDA_DIR}" -type f -exec chmod 644 {} \; 2>/dev/null || true
+        find "${AIDA_DIR}" -type d -exec chmod 755 {} \; 2>/dev/null || true
+        chmod 755 "${AIDA_DIR}/install.sh" 2>/dev/null || true
     fi
 
     print_message "success" "Permissions set"
     echo ""
 }
 
+
 #######################################
-# Copy command templates with variable substitution
+# Display installation summary wrapper
+# Calls summary.sh module functions
 # Globals:
-#   SCRIPT_DIR, AIDA_DIR, CLAUDE_DIR, HOME, DEV_MODE
+#   VERSION, DEV_MODE, AIDA_DIR, CLAUDE_DIR
 # Arguments:
 #   None
-# Returns:
-#   0 on success, 1 on failure
-# Outputs:
-#   Writes status messages to stdout
 #######################################
-copy_command_templates() {
-    local template_dir="${SCRIPT_DIR}/templates/commands"
-    local install_dir="${CLAUDE_DIR}/commands"
-    local backup_timestamp
-    backup_timestamp=$(date +%Y%m%d_%H%M%S)
-
-    print_message "info" "Installing command templates..."
-
-    # Ensure target directory exists
-    mkdir -p "${install_dir}"
-
-    # Dev mode: symlink templates directory
+show_installation_summary() {
+    # Convert DEV_MODE boolean to mode string
+    local mode="normal"
     if [[ "$DEV_MODE" == true ]]; then
-        print_message "info" "Dev mode: symlinking commands for live editing..."
-        if [[ -d "${install_dir}" ]] && [[ ! -L "${install_dir}" ]]; then
-            # Backup existing directory before replacing with symlink
-            local dev_backup="${install_dir}.backup.${backup_timestamp}"
-            mv "${install_dir}" "${dev_backup}"
-            print_message "warning" "Backed up existing commands to ${dev_backup}"
-        fi
-        # Remove existing symlink if present
-        rm -rf "${install_dir}"
-        # Create symlink to template directory
-        ln -s "${template_dir}" "${install_dir}"
-        print_message "success" "Commands symlinked (dev mode)"
-        echo ""
-        return 0
+        mode="dev"
     fi
 
-    # Normal mode: copy templates with variable substitution
-    print_message "info" "Processing command templates with variable substitution..."
+    # Use the display_summary function from summary.sh module
+    display_summary "$mode" "$AIDA_DIR" "$CLAUDE_DIR" "$VERSION"
 
-    # Process each template file
-    for template in "${template_dir}"/*.md; do
-        # Skip if no templates found
-        [[ -e "${template}" ]] || continue
-
-        local cmd_name
-        cmd_name=$(basename "${template}")
-        local target="${install_dir}/${cmd_name}"
-
-        # Backup existing file if it exists
-        if [[ -f "${target}" ]]; then
-            local backup_dir="${CLAUDE_DIR}/commands/.backups/${backup_timestamp}"
-            mkdir -p "${backup_dir}"
-            cp -p "${target}" "${backup_dir}/${cmd_name}"
-            print_message "info" "Backed up: ${cmd_name}"
-        fi
-
-        # Substitute variables using sed
-        # Note: {{VAR}} patterns are for install-time substitution
-        # ${VAR} patterns in templates are preserved for runtime bash resolution
-        sed -e "s|{{AIDA_HOME}}|${AIDA_DIR}|g" \
-            -e "s|{{CLAUDE_CONFIG_DIR}}|${CLAUDE_DIR}|g" \
-            -e "s|{{HOME}}|${HOME}|g" \
-            "${template}" > "${target}"
-
-        # Validate output (check file was created and not empty)
-        if [[ ! -s "${target}" ]]; then
-            print_message "error" "Template substitution failed for ${cmd_name}"
-            rm -f "${target}"
-            return 1
-        fi
-
-        # Verify install-time template variables were substituted
-        # Note: Runtime variables like {{PROJECT_ROOT}} and {{timestamp}} are intentionally preserved
-        if grep -qE '\{\{(AIDA_HOME|CLAUDE_CONFIG_DIR|HOME)\}\}' "${target}"; then
-            print_message "error" "Unresolved install-time template variables in ${cmd_name}"
-            grep -E '\{\{(AIDA_HOME|CLAUDE_CONFIG_DIR|HOME)\}\}' "${target}"
-            return 1
-        fi
-
-        # Set restrictive permissions (600) for installed commands
-        chmod 600 "${target}"
-    done
-
-    print_message "success" "Command templates installed"
+    # Display user configuration details
     echo ""
-}
-
-#######################################
-# Generate main CLAUDE.md entry point
-# Globals:
-#   CLAUDE_MD, ASSISTANT_NAME, PERSONALITY
-# Arguments:
-#   None
-# Returns:
-#   0 on success
-# Outputs:
-#   Writes status messages to stdout
-#######################################
-generate_claude_md() {
-    print_message "info" "Generating CLAUDE.md entry point..."
-
-    cat > "${CLAUDE_MD}" << EOF
----
-title: "CLAUDE.md - ${ASSISTANT_NAME} Configuration"
-description: "Personal AIDA assistant configuration"
-assistant_name: "${ASSISTANT_NAME}"
-personality: "${PERSONALITY}"
-last_updated: "$(date +%Y-%m-%d)"
----
-
-# $(echo "$ASSISTANT_NAME" | tr '[:lower:]' '[:upper:]') - Your AIDA Assistant
-
-Welcome! I'm ${ASSISTANT_NAME}, your Agentic Intelligence Digital Assistant.
-
-## Personality
-
-Current personality: **${PERSONALITY}**
-
-## Configuration
-
-- Framework: \`~/.aida/\`
-- Configuration: \`~/.claude/\`
-- Knowledge base: \`~/.claude/knowledge/\`
-- Memory: \`~/.claude/memory/\`
-- Agents: \`~/.claude/agents/\`
-
-## Quick Reference
-
-### Managing Your Assistant
-
-\`\`\`bash
-aida status        # Check system status
-aida personality   # Change personality
-aida knowledge     # View knowledge base
-aida memory        # View memory
-aida help          # Show help
-\`\`\`
-
-### Natural Language Commands
-
-Simply talk to me naturally:
-- "What should I focus on today?"
-- "Clean up my downloads folder"
-- "End of day summary"
-- "Help me with [task]"
-
-## Getting Started
-
-1. Review the knowledge base in \`~/.claude/knowledge/\`
-2. Customize your preferences
-3. Start a conversation!
-
----
-
-Generated by AIDA Framework v${VERSION}
-For more information: https://github.com/oakensoul/claude-personal-assistant
-EOF
-
-    chmod 644 "${CLAUDE_MD}"
-    print_message "success" "CLAUDE.md generated at ${CLAUDE_MD}"
-    echo ""
-}
-
-#######################################
-# Display installation summary
-# Globals:
-#   AIDA_DIR, CLAUDE_DIR, CLAUDE_MD, ASSISTANT_NAME, PERSONALITY, DEV_MODE
-# Arguments:
-#   None
-# Outputs:
-#   Writes summary to stdout
-#######################################
-display_summary() {
-    echo ""
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    print_message "success" "Installation complete!"
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo ""
-    echo "Configuration Summary:"
+    echo "User Configuration:"
     echo "  Assistant Name:  ${ASSISTANT_NAME}"
     echo "  Personality:     ${PERSONALITY}"
-    if [[ "$DEV_MODE" == true ]]; then
-        echo "  Mode:            Development (symlinked)"
-    else
-        echo "  Mode:            Normal"
-    fi
-    echo ""
-    echo "Installation Locations:"
-    echo "  Framework:       ${AIDA_DIR}"
-    echo "  Configuration:   ${CLAUDE_DIR}"
-    echo "  Entry Point:     ${CLAUDE_MD}"
-    echo ""
-    echo "Next Steps:"
-    echo "  1. Review your configuration in ${CLAUDE_DIR}"
-    echo "  2. Customize knowledge base and agents"
-    echo "  3. Start using AIDA with Claude AI"
-    echo ""
-    if [[ "$DEV_MODE" == true ]]; then
-        print_message "warning" "Development mode is active"
-        echo "     Changes to ${SCRIPT_DIR} will be reflected in ${AIDA_DIR}"
-        echo ""
-    fi
-    echo "For help and documentation:"
-    echo "  https://github.com/oakensoul/claude-personal-assistant"
-    echo ""
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo ""
 }
 
 #######################################
-# Main installation function
+# Main installation function (orchestrator)
+# Coordinates installation flow by calling modular functions
 # Globals:
 #   All script globals
 # Arguments:
@@ -600,24 +333,145 @@ main() {
         echo ""
     fi
 
-    # Run installation steps
+    # Run installation steps (orchestrated flow)
     validate_dependencies || {
         print_message "error" "Dependency validation failed"
         exit 1
     }
     echo ""
 
-    prompt_assistant_name
-    prompt_personality
+    # Prompt for assistant name
+    print_message "info" "Configure your assistant name"
+    echo ""
+    echo "The assistant name will be used throughout the AIDA framework."
+    echo "Requirements: lowercase, no spaces, 3-20 characters"
+    echo ""
 
+    ASSISTANT_NAME=$(prompt_input \
+        "Enter assistant name (e.g., 'jarvis', 'alfred')" \
+        "" \
+        "^[a-z][a-z0-9-]*$" \
+        "Name must start with a letter and contain only lowercase letters, numbers, and hyphens")
+
+    while [[ ${#ASSISTANT_NAME} -lt 3 || ${#ASSISTANT_NAME} -gt 20 ]]; do
+        print_message "warning" "Name must be 3-20 characters (got ${#ASSISTANT_NAME})"
+        ASSISTANT_NAME=$(prompt_input \
+            "Enter assistant name (e.g., 'jarvis', 'alfred')" \
+            "" \
+            "^[a-z][a-z0-9-]*$" \
+            "Name must start with a letter and contain only lowercase letters, numbers, and hyphens")
+    done
+
+    print_message "success" "Assistant name set to: ${ASSISTANT_NAME}"
+    echo ""
+
+    # Prompt for personality selection
+    print_message "info" "Select your assistant personality"
+    echo ""
+    echo "Available personalities:"
+    echo "  1) jarvis         - Snarky British AI (helpful but judgmental)"
+    echo "  2) alfred         - Dignified butler (professional, respectful)"
+    echo "  3) friday         - Enthusiastic helper (upbeat, encouraging)"
+    echo "  4) sage           - Zen guide (calm, mindful)"
+    echo "  5) drill-sergeant - No-nonsense coach (intense, demanding)"
+    echo ""
+
+    local personalities=("jarvis" "alfred" "friday" "sage" "drill-sergeant")
+    local choice
+
+    while true; do
+        choice=$(prompt_input "Select personality [1-5]" "")
+
+        if [[ ! "$choice" =~ ^[1-5]$ ]]; then
+            print_message "warning" "Invalid choice. Please enter a number between 1 and 5"
+            continue
+        fi
+
+        local index=$((choice - 1))
+        PERSONALITY="${personalities[$index]}"
+        break
+    done
+
+    print_message "success" "Personality set to: ${PERSONALITY}"
+    echo ""
+
+    # Backup existing installation if found
     check_existing_install
+
+    # Create directory structure
     create_directories
-    copy_command_templates
-    generate_claude_md
 
-    display_summary
+    # Install templates using namespace isolation (.aida/)
 
-    print_message "success" "Installation completed successfully!"
+    # Commands
+    install_templates \
+        "${SCRIPT_DIR}/templates/commands" \
+        "${CLAUDE_DIR}/commands" \
+        "$DEV_MODE" \
+        ".aida" || {
+        print_message "error" "Failed to install command templates"
+        exit 1
+    }
+
+    # Agents
+    install_templates \
+        "${SCRIPT_DIR}/templates/agents" \
+        "${CLAUDE_DIR}/agents" \
+        "$DEV_MODE" \
+        ".aida" || {
+        print_message "error" "Failed to install agent templates"
+        exit 1
+    }
+
+    # Skills
+    install_templates \
+        "${SCRIPT_DIR}/templates/skills" \
+        "${CLAUDE_DIR}/skills" \
+        "$DEV_MODE" \
+        ".aida" || {
+        print_message "error" "Failed to install skill templates"
+        exit 1
+    }
+
+    # Documents
+    install_templates \
+        "${SCRIPT_DIR}/templates/documents" \
+        "${CLAUDE_DIR}/documents" \
+        "$DEV_MODE" \
+        ".aida" || {
+        print_message "error" "Failed to install document templates"
+        exit 1
+    }
+
+    # Write user configuration (convert boolean to string)
+    local install_mode="normal"
+    if [[ "$DEV_MODE" == "true" ]]; then
+        install_mode="dev"
+    fi
+
+    write_user_config "$install_mode" "$AIDA_DIR" "$CLAUDE_DIR" "$VERSION" "$ASSISTANT_NAME" "$PERSONALITY" || {
+        print_message "error" "Failed to write user configuration"
+        exit 1
+    }
+
+    # Generate entry point (use module function with all required parameters)
+    generate_claude_md "$CLAUDE_MD" "$ASSISTANT_NAME" "$PERSONALITY" "$VERSION" || {
+        print_message "error" "Failed to generate CLAUDE.md"
+        exit 1
+    }
+
+    # Display results
+    show_installation_summary
+
+    # Convert DEV_MODE to mode string for display_next_steps
+    local mode="normal"
+    if [[ "$DEV_MODE" == true ]]; then
+        mode="dev"
+    fi
+    display_next_steps "$mode"
+
+    echo ""
+    display_success "Installation completed successfully!"
     echo ""
 }
 

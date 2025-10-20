@@ -192,15 +192,14 @@ Use `--verbose` flag to see detailed skip messages:
 ### Using Docker
 
 ```bash
-# Build all environments
-cd .github/docker
-docker-compose build
+# Use the automated test script (recommended)
+./.github/testing/test-install.sh
 
-# Run specific environment
-docker-compose run ubuntu-22
+# Or test specific environment
+./.github/testing/test-install.sh --env ubuntu-22
 
-# Inside container
-./install.sh
+# Verbose output
+./.github/testing/test-install.sh --verbose
 ```
 
 ### WSL Testing
@@ -308,16 +307,15 @@ Automated test logs are saved to:
 
 ## Cleaning Up
 
-### Remove Docker Containers
+### Remove Docker Images
 
 ```bash
-# Stop and remove containers
-cd .github/docker
-docker-compose down
-
-# Remove images
+# Remove test images
 docker rmi aida-test-ubuntu-22 aida-test-ubuntu-20 \
            aida-test-debian-12 aida-test-ubuntu-minimal
+
+# Or remove all AIDA test images
+docker images | grep aida-test | awk '{print $3}' | xargs docker rmi
 ```
 
 ### Remove Test Installations

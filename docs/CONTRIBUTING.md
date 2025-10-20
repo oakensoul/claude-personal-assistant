@@ -3,7 +3,7 @@ title: "Contributing to AIDA Framework"
 description: "Guidelines for contributing to the Claude Personal Assistant (AIDA) project"
 category: "development"
 tags: ["contributing", "guidelines", "development", "standards"]
-last_updated: "2025-10-05"
+last_updated: "2025-10-18"
 status: "published"
 audience: "developers"
 ---
@@ -573,35 +573,720 @@ pre-commit run markdownlint --all-files
 
 ## Testing Requirements
 
-### Required Tests
+**CRITICAL**: All code changes must include comprehensive tests. AIDA follows a test-driven development approach with extensive coverage across unit, integration, and cross-platform testing.
 
-All features must include:
+### Testing Philosophy
 
-1. **Unit tests** - Test individual functions
-2. **Integration tests** - Test component interactions
-3. **Documentation** - Test scenarios documented
+AIDA's testing strategy prioritizes:
 
-### Shell Script Testing
+1. **User data safety** - Preventing data loss is paramount
+2. **Cross-platform compatibility** - Works on macOS, Linux, WSL
+3. **Comprehensive coverage** - Unit tests + integration tests + installation tests
+4. **CI/CD validation** - All tests must pass before merge
+5. **Fast feedback** - Local testing before pushing
 
-**Use the provided test infrastructure:**
+**Test Coverage:** 325+ tests across 7 installer modules
+
+### Test Types
+
+#### Unit Tests (`tests/unit/*.bats`)
+
+Test individual shell script modules and functions.
+
+**Location:** `tests/unit/`
+
+**Coverage:**
+
+- `test_prompts.bats` - User prompt functions (34 tests)
+- `test_config.bats` - Configuration management (16 tests)
+- `test_directories.bats` - Directory creation and validation (40 tests)
+- `test_summary.bats` - Installation summary (30 tests)
+- `test_templates.bats` - Template installation (48 tests)
+- `test_deprecation.bats` - Deprecation handling (74 tests)
+- `test_cleanup_deprecated.bats` - Cleanup operations (50 tests)
+
+**Total:** 292 unit tests
+
+**Run unit tests:**
 
 ```bash
-# Run all Docker tests
-./.github/testing/test-install.sh
+# All unit tests
+make test-unit
 
-# Test specific environment
-./.github/testing/test-install.sh --env ubuntu-22
+# All unit tests (alternative)
+bats tests/unit/
+
+# Specific test file
+bats tests/unit/test_prompts.bats
+
+# With verbose output
+bats -t tests/unit/test_prompts.bats
+
+# Specific test by name
+bats -f "prompt_yes_no" tests/unit/test_prompts.bats
+```
+
+#### Integration Tests (`tests/integration/*.bats`)
+
+Test upgrade scenarios and user content preservation.
+
+**Location:** `tests/integration/`
+
+**Coverage:**
+
+- Fresh installation tests (5 tests)
+- Upgrade preservation tests (6 tests)
+- Namespace isolation tests (8 tests)
+- User content preservation (7 tests)
+- Dev mode tests (4 tests)
+- Migration tests (3 tests)
+
+**Total:** 33 integration tests
+
+**What they validate:**
+
+- User content preserved during upgrades
+- Namespace isolation (`.aida/` separation)
+- Config migration from v0.1.x to v0.2.0
+- Complex nested directory structures
+- Files with special characters
+- Binary files, symlinks, hidden files
+- File permissions and timestamps
+
+**Run integration tests:**
+
+```bash
+# All integration tests
+make test-integration
 
 # Verbose output
-./.github/testing/test-install.sh --verbose
+bats -t tests/integration/test_upgrade_scenarios.bats
+
+# Specific test category
+bats -f "namespace isolation" tests/integration/test_upgrade_scenarios.bats
+
+# Single test
+bats -f "user command NOT in .aida/ preserved" tests/integration/test_upgrade_scenarios.bats
+```
+
+**See also:** [UPGRADE_TESTING.md](testing/UPGRADE_TESTING.md) for comprehensive upgrade test documentation.
+
+#### Docker Tests (`.github/testing/`)
+
+Containerized cross-platform testing in isolated environments.
+
+**Test Scenarios:**
+
+1. **fresh** - Clean installation on fresh system
+2. **upgrade** - Upgrade from v0.1.x to v0.2.x
+3. **migration** - Complex migration with user content
+4. **dev-mode** - Development mode with symlinks
+5. **all** - Complete test suite
+
+**Platforms:**
+
+- Ubuntu 22.04 LTS (primary)
+- Ubuntu 24.04 LTS
+- Debian 12
+
+**Run Docker tests:**
+
+```bash
+# Build test image
+make docker-build
+
+# All Docker tests
+make docker-test-all
+
+# Specific scenario
+make docker-test-fresh
+make docker-test-upgrade
+
+# Debug mode (interactive shell)
+make docker-debug
+```
+
+**See also:** [DOCKER_TESTING.md](../.github/testing/DOCKER_TESTING.md) for complete Docker testing guide.
+
+### Running Tests Locally
+
+#### Quick Start
+
+```bash
+# All unit tests
+make test-unit
+
+# All integration tests
+make test-integration
+
+# All Docker tests
+make docker-test-all
+
+# Full test suite (unit + integration)
+make test-all
+
+# Complete CI validation (includes linting)
+make ci
+```
+
+#### Individual Test Files
+
+```bash
+# Single test file
+bats tests/unit/test_prompts.bats
+
+# With verbose output
+bats -t tests/unit/test_prompts.bats
+
+# With line-level debugging
+bats -x tests/unit/test_prompts.bats
+
+# Specific test by name
+bats -f "prompt_yes_no accepts yes" tests/unit/test_prompts.bats
+```
+
+#### Docker Testing
+
+```bash
+# Build test image
+make docker-build
+
+# Run specific scenario
+make docker-test-fresh      # Fresh installation
+make docker-test-upgrade    # Upgrade scenario
+make docker-test-migration  # Migration with user content
+make docker-test-dev-mode   # Dev mode installation
+
+# Debug mode (interactive shell)
+make docker-debug
+
+# Manual Docker run
+docker run --rm \
+  -v $(pwd):/workspace \
+  -e DEBUG=true \
+  aida-test fresh
+```
+
+### Writing Tests
+
+#### Test File Structure
+
+All test files use Bats (Bash Automated Testing System):
+
+```bash
+#!/usr/bin/env bats
+# Test file description and purpose
+
+load '../helpers/test_helpers'  # Load common helpers
+
+setup() {
+  # Runs before each test
+  setup_test_environment
+}
+
+teardown() {
+  # Runs after each test
+  teardown_test_environment
+}
+
+@test "descriptive test name that explains what is being tested" {
+  # Arrange
+  local input="test value"
+
+  # Act
+  run function_under_test "$input"
+
+  # Assert
+  assert_success
+  assert_output "expected output"
+}
+```
+
+#### Best Practices
+
+##### 1. One assertion per test (when possible)
+
+```bash
+# Good: Single focused assertion
+@test "prompt_yes_no: accepts 'yes' input" {
+  run prompt_yes_no "Continue?" "n" <<< "yes"
+  assert_success
+}
+
+@test "prompt_yes_no: outputs prompt message" {
+  run prompt_yes_no "Continue?" "n" <<< "yes"
+  assert_output --partial "Continue?"
+}
+
+# Avoid: Multiple unrelated assertions
+@test "prompt_yes_no: works" {
+  run prompt_yes_no "Continue?" "n" <<< "yes"
+  assert_success
+  assert_output --partial "Continue?"
+  [ -f "$some_file" ]
+}
+```
+
+##### 2. Descriptive test names
+
+```bash
+# Good: Clear and specific
+@test "upgrade: preserves user commands outside .aida/ namespace"
+@test "namespace isolation: can delete and reinstall .aida/ safely"
+
+# Avoid: Vague names
+@test "test upgrade"
+@test "it works"
+```
+
+##### 3. Use test helpers for common operations
+
+```bash
+# Good: Use helper functions
+@test "config file created with correct format" {
+  setup_test_environment
+  run create_config_file "$TEST_DIR/.claude/aida-config.json"
+  assert_file_exists "$TEST_DIR/.claude/aida-config.json"
+  assert_file_contains "$TEST_DIR/.claude/aida-config.json" "version"
+}
+
+# Avoid: Duplicating setup code
+@test "config file created" {
+  mkdir -p "$BATS_TEST_TMPDIR/.claude"
+  touch "$BATS_TEST_TMPDIR/.claude/aida-config.json"
+  # ... duplicate code
+}
+```
+
+##### 4. Clean up test artifacts in teardown()
+
+```bash
+teardown() {
+  # Clean up test files
+  rm -rf "$TEST_DIR"
+
+  # Restore original state if needed
+  if [[ -f "$BACKUP_FILE" ]]; then
+    mv "$BACKUP_FILE" "$ORIGINAL_FILE"
+  fi
+}
+```
+
+##### 5. Test both success and error cases
+
+```bash
+@test "function succeeds with valid input" {
+  run function_under_test "valid"
+  assert_success
+}
+
+@test "function fails with invalid input" {
+  run function_under_test "invalid"
+  assert_failure
+  assert_output --partial "Error:"
+}
+
+@test "function fails with missing input" {
+  run function_under_test ""
+  assert_failure
+}
+```
+
+#### Example Test
+
+```bash
+#!/usr/bin/env bats
+# Tests for user prompt functions
+
+load '../helpers/test_helpers'
+
+setup() {
+  source "${PROJECT_ROOT}/lib/installer-common/prompts.sh"
+}
+
+@test "prompt_yes_no: accepts 'yes' input and returns success" {
+  run prompt_yes_no "Continue?" "n" <<< "yes"
+  assert_success
+  assert_output --partial "Continue?"
+}
+
+@test "prompt_yes_no: accepts 'no' input and returns failure" {
+  run prompt_yes_no "Continue?" "n" <<< "no"
+  assert_failure
+}
+
+@test "prompt_yes_no: uses default value on empty input" {
+  run prompt_yes_no "Continue?" "y" <<< ""
+  assert_success
+}
+```
+
+### Test Coverage
+
+#### Current Coverage
+
+| Module | Tests | Status |
+|--------|-------|--------|
+| prompts.sh | 34 | ✅ |
+| config.sh | 16 | ✅ |
+| directories.sh | 40 | ✅ |
+| summary.sh | 30 | ✅ |
+| templates.sh | 48 | ✅ |
+| deprecation.sh | 74 | ✅ |
+| cleanup-deprecated.sh | 50 | ✅ |
+| **Unit Total** | **292** | **✅** |
+| **Integration Total** | **33** | **✅** |
+| **Grand Total** | **325+** | **✅** |
+
+#### Coverage Goals
+
+When adding new code, ensure:
+
+- ✅ All public functions tested
+- ✅ Edge cases covered
+- ✅ Error conditions validated
+- ✅ Cross-platform compatibility verified
+- ✅ User data preservation tested (if applicable)
+- ✅ Namespace isolation maintained (if applicable)
+
+#### Running Coverage Analysis
+
+```bash
+# Generate coverage report
+make test-coverage
+
+# View coverage summary
+cat test-results/coverage-summary.txt
+```
+
+### CI/CD Integration
+
+All tests run automatically on GitHub Actions for every PR and push to main/milestone branches.
+
+#### GitHub Actions Workflow
+
+**Pipeline:** 8 stages, ~9 minutes total
+
+**Stages:**
+
+1. **Lint** - Shellcheck, yamllint, markdownlint
+2. **Unit Tests** - 292 tests across 4 platforms (macOS, Ubuntu 22/24)
+3. **Integration Tests** - 33 tests, 3 scenarios (fresh, upgrade, migration)
+4. **Installation Tests** - Normal and dev mode on macOS and Ubuntu
+5. **Docker Tests** - Containerized testing on 3 platforms
+6. **Coverage** - Test coverage analysis
+7. **Summary** - Aggregate results
+8. **PR Comment** - Post summary to pull request
+
+**Test Matrix:**
+
+| Platform | Unit | Integration | Install | Docker |
+|----------|------|-------------|---------|--------|
+| ubuntu-22.04 | ✅ | ✅ | ✅ | ✅ |
+| ubuntu-24.04 | ✅ | - | - | ✅ |
+| macos-13 | ✅ | - | ✅ | - |
+| macos-14 | ✅ | - | - | - |
+| debian-12 | - | - | - | ✅ |
+
+**See also:** [GitHub Actions Workflows](../.github/workflows/README.md) for complete CI/CD documentation.
+
+#### Required Checks
+
+Before merging, all PRs must pass:
+
+- ✅ **Shellcheck** - All shell scripts pass linting
+- ✅ **Unit tests** - All 292 tests pass on all platforms
+- ✅ **Integration tests** - All 33 upgrade scenarios pass
+- ✅ **Installation tests** - Normal and dev mode install successfully
+- ✅ **Docker tests** - Containerized tests pass on all platforms
+- ✅ **Template validation** - All templates have valid frontmatter
+- ✅ **No test regressions** - New changes don't break existing tests
+
+#### Viewing CI Results
+
+**In GitHub UI:**
+
+1. Navigate to pull request
+2. Scroll to "Checks" section at bottom
+3. View detailed results for each stage
+4. Download artifacts for failed tests
+
+**PR Comment:**
+
+CI automatically posts summary to PR:
+
+```markdown
+## 🧪 Installer Test Results
+
+| Stage | Status |
+|-------|--------|
+| Shell Linting | ✅ |
+| Template Validation | ✅ |
+| Unit Tests (292) | ✅ |
+| Integration Tests (33) | ✅ |
+| Installation Tests | ✅ |
+| Docker Tests | ✅ |
+| Coverage | ✅ |
+
+**Overall Status:** ✅ All tests passed!
+```
+
+### Debugging Failed Tests
+
+#### Common Issues
+
+##### 1. Path issues
+
+**Problem:** Test fails with "file not found"
+
+**Debug:**
+
+```bash
+# Run with verbose output
+bats -t tests/unit/test_prompts.bats
+
+# Check test directory
+echo "TEST_DIR: $BATS_TEST_TMPDIR"
+ls -laR "$BATS_TEST_TMPDIR"
+```
+
+**Fix:** Verify `$BATS_TEST_TMPDIR` usage, ensure paths are correct
+
+##### 2. Cleanup issues
+
+**Problem:** Test fails on second run but passes on first
+
+**Debug:**
+
+```bash
+# Check if teardown() is running
+@test "my test" {
+  echo "Running test" >&3
+  # ... test code
+}
+
+teardown() {
+  echo "Cleanup running" >&3
+  rm -rf "$TEST_DIR"
+}
+
+# Run with verbose to see teardown
+bats -t tests/unit/test_prompts.bats
+```
+
+**Fix:** Ensure teardown() removes all test artifacts
+
+##### 3. Platform differences
+
+**Problem:** Test passes on macOS but fails on Linux (or vice versa)
+
+**Debug:**
+
+```bash
+# Test on both platforms
+make test-unit  # Local macOS
+make docker-test-fresh  # Linux in Docker
+
+# Check platform-specific commands
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS
+else
+  # Linux
+fi
+```
+
+**Fix:** Use cross-platform commands, check stat/sed/date differences
+
+##### 4. Permissions issues
+
+**Problem:** "Permission denied" errors
+
+**Debug:**
+
+```bash
+# Check file permissions in test
+ls -la "$TEST_FILE"
+stat "$TEST_FILE"
+
+# Verify user in Docker
+docker run --rm -it aida-test whoami
+```
+
+**Fix:** Set correct permissions in setup(), run as non-root in Docker
+
+#### Debug Techniques
+
+##### 1. Add debug output
+
+```bash
+@test "my test" {
+  echo "Debug: variable = $variable" >&3
+  run function_under_test
+  echo "Debug: status = $status" >&3
+  echo "Debug: output = $output" >&3
+}
+
+# Run with tap output to see debug
+bats -t tests/unit/test_prompts.bats
+```
+
+##### 2. Run single test
+
+```bash
+# Focus on failing test
+bats -f "specific test name" tests/unit/test_prompts.bats
+
+# With verbose
+bats -t -f "specific test name" tests/unit/test_prompts.bats
+```
+
+##### 3. Interactive debugging
+
+```bash
+# Enter Docker container
+make docker-debug
+
+# Inside container
+cd /workspace
+bats tests/unit/test_prompts.bats
+# ... debug interactively
+```
+
+##### 4. Check test fixtures
+
+```bash
+# Verify fixtures exist
+ls -la .github/testing/fixtures/
+
+# Check fixture content
+cat .github/testing/fixtures/v0.1-installation/aida-config.json
+tree .github/testing/fixtures/user-content/
+```
+
+### Test Helpers
+
+Common helper functions available in `tests/helpers/test_helpers.bash`:
+
+#### Environment Helpers
+
+**`setup_test_environment()`**
+
+Creates isolated test environment:
+
+```bash
+setup() {
+  setup_test_environment
+  # Creates $TEST_DIR with clean state
+}
+```
+
+**`teardown_test_environment()`**
+
+Cleans up test artifacts:
+
+```bash
+teardown() {
+  teardown_test_environment
+  # Removes $TEST_DIR and all contents
+}
+```
+
+#### File Creation Helpers
+
+**`create_test_template(path, title)`**
+
+Creates template file with frontmatter:
+
+```bash
+@test "template has frontmatter" {
+  create_test_template "$TEST_DIR/test.md" "Test Title"
+  assert_file_contains "$TEST_DIR/test.md" "title: \"Test Title\""
+}
+```
+
+**`create_test_config(path)`**
+
+Creates valid config JSON:
+
+```bash
+@test "config file created" {
+  create_test_config "$TEST_DIR/config.json"
+  assert_file_exists "$TEST_DIR/config.json"
+}
+```
+
+#### Assertion Helpers
+
+**`assert_file_exists(file)`**
+
+Verifies file exists:
+
+```bash
+@test "file created" {
+  touch "$TEST_DIR/file.txt"
+  assert_file_exists "$TEST_DIR/file.txt"
+}
+```
+
+**`assert_file_contains(file, pattern)`**
+
+Verifies file content:
+
+```bash
+@test "config has version field" {
+  assert_file_contains "$TEST_DIR/config.json" "\"version\""
+}
+```
+
+**`assert_file_unchanged(file, checksum)`**
+
+Verifies file hasn't changed (critical for user data preservation):
+
+```bash
+@test "user file preserved during upgrade" {
+  original_checksum=$(calculate_checksum "$USER_FILE")
+  run_upgrade
+  assert_file_unchanged "$USER_FILE" "$original_checksum"
+}
+```
+
+**`assert_namespace_structure(base_dir)`**
+
+Verifies namespace directories exist:
+
+```bash
+@test "namespace structure created" {
+  assert_namespace_structure "$TEST_DIR/.claude"
+  # Checks for .aida/ subdirectories
+}
+```
+
+#### Utility Helpers
+
+**`calculate_checksum(file)`**
+
+Cross-platform file checksumming:
+
+```bash
+checksum=$(calculate_checksum "$file")
+```
+
+**`get_file_timestamp(file)`**
+
+Cross-platform modification time:
+
+```bash
+timestamp=$(get_file_timestamp "$file")
 ```
 
 ### Test Documentation
 
-Create test scenarios in `.github/testing/test-scenarios.md`:
+When adding features that require new test scenarios, document them in `.github/testing/test-scenarios.md`:
 
 ```markdown
 ## Test Scenario: Feature X
+
+**Purpose:** Validate feature X behavior
 
 **Setup:**
 
@@ -619,7 +1304,43 @@ Create test scenarios in `.github/testing/test-scenarios.md`:
 - Installation succeeds
 - JARVIS configuration loaded
 - All directories created with correct permissions
+
+**Validation:**
+
+```bash
+# Verify installation
+test -d ~/.claude
+test -f ~/.claude/aida-config.json
+grep -q "JARVIS" ~/.claude/aida-config.json
 ```
+
+```text
+
+### Performance Testing
+
+For performance-critical code, add timing validation:
+
+```bash
+@test "installation completes in reasonable time" {
+  start_time=$(date +%s)
+
+  run ./install.sh
+  assert_success
+
+  end_time=$(date +%s)
+  duration=$((end_time - start_time))
+
+  # Should complete in under 30 seconds
+  [ "$duration" -lt 30 ]
+}
+```
+
+### Related Documentation
+
+- [UPGRADE_TESTING.md](testing/UPGRADE_TESTING.md) - Comprehensive upgrade testing guide
+- [DOCKER_TESTING.md](../.github/testing/DOCKER_TESTING.md) - Docker testing infrastructure
+- [GitHub Actions Workflows](../.github/workflows/README.md) - CI/CD pipeline documentation
+- [Bats Documentation](https://bats-core.readthedocs.io/) - Official Bats testing framework docs
 
 ## Documentation Standards
 

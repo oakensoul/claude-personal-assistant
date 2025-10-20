@@ -78,6 +78,8 @@ cd ~/dotfiles && ./install.sh
 
 See [Installation Flows](#installation-flows) for detailed comparison.
 
+**Need detailed installation guidance?** See the [Installation Guide](docs/INSTALLATION.md) for comprehensive instructions including prerequisites, troubleshooting, and advanced configuration.
+
 ## Recent Changes
 
 ### [0.1.6] - 2025-10-18
@@ -271,7 +273,10 @@ aida help          # Show help
 2. Create a feature branch
 3. Make your changes
 4. Test with `./install.sh --dev`
-5. Submit a pull request
+5. Run quality checks: `pre-commit run --all-files`
+6. Submit a pull request
+
+See [Manual Testing Guide](docs/testing/MANUAL_TESTING.md) for comprehensive QA verification procedures.
 
 ### Project Structure
 
@@ -329,10 +334,21 @@ See [Dotfiles Integration Architecture](docs/architecture/dotfiles-integration.m
 
 ## Documentation
 
+### User Guides
+
+- [Installation Guide](docs/INSTALLATION.md) - Comprehensive installation instructions, prerequisites, and troubleshooting
 - [Requirements Document](docs/requirements.md)
+- [Integration Guide](docs/integration.md)
+
+### System Documentation
+
 - [Personality System](docs/personalities.md)
 - [Agent System](docs/agents.md)
-- [Integration Guide](docs/integration.md)
+
+### Developer Guides
+
+- [Manual Testing Guide](docs/testing/MANUAL_TESTING.md) - QA verification procedures and test scenarios
+- [Contributing Guidelines](docs/CONTRIBUTING.md)
 
 ## License
 

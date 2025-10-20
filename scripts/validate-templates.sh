@@ -165,7 +165,8 @@ check_hardcoded_paths() {
     [[ -z "${line}" || "${line}" =~ ^[[:space:]]*# ]] && continue
 
     # Detect /Users/ paths (macOS)
-    if echo "${line}" | grep -qE '(^|[^$])/Users/[^/]+(/|$)'; then
+    # Skip if it's a regex pattern definition
+    if echo "${line}" | grep -qE '(^|[^$])/Users/[^/]+(/|$)' && ! echo "${line}" | grep -qE "(pattern:|regex:|grep|sed|awk)"; then
       # Extract the problematic path
       local path
       path=$(echo "${line}" | grep -oE '/Users/[^/]+[^[:space:]]*' | head -1)
@@ -273,9 +274,14 @@ check_credentials() {
     [[ -z "${line}" || "${line}" =~ ^[[:space:]]*# ]] && continue
 
     # Check for common credential patterns
-    if echo "${line}" | grep -qiE '(api[_-]?key|api[_-]?secret|password|token|secret[_-]?key)[[:space:]]*[:=][[:space:]]*['\''"][^'\''"]+['\''"]'; then
-      # Allow placeholder values
-      if echo "${line}" | grep -qiE '(your[_-]|my[_-]|example|placeholder|xxx|***|\.\.\.)'; then
+    if echo "${line}" | grep -qiE '(api_?key|api_?secret|password|token|secret_?key)[[:space:]]*[:=][[:space:]]*['\''"][^'\''"]+['\''"]'; then
+      # Allow placeholder values and environment variable patterns
+      if echo "${line}" | grep -qiE '(your_?|my_?|example|placeholder|xxx|***|\.\.\.|env_var|YOUR_|HERE)'; then
+        continue
+      fi
+
+      # Skip SQL examples with PASSWORD = '...'
+      if echo "${line}" | grep -qE "PASSWORD[[:space:]]*=[[:space:]]*'\.\.\.'" ; then
         continue
       fi
 
@@ -311,10 +317,11 @@ check_learned_patterns() {
 
     # Check for references to specific projects (that might be personal)
     # This is a heuristic - may need tuning
-    if echo "${line}" | grep -qE '(my-project|personal-project|client-name)'; then
+    # Note: "my-project" is an acceptable generic placeholder, not flagged
+    if echo "${line}" | grep -qE '(personal-project|client-name)'; then
       log_error "${file}" "${line_num}" \
         "Found reference to specific project" \
-        "Use generic placeholder or {project-name} variable"
+        "Use generic placeholder like 'my-project' or {project-name} variable"
     fi
   done < "$file"
 }

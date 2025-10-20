@@ -8,7 +8,6 @@ on:
       - 'milestone-*/**'
     paths:
       - 'install.sh'
-      - '.github/docker/**'
       - '.github/testing/**'
       - '.github/workflows/test-installation.yml'
   pull_request:
@@ -16,7 +15,6 @@ on:
       - main
     paths:
       - 'install.sh'
-      - '.github/docker/**'
       - '.github/testing/**'
       - '.github/workflows/test-installation.yml'
   workflow_dispatch:
@@ -111,7 +109,7 @@ jobs:
         shell: wsl-bash {0}
         run: |
           sudo apt-get update
-          sudo apt-get install -y git rsync
+          sudo apt-get install -y git rsync jq
 
       - name: Check bash version
         shell: wsl-bash {0}

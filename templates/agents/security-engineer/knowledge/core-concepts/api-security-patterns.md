@@ -212,7 +212,7 @@ import jwt
 import time
 
 # Metabase embedding secret (from Metabase settings)
-METABASE_SECRET_KEY = "abc123def456789..."
+METABASE_SECRET_KEY = os.environ.get("METABASE_SECRET_KEY")  # Use environment variable
 
 # JWT payload
 payload = {

@@ -1,0 +1,112 @@
+services:
+  # Base test service configuration
+  aida-test-base: &test-base
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        UBUNTU_VERSION: "22.04"
+        BUILD_DATE: "${BUILD_DATE:-2024-10-18}"
+        VCS_REF: "${VCS_REF:-dev}"
+    volumes:
+      - ../../:/workspace:ro  # Mount repo as read-only
+      - ./fixtures:/test-fixtures:ro  # Mount test fixtures
+      - ./results:/test-results  # Mount results directory (writable)
+    environment:
+      - WORKSPACE=/workspace
+      - TEST_FIXTURES=/test-fixtures
+      - TEST_RESULTS=/test-results
+      - DEBUG=${DEBUG:-false}
+      - VERBOSE=${VERBOSE:-false}
+
+  # Fresh installation test
+  fresh-install:
+    <<: *test-base
+    container_name: aida-test-fresh
+    environment:
+      - TEST_SCENARIO=fresh
+      - INSTALL_MODE=normal
+      - WITH_DEPRECATED=false
+    profiles:
+      - fresh
+      - all
+
+  # Upgrade test (v0.1.x -> v0.2.x)
+  upgrade:
+    <<: *test-base
+    container_name: aida-test-upgrade
+    environment:
+      - TEST_SCENARIO=upgrade
+      - INSTALL_MODE=normal
+      - WITH_DEPRECATED=false
+    profiles:
+      - upgrade
+      - all
+
+  # Migration test (flat structure -> namespace)
+  migration:
+    <<: *test-base
+    container_name: aida-test-migration
+    environment:
+      - TEST_SCENARIO=migration
+      - INSTALL_MODE=normal
+      - WITH_DEPRECATED=true
+    profiles:
+      - migration
+      - all
+
+  # Dev mode installation test
+  dev-mode:
+    <<: *test-base
+    container_name: aida-test-dev
+    environment:
+      - TEST_SCENARIO=dev-mode
+      - INSTALL_MODE=dev
+      - WITH_DEPRECATED=false
+    profiles:
+      - dev
+      - all
+
+  # All tests in sequence
+  test-all:
+    <<: *test-base
+    container_name: aida-test-all
+    environment:
+      - TEST_SCENARIO=test-all
+      - INSTALL_MODE=normal
+      - WITH_DEPRECATED=false
+    profiles:
+      - full
+
+  # Interactive shell for debugging
+  debug:
+    <<: *test-base
+    container_name: aida-test-debug
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../../:/workspace  # Mount as read-write for debugging
+      - ./fixtures:/test-fixtures:ro
+      - ./results:/test-results
+    profiles:
+      - debug
+
+  # Ubuntu 24.04 LTS test variant
+  fresh-install-ubuntu24:
+    <<: *test-base
+    container_name: aida-test-fresh-ubuntu24
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        UBUNTU_VERSION: "24.04"
+        BUILD_DATE: "${BUILD_DATE:-2024-10-18}"
+        VCS_REF: "${VCS_REF:-dev}"
+    environment:
+      - TEST_SCENARIO=fresh
+      - INSTALL_MODE=normal
+      - WITH_DEPRECATED=false
+    profiles:
+      - ubuntu24
+      - future

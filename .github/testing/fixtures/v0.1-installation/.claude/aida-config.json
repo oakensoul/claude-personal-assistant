@@ -1,0 +1,32 @@
+{
+  "version": "0.1.6",
+  "assistant_name": "jarvis",
+  "personality": "JARVIS",
+  "install_mode": "normal",
+  "install_dir": "/home/testuser/.aida",
+  "config_dir": "/home/testuser/.claude",
+  "installed_at": "2024-09-01T12:00:00Z",
+  "last_updated": "2024-09-15T08:30:00Z",
+  "platform": "linux",
+  "shell": "bash",
+  "features": {
+    "personalities": true,
+    "agents": true,
+    "memory": true,
+    "obsidian_integration": false
+  },
+  "structure": {
+    "type": "flat",
+    "commands_dir": ".claude/commands",
+    "agents_dir": ".claude/agents",
+    "knowledge_dir": ".claude/knowledge"
+  },
+  "upgrade_history": [
+    {
+      "from_version": "0.1.4",
+      "to_version": "0.1.6",
+      "date": "2024-09-15T08:30:00Z",
+      "method": "in-place"
+    }
+  ]
+}

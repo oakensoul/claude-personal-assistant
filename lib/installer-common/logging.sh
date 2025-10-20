@@ -22,7 +22,8 @@
 set -euo pipefail
 
 # Log file location (created on first use)
-readonly AIDA_LOG_DIR="${HOME}/.aida/logs"
+# Logs go in ~/.claude/logs (always writable) not ~/.aida/logs (read-only in dev mode)
+readonly AIDA_LOG_DIR="${HOME}/.claude/logs"
 readonly AIDA_LOG_FILE="${AIDA_LOG_DIR}/install.log"
 
 #######################################
@@ -86,7 +87,7 @@ print_message() {
             log_to_file "SUCCESS" "$message"
             ;;
         warning)
-            echo -e "$(color_yellow '⚠') ${message}"
+            echo -e "$(color_yellow '⚠') ${message}" >&2
             log_to_file "WARNING" "$message"
             ;;
         error)

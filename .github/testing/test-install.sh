@@ -21,21 +21,34 @@ set -euo pipefail
 # Script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-DOCKER_DIR="${REPO_ROOT}/.github/docker"
+DOCKER_DIR="${SCRIPT_DIR}"
 LOG_DIR="${SCRIPT_DIR}/logs"
 
-# Detect docker-compose command (backward compatibility)
-# Docker Compose V1: docker-compose (standalone binary, deprecated)
-# Docker Compose V2: docker compose (plugin, shipped with Docker Desktop)
-# Check for both to support users on different Docker versions
-if command -v docker-compose &> /dev/null; then
-    DOCKER_COMPOSE="docker-compose"
-elif docker compose version &> /dev/null; then
-    DOCKER_COMPOSE="docker compose"
-else
-    echo "Error: Neither 'docker-compose' nor 'docker compose' found"
-    exit 1
-fi
+#######################################
+# Get Dockerfile for environment
+# Bash 3.2 compatible (no associative arrays)
+#######################################
+get_dockerfile() {
+    local env="$1"
+    case "$env" in
+        ubuntu-22)
+            echo "Dockerfile.ubuntu-22.04"
+            ;;
+        ubuntu-20)
+            echo "Dockerfile.ubuntu-20.04"
+            ;;
+        debian-12)
+            echo "Dockerfile.debian-12"
+            ;;
+        ubuntu-minimal)
+            echo "Dockerfile.ubuntu-minimal"
+            ;;
+        *)
+            echo "Unknown environment: $env" >&2
+            return 1
+            ;;
+    esac
+}
 
 # Test configuration
 VERBOSE=false
@@ -51,7 +64,6 @@ readonly NC='\033[0m' # No Color
 # Test results
 TESTS_PASSED=0
 TESTS_FAILED=0
-TESTS_SKIPPED=0
 
 #######################################
 # Print formatted message
@@ -128,12 +140,18 @@ setup_test_env() {
 #######################################
 build_docker_images() {
     local env="$1"
+    local dockerfile
+
+    dockerfile=$(get_dockerfile "$env") || return 1
 
     print_msg "info" "Building Docker image: ${env}..."
 
     local log_file="${LOG_DIR}/build-${env}.log"
+    local image_name="aida-test-${env}"
 
-    if ${DOCKER_COMPOSE} -f "${DOCKER_DIR}/docker-compose.yml" build "${env}" > "${log_file}" 2>&1; then
+    if docker build -t "${image_name}" \
+        -f "${DOCKER_DIR}/${dockerfile}" \
+        "${REPO_ROOT}" > "${log_file}" 2>&1; then
         print_msg "success" "Built ${env}"
         return 0
     else
@@ -147,13 +165,17 @@ build_docker_images() {
 #######################################
 test_help_flag() {
     local env="$1"
+    local image_name="aida-test-${env}"
     local log_file="${LOG_DIR}/test-help-${env}.log"
 
     if [[ "$VERBOSE" == true ]]; then
         print_msg "info" "Testing --help flag in ${env}..."
     fi
 
-    if ${DOCKER_COMPOSE} -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
+    if docker run --rm \
+        -v "${REPO_ROOT}:/workspace:ro" \
+        -w /workspace \
+        "${image_name}" \
         bash -c "./install.sh --help" > "${log_file}" 2>&1; then
 
         if grep -q "AIDA Framework Installation Script" "${log_file}"; then
@@ -173,22 +195,18 @@ test_help_flag() {
 #######################################
 test_dependency_validation() {
     local env="$1"
+    local image_name="aida-test-${env}"
     local log_file="${LOG_DIR}/test-deps-${env}.log"
-
-    if [[ "$env" != "ubuntu-minimal" ]]; then
-        if [[ "$VERBOSE" == true ]]; then
-            print_msg "info" "[${env}] Skipping dependency validation test (only runs on ubuntu-minimal)"
-        fi
-        TESTS_SKIPPED=$((TESTS_SKIPPED + 1))
-        return 0
-    fi
 
     if [[ "$VERBOSE" == true ]]; then
         print_msg "info" "Testing dependency validation in ${env}..."
     fi
 
     # Should fail because git and rsync are missing
-    if ${DOCKER_COMPOSE} -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
+    if docker run --rm \
+        -v "${REPO_ROOT}:/workspace:ro" \
+        -w /workspace \
+        "${image_name}" \
         bash -c "./install.sh" < /dev/null > "${log_file}" 2>&1; then
 
         print_msg "error" "[${env}] Dependency validation should have failed but didn't"
@@ -213,23 +231,18 @@ test_dependency_validation() {
 #######################################
 test_normal_installation() {
     local env="$1"
+    local image_name="aida-test-${env}"
     local log_file="${LOG_DIR}/test-install-${env}.log"
-
-    # Skip minimal environment (it should fail dependency checks)
-    if [[ "$env" == "ubuntu-minimal" ]]; then
-        if [[ "$VERBOSE" == true ]]; then
-            print_msg "info" "[${env}] Skipping normal installation test (missing dependencies by design)"
-        fi
-        TESTS_SKIPPED=$((TESTS_SKIPPED + 1))
-        return 0
-    fi
 
     if [[ "$VERBOSE" == true ]]; then
         print_msg "info" "Testing normal installation in ${env}..."
     fi
 
     # Provide automated input: assistant name and personality choice
-    if echo -e "testassistant\n1\n" | ${DOCKER_COMPOSE} -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
+    if echo -e "testassistant\n1\n" | docker run --rm -i \
+        -v "${REPO_ROOT}:/workspace:ro" \
+        -w /workspace \
+        "${image_name}" \
         bash -c "./install.sh" > "${log_file}" 2>&1; then
 
         # Verify success message
@@ -250,27 +263,23 @@ test_normal_installation() {
 #######################################
 test_dev_installation() {
     local env="$1"
+    local image_name="aida-test-${env}"
     local log_file="${LOG_DIR}/test-dev-${env}.log"
-
-    # Skip minimal environment
-    if [[ "$env" == "ubuntu-minimal" ]]; then
-        if [[ "$VERBOSE" == true ]]; then
-            print_msg "info" "[${env}] Skipping dev mode installation test (missing dependencies by design)"
-        fi
-        TESTS_SKIPPED=$((TESTS_SKIPPED + 1))
-        return 0
-    fi
 
     if [[ "$VERBOSE" == true ]]; then
         print_msg "info" "Testing dev mode installation in ${env}..."
     fi
 
     # Provide automated input
-    if echo -e "devtest\n2\n" | ${DOCKER_COMPOSE} -f "${DOCKER_DIR}/docker-compose.yml" run --rm "${env}" \
+    if echo -e "devtest\n2\n" | docker run --rm -i \
+        -v "${REPO_ROOT}:/workspace:ro" \
+        -w /workspace \
+        "${image_name}" \
         bash -c "./install.sh --dev" > "${log_file}" 2>&1; then
 
         # Verify dev mode messages
-        if grep -q "Development mode is active" "${log_file}"; then
+        if grep -q "Running in DEVELOPMENT MODE" "${log_file}" || \
+           grep -q "Development mode (symlinked)" "${log_file}"; then
             print_msg "success" "[${env}] Dev mode installation test passed"
             TESTS_PASSED=$((TESTS_PASSED + 1))
             return 0
@@ -296,15 +305,22 @@ test_environment() {
     # Build image first
     if ! build_docker_images "${env}"; then
         print_msg "error" "Skipping tests for ${env} due to build failure"
-        TESTS_FAILED=$((TESTS_FAILED + 4))
+        TESTS_FAILED=$((TESTS_FAILED + 3))
         return 1
     fi
 
-    # Run test suite
+    # All environments test help flag
     test_help_flag "${env}"
-    test_dependency_validation "${env}"
-    test_normal_installation "${env}"
-    test_dev_installation "${env}"
+
+    # Environment-specific test suites
+    if [[ "$env" == "ubuntu-minimal" ]]; then
+        # Minimal environment: Test dependency validation only
+        test_dependency_validation "${env}"
+    else
+        # Full environments: Test installation
+        test_normal_installation "${env}"
+        test_dev_installation "${env}"
+    fi
 
     echo ""
 }
@@ -320,16 +336,7 @@ display_summary() {
     echo ""
     print_msg "success" "Passed:  ${TESTS_PASSED}"
     print_msg "error"   "Failed:  ${TESTS_FAILED}"
-    print_msg "warning" "Skipped: ${TESTS_SKIPPED}"
     echo ""
-
-    if [[ ${TESTS_SKIPPED} -gt 0 ]]; then
-        echo "Why tests are skipped:"
-        echo "  • ubuntu-minimal: Skips install tests (tests dependency validation only)"
-        echo "  • Full environments: Skip dependency tests (all dependencies present)"
-        echo "  This is expected behavior - each environment tests different scenarios."
-        echo ""
-    fi
 
     echo "Logs saved to: ${LOG_DIR}"
     echo ""

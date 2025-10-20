@@ -112,7 +112,7 @@ aws s3api put-bucket-encryption \
     "Rules": [{
       "ApplyServerSideEncryptionByDefault": {
         "SSEAlgorithm": "aws:kms",
-        "KMSMasterKeyID": "arn:aws:kms:us-east-1:123456789012:key/abcd1234-..."
+        "KMSMasterKeyID": "arn:aws:kms:us-east-1:123456789012:key/12345678-abcd-1234-abcd-1234567890ab"
       },
       "BucketKeyEnabled": true
     }]
@@ -143,7 +143,7 @@ aws rds create-db-instance \
   --master-user-password '...' \
   --allocated-storage 100 \
   --storage-encrypted \
-  --kms-key-id arn:aws:kms:us-east-1:123456789012:key/abcd1234-... \
+  --kms-key-id arn:aws:kms:us-east-1:123456789012:key/12345678-abcd-1234-abcd-1234567890ab \
   --backup-retention-period 7 \
   --storage-type gp3
 
@@ -167,7 +167,7 @@ import snowflake.connector
 
 conn = snowflake.connector.connect(
     user='dbt_service_account',
-    password='...',  # Or use OAuth/key-pair authentication
+    password=os.environ.get('SNOWFLAKE_PASSWORD'),  # Use environment variable or OAuth/key-pair authentication
     account='xyz12345.us-east-1',
     warehouse='TRANSFORMING',
     database='PROD',

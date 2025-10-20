@@ -812,11 +812,11 @@ last_updated: 2025-10-09
 
 All resources MUST have:
 
-- **Project**: betterpool
+- **Project**: {project-name}
 - **Environment**: dev | staging | prod
 - **ManagedBy**: cdk
 - **CostCenter**: engineering
-- **Owner**: team-infra@betterpool.com
+- **Owner**: team-infra@example.com
 
 ## Optional Tags
 

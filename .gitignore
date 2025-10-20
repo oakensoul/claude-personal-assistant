@@ -16,12 +16,22 @@ node_modules/
 .claude/settings.local.json
 .claude/workflow-config.json
 
-# Issue tracking (in-progress and drafts)
+# Issue tracking (in-progress, drafts, and published)
 .github/issues/in-progress/
 .github/issues/drafts/
+.github/issues/published/
 
 # Time tracking logs
 .time-tracking/*.md
 
 # Test logs (build artifacts)
 .github/testing/logs/
+
+# Development artifacts
+*.backup.*
+.implementation-state.json
+.implementation-state.json.tmp
+
+# Dev mode installation artifacts
+logs/
+templates/*/.aida/
