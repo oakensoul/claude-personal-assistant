@@ -93,7 +93,7 @@ See [Installation Flows](#installation-flows) for detailed comparison.
 
 ### [0.1.5] - 2025-10-15
 
-- **Bug Fixes**: workflow-init now creates agents in correct `.claude/agents-global/` directory
+- **Bug Fixes**: workflow-init now creates agents in correct `.claude/project/agents/` directory
 - **Documentation**: Added directory safety best practices to command guidelines
 - **publish-issue Update**: Now moves (not deletes) published drafts to `.github/issues/published/`
 
@@ -101,7 +101,7 @@ See [Installation Flows](#installation-flows) for detailed comparison.
 
 - **23 New Commands**: Quality assurance, security & compliance, operations, infrastructure, data & analytics
 - **11 New Agent Templates**: aws-cloud-engineer, datadog-observability-engineer, cost-optimization, data-governance, security-engineer, and 6 more
-- **Two-Tier Agent Architecture**: Global agents in `.claude/agents-global/` with project-specific context
+- **Two-Tier Agent Architecture**: Global agents in `.claude/project/agents/` with project-specific context
 - **Command Documentation**: Updated README with all 32 current commands categorized by function
 - **Enhanced Workflows**: Added 5 reviewer strategies including GitHub Copilot support
 - **Quality Improvements**: Fixed yamllint strict mode for consistency between local and CI validation

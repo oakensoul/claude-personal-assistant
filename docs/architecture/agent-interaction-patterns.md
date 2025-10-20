@@ -580,7 +580,7 @@ Both analysts and engineers use two-tier architecture:
 - Generic knowledge for that agent type
 - Reusable patterns and frameworks
 
-**Project-Level** (`{project}/.claude/agents-global/{agent}/`):
+**Project-Level** (`{project}/.claude/project/agents/{agent}/`):
 
 - Project-specific context
 - Project standards and decisions

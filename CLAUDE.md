@@ -3,7 +3,7 @@ title: "CLAUDE.md - Project Instructions"
 description: "Guidance for Claude Code when working with this repository"
 category: "meta"
 tags: ["claude", "instructions", "project-config", "development"]
-last_updated: "2025-10-05"
+last_updated: "2025-10-20"
 status: "published"
 audience: "developers"
 ---
@@ -105,7 +105,17 @@ aida help            # Show help
 
 ### Custom Slash Commands
 
-This repository provides workflow commands (when installed). Common commands include:
+This repository provides workflow commands (when installed).
+
+#### Discovery Commands (Meta)
+
+- `/agent-list` - List all available agents with versions and descriptions
+- `/skill-list` - List all available skills grouped by category
+- `/command-list` - List all available commands with optional category filtering
+
+These commands delegate to the `claude-agent-manager` agent which uses meta-skills for comprehensive knowledge.
+
+#### Workflow Commands
 
 - `/start-work` - Begin work on a GitHub issue (creates branch, updates issue tracking)
 - `/implement` - Implement planned features with auto-commit after each task
@@ -113,6 +123,81 @@ This repository provides workflow commands (when installed). Common commands inc
 - `/cleanup-main` - Post-merge cleanup (update main, delete branch, restore stash)
 
 See `templates/commands/` for all available workflow templates.
+
+### AIDA Meta-Skills
+
+This project includes three foundational meta-skills that provide comprehensive knowledge about AIDA's architecture:
+
+#### `aida-agents` Skill
+
+**Location**: `templates/skills/aida-agents/`
+
+**Provides knowledge about**:
+
+- Agent architecture (two-tier system, file structure, naming conventions)
+- Frontmatter schema (required/optional fields, validation)
+- Agent categories and design patterns
+- Creating, updating, and validating agents
+- Integration with `list-agents.sh` CLI script
+- Best practices and troubleshooting
+
+**Used by**: `claude-agent-manager` agent for all agent-related operations
+
+#### `aida-skills` Skill
+
+**Location**: `templates/skills/aida-skills/`
+
+**Provides knowledge about**:
+
+- Skill architecture (composable knowledge modules)
+- Skills vs. Agents (key differences and relationships)
+- Frontmatter schema and skill categories
+- Creating, updating, and validating skills
+- How agents use skills (assignment patterns, loading strategies)
+- Integration with `list-skills.sh` CLI script
+- Skill patterns (procedural, decision framework, pattern library, etc.)
+
+**Used by**: `claude-agent-manager` agent for all skill-related operations
+
+#### `aida-commands` Skill
+
+**Location**: `templates/skills/aida-commands/`
+
+**Provides knowledge about**:
+
+- Command architecture (slash commands, namespaces, .aida framework commands)
+- Category taxonomy (8 standard categories: workflow, git, project, analysis, deployment, testing, documentation, meta)
+- Frontmatter schema and command structure
+- Creating, updating, and validating commands
+- Delegation patterns (how commands invoke agents)
+- Integration with `list-commands.sh` CLI script
+- Command patterns and best practices
+
+**Used by**: `claude-agent-manager` agent for all command-related operations
+
+#### Why Meta-Skills Matter
+
+**Composable Knowledge**: Any agent can reference these skills to understand AIDA's architecture without duplicating documentation.
+
+**Single Source of Truth**: When AIDA's schemas or patterns change, update the meta-skill once and all agents benefit.
+
+**Reduced Context Size**: Agents reference skills instead of embedding large knowledge blocks, keeping agent files lean and focused on behavior.
+
+**Example Architecture**:
+
+```text
+User invokes: /agent-list
+    ↓
+Command delegates to: claude-agent-manager
+    ↓
+Agent loads skill: aida-agents (comprehensive knowledge)
+    ↓
+Agent executes: list-agents.sh (CLI script)
+    ↓
+Agent presents: Results with context from skill knowledge
+```
+
+See `templates/agents/claude-agent-manager/` for how the meta-agent uses these skills.
 
 ## Design Principles
 
@@ -254,4 +339,15 @@ See [docs/architecture/dotfiles-integration.md](docs/architecture/dotfiles-integ
 
 ## Current State
 
-**Active development** - v0.1.3 released with workflow command templates and variable substitution system.
+**Active development** - v0.1.6 released with modular installer and .aida namespace installation.
+
+**In progress** - v0.1.7: Discoverability commands (Issue #54)
+
+- ✅ AIDA meta-skills created (`aida-agents`, `aida-skills`, `aida-commands`)
+- ✅ CLI infrastructure built (frontmatter parser, path sanitizer, JSON formatter)
+- ✅ Discovery scripts created (`list-agents.sh`, `list-skills.sh`, `list-commands.sh`)
+- ✅ Slash commands created (`/agent-list`, `/skill-list`, `/command-list`)
+- ✅ `claude-agent-manager` agent updated with meta-skills
+- 🚧 Configuration migration (add category/version to 32 commands)
+- 🚧 Testing & validation
+- 🚧 Installer integration
