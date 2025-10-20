@@ -778,11 +778,6 @@ EOF
 # =============================================================================
 
 @test "migration: v0.1.6 flat structure converts to namespace" {
-  # Skip on bash < 4.0 (associative arrays not supported)
-  if [[ "${BASH_VERSINFO[0]}" -lt 4 ]]; then
-    skip "Requires bash 4.0+ for associative arrays (current: ${BASH_VERSION})"
-  fi
-
   section "Testing full v0.1.6 to v0.2.0 migration"
 
   # Setup complete v0.1.6 installation
@@ -791,17 +786,20 @@ EOF
   # Add realistic user content
   create_user_content "$TEST_DIR"
 
-  # Capture state before migration
+  # Capture state before migration (using indexed arrays for bash 3.2 compatibility)
   local user_files=(
     "${TEST_DIR}/.claude/commands/my-workflow.md"
     "${TEST_DIR}/.claude/agents/my-agent.md"
     "${TEST_DIR}/.claude/skills/my-skill.md"
   )
 
-  declare -A checksums_before
+  # Build parallel array of checksums (bash 3.2 compatible)
+  local checksums_before=()
   for file in "${user_files[@]}"; do
     if [[ -f "$file" ]]; then
-      checksums_before["$file"]=$(calculate_checksum "$file")
+      checksums_before+=("$(calculate_checksum "$file")")
+    else
+      checksums_before+=("")  # Empty for missing files
     fi
   done
 
@@ -811,10 +809,10 @@ EOF
   # Verify namespace structure created
   assert_namespace_structure "${TEST_DIR}/.claude"
 
-  # Verify ALL user content preserved
-  for file in "${user_files[@]}"; do
-    if [[ -n "${checksums_before[$file]:-}" ]]; then
-      assert_file_unchanged "$file" "${checksums_before[$file]}"
+  # Verify ALL user content preserved (iterate by index)
+  for i in "${!user_files[@]}"; do
+    if [[ -n "${checksums_before[$i]}" ]]; then
+      assert_file_unchanged "${user_files[$i]}" "${checksums_before[$i]}"
     fi
   done
 
