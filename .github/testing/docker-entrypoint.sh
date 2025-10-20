@@ -131,9 +131,9 @@ scenario_fresh_install() {
 
   log "Running AIDA installer in ${INSTALL_MODE} mode..."
   if [[ "${INSTALL_MODE}" == "dev" ]]; then
-    echo -e "JARVIS\njarvis\n" | ./install.sh --dev
+    echo -e "jarvis\n1\n" | ./install.sh --dev
   else
-    echo -e "JARVIS\njarvis\n" | ./install.sh
+    echo -e "jarvis\n1\n" | ./install.sh
   fi
 
   # Verify installation
