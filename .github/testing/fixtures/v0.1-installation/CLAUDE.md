@@ -125,7 +125,7 @@ Optional integration with Obsidian for:
 - Memory persistence
 - Flat directory structure
 
-**Future (v0.2.0)**
+### Future (v0.2.0)
 
 - Namespace isolation
 - Deprecated command migration

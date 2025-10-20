@@ -8,6 +8,7 @@ status: "draft"
 ---
 
 # Product Requirements Document
+
 ## Issue #53: Modular Installer with Deprecation Support
 
 ## Executive Summary
@@ -37,17 +38,20 @@ For implementation details, see [TECH_SPEC.md](./TECH_SPEC.md) and [Architecture
 ### 1. End Users (AIDA Installers)
 
 **Concerns**:
+
 - 🚨 **CRITICAL**: Current installer destroys custom commands/agents/skills
 - Data loss risk when running `./install.sh` multiple times
 - No warning before overwriting existing installations
 - Unclear what happens during re-installation
 
 **Priorities**:
+
 - Safe, idempotent installation (can re-run without data loss)
 - Clear feedback about what will be modified
 - Easy recovery from installation errors
 
 **Recommendations**:
+
 - `.aida/` namespace protects user content (separate from `.aida-deprecated/`)
 - Confirmation prompts before destructive operations
 - Pre-flight installation plan showing what changes
@@ -56,17 +60,20 @@ For implementation details, see [TECH_SPEC.md](./TECH_SPEC.md) and [Architecture
 ### 2. Dotfiles Repo Maintainers
 
 **Concerns**:
+
 - Need to reuse AIDA installation logic without code duplication
 - Installation order dependencies (AIDA first vs dotfiles first)
 - API stability for `lib/installer-common/` modules
 - Version compatibility across repos
 
 **Priorities**:
+
 - Stable API contract for library functions
 - Conditional integration (works with or without AIDA)
 - Version checking to ensure compatibility
 
 **Recommendations**:
+
 - All logic in reusable `lib/installer-common/` modules
 - `install.sh` becomes thin ~150-line orchestrator
 - Semantic versioning for library API
@@ -75,17 +82,20 @@ For implementation details, see [TECH_SPEC.md](./TECH_SPEC.md) and [Architecture
 ### 3. Framework Developers
 
 **Concerns**:
+
 - Maintainability of 625-line monolith
 - Cross-platform testing (Linux/macOS/Windows)
 - Managing command/agent/skill deprecation
 - CI/CD validation before PRs merge
 
 **Priorities**:
+
 - Modular, testable code
 - Automated testing across platforms
 - Clear deprecation lifecycle
 
 **Recommendations**:
+
 - 6 focused modules (templates.sh, deprecation.sh, variables.sh, prompts.sh, directories.sh, summary.sh)
 - Docker + Makefile + GitHub Actions testing
 - Frontmatter-based deprecation schema
@@ -93,15 +103,18 @@ For implementation details, see [TECH_SPEC.md](./TECH_SPEC.md) and [Architecture
 ### 4. Claude Code Integration
 
 **Concerns**:
+
 - Templates must be discoverable in `~/.claude/` (NOT `~/.aida/`)
 - Variable substitution timing affects path references
 - Frontmatter requirements for command metadata
 
 **Priorities**:
+
 - Templates installed to correct locations
 - Variables properly substituted before Claude Code reads them
 
 **Recommendations**:
+
 - Install templates to `~/.claude/{commands,agents,skills}/.aida/`
 - Normal mode: Copy with variable substitution
 - Dev mode: Symlink for live editing
@@ -166,6 +179,7 @@ For implementation details, see [TECH_SPEC.md](./TECH_SPEC.md) and [Architecture
   - Default: Do NOT install deprecated templates
 
 - **FR-9**: Deprecation metadata in template frontmatter
+
   ```yaml
   deprecated: true
   deprecated_in: "0.2.0"
@@ -332,6 +346,7 @@ For implementation details, see [TECH_SPEC.md](./TECH_SPEC.md) and [Architecture
 ### MVP Scope (v0.1.0)
 
 **Include**:
+
 - ✅ Modular installer with lib/installer-common/
 - ✅ `.aida/` namespace isolation
 - ✅ Basic deprecation support (frontmatter schema)
@@ -340,6 +355,7 @@ For implementation details, see [TECH_SPEC.md](./TECH_SPEC.md) and [Architecture
 - ✅ Dotfiles integration (source libraries)
 
 **Defer**:
+
 - ❌ Automated cleanup script (manual for v0.1.0)
 - ❌ Windows testing (focus Linux/macOS first)
 - ❌ Pre-flight installation plan (show changes before applying)
@@ -355,16 +371,19 @@ For implementation details, see [TECH_SPEC.md](./TECH_SPEC.md) and [Architecture
 ### Recommended Approach
 
 **Phase 1** (Foundation):
+
 - Refactor to modular architecture
 - Implement `.aida/` namespace isolation
 - Basic testing harness
 
 **Phase 2** (Integration):
+
 - Dotfiles repo integration
 - Comprehensive testing (Docker + CI/CD)
 - Deprecation system
 
 **Phase 3** (Polish):
+
 - UX improvements (progress, confirmations, help)
 - Windows support
 - Advanced features (pre-flight plan, rollback)

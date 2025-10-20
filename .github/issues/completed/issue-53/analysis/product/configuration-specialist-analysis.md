@@ -24,11 +24,13 @@ The installer refactoring presents **critical configuration architecture decisio
 ### Current Architecture Assessment
 
 **Strengths**:
+
 - Clear variable substitution boundary (`{{VAR}}` install-time, `${VAR}` runtime)
 - Existing validation for approved template variables
 - Backup mechanism preserves user data
 
 **Anti-Patterns Identified**:
+
 - **Monolithic configuration**: Single 625-line install.sh mixes concerns (UI, file operations, validation, substitution)
 - **Implicit defaults**: Template variable validation hardcoded in script (lines 424-428)
 - **No schema validation**: Templates lack formal schema definition
@@ -37,7 +39,8 @@ The installer refactoring presents **critical configuration architecture decisio
 
 ### Recommended Configuration Patterns
 
-**Pattern 1: Configuration Schema First**
+#### Pattern 1: Configuration Schema First
+
 ```yaml
 # lib/installer-common/schema/template-config.schema.yaml
 $schema: "http://json-schema.org/draft-07/schema#"
@@ -93,7 +96,8 @@ properties:
 required: ["template_type", "install_location"]
 ```
 
-**Pattern 2: Modular Configuration Management**
+#### Pattern 2: Modular Configuration Management
+
 ```bash
 # lib/installer-common/config.sh
 
@@ -170,7 +174,8 @@ export_config() {
 }
 ```
 
-**Pattern 3: Template Registry**
+#### Pattern 3: Template Registry
+
 ```bash
 # lib/installer-common/registry.sh
 
@@ -246,24 +251,28 @@ get_template_version() {
 ### Module Configuration Responsibilities
 
 **templates.sh**:
+
 - Load template metadata (frontmatter)
 - Validate template structure
 - Route templates to correct install location
 - Apply namespace isolation (`.aida/`)
 
 **deprecation.sh**:
+
 - Parse deprecation metadata from frontmatter
 - Filter templates by `--with-deprecated` flag
 - Display deprecation warnings
 - Suggest canonical replacements
 
 **variables.sh**:
+
 - Define approved variable sets (install-time vs runtime)
 - Substitute install-time variables (`{{VAR}}`)
 - Validate runtime variables remain unsubstituted (`${VAR}`)
 - Context-aware substitution (dev vs normal mode)
 
 **validation.sh** (extend existing):
+
 - Validate template metadata schema
 - Check for unresolved variables
 - Verify namespace consistency
@@ -276,6 +285,7 @@ get_template_version() {
 ### Current State Analysis
 
 **Existing Variables** (from validate-templates.sh):
+
 ```bash
 # Install-time ({{VAR}}) - substituted during installation
 AIDA_HOME       # ~/.aida/ or symlink target
@@ -288,6 +298,7 @@ USER            # Current username
 ```
 
 **Current substitution logic** (install.sh:410-413):
+
 ```bash
 sed -e "s|{{AIDA_HOME}}|${AIDA_DIR}|g" \
     -e "s|{{CLAUDE_CONFIG_DIR}}|${CLAUDE_DIR}|g" \
@@ -298,6 +309,7 @@ sed -e "s|{{AIDA_HOME}}|${AIDA_DIR}|g" \
 ### New Variables for .aida Namespace
 
 **Required additions**:
+
 ```bash
 # Install-time variables
 {{AIDA_NAMESPACE}}         # ".aida" (for future flexibility)
@@ -428,15 +440,14 @@ Resolved when commands execute. Safe for user customization.
 ## Usage Examples
 
 Install-time (substituted during install.sh):
-```bash
-source {{AIDA_HOME}}/lib/installer-common/logging.sh
-```
+
+    source {{AIDA_HOME}}/lib/installer-common/logging.sh
 
 Runtime (resolved when command runs):
-```bash
-cd ${PROJECT_ROOT}
-source ${AIDA_COMMANDS_DIR}/common.sh
-```
+
+    cd ${PROJECT_ROOT}
+    source ${AIDA_COMMANDS_DIR}/common.sh
+
 EOF
 }
 ```
@@ -444,12 +455,14 @@ EOF
 ### Dev Mode vs Normal Mode Considerations
 
 **Critical difference**:
+
 - **Dev mode**: Symlink templates → NO substitution (use repo directly)
 - **Normal mode**: Copy templates → FULL substitution
 
 **Problem**: Commands in dev mode won't have variables substituted!
 
 **Solution**: Conditional substitution wrapper
+
 ```bash
 # In installed commands (both modes)
 # Detect mode and resolve variables
@@ -473,6 +486,7 @@ fi
 ### Recommended Frontmatter Schema
 
 **Full deprecation metadata**:
+
 ```yaml
 ---
 name: "old-command"
@@ -491,6 +505,7 @@ deprecation:
 ```
 
 **Validation schema** (JSON Schema format):
+
 ```yaml
 deprecation:
   type: object
@@ -549,6 +564,7 @@ deprecation:
 ### Additional Metadata for Lifecycle Management
 
 **Status tracking**:
+
 ```yaml
 status:
   lifecycle: "deprecated"  # enum: active, deprecated, removed
@@ -562,6 +578,7 @@ maintenance:
 ```
 
 **Version constraints**:
+
 ```yaml
 compatibility:
   min_version: "0.1.0"
@@ -643,6 +660,7 @@ calculate_severity() {
 **Critical requirement**: Dotfiles repo must be able to source `lib/installer-common/` from AIDA repo without tight coupling.
 
 **Contract interface**:
+
 ```bash
 # ~/.aida/lib/installer-common/api.sh
 # Stable API for external consumers (dotfiles repo)
@@ -683,6 +701,7 @@ export -f check_api_compatibility
 ```
 
 **Dotfiles integration pattern**:
+
 ```bash
 # ~/dotfiles/scripts/install-aida-templates.sh
 
@@ -727,6 +746,7 @@ print_message "info" "Installing dotfiles AIDA templates..."
 ### Backward Compatibility Strategy
 
 **Version detection pattern**:
+
 ```bash
 # Detect installed AIDA version and adapt
 detect_aida_version() {
@@ -772,6 +792,7 @@ install_templates_with_fallback() {
 ### Configuration File for Integration
 
 **Shared configuration format**:
+
 ```yaml
 # ~/.aida/config/installer.yml
 
@@ -804,6 +825,7 @@ api:
 ```
 
 **Loading configuration**:
+
 ```bash
 # lib/installer-common/config.sh
 
@@ -833,33 +855,39 @@ load_installer_config_file() {
 ### Critical Questions
 
 **Q1: How should dev mode handle variable substitution?**
+
 - **Issue**: Symlinked templates can't have substituted variables
 - **Recommendation**: Add runtime variable resolution wrapper in commands
 - **Trade-off**: Slight performance cost vs maintainability
 
 **Q2: Should deprecation warnings block installation?**
+
 - **Issue**: Balancing user freedom vs preventing technical debt
 - **Recommendation**: Three-tier severity (info/warning/error), only error blocks
 - **Trade-off**: Flexibility vs safety
 
 **Q3: How to handle namespace migration for existing users?**
+
 - **Issue**: Users upgrading from 0.1.x to 0.2.x need templates moved
 - **Recommendation**: Auto-detect old structure, prompt for migration
 - **Trade-off**: Complexity vs user experience
 
 **Q4: Should template registry use JSON or YAML?**
+
 - **Issue**: JSON easier to parse in bash (jq), YAML more human-friendly
 - **Recommendation**: JSON for machine-readable registry, YAML for config
 - **Trade-off**: Consistency vs optimal tools
 
 **Q5: How to version the installer-common API?**
+
 - **Issue**: Breaking changes to lib/ functions affect dotfiles integration
 - **Recommendation**: Semantic versioning with compatibility checks
 - **Trade-off**: API stability vs rapid iteration
 
 ### Missing Configuration Aspects
 
-**1. Template Categories/Tags**
+#### 1. Template Categories/Tags
+
 ```yaml
 # Add to template frontmatter
 category: "workflow"
@@ -867,7 +895,8 @@ tags: ["git", "github", "automation"]
 platforms: ["macos", "linux"]  # windows excluded
 ```
 
-**2. Installation Profiles**
+#### 2. Installation Profiles
+
 ```yaml
 # ~/.aida/config/profiles.yml
 profiles:
@@ -880,7 +909,8 @@ profiles:
     with_deprecated: false
 ```
 
-**3. Post-Install Validation**
+#### 3. Post-Install Validation
+
 ```bash
 # Validate installation integrity
 validate_installation() {
@@ -909,7 +939,8 @@ validate_installation() {
 }
 ```
 
-**4. Rollback Configuration**
+#### 4. Rollback Configuration
+
 ```yaml
 # ~/.aida/config/rollback.yml
 rollback:
@@ -924,22 +955,26 @@ rollback:
 
 ### Recommended Patterns
 
-**Pattern 1: Configuration-driven installation**
+#### Pattern 1: Configuration-driven installation
+
 - Use YAML/JSON config to define what/how to install
 - Make installer a "config interpreter" not "script executor"
 - Easier to test, validate, and extend
 
-**Pattern 2: Registry-based tracking**
+#### Pattern 2: Registry-based tracking
+
 - Track all installed templates in central registry
 - Enable queries: "what's installed?", "what version?", "what's deprecated?"
 - Support uninstall, upgrade, and migration
 
-**Pattern 3: Schema-first design**
+#### Pattern 3: Schema-first design
+
 - Define JSON schemas for all config/metadata
 - Validate before processing (fail fast)
 - Auto-generate documentation from schemas
 
-**Pattern 4: Feature flags for backward compatibility**
+#### Pattern 4: Feature flags for backward compatibility
+
 ```bash
 # Detect feature support before using
 if supports_feature "namespace_isolation"; then
@@ -949,7 +984,8 @@ else
 fi
 ```
 
-**Pattern 5: Idempotent installation**
+#### Pattern 5: Idempotent installation
+
 ```bash
 # Re-running installer should be safe
 install_template() {
@@ -975,7 +1011,8 @@ install_template() {
 
 ### What to Avoid
 
-**Anti-Pattern 1: Hardcoded paths**
+#### Anti-Pattern 1: Hardcoded paths
+
 ```bash
 # BAD: Hardcoded path
 source ~/.aida/lib/installer-common/logging.sh
@@ -984,7 +1021,8 @@ source ~/.aida/lib/installer-common/logging.sh
 source "${AIDA_HOME}/lib/installer-common/logging.sh"
 ```
 
-**Anti-Pattern 2: String-based validation**
+#### Anti-Pattern 2: String-based validation
+
 ```bash
 # BAD: Fragile string matching
 if [[ "$template" == *"deprecated"* ]]; then
@@ -993,7 +1031,8 @@ if [[ "$template" == *"deprecated"* ]]; then
 if is_template_deprecated "$template"; then
 ```
 
-**Anti-Pattern 3: Silent failures**
+#### Anti-Pattern 3: Silent failures
+
 ```bash
 # BAD: Swallow errors
 substitute_vars "$template" 2>/dev/null || true
@@ -1005,7 +1044,8 @@ if ! substitute_vars "$template"; then
 fi
 ```
 
-**Anti-Pattern 4: Mixed concerns**
+#### Anti-Pattern 4: Mixed concerns
+
 ```bash
 # BAD: UI + logic + validation in one function
 install_template() {
@@ -1026,7 +1066,8 @@ install_template() {
 }
 ```
 
-**Anti-Pattern 5: Version-specific code**
+#### Anti-Pattern 5: Version-specific code
+
 ```bash
 # BAD: Version-specific branches
 if [[ "$version" == "0.2.0" ]]; then
@@ -1160,16 +1201,19 @@ migration.sh
 ## Next Steps
 
 **Immediate (blocking)**:
+
 1. Define JSON schemas for template metadata and deprecation
 2. Design variable substitution strategy for dev vs normal mode
 3. Create configuration module (config.sh) with installer state management
 
 **Short-term (v0.2.0)**:
+
 1. Implement template registry system
 2. Build deprecation detection and warning system
 3. Create dotfiles integration API (api.sh)
 
 **Long-term (v0.3.0+)**:
+
 1. Add template migration automation
 2. Implement installation profiles
 3. Create rollback/restore functionality

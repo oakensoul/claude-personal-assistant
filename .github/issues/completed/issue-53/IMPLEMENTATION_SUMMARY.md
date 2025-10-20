@@ -393,7 +393,7 @@ Solution: Namespace isolation protects user content
 
 ### Critical (Block Implementation Start)
 
-**Q1: Dev mode variable substitution**
+#### Q1: Dev mode variable substitution
 
 - **Problem**: Symlinked templates can't have substituted variables
 - **Options**:
@@ -403,7 +403,7 @@ Solution: Namespace isolation protects user content
 - **Action**: Spike 1 (4h) - POC runtime wrapper
 - **Decision Needed By**: Phase 1 start
 
-**Q2: Deprecation blocking behavior**
+#### Q2: Deprecation blocking behavior
 
 - **Question**: Should installer refuse if deprecated templates conflict?
 - **Example**: User has `issue-create` and `create-issue` both trying to install
@@ -414,7 +414,7 @@ Solution: Namespace isolation protects user content
 - **Recommendation**: Option 2 (safest)
 - **Decision Needed By**: Phase 2 start
 
-**Q3: Version compatibility strictness**
+#### Q3: Version compatibility strictness
 
 - **Question**: How strict should version validation be?
 - **Example**: Dotfiles requires lib v0.2.0, installed is v0.1.9

@@ -38,32 +38,37 @@ C4Context
 
 ### Primary Actors
 
-**AIDA User**
+#### AIDA User
+
 - Installs AIDA framework via `install.sh`
 - Updates framework via `git pull` + `install.sh`
 - Creates custom commands, agents, skills
 - Interacts with Claude Code CLI
 
-**Dotfiles User**
+#### Dotfiles User
+
 - May use AIDA (optional integration)
 - Manages shell/git/vim configs independently
 - Can leverage AIDA installer libraries for consistency
 
 ### Systems
 
-**AIDA Framework** (this system)
+#### AIDA Framework (this system)
+
 - Modular installer with reusable libraries
 - Template system (commands, agents, skills)
 - Configuration aggregation
 - Namespace isolation for safety
 
-**Dotfiles Repository**
+#### Dotfiles Repository
+
 - GNU Stow-based configuration management
 - Can optionally integrate with AIDA
 - Sources AIDA installer libraries for consistency
 - Works standalone or with AIDA
 
-**Claude Code**
+#### Claude Code
+
 - Claude AI command-line interface
 - Discovers commands, agents, skills from `~/.claude/`
 - Executes workflow automation
@@ -71,29 +76,34 @@ C4Context
 
 ### External Systems
 
-**GitHub**
+#### GitHub
+
 - Issue tracking
 - Pull request management
 - Workflow automation target
 
-**Workflow Commands**
+#### Workflow Commands
+
 - Installed by AIDA
 - Automate issue management, PR creation, etc.
 - Use GitHub API via `gh` CLI
 
 ### Key Relationships
 
-**AIDA → Claude Code**
+#### AIDA → Claude Code
+
 - AIDA installs templates to `~/.claude/` directories
 - Claude Code discovers and executes these templates
 - Namespace isolation protects user content
 
-**Dotfiles → AIDA**
+#### Dotfiles → AIDA
+
 - Dotfiles can source AIDA installer libraries
 - Reuses template installation, config management
 - Optional integration (works without AIDA)
 
-**AIDA → Workflows → GitHub**
+#### AIDA → Workflows → GitHub
+
 - AIDA provides workflow command templates
 - Commands automate GitHub operations
 - Issue tracking, PR management, labeling

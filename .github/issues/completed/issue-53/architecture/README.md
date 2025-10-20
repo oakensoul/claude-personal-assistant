@@ -317,19 +317,19 @@ templates/skills/      → Installed to ~/.claude/skills/.aida/
 
 ### Resolved Questions
 
-**Q1: Dev mode variable substitution**
+#### Q1: Dev mode variable substitution
 
 - **Problem**: Symlinked templates can't have substituted variables
 - **Solution**: Universal config aggregator (runtime resolution)
 - **Status**: ✅ RESOLVED
 
-**Q2: Deprecation blocking**
+#### Q2: Deprecation blocking
 
 - **Question**: Should installer refuse if deprecated templates conflict?
 - **Decision**: Warn and skip (safest approach)
 - **Status**: ✅ RESOLVED
 
-**Q3: Version compatibility strictness**
+#### Q3: Version compatibility strictness
 
 - **Question**: How strict should version validation be?
 - **Decision**: Hard fail (prevents bugs from mismatches)

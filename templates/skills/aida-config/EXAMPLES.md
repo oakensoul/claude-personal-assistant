@@ -256,7 +256,8 @@ generate_documentation() {
   echo "Generating ${doc_type} documentation with ${tone} tone..."
 }
 ```
-```
+
+```markdown
 
 ### Example 5: Multi-Source Configuration Override
 

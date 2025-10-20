@@ -350,7 +350,7 @@ Current test coverage:
 | directories.sh | 7 tests | ✅ Complete |
 | summary.sh | 5 tests | ✅ Complete |
 
-**Total: 26 unit tests**
+Total: 26 unit tests
 
 ## Contributing
 

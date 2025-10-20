@@ -1367,12 +1367,12 @@ grep -i error ~/.aida/logs/install.log
 
 **GitHub Issues**:
 
-- AIDA Issues: https://github.com/oakensoul/claude-personal-assistant/issues
+- AIDA Issues: <https://github.com/oakensoul/claude-personal-assistant/issues>
 - Dotfiles Issues: <your-dotfiles-repo>/issues
 
 **Discussion Forums**:
 
-- AIDA Discussions: https://github.com/oakensoul/claude-personal-assistant/discussions
+- AIDA Discussions: <https://github.com/oakensoul/claude-personal-assistant/discussions>
 
 ## Migration Guide
 

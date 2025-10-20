@@ -72,7 +72,7 @@ Proceeding with command execution...
 
 ## Why This Changed
 
-**ADR-010: Command Naming Convention**
+### ADR-010: Command Naming Convention
 
 Standardizes all commands to noun-verb format:
 

@@ -61,12 +61,14 @@ C4Container
 ### Installer Components
 
 **install.sh** (Orchestrator)
+
 - **Technology**: Bash script (~150 lines)
 - **Responsibility**: Coordinate installation flow
 - **Pattern**: Thin orchestrator, no business logic
 - **Dependencies**: All installer-common libraries
 
 **installer-common Libraries** (Business Logic)
+
 - **Technology**: 9 Bash modules (~1200 lines total)
 - **Responsibility**: Reusable installation operations
 - **Pattern**: Modular, testable, parameter-based functions
@@ -82,6 +84,7 @@ C4Container
   - `summary.sh` - Output formatting
 
 **aida-config-helper.sh** (Config Aggregator)
+
 - **Technology**: Standalone Bash script (~200 lines)
 - **Responsibility**: Merge all config sources, provide caching
 - **Pattern**: Universal config aggregator
@@ -89,19 +92,22 @@ C4Container
 
 ### Template System
 
-**Command Templates**
+#### Command Templates
+
 - **Technology**: Markdown files with embedded Bash
 - **Location**: `templates/commands/`
 - **Installed to**: `~/.claude/commands/.aida/`
 - **Examples**: start-work, implement, open-pr
 
-**Agent Templates**
+#### Agent Templates
+
 - **Technology**: Markdown files
 - **Location**: `templates/agents/`
 - **Installed to**: `~/.claude/agents/.aida/`
 - **Examples**: secretary, file-manager, dev-assistant
 
-**Skill Templates**
+#### Skill Templates
+
 - **Technology**: Markdown files
 - **Location**: `templates/skills/`
 - **Installed to**: `~/.claude/skills/.aida/`
@@ -110,16 +116,19 @@ C4Container
 ### Target Installation
 
 **~/.claude/** (Claude Config Directory)
+
 - **Technology**: File system hierarchy
 - **Structure**: Namespace isolation (.aida/, .aida-deprecated/, user content)
 - **Protection**: User content preserved during updates
 
 **~/.aida/** (AIDA Framework)
+
 - **Technology**: Symlink to repository
 - **Purpose**: Enable `git pull` updates
 - **Modes**: Always symlinked (normal + dev mode)
 
 **Config Files** (Multi-Source Configuration)
+
 - **Technology**: JSON files + Git config
 - **Sources**: 7-tier priority hierarchy
 - **Aggregator**: aida-config-helper.sh

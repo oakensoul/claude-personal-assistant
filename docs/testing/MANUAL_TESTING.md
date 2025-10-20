@@ -162,7 +162,7 @@ All commands should succeed without errors.
 
 #### Steps
 
-**Step 1: Clone Repository**
+##### Step 1: Clone Repository
 
 ```bash
 # Clone to default location
@@ -175,14 +175,14 @@ cd ~/.aida
 ls -la  # Should see install.sh, templates/, lib/, etc.
 ```
 
-**Step 2: Run Installer**
+##### Step 2: Run Installer
 
 ```bash
 # Execute installer in normal mode (default)
 ./install.sh
 ```
 
-**Step 3: Answer Interactive Prompts**
+##### Step 3: Answer Interactive Prompts
 
 The installer will prompt for configuration. Use these test values:
 
@@ -279,7 +279,7 @@ After installation completes, verify all components:
 
 #### Steps
 
-**Step 1: Clone to Development Location**
+##### Step 1: Clone to Development Location
 
 ```bash
 # Clone to a development directory (NOT ~/.aida)
@@ -293,14 +293,14 @@ cd ~/dev/aida
 ls -la
 ```
 
-**Step 2: Install in Dev Mode**
+##### Step 2: Install in Dev Mode
 
 ```bash
 # Execute installer with --dev flag
 ./install.sh --dev
 ```
 
-**Step 3: Answer Interactive Prompts**
+##### Step 3: Answer Interactive Prompts
 
 Use the same test values:
 
@@ -397,7 +397,7 @@ git -C ~/dev/aida checkout templates/commands/start-work/README.md
 
 #### Steps
 
-**Step 1: Simulate v0.1.x Installation**
+##### Step 1: Simulate v0.1.x Installation
 
 Create a realistic v0.1.x environment with user content:
 
@@ -461,7 +461,7 @@ echo "Created v0.1.x structure:"
 ls -R ~/.claude/
 ```
 
-**Step 2: Install v0.2.0 (Simulates Upgrade)**
+##### Step 2: Install v0.2.0 (Simulates Upgrade)
 
 ```bash
 # Clone v0.2.0 (or git pull if already exists)
@@ -472,7 +472,7 @@ cd ~/.aida
 ./install.sh
 ```
 
-**Step 3: Observe Upgrade Process**
+##### Step 3: Observe Upgrade Process
 
 Watch for these messages during installation:
 
@@ -584,7 +584,7 @@ tree -L 2 ~/.claude/commands/
 
 #### Steps
 
-**Step 1: Create User Content Post-Installation**
+##### Step 1: Create User Content Post-Installation
 
 ```bash
 # Create user content in parent directories
@@ -615,7 +615,7 @@ ls -la ~/.claude/commands/user-*.md
 ls -la ~/.claude/agents/user-*.md
 ```
 
-**Step 2: Record Content State**
+##### Step 2: Record Content State
 
 ```bash
 # Create checksums to verify files don't change
@@ -626,7 +626,7 @@ md5sum ~/.claude/agents/user-expert.md >> /tmp/user-content-before.md5
 cat /tmp/user-content-before.md5
 ```
 
-**Step 3: Simulate Framework Update**
+##### Step 3: Simulate Framework Update
 
 ```bash
 # Navigate to AIDA installation
@@ -639,7 +639,7 @@ echo "# Updated Documentation" >> templates/commands/start-work/README.md
 ./install.sh
 ```
 
-**Step 4: Verify Content Unchanged**
+##### Step 4: Verify Content Unchanged
 
 ```bash
 # Create new checksums
@@ -717,7 +717,7 @@ echo $?  # Should be 0 (no differences)
 
 #### Steps
 
-**Step 1: Test Config Validation**
+##### Step 1: Test Config Validation
 
 ```bash
 # Validate configuration file
@@ -733,7 +733,7 @@ Expected output:
 Configuration validated successfully
 ```
 
-**Step 2: Test Single Key Retrieval**
+##### Step 2: Test Single Key Retrieval
 
 ```bash
 # Retrieve specific configuration values
@@ -743,7 +743,7 @@ Configuration validated successfully
 ~/.aida/lib/aida-config-helper.sh --key user.personality
 ```
 
-**Step 3: Test Full Config Retrieval**
+##### Step 3: Test Full Config Retrieval
 
 ```bash
 # Get complete configuration
@@ -754,7 +754,7 @@ Configuration validated successfully
 echo "Valid JSON: $?"  # Should be 0
 ```
 
-**Step 4: Test Performance**
+##### Step 4: Test Performance
 
 ```bash
 # Measure initial call (cold cache)
@@ -766,7 +766,7 @@ time ~/.aida/lib/aida-config-helper.sh --key paths.aida_home > /dev/null
 # Second call should be significantly faster
 ```
 
-**Step 5: Test Error Handling**
+##### Step 5: Test Error Handling
 
 ```bash
 # Test invalid key
@@ -1623,6 +1623,9 @@ If you discover a bug during manual testing, document it thoroughly:
 ## Suggested Fix
 
 [If you have ideas for fixing it]
+
+```text
+[Example of suggested fix]
 ```
 
 ### Example Bug Report
@@ -1686,6 +1689,12 @@ This is a critical regression. Automated tests should verify user content preser
 ## Suggested Fix
 
 Add check in installer to preserve files that don't start with `.` or `start-work.md`.
+
+```text
+Example implementation:
+if [[ ! "$file" =~ ^\. ]] && [[ "$file" != "start-work.md" ]]; then
+  # preserve user file
+fi
 ```
 
 ### Verifying Automated Test Coverage
@@ -1861,7 +1870,7 @@ EOF
 
 #### Sample User Skill
 
-```bash
+````bash
 cat > ~/.claude/skills/database-backup.md << 'EOF'
 ---
 title: "Database Backup Skill"
@@ -1896,7 +1905,8 @@ psql -h prod-db.example.com -U app_user -d production < backup.sql
 - Incremental: Every 6 hours
 - Retention: 30 days
 EOF
-```
+
+````
 
 ### Creating Bulk Test Data
 

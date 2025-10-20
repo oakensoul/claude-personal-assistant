@@ -804,7 +804,7 @@ teardown() {
 
 #### Best Practices
 
-**1. One assertion per test (when possible)**
+##### 1. One assertion per test (when possible)
 
 ```bash
 # Good: Single focused assertion
@@ -827,7 +827,7 @@ teardown() {
 }
 ```
 
-**2. Descriptive test names**
+##### 2. Descriptive test names
 
 ```bash
 # Good: Clear and specific
@@ -839,7 +839,7 @@ teardown() {
 @test "it works"
 ```
 
-**3. Use test helpers for common operations**
+##### 3. Use test helpers for common operations
 
 ```bash
 # Good: Use helper functions
@@ -858,7 +858,7 @@ teardown() {
 }
 ```
 
-**4. Clean up test artifacts in teardown()**
+##### 4. Clean up test artifacts in teardown()
 
 ```bash
 teardown() {
@@ -872,7 +872,7 @@ teardown() {
 }
 ```
 
-**5. Test both success and error cases**
+##### 5. Test both success and error cases
 
 ```bash
 @test "function succeeds with valid input" {
@@ -1035,7 +1035,7 @@ CI automatically posts summary to PR:
 
 #### Common Issues
 
-**1. Path issues**
+##### 1. Path issues
 
 **Problem:** Test fails with "file not found"
 
@@ -1052,7 +1052,7 @@ ls -laR "$BATS_TEST_TMPDIR"
 
 **Fix:** Verify `$BATS_TEST_TMPDIR` usage, ensure paths are correct
 
-**2. Cleanup issues**
+##### 2. Cleanup issues
 
 **Problem:** Test fails on second run but passes on first
 
@@ -1076,7 +1076,7 @@ bats -t tests/unit/test_prompts.bats
 
 **Fix:** Ensure teardown() removes all test artifacts
 
-**3. Platform differences**
+##### 3. Platform differences
 
 **Problem:** Test passes on macOS but fails on Linux (or vice versa)
 
@@ -1097,7 +1097,7 @@ fi
 
 **Fix:** Use cross-platform commands, check stat/sed/date differences
 
-**4. Permissions issues**
+##### 4. Permissions issues
 
 **Problem:** "Permission denied" errors
 
@@ -1116,7 +1116,7 @@ docker run --rm -it aida-test whoami
 
 #### Debug Techniques
 
-**1. Add debug output**
+##### 1. Add debug output
 
 ```bash
 @test "my test" {
@@ -1130,7 +1130,7 @@ docker run --rm -it aida-test whoami
 bats -t tests/unit/test_prompts.bats
 ```
 
-**2. Run single test**
+##### 2. Run single test
 
 ```bash
 # Focus on failing test
@@ -1140,7 +1140,7 @@ bats -f "specific test name" tests/unit/test_prompts.bats
 bats -t -f "specific test name" tests/unit/test_prompts.bats
 ```
 
-**3. Interactive debugging**
+##### 3. Interactive debugging
 
 ```bash
 # Enter Docker container
@@ -1152,7 +1152,7 @@ bats tests/unit/test_prompts.bats
 # ... debug interactively
 ```
 
-**4. Check test fixtures**
+##### 4. Check test fixtures
 
 ```bash
 # Verify fixtures exist
@@ -1313,7 +1313,8 @@ test -d ~/.claude
 test -f ~/.claude/aida-config.json
 grep -q "JARVIS" ~/.claude/aida-config.json
 ```
-```
+
+```text
 
 ### Performance Testing
 

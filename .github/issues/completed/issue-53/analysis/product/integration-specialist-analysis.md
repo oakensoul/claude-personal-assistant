@@ -269,7 +269,6 @@ Load shared workflow libraries from: `/Users/rob/.aida/lib/workflows/`
 # Source shared workflow utilities
 source "/Users/rob/.aida/lib/workflows/common.sh"
 ```
-```
 
 **Absolute paths enable `~/.claude/` to reference `~/.aida/` resources**
 
@@ -567,58 +566,58 @@ PLATFORMS := ubuntu-22 ubuntu-20 debian-12 ubuntu-minimal
 SCENARIOS := fresh upgrade deprecation
 
 help:
-	@echo "AIDA Framework Testing"
-	@echo ""
-	@echo "Targets:"
-	@echo "  test-all           - Run all tests on all platforms"
-	@echo "  test-platform      - Test specific platform (PLATFORM=ubuntu-22)"
-	@echo "  test-scenario      - Test specific scenario (SCENARIO=upgrade)"
-	@echo "  test-fresh         - Test fresh installation"
-	@echo "  test-upgrade       - Test upgrade from v0.1.x"
-	@echo "  test-deprecation   - Test deprecation cleanup"
-	@echo "  clean              - Remove test artifacts and logs"
-	@echo ""
-	@echo "Examples:"
-	@echo "  make test-platform PLATFORM=ubuntu-22"
-	@echo "  make test-scenario SCENARIO=upgrade"
+    @echo "AIDA Framework Testing"
+    @echo ""
+    @echo "Targets:"
+    @echo "  test-all           - Run all tests on all platforms"
+    @echo "  test-platform      - Test specific platform (PLATFORM=ubuntu-22)"
+    @echo "  test-scenario      - Test specific scenario (SCENARIO=upgrade)"
+    @echo "  test-fresh         - Test fresh installation"
+    @echo "  test-upgrade       - Test upgrade from v0.1.x"
+    @echo "  test-deprecation   - Test deprecation cleanup"
+    @echo "  clean              - Remove test artifacts and logs"
+    @echo ""
+    @echo "Examples:"
+    @echo "  make test-platform PLATFORM=ubuntu-22"
+    @echo "  make test-scenario SCENARIO=upgrade"
 
 test-all:
-	@echo "Running all tests..."
-	./test-install.sh
+    @echo "Running all tests..."
+    ./test-install.sh
 
 test-platform:
-	@echo "Testing platform: $(PLATFORM)"
-	./test-install.sh --env $(PLATFORM) --verbose
+    @echo "Testing platform: $(PLATFORM)"
+    ./test-install.sh --env $(PLATFORM) --verbose
 
 test-scenario:
-	@echo "Testing scenario: $(SCENARIO)"
-	./test-install.sh --scenario $(SCENARIO) --verbose
+    @echo "Testing scenario: $(SCENARIO)"
+    ./test-install.sh --scenario $(SCENARIO) --verbose
 
 test-fresh:
-	@echo "Testing fresh installation..."
-	@for platform in $(PLATFORMS); do \
-		echo "Platform: $$platform"; \
-		$(DOCKER_COMPOSE) -f ../docker/docker-compose.yml run --rm $$platform \
-			bash -c "echo -e 'test\n1\n' | ./install.sh"; \
-	done
+    @echo "Testing fresh installation..."
+    @for platform in $(PLATFORMS); do \
+        echo "Platform: $$platform"; \
+        $(DOCKER_COMPOSE) -f ../docker/docker-compose.yml run --rm $$platform \
+            bash -c "echo -e 'test\n1\n' | ./install.sh"; \
+    done
 
 test-upgrade:
-	@echo "Testing upgrade path..."
-	@for platform in $(PLATFORMS); do \
-		echo "Platform: $$platform"; \
-		$(DOCKER_COMPOSE) -f ../docker/docker-compose.yml run --rm $$platform \
-			bash -c "./test-upgrade.sh"; \
-	done
+    @echo "Testing upgrade path..."
+    @for platform in $(PLATFORMS); do \
+        echo "Platform: $$platform"; \
+        $(DOCKER_COMPOSE) -f ../docker/docker-compose.yml run --rm $$platform \
+            bash -c "./test-upgrade.sh"; \
+    done
 
 test-deprecation:
-	@echo "Testing deprecation cleanup..."
-	./test-deprecation.sh --all-platforms
+    @echo "Testing deprecation cleanup..."
+    ./test-deprecation.sh --all-platforms
 
 clean:
-	@echo "Cleaning test artifacts..."
-	rm -rf logs/*.log
-	$(DOCKER_COMPOSE) -f ../docker/docker-compose.yml down -v
-	docker system prune -f
+    @echo "Cleaning test artifacts..."
+    rm -rf logs/*.log
+    $(DOCKER_COMPOSE) -f ../docker/docker-compose.yml down -v
+    docker system prune -f
 ```
 
 ### Fixture management for upgrade tests
@@ -944,7 +943,7 @@ compare_versions() {
 
 ### Recommended Integration Patterns
 
-**Pattern 1: Library Versioning with Compatibility Checks**
+#### Pattern 1: Library Versioning with Compatibility Checks
 
 ```bash
 # lib/installer-common/version.sh
@@ -956,7 +955,7 @@ check_library_version() {
 }
 ```
 
-**Pattern 2: Graceful Degradation in Dotfiles**
+#### Pattern 2: Graceful Degradation in Dotfiles
 
 ```bash
 # dotfiles/install.sh
@@ -968,7 +967,7 @@ else
 fi
 ```
 
-**Pattern 3: Template Validation Pipeline**
+#### Pattern 3: Template Validation Pipeline
 
 ```bash
 # install.sh - before copying templates
@@ -994,7 +993,7 @@ validate_all_templates() {
 }
 ```
 
-**Pattern 4: Deprecation-Safe Installation**
+#### Pattern 4: Deprecation-Safe Installation
 
 ```bash
 # install.sh - installation with version tracking

@@ -276,7 +276,7 @@ These tests validate that upgrades from v0.1.x preserve user content.
 
 #### Test: Namespace isolation: user command NOT in .aida/ preserved
 
-**THE critical test for ADR-013**
+##### THE critical test for ADR-013
 
 **Purpose**: Prove namespace isolation works
 

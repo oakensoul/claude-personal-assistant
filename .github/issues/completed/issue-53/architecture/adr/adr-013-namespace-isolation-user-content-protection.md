@@ -573,7 +573,6 @@ Safe to re-run installer:
 # Updates framework (.aida/ directories)
 # Preserves your custom content
 ```
-```
 
 ### Testing
 

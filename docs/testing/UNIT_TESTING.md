@@ -283,7 +283,7 @@ For functions that read user input, provide input via heredoc or pipe:
 
 ### 1. Test Behavior, Not Implementation
 
-**Good: Tests what function does**
+#### Good: Tests what function does
 
 ```bash
 @test "create_claude_dirs creates required directories" {
@@ -295,7 +295,7 @@ For functions that read user input, provide input via heredoc or pipe:
 }
 ```
 
-**Bad: Tests how it's implemented**
+#### Bad: Tests how it's implemented
 
 ```bash
 @test "create_claude_dirs calls mkdir three times" {
@@ -307,7 +307,7 @@ For functions that read user input, provide input via heredoc or pipe:
 
 ### 2. One Assertion Per Test
 
-**Good: Focused test**
+#### Good: Focused test
 
 ```bash
 @test "prompt_yes_no accepts 'y'" {
@@ -321,7 +321,7 @@ For functions that read user input, provide input via heredoc or pipe:
 }
 ```
 
-**Bad: Multiple assertions**
+#### Bad: Multiple assertions
 
 ```bash
 @test "prompt_yes_no works" {

@@ -129,14 +129,14 @@ In v0.2.0+, this agent should be:
 
 ## Version History
 
-**v0.1.6** - Current version
+### v0.1.6 - Current version
 
 - Basic task management
 - Calendar integration
 - Email triage
 - Meeting notes
 
-**Future (v0.2.0+)**
+### Future (v0.2.0+)
 
 - Enhanced scheduling intelligence
 - Smart priority detection

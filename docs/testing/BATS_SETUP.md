@@ -28,13 +28,13 @@ Official repository: <https://github.com/bats-core/bats-core>
 
 ### macOS
 
-**Recommended method: Homebrew**
+#### Recommended method: Homebrew
 
 ```bash
 brew install bats-core
 ```
 
-**Verify installation:**
+#### Verify installation
 
 ```bash
 bats --version
@@ -43,20 +43,20 @@ bats --version
 
 ### Ubuntu/Debian Linux
 
-**Option 1: APT package manager**
+#### Option 1: APT package manager
 
 ```bash
 sudo apt-get update
 sudo apt-get install bats
 ```
 
-**Option 2: NPM (if Node.js installed)**
+#### Option 2: NPM (if Node.js installed)
 
 ```bash
 npm install -g bats
 ```
 
-**Option 3: From source (recommended for latest version)**
+#### Option 3: From source (recommended for latest version)
 
 ```bash
 git clone https://github.com/bats-core/bats-core.git
@@ -64,7 +64,7 @@ cd bats-core
 sudo ./install.sh /usr/local
 ```
 
-**Verify installation:**
+#### Verify installation
 
 ```bash
 bats --version
@@ -73,13 +73,13 @@ bats --version
 
 ### Red Hat/Fedora Linux
 
-**Option 1: DNF package manager**
+#### Option 1: DNF package manager
 
 ```bash
 sudo dnf install bats
 ```
 
-**Option 2: From source**
+#### Option 2: From source
 
 ```bash
 git clone https://github.com/bats-core/bats-core.git
@@ -87,7 +87,7 @@ cd bats-core
 sudo ./install.sh /usr/local
 ```
 
-**Verify installation:**
+#### Verify installation
 
 ```bash
 bats --version

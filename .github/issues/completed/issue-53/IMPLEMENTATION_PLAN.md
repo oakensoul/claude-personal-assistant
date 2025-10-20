@@ -42,6 +42,7 @@ See [TECH_SPEC.md](./TECH_SPEC.md) for complete specifications and [Architecture
 Extract all user interaction and prompt logic from install.sh into reusable `lib/installer-common/prompts.sh` module.
 
 **Acceptance Criteria**:
+
 - New file `lib/installer-common/prompts.sh` exists
 - All prompt functions accept parameters (no globals)
 - Functions include: `prompt_yes_no`, `prompt_input`, `prompt_select`, `confirm_action`
@@ -52,6 +53,7 @@ Extract all user interaction and prompt logic from install.sh into reusable `lib
 - Unit tests created for prompt validation logic
 
 **Files Affected**:
+
 - `lib/installer-common/prompts.sh` (new)
 - `install.sh` (refactored)
 - `tests/unit/prompts.bats` (new)
@@ -70,6 +72,7 @@ Extract all user interaction and prompt logic from install.sh into reusable `lib
 Implement universal config aggregator that merges 7 config sources with session caching and checksum-based invalidation.
 
 **Acceptance Criteria**:
+
 - New file `lib/aida-config-helper.sh` exists (standalone executable)
 - Merges configs in priority order: Env → Project → Workflow → GitHub → Git → User → System
 - Session caching with `/tmp/aida-config-cache-$$`
@@ -81,6 +84,7 @@ Implement universal config aggregator that merges 7 config sources with session 
 - Performance: <100ms for cached calls, <500ms for uncached
 
 **Files Affected**:
+
 - `lib/aida-config-helper.sh` (new)
 - `tests/unit/config-aggregator.bats` (new)
 - `tests/fixtures/configs/` (new test fixtures)
@@ -99,6 +103,7 @@ Implement universal config aggregator that merges 7 config sources with session 
 Create wrapper module in lib/installer-common/ that provides convenient functions for install.sh to use aida-config-helper.sh.
 
 **Acceptance Criteria**:
+
 - New file `lib/installer-common/config.sh` exists
 - Provides functions: `get_config`, `get_config_value`, `write_user_config`
 - Sources and uses `aida-config-helper.sh`
@@ -107,6 +112,7 @@ Create wrapper module in lib/installer-common/ that provides convenient function
 - Unit tests for wrapper functions
 
 **Files Affected**:
+
 - `lib/installer-common/config.sh` (new)
 - `tests/unit/config.bats` (new)
 
@@ -124,6 +130,7 @@ Create wrapper module in lib/installer-common/ that provides convenient function
 Extract all directory creation, symlink management, and backup operations into reusable module.
 
 **Acceptance Criteria**:
+
 - New file `lib/installer-common/directories.sh` exists
 - Functions: `create_aida_dir`, `create_claude_dirs`, `create_namespace_dirs`, `backup_existing`, `create_symlink`
 - All functions accept parameters (no hardcoded paths)
@@ -133,6 +140,7 @@ Extract all directory creation, symlink management, and backup operations into r
 - Passes shellcheck and unit tests
 
 **Files Affected**:
+
 - `lib/installer-common/directories.sh` (new)
 - `install.sh` (refactored)
 - `tests/unit/directories.bats` (new)
@@ -151,6 +159,7 @@ Extract all directory creation, symlink management, and backup operations into r
 Extract installation summary display logic into dedicated module for consistent UX.
 
 **Acceptance Criteria**:
+
 - New file `lib/installer-common/summary.sh` exists
 - Functions: `display_summary`, `display_next_steps`, `display_success`, `display_error`
 - Uses colors.sh for formatting
@@ -158,6 +167,7 @@ Extract installation summary display logic into dedicated module for consistent 
 - Passes shellcheck
 
 **Files Affected**:
+
 - `lib/installer-common/summary.sh` (new)
 - `install.sh` (refactored)
 
@@ -175,6 +185,7 @@ Extract installation summary display logic into dedicated module for consistent 
 Refactor install.sh from 625-line monolith to ~150-line orchestrator that sources and uses all library modules.
 
 **Acceptance Criteria**:
+
 - install.sh reduced to ~150 lines
 - Sources all new modules from lib/installer-common/
 - No embedded business logic (all in modules)
@@ -184,6 +195,7 @@ Refactor install.sh from 625-line monolith to ~150-line orchestrator that source
 - Installation smoke test passes
 
 **Files Affected**:
+
 - `install.sh` (major refactoring)
 
 ---
@@ -200,6 +212,7 @@ Refactor install.sh from 625-line monolith to ~150-line orchestrator that source
 Setup bats (Bash Automated Testing System) for unit testing all library modules.
 
 **Acceptance Criteria**:
+
 - bats installed or documented how to install
 - Test directory structure created: `tests/unit/`, `tests/fixtures/`
 - Makefile target: `make test-unit`
@@ -207,6 +220,7 @@ Setup bats (Bash Automated Testing System) for unit testing all library modules.
 - README documentation for running tests
 
 **Files Affected**:
+
 - `tests/unit/*.bats` (test files from previous tasks)
 - `Makefile` (new test target)
 - `docs/testing/UNIT_TESTING.md` (new)
@@ -227,6 +241,7 @@ Setup bats (Bash Automated Testing System) for unit testing all library modules.
 Implement template installation logic with `.aida/` namespace isolation, supporting both normal and dev modes.
 
 **Acceptance Criteria**:
+
 - New file `lib/installer-common/templates.sh` exists
 - Functions: `install_templates`, `install_template_folder`
 - Supports normal mode (copy templates)
@@ -238,6 +253,7 @@ Implement template installation logic with `.aida/` namespace isolation, support
 - Passes shellcheck and integration tests
 
 **Files Affected**:
+
 - `lib/installer-common/templates.sh` (new)
 - `tests/integration/template-installation.bats` (new)
 
@@ -255,6 +271,7 @@ Implement template installation logic with `.aida/` namespace isolation, support
 Implement version-based deprecation system with frontmatter parsing and semantic version comparison.
 
 **Acceptance Criteria**:
+
 - New file `lib/installer-common/deprecation.sh` exists
 - Functions: `parse_frontmatter`, `is_deprecated`, `compare_versions`, `should_remove`
 - Pure Bash frontmatter parsing (no yq/python dependencies)
@@ -264,6 +281,7 @@ Implement version-based deprecation system with frontmatter parsing and semantic
 - Passes shellcheck and unit tests
 
 **Files Affected**:
+
 - `lib/installer-common/deprecation.sh` (new)
 - `tests/unit/deprecation.bats` (new)
 - `tests/fixtures/templates-deprecated/` (new)
@@ -282,6 +300,7 @@ Implement version-based deprecation system with frontmatter parsing and semantic
 Create skill documentation for aida-config skill that all agents can use for config reading.
 
 **Acceptance Criteria**:
+
 - New file `templates/skills/.aida/aida-config/README.md` exists
 - Documents usage patterns for agents
 - Includes examples of reading config values
@@ -289,6 +308,7 @@ Create skill documentation for aida-config skill that all agents can use for con
 - Cross-references aida-config-helper.sh
 
 **Files Affected**:
+
 - `templates/skills/.aida/aida-config/README.md` (new)
 
 ---
@@ -305,6 +325,7 @@ Create skill documentation for aida-config skill that all agents can use for con
 Create Docker test fixtures simulating various installation scenarios for upgrade testing.
 
 **Acceptance Criteria**:
+
 - Fixtures in `.github/testing/fixtures/`
 - Simulated v0.1.x AIDA installation
 - User-created custom commands/agents/skills
@@ -313,6 +334,7 @@ Create Docker test fixtures simulating various installation scenarios for upgrad
 - README documenting fixture structure
 
 **Files Affected**:
+
 - `.github/testing/fixtures/user-content/` (new)
 - `.github/testing/fixtures/v0.1-installation/` (new)
 - `.github/testing/fixtures/README.md` (new)
@@ -331,6 +353,7 @@ Create Docker test fixtures simulating various installation scenarios for upgrad
 Create comprehensive integration tests validating user content preservation during upgrades.
 
 **Acceptance Criteria**:
+
 - Test: Fresh installation on clean system
 - Test: Upgrade with existing user content (preserved)
 - Test: Dev mode symlink creation and validation
@@ -340,6 +363,7 @@ Create comprehensive integration tests validating user content preservation duri
 - All tests pass in Docker environment
 
 **Files Affected**:
+
 - `tests/integration/upgrade-scenarios.bats` (new)
 - `.github/testing/test-upgrade.sh` (new)
 
@@ -359,6 +383,7 @@ Create comprehensive integration tests validating user content preservation duri
 Create Makefile providing intuitive test targets for all testing scenarios.
 
 **Acceptance Criteria**:
+
 - Targets: `test-unit`, `test-integration`, `test-install`, `test-upgrade`, `test-all`
 - Parameterized: `VERBOSE=1`, `ENVIRONMENT=ubuntu-22`
 - Self-documenting: `make help`
@@ -366,6 +391,7 @@ Create Makefile providing intuitive test targets for all testing scenarios.
 - README documentation
 
 **Files Affected**:
+
 - `Makefile` (enhanced)
 - `docs/testing/MAKEFILE_GUIDE.md` (new)
 
@@ -383,6 +409,7 @@ Create Makefile providing intuitive test targets for all testing scenarios.
 Create Docker environments with pre-seeded fixtures for realistic upgrade testing.
 
 **Acceptance Criteria**:
+
 - Dockerfile in `.github/testing/Dockerfile`
 - Pre-seeds v0.1.x AIDA installation
 - Includes user-created content
@@ -391,6 +418,7 @@ Create Docker environments with pre-seeded fixtures for realistic upgrade testin
 - Build and run instructions
 
 **Files Affected**:
+
 - `.github/testing/Dockerfile` (new)
 - `.github/testing/docker-compose.yml` (new)
 - `.github/testing/README.md` (updated)
@@ -409,6 +437,7 @@ Create Docker environments with pre-seeded fixtures for realistic upgrade testin
 Extend GitHub Actions workflow to test all installation modes across platforms.
 
 **Acceptance Criteria**:
+
 - Test matrix: Ubuntu 22/20, Debian 12, macOS latest
 - Test modes: normal, dev, with-deprecated
 - Test scenarios: fresh, upgrade, mode-switch
@@ -418,6 +447,7 @@ Extend GitHub Actions workflow to test all installation modes across platforms.
 - Test results summary in PR comments (optional)
 
 **Files Affected**:
+
 - `.github/workflows/test-installer.yml` (new)
 - `.github/workflows/ci.yml` (updated)
 
@@ -435,6 +465,7 @@ Extend GitHub Actions workflow to test all installation modes across platforms.
 Manual validation of installation across macOS, Linux, and Windows WSL.
 
 **Acceptance Criteria**:
+
 - Fresh install tested on macOS (latest)
 - Fresh install tested on Ubuntu LTS (current)
 - Upgrade install tested on macOS
@@ -444,6 +475,7 @@ Manual validation of installation across macOS, Linux, and Windows WSL.
 - Test results documented
 
 **Files Affected**:
+
 - `docs/testing/PLATFORM_TESTING.md` (new)
 
 ---
@@ -460,6 +492,7 @@ Manual validation of installation across macOS, Linux, and Windows WSL.
 Update CONTRIBUTING.md with comprehensive testing guide for contributors.
 
 **Acceptance Criteria**:
+
 - Documents how to run all test types
 - Explains Docker testing workflow
 - Describes CI/CD pipeline
@@ -467,6 +500,7 @@ Update CONTRIBUTING.md with comprehensive testing guide for contributors.
 - Cross-references other testing docs
 
 **Files Affected**:
+
 - `docs/CONTRIBUTING.md` (updated)
 
 ---
@@ -483,12 +517,14 @@ Update CONTRIBUTING.md with comprehensive testing guide for contributors.
 Create detailed guide for upgrade testing scenarios and validation procedures.
 
 **Acceptance Criteria**:
+
 - Documents all upgrade scenarios
 - Explains fixture structure
 - Includes validation checklists
 - Troubleshooting for common issues
 
 **Files Affected**:
+
 - `docs/testing/UPGRADE_TESTING.md` (new)
 
 ---
@@ -505,12 +541,14 @@ Create detailed guide for upgrade testing scenarios and validation procedures.
 Document how dotfiles repo can source and use lib/installer-common/ libraries.
 
 **Acceptance Criteria**:
+
 - Documents API contract for libraries
 - Includes example integration code
 - Explains version compatibility checking
 - Covers graceful degradation scenarios
 
 **Files Affected**:
+
 - `docs/integrations/DOTFILES.md` (updated)
 
 ---
@@ -527,6 +565,7 @@ Document how dotfiles repo can source and use lib/installer-common/ libraries.
 Create script that automatically removes deprecated templates based on version comparison.
 
 **Acceptance Criteria**:
+
 - New file `scripts/cleanup-deprecated.sh`
 - Reads VERSION file
 - Scans templates/*-deprecated/ folders
@@ -535,6 +574,7 @@ Create script that automatically removes deprecated templates based on version c
 - Passes shellcheck
 
 **Files Affected**:
+
 - `scripts/cleanup-deprecated.sh` (new)
 - `docs/MAINTENANCE.md` (updated)
 
@@ -603,6 +643,7 @@ graph TD
 ## Agent Allocation
 
 **shell-script-specialist**: 10 tasks (T001-T006, T008-T009, T020)
+
 - Prompts module extraction
 - Config aggregator implementation
 - Config wrapper module
@@ -614,17 +655,20 @@ graph TD
 - Cleanup script
 
 **qa-engineer**: 5 tasks (T007, T011-T012, T016)
+
 - Bats setup
 - Docker fixtures
 - Integration tests
 - Cross-platform validation
 
 **devops-engineer**: 3 tasks (T013-T015)
+
 - Makefile creation
 - Enhanced Dockerfile
 - GitHub Actions workflow
 
 **technical-writer**: 4 tasks (T010, T017-T019)
+
 - Config skill docs
 - CONTRIBUTING.md
 - UPGRADE_TESTING.md
@@ -637,18 +681,22 @@ graph TD
 ### High-Risk Tasks
 
 **Task 002: Universal config aggregator** 🔴
+
 - Reason: Core architecture change affecting all commands
 - Mitigation: Comprehensive unit tests, gradual rollout, fallback strategy
 
 **Task 008: Templates with namespace isolation** 🔴
+
 - Reason: Critical for user data protection
 - Mitigation: Extensive integration tests with user content preservation validation
 
 **Task 009: Deprecation system** 🟠
+
 - Reason: Complex version comparison logic
 - Mitigation: Thorough unit tests, multiple test fixtures
 
 **Task 015: GitHub Actions workflow** 🟠
+
 - Reason: Complex matrix testing across platforms
 - Mitigation: Incremental implementation, manual validation before automation
 
@@ -708,15 +756,18 @@ graph TD
 All three critical open questions from PRD have been resolved:
 
 **Q1: Dev mode variable substitution** → RESOLVED
+
 - **Decision**: Universal config aggregator (user's innovation!)
 - **Approach**: No variable substitution needed - templates stay pure, use `aida-config-helper.sh` at runtime
 - **Impact**: Massively simplified, 85%+ I/O reduction
 
 **Q2: Deprecation blocking** → RESOLVED
+
 - **Decision**: "Warn and Skip"
 - **Behavior**: Warn user if deprecated templates conflict, skip installation of deprecated, continue with non-deprecated
 
 **Q3: Version compatibility** → RESOLVED
+
 - **Decision**: "Hard Fail"
 - **Behavior**: If dotfiles requires lib v0.2.0 but installed is v0.1.9, fail with clear error message
 

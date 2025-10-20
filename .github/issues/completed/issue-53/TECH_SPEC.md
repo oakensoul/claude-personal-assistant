@@ -194,7 +194,7 @@ aida-config-helper.sh --validate
 
 **Config Resolution Priority** (highest to lowest):
 
-```
+```text
 7. Environment variables (GITHUB_TOKEN, EDITOR, etc.)
 6. Project AIDA config (.aida/config.json)
 5. Workflow config (.github/workflow-config.json)
@@ -231,6 +231,7 @@ fi
 **Performance Impact**:
 
 **Before** (current workflow commands):
+
 ```bash
 # Each command reads multiple files
 WORKFLOW_CONFIG=$(cat .github/workflow-config.json)      # I/O
@@ -243,6 +244,7 @@ GIT_EMAIL=$(git config user.email)                       # subprocess
 ```
 
 **After** (unified config aggregator):
+
 ```bash
 # Single call, all configs merged
 readonly CONFIG=$(aida-config-helper.sh)  # ONE I/O + merge operation
@@ -294,6 +296,7 @@ dependencies: ["aida-config-helper.sh"]
 Fast, cached configuration for all AIDA agents and commands.
 
 ## Usage
+
 ```bash
 # Get full config
 CONFIG=$(aida-config-helper.sh)
@@ -303,10 +306,10 @@ PROJECT_ROOT=$(aida-config-helper.sh --key project_root)
 ```
 
 ## Benefits
+
 - Single call gets ALL config (AIDA, GitHub, workflow, git, env)
 - Session caching (fast repeat calls)
 - Consistent values across all commands
-```
 
 **Installation Integration**:
 
@@ -340,13 +343,13 @@ EOF
 # No substitution - templates keep {{VAR}} patterns
 
 To create issue directory:
+
 ```bash
 PROJECT_ROOT=$(aida-config-helper.sh --key paths.project_root)
 mkdir -p "${PROJECT_ROOT}/.github/issues/in-progress/issue-${NUM}"
 ```
 
 Variables resolved at runtime via config helper!
-```
 
 **Benefits**:
 
@@ -362,11 +365,13 @@ Variables resolved at runtime via config helper!
 **Dependencies**: `logging.sh`, `validation.sh`, `jq` (required)
 
 **Files**:
+
 - `lib/aida-config-helper.sh`: ~200 lines (standalone aggregator)
 - `lib/installer-common/config.sh`: ~50 lines (wrapper for install.sh)
 - `skills/.aida/aida-config/`: Skill documentation
 
 **Effort**: 8 hours (4h aggregator + 2h caching + 1h validation + 1h skill docs)
+
 **Risk**: LOW (straightforward jq merging, well-understood caching)
 
 ---
@@ -951,10 +956,10 @@ ENVIRONMENT ?= all
 # Help Target
 # ============================================================
 help: ## Show this help message
-	@echo "AIDA Framework - Test Targets"
-	@echo ""
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
-		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+  @echo "AIDA Framework - Test Targets"
+  @echo ""
+  @grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+    awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 # ============================================================
 # Primary Test Targets
@@ -962,33 +967,33 @@ help: ## Show this help message
 test-all: test-install test-upgrade test-fixtures ## Run all test scenarios
 
 test-install: ## Test fresh installation
-	@echo "Running fresh installation tests..."
-	$(TEST_SCRIPT) --scenario=fresh $(if $(filter true,$(VERBOSE)),--verbose)
+  @echo "Running fresh installation tests..."
+  $(TEST_SCRIPT) --scenario=fresh $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-upgrade: ## Test upgrade installation
-	@echo "Running upgrade installation tests..."
-	$(TEST_SCRIPT) --scenario=upgrade $(if $(filter true,$(VERBOSE)),--verbose)
+  @echo "Running upgrade installation tests..."
+  $(TEST_SCRIPT) --scenario=upgrade $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-fixtures: ## Validate test fixture integrity
-	@echo "Validating test fixtures..."
-	.github/testing/validate-fixtures.sh
+  @echo "Validating test fixtures..."
+  .github/testing/validate-fixtures.sh
 
 # ============================================================
 # Mode-Specific Targets
 # ============================================================
 test-normal-mode: ## Test normal installation mode
-	$(TEST_SCRIPT) --mode=normal $(if $(filter true,$(VERBOSE)),--verbose)
+  $(TEST_SCRIPT) --mode=normal $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-dev-mode: ## Test dev installation mode
-	$(TEST_SCRIPT) --mode=dev $(if $(filter true,$(VERBOSE)),--verbose)
+  $(TEST_SCRIPT) --mode=dev $(if $(filter true,$(VERBOSE)),--verbose)
 
 # ============================================================
 # Cleanup Targets
 # ============================================================
 clean-test: ## Clean test artifacts
-	@echo "Cleaning test artifacts..."
-	rm -rf .github/testing/logs/*
-	$(DOCKER_COMPOSE) -f .github/docker/docker-compose.yml down -v
+  @echo "Cleaning test artifacts..."
+  rm -rf .github/testing/logs/*
+  $(DOCKER_COMPOSE) -f .github/docker/docker-compose.yml down -v
 ```
 
 **Effort**: 2-3 hours
@@ -1407,6 +1412,7 @@ check_version_compatibility() {
 **Buffer**: Add 20% for unexpected issues = **102-118 hours** (13-15 days)
 
 **Key Improvements from Universal Config Aggregator**:
+
 - ✅ Eliminated 9h of spike work (Q1-Q3 resolved)
 - ✅ Reduced templates.sh from 8h to 6h (no variable substitution)
 - ✅ Added 4h for config aggregator (but provides MASSIVE value across all commands)

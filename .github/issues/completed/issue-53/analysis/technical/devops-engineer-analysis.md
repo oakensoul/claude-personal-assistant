@@ -153,10 +153,10 @@ ENVIRONMENT ?= all
 # Help Target
 # ============================================================
 help: ## Show this help message
-	@echo "AIDA Framework - Test Targets"
-	@echo ""
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
-		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+    @echo "AIDA Framework - Test Targets"
+    @echo ""
+    @grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+        awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 # ============================================================
 # Primary Test Targets
@@ -164,90 +164,90 @@ help: ## Show this help message
 test-all: test-install test-upgrade test-fixtures ## Run all test scenarios
 
 test-install: ## Test fresh installation (no existing ~/.claude/)
-	@echo "Running fresh installation tests..."
-	$(TEST_SCRIPT) --scenario=fresh $(if $(filter true,$(VERBOSE)),--verbose)
+    @echo "Running fresh installation tests..."
+    $(TEST_SCRIPT) --scenario=fresh $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-upgrade: ## Test upgrade installation (existing ~/.claude/)
-	@echo "Running upgrade installation tests..."
-	$(TEST_SCRIPT) --scenario=upgrade $(if $(filter true,$(VERBOSE)),--verbose)
+    @echo "Running upgrade installation tests..."
+    $(TEST_SCRIPT) --scenario=upgrade $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-fixtures: ## Validate test fixture integrity
-	@echo "Validating test fixtures..."
-	.github/testing/validate-fixtures.sh
+    @echo "Validating test fixtures..."
+    .github/testing/validate-fixtures.sh
 
 # ============================================================
 # Platform-Specific Targets
 # ============================================================
 test-linux: ## Test all Linux environments (Docker)
-	@echo "Testing Linux environments..."
-	$(TEST_SCRIPT) --platform=linux $(if $(filter true,$(VERBOSE)),--verbose)
+    @echo "Testing Linux environments..."
+    $(TEST_SCRIPT) --platform=linux $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-macos: ## Test macOS (requires macOS host)
-	@echo "Testing macOS..."
-	$(TEST_SCRIPT) --platform=macos $(if $(filter true,$(VERBOSE)),--verbose)
+    @echo "Testing macOS..."
+    $(TEST_SCRIPT) --platform=macos $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-windows: ## Test Windows via WSL/Docker
-	@echo "Testing Windows..."
-	$(TEST_SCRIPT) --platform=windows $(if $(filter true,$(VERBOSE)),--verbose)
+    @echo "Testing Windows..."
+    $(TEST_SCRIPT) --platform=windows $(if $(filter true,$(VERBOSE)),--verbose)
 
 # ============================================================
 # Environment-Specific Targets
 # ============================================================
 test-ubuntu-22: ## Test Ubuntu 22.04 only
-	$(TEST_SCRIPT) --env ubuntu-22 $(if $(filter true,$(VERBOSE)),--verbose)
+    $(TEST_SCRIPT) --env ubuntu-22 $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-ubuntu-20: ## Test Ubuntu 20.04 only
-	$(TEST_SCRIPT) --env ubuntu-20 $(if $(filter true,$(VERBOSE)),--verbose)
+    $(TEST_SCRIPT) --env ubuntu-20 $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-debian-12: ## Test Debian 12 only
-	$(TEST_SCRIPT) --env debian-12 $(if $(filter true,$(VERBOSE)),--verbose)
+    $(TEST_SCRIPT) --env debian-12 $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-minimal: ## Test dependency validation (ubuntu-minimal)
-	$(TEST_SCRIPT) --env ubuntu-minimal $(if $(filter true,$(VERBOSE)),--verbose)
+    $(TEST_SCRIPT) --env ubuntu-minimal $(if $(filter true,$(VERBOSE)),--verbose)
 
 # ============================================================
 # Mode-Specific Targets
 # ============================================================
 test-normal-mode: ## Test normal installation mode
-	$(TEST_SCRIPT) --mode=normal $(if $(filter true,$(VERBOSE)),--verbose)
+    $(TEST_SCRIPT) --mode=normal $(if $(filter true,$(VERBOSE)),--verbose)
 
 test-dev-mode: ## Test dev installation mode (symlinks)
-	$(TEST_SCRIPT) --mode=dev $(if $(filter true,$(VERBOSE)),--verbose)
+    $(TEST_SCRIPT) --mode=dev $(if $(filter true,$(VERBOSE)),--verbose)
 
 # ============================================================
 # CI/CD Integration
 # ============================================================
 ci-test: ## Run tests for CI/CD pipeline
-	@echo "Running CI/CD test suite..."
-	@$(MAKE) test-all VERBOSE=true
+    @echo "Running CI/CD test suite..."
+    @$(MAKE) test-all VERBOSE=true
 
 ci-report: ## Generate test report for CI/CD
-	@echo "Generating test report..."
-	.github/testing/generate-report.sh
+    @echo "Generating test report..."
+    .github/testing/generate-report.sh
 
 # ============================================================
 # Cleanup Targets
 # ============================================================
 clean-test: ## Clean test artifacts and Docker volumes
-	@echo "Cleaning test artifacts..."
-	rm -rf .github/testing/logs/*
-	$(DOCKER_COMPOSE) -f .github/docker/docker-compose.yml down -v
-	docker volume prune -f
+    @echo "Cleaning test artifacts..."
+    rm -rf .github/testing/logs/*
+    $(DOCKER_COMPOSE) -f .github/docker/docker-compose.yml down -v
+    docker volume prune -f
 
 clean-fixtures: ## Reset test fixtures to defaults
-	@echo "Resetting test fixtures..."
-	git checkout .github/testing/fixtures/
+    @echo "Resetting test fixtures..."
+    git checkout .github/testing/fixtures/
 
 # ============================================================
 # Development Targets
 # ============================================================
 docker-build: ## Rebuild all Docker images
-	@echo "Building Docker images..."
-	$(DOCKER_COMPOSE) -f .github/docker/docker-compose.yml build
+    @echo "Building Docker images..."
+    $(DOCKER_COMPOSE) -f .github/docker/docker-compose.yml build
 
 docker-shell: ## Open shell in test container
-	@echo "Opening shell in $(ENVIRONMENT) environment..."
-	$(DOCKER_COMPOSE) -f .github/docker/docker-compose.yml run --rm $(ENVIRONMENT) /bin/bash
+    @echo "Opening shell in $(ENVIRONMENT) environment..."
+    $(DOCKER_COMPOSE) -f .github/docker/docker-compose.yml run --rm $(ENVIRONMENT) /bin/bash
 ```
 
 **Parameterization Strategy**:

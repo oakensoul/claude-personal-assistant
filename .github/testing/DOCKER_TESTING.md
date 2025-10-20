@@ -522,28 +522,28 @@ Add to project `Makefile`:
 ```makefile
 .PHONY: docker-test
 docker-test: ## Run Docker-based upgrade tests
-	cd .github/testing && docker-compose --profile full run --rm test-all
+  cd .github/testing && docker-compose --profile full run --rm test-all
 
 .PHONY: docker-test-fresh
 docker-test-fresh: ## Run fresh install test
-	cd .github/testing && docker-compose --profile fresh run --rm fresh-install
+  cd .github/testing && docker-compose --profile fresh run --rm fresh-install
 
 .PHONY: docker-test-upgrade
 docker-test-upgrade: ## Run upgrade test
-	cd .github/testing && docker-compose --profile upgrade run --rm upgrade
+  cd .github/testing && docker-compose --profile upgrade run --rm upgrade
 
 .PHONY: docker-test-debug
 docker-test-debug: ## Enter debug shell
-	cd .github/testing && docker-compose --profile debug run --rm debug
+  cd .github/testing && docker-compose --profile debug run --rm debug
 
 .PHONY: docker-build
 docker-build: ## Build Docker test image
-	cd .github/testing && docker build -t aida-test .
+  cd .github/testing && docker build -t aida-test .
 
 .PHONY: docker-clean
 docker-clean: ## Clean Docker test artifacts
-	docker rmi aida-test || true
-	rm -rf .github/testing/results/*
+  docker rmi aida-test || true
+  rm -rf .github/testing/results/*
 ```
 
 ### Pre-commit Hook

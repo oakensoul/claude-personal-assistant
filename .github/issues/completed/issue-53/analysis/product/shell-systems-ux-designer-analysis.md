@@ -806,37 +806,37 @@ name_lower=$(echo "$name" | tr '[:upper:]' '[:lower:]')
 
 ### Common Pitfalls to Avoid
 
-**1. Silent Data Loss**
+#### 1. Silent Data Loss
 
 - ❌ Current: Backs up `~/.claude/` without warning
 - ✅ Fix: Explicit confirmation + show what will be preserved
 
-**2. Unclear Idempotency**
+#### 2. Unclear Idempotency
 
 - ❌ Current: No guidance on what happens when re-run
 - ✅ Fix: Document in --help and show preview before proceeding
 
-**3. Windows Compatibility Assumed**
+#### 3. Windows Compatibility Assumed
 
 - ❌ Risk: Symlinks fail silently on some Windows configs
 - ✅ Fix: Detect Windows, check symlink support, fallback to copy
 
-**4. Dev Mode Surprise**
+#### 4. Dev Mode Surprise
 
 - ❌ Risk: User doesn't understand templates are live-editable
 - ✅ Fix: Clear warning when entering dev mode, explain tradeoffs
 
-**5. Deprecated Flag Confusion**
+#### 5. Deprecated Flag Confusion
 
 - ❌ Risk: Users don't know when to use `--with-deprecated`
 - ✅ Fix: Help text explains transition period usage
 
-**6. No Escape Hatch**
+#### 6. No Escape Hatch
 
 - ❌ Risk: User runs installer, realizes mistake, no way to abort safely
 - ✅ Fix: Confirmation prompts with clear cancellation option
 
-**7. Log File Overwhelm**
+#### 7. Log File Overwhelm
 
 - ❌ Risk: Logs contain user paths (privacy issue)
 - ✅ Fix: Already handled! logging.sh scrubs paths (line 62)
@@ -879,31 +879,31 @@ docs/
 
 ### Critical UX Decisions
 
-**Decision 1: Confirmation prompts**
+#### Decision 1: Confirmation prompts
 
 - **Question**: Always prompt, or add `--yes` flag to skip?
 - **Recommendation**: Prompt by default, add `--yes` for CI/CD automation
 - **Rationale**: Safety first, but enable scripted installs
 
-**Decision 2: Backup restoration**
+#### Decision 2: Backup restoration
 
 - **Question**: Should installer offer to restore from backup on error?
 - **Recommendation**: No automatic restoration, but document manual steps
 - **Rationale**: Automatic restoration is complex and error-prone
 
-**Decision 3: Deprecated template installation**
+#### Decision 3: Deprecated template installation
 
 - **Question**: Install deprecated by default or opt-in with flag?
 - **Recommendation**: Opt-in with `--with-deprecated` (already planned)
 - **Rationale**: Clean installs should not include deprecated cruft
 
-**Decision 4: Dev mode symlink behavior**
+#### Decision 4: Dev mode symlink behavior
 
 - **Question**: Should dev mode symlink entire directory or individual templates?
 - **Recommendation**: Symlink individual template folders (`.aida/` level)
 - **Rationale**: Preserves user content safety, enables live editing
 
-**Decision 5: Windows support level**
+#### Decision 5: Windows support level
 
 - **Question**: First-class Windows support or best-effort WSL?
 - **Recommendation**: Document WSL2 as recommended, Git Bash as fallback

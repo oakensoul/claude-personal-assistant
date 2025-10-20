@@ -21,6 +21,7 @@ actual_effort: 14
 Enable backward compatibility during command renames by adding alias support to the command loading mechanism. This allows users to continue using old command names while the system redirects them to the new canonical names.
 
 Modify the command loading mechanism to:
+
 - Check frontmatter for `aliases: []` field in command files
 - Redirect when users type an alias to the canonical command
 - Provide seamless backward compatibility for renamed commands
@@ -115,11 +116,12 @@ This is a foundational feature that unblocks all future command renames in Phase
 
 ### Design Discussion (2025-10-18)
 
-#### CRITICAL: Don't Nuke User's .claude/ Folder!
+#### CRITICAL: Don't Nuke User's .claude/ Folder
 
 **Problem**: Current installer backs up and replaces `~/.claude/` entirely (line 251-258 in install.sh)
 
 **Why this is wrong**:
+
 - Users might have custom agents they created
 - Users might have custom commands they wrote
 - Users might have custom skills
@@ -128,6 +130,7 @@ This is a foundational feature that unblocks all future command renames in Phase
 - We can't just delete all that!
 
 **Solution 1**: Surgical installation approach
+
 - Install our template folders **into** existing structure
 - Don't replace the entire `~/.claude/` directory
 - Create subdirectories if they don't exist
@@ -135,6 +138,7 @@ This is a foundational feature that unblocks all future command renames in Phase
 - Only overwrite files we explicitly manage (our templates)
 
 **Example**: Instead of this:
+
 ```bash
 # BAD: Nukes everything
 mv ~/.claude ~/.claude.backup.TIMESTAMP
@@ -142,6 +146,7 @@ mkdir ~/.claude
 ```
 
 Do this:
+
 ```bash
 # GOOD: Surgical installation
 mkdir -p ~/.claude/commands/issue-create/
@@ -174,6 +179,7 @@ Since Claude Code searches recursively in the commands/agents/skills folders, we
 ```
 
 **Benefits of .aida subdirectory approach**:
+
 - ✅ **Zero conflict risk** - Our templates physically separated from user's
 - ✅ **Obvious ownership** - Clear what's AIDA vs user-created
 - ✅ **Easy cleanup** - Just delete `.aida/` subdirectories
@@ -182,6 +188,7 @@ Since Claude Code searches recursively in the commands/agents/skills folders, we
 - ✅ **Deprecation-friendly** - Can have `.aida-deprecated/` subfolder too
 
 **Installation becomes simpler**:
+
 ```bash
 # Normal mode: Copy AIDA templates into namespaced folder
 mkdir -p ~/.claude/commands/.aida/
@@ -222,6 +229,7 @@ fi
 ```
 
 **No need to**:
+
 - ❌ Track which templates are ours vs user's (manifest file)
 - ❌ Check frontmatter markers
 - ❌ Prompt before overwriting
@@ -232,7 +240,7 @@ fi
 
 **The Contract**:
 
-```
+```text
 AIDA owns:     ~/.claude/commands/.aida/
                ~/.claude/agents/.aida/
                ~/.claude/skills/.aida/
@@ -244,6 +252,7 @@ User owns:     Everything else in ~/.claude/
 ```
 
 **When user runs installer/updater**:
+
 - We **nuke** `.aida/` folders completely
 - We **reinstall** fresh from templates
 - **Zero guilt** - it's our namespace, we own it
@@ -252,6 +261,7 @@ User owns:     Everything else in ~/.claude/
 **Documentation will say**:
 
 > ⚠️ **Warning**: The `.aida/` and `.aida-deprecated/` folders are managed by AIDA. Any modifications will be lost on update. Create your custom commands/agents/skills in the parent directories instead:
+>
 > - Custom commands: `~/.claude/commands/my-command/`
 > - Custom agents: `~/.claude/agents/my-agent/`
 > - Custom skills: `~/.claude/skills/my-skill/`
@@ -284,7 +294,7 @@ ln -s ~/.aida/templates/skills ~/.claude/skills/.aida
 
 **Visual Flow**:
 
-```
+```text
 Always:
   Repo → [SYMLINK] → ~/.aida/
 
@@ -298,6 +308,7 @@ Dev Mode:
 ```
 
 **Benefits**:
+
 - ✅ Simpler - `~/.aida/` is just a pointer to repo
 - ✅ Less disk space - No copying entire repo
 - ✅ Easier updates - Just `git pull` in repo
@@ -317,18 +328,20 @@ git pull
 ```
 
 **No reinstall needed** unless:
+
 - New installer features (new CLI flags, new modules, etc.)
 - New directory structure changes
 - Variable substitution logic changes
 
 **Just `git pull` updates**:
+
 - Command template content changes
 - New commands added
 - Agent updates
 - Skill updates
 - All template content
 
-**Normal Mode - Manual Updates**
+#### Normal Mode - Manual Updates
 
 ```bash
 cd ~/path/to/repo
@@ -387,6 +400,7 @@ install_aida_from_dotfiles() {
 ```
 
 **Benefits**:
+
 - ✅ One place for all installation logic
 - ✅ Dotfiles repo can source `~/.aida/lib/installer-common/*`
 - ✅ No code duplication
@@ -394,12 +408,14 @@ install_aida_from_dotfiles() {
 - ✅ Either install order works (AIDA first or dotfiles first)
 
 **Additional requirements**:
+
 - Libraries can be sourced from external scripts
 - No hardcoded paths that assume running from repo root
 - Functions accept parameters (not just globals)
 - Libraries are self-contained (minimal dependencies)
 
 **Testing**:
+
 - Test sourcing libraries from different directory
 - Test calling functions with parameters
 - Verify no assumptions about `$PWD`
@@ -409,6 +425,7 @@ This ensures the dotfiles integration works seamlessly!
 #### Docker Testing Environment
 
 **Critical requirement**: We need to test installation in clean environments to ensure:
+
 - Fresh install works correctly
 - Upgrade over existing `.claude/` preserves user content
 - Dev mode and normal mode both work
@@ -417,7 +434,8 @@ This ensures the dotfiles integration works seamlessly!
 **Solution**: Docker + Makefile
 
 **Proposed structure**:
-```
+
+```text
 .github/testing/
 ├── Dockerfile              # Clean Ubuntu/Debian environment
 ├── Makefile               # Test targets (make test-all, etc.)
@@ -432,6 +450,7 @@ This ensures the dotfiles integration works seamlessly!
 ```
 
 **Makefile targets**:
+
 ```makefile
 test-install:            # Test normal mode installation
 test-install-dev:        # Test dev mode installation
@@ -442,6 +461,7 @@ test-all:               # Run full test suite
 ```
 
 **Benefits**:
+
 - ✅ Repeatable testing in clean environment
 - ✅ Verify user content preservation
 - ✅ Can run before every commit/PR
@@ -474,12 +494,14 @@ Test Scenarios per Platform:
 ```
 
 **Why Windows + PowerShell + bash?**
+
 - Many users run Windows Subsystem for Linux (WSL)
 - Need to ensure bash scripts work on Windows
 - PowerShell may be default shell for some users
 - Test both environments to maximize compatibility
 
 **CI/CD Benefits**:
+
 - ✅ Every PR tested before merge
 - ✅ Catches platform-specific issues early
 - ✅ Prevents regressions
@@ -491,6 +513,7 @@ Test Scenarios per Platform:
 **Original scope**: Add alias support to command loader (2 hours)
 
 **Expanded scope**: This ticket now includes:
+
 1. **Refactor install.sh** into modular components
 2. **Create deprecation system** with version tracking
 3. **Support deprecated templates** with `--with-deprecated` flag
@@ -503,24 +526,27 @@ Test Scenarios per Platform:
 #### Key Insights
 
 **Claude Code's role**:
+
 - Claude Code provides basic slash command loading from `.claude/commands/*/README.md`
 - When you type `/command-name`, it looks for `command-name/README.md`
 - **No built-in alias support** - we need to build this ourselves
 
 **What we're building**:
+
 - NOT relying on Claude Code built-in features
 - Building our own deprecation/alias system on top of Claude Code's basic loading
 
 #### Design Decision: Deprecated Template Folders
 
 **Rejected approaches**:
+
 1. ❌ **Symlinks** - Too seamless, users never learn new names, no deprecation warnings
 2. ❌ **Auto-generated stubs** - Complex, unclear where they come from
 3. ❌ **Aliases in frontmatter only** - Would require runtime alias resolution
 
 **Chosen approach**: Separate deprecated template folders with explicit stub files
 
-```
+```text
 templates/
 ├── commands/                      # Current canonical commands
 │   ├── issue-create/
@@ -536,6 +562,7 @@ templates/
 ```
 
 **Why this works**:
+
 - ✅ **User choice** - Install with `--with-deprecated` flag or not
 - ✅ **Explicit deprecation** - Stubs show clear warnings and migration path
 - ✅ **Version controlled** - All deprecated items tracked in repo
@@ -559,6 +586,7 @@ reason: "Renamed to follow noun-verb convention (ADR-010)"
 ```
 
 **Deprecation lifecycle**:
+
 - **v0.2.0**: Command renamed, deprecated version available with `--with-deprecated`
 - **v0.3.0**: Deprecation warning period continues
 - **v0.4.0**: Automated cleanup script removes deprecated items
@@ -585,6 +613,7 @@ lib/installer-common/
 ```
 
 **Benefits**:
+
 - ✅ Single responsibility per module
 - ✅ Testable independently
 - ✅ Reusable across scripts
@@ -594,6 +623,7 @@ lib/installer-common/
 #### Automated Cleanup Script
 
 **`scripts/cleanup-deprecated.sh`**:
+
 - Reads current version from `VERSION` file
 - Scans `templates/*/deprecated/` folders
 - Extracts `remove_in` from frontmatter
@@ -671,40 +701,45 @@ lib/installer-common/
 
 ### Implementation Plan
 
-**Phase 1: Refactor to Modular Structure**
+#### Phase 1: Refactor to Modular Structure
 
 1. Extract functions from install.sh into modules:
-   - `lib/installer-common/prompts.sh` - User interaction (prompt_assistant_name, prompt_personality)
-   - `lib/installer-common/directories.sh` - Directory management (create_directories, check_existing_install)
-   - `lib/installer-common/variables.sh` - Variable substitution logic
-   - `lib/installer-common/summary.sh` - Installation summary display
+
+- `lib/installer-common/prompts.sh` - User interaction (prompt_assistant_name, prompt_personality)
+- `lib/installer-common/directories.sh` - Directory management (create_directories, check_existing_install)
+- `lib/installer-common/variables.sh` - Variable substitution logic
+- `lib/installer-common/summary.sh` - Installation summary display
 
 2. Slim down install.sh to ~150 lines (orchestrator only)
 
-**Phase 2: Add Folder-Based Template System**
+#### Phase 2: Add Folder-Based Template System
 
 3. Create `lib/installer-common/templates.sh`:
-   - `install_templates(type, dev_mode, with_deprecated)` - Main entry point
-   - `install_template_type(type)` - Install commands/agents/skills
-   - `install_canonical_templates(type)` - Install from templates/commands/
-   - `install_deprecated_templates(type)` - Install from templates/commands-deprecated/
-   - `copy_template_folder(src, dest, dev_mode)` - Copy or symlink folder
-   - `should_install_template(folder)` - Check if template should be installed
+
+- `install_templates(type, dev_mode, with_deprecated)` - Main entry point
+- `install_template_type(type)` - Install commands/agents/skills
+- `install_canonical_templates(type)` - Install from templates/commands/
+- `install_deprecated_templates(type)` - Install from templates/commands-deprecated/
+- `copy_template_folder(src, dest, dev_mode)` - Copy or symlink folder
+- `should_install_template(folder)` - Check if template should be installed
 
 4. Handle folder structure:
-   - Process `templates/commands/*/README.md` (not `templates/commands/*.md`)
-   - Process `templates/agents/*/index.md`
-   - Process `templates/skills/*/README.md`
 
-**Phase 3: Add Deprecation System**
+- Process `templates/commands/*/README.md` (not `templates/commands/*.md`)
+- Process `templates/agents/*/index.md`
+- Process `templates/skills/*/README.md`
+
+#### Phase 3: Add Deprecation System
 
 5. Create `lib/installer-common/deprecation.sh`:
-   - `version_compare(v1, v2)` - Semantic version comparison
-   - `should_install_deprecated(current_version)` - Check if deprecated items install
-   - `check_removal_version(frontmatter_file)` - Extract remove_in version
-   - `parse_frontmatter_version(file, field)` - Parse version from frontmatter
+
+- `version_compare(v1, v2)` - Semantic version comparison
+- `should_install_deprecated(current_version)` - Check if deprecated items install
+- `check_removal_version(frontmatter_file)` - Extract remove_in version
+- `parse_frontmatter_version(file, field)` - Parse version from frontmatter
 
 6. Define frontmatter schema for deprecated templates:
+
 ```yaml
 ---
 deprecated: true
@@ -715,15 +750,17 @@ reason: "Renamed to follow noun-verb convention"
 ---
 ```
 
-**Phase 4: Surgical Installation**
+#### Phase 4: Surgical Installation
 
 7. Change directory management:
-   - ❌ Remove: `mv ~/.claude ~/.claude.backup.TIMESTAMP`
-   - ✅ Add: Surgical installation of individual template folders
-   - ✅ Check: Don't overwrite user-created content
-   - ✅ Preserve: Existing custom agents/commands/skills
+
+- ❌ Remove: `mv ~/.claude ~/.claude.backup.TIMESTAMP`
+- ✅ Add: Surgical installation of individual template folders
+- ✅ Check: Don't overwrite user-created content
+- ✅ Preserve: Existing custom agents/commands/skills
 
 8. Installation approach:
+
 ```bash
 # For each template folder
 mkdir -p ~/.claude/commands/issue-create/
@@ -731,28 +768,31 @@ cp -r templates/commands/issue-create/ ~/.claude/commands/issue-create/
 # Substitute variables in copied files
 ```
 
-**Phase 5: Automated Cleanup**
+#### Phase 5: Automated Cleanup
 
 9. Create `scripts/cleanup-deprecated.sh`:
-   - Read current version from VERSION file
-   - Scan templates/*/deprecated/ folders
-   - Extract remove_in from frontmatter
-   - Remove items where current_version >= remove_in
+
+- Read current version from VERSION file
+- Scan templates/*/deprecated/ folders
+- Extract remove_in from frontmatter
+- Remove items where current_version >= remove_in
 
 10. Optional: Add CI/CD integration for automatic cleanup
 
-**Phase 6: Testing & Documentation**
+#### Phase 6: Testing & Documentation
 
 11. Test installation scenarios:
-   - Fresh install (no existing .claude/)
-   - Upgrade install (existing .claude/ with custom content)
-   - Dev mode with deprecated templates
-   - Normal mode without deprecated templates
+
+- Fresh install (no existing .claude/)
+- Upgrade install (existing .claude/ with custom content)
+- Dev mode with deprecated templates
+- Normal mode without deprecated templates
 
 12. Update documentation:
-   - Installation guide with new flags
-   - Deprecation workflow documentation
-   - Folder-based template structure guide
+
+- Installation guide with new flags
+- Deprecation workflow documentation
+- Folder-based template structure guide
 
 ### Questions for Expert Analysis
 
@@ -762,9 +802,11 @@ cp -r templates/commands/issue-create/ ~/.claude/commands/issue-create/
 4. Do we need migration tooling to help users update their workflows?
 5. Should we track usage of deprecated commands for analytics?
 6. **Surgical installation strategy**: How do we determine if a template is "ours" vs user-created?
-   - Option A: Track installed templates in a manifest file (`.claude/.aida-installed-templates.json`)
-   - Option B: Check frontmatter for AIDA-specific markers
-   - Option C: Always prompt user before overwriting any existing content
+
+- Option A: Track installed templates in a manifest file (`.claude/.aida-installed-templates.json`)
+- Option B: Check frontmatter for AIDA-specific markers
+- Option C: Always prompt user before overwriting any existing content
+
 7. **Dev mode with surgical installation**: Should dev mode still symlink entire directories, or symlink individual template folders?
 8. **Backup strategy**: Should we still backup .claude/ or trust surgical installation?
 9. **Version conflicts**: What if user has older version of our template installed? Overwrite, merge, or skip?
@@ -778,13 +820,14 @@ cp -r templates/commands/issue-create/ ~/.claude/commands/issue-create/
 ## Resolution
 
 **Completed**: 2025-10-19
-**Pull Request**: #59 - https://github.com/oakensoul/claude-personal-assistant/pull/59
+**Pull Request**: [#59](https://github.com/oakensoul/claude-personal-assistant/pull/59)
 
 ### Changes Made
 
 Successfully refactored the monolithic AIDA installer (625 lines) into a modular, reusable architecture with comprehensive testing infrastructure:
 
 **Modular Architecture** (8 library modules):
+
 - `lib/installer-common/colors.sh` - Terminal color output
 - `lib/installer-common/logging.sh` - Message formatting
 - `lib/installer-common/validation.sh` - Input validation
@@ -795,28 +838,33 @@ Successfully refactored the monolithic AIDA installer (625 lines) into a modular
 - `lib/installer-common/templates.sh` - Template installation (48 bats tests)
 
 **Universal Config Aggregator** (ADR-012):
+
 - `lib/aida-config-helper.sh` - 7-tier configuration merging
 - Session-scoped caching with 85%+ I/O reduction
 - Eliminates variable substitution in templates
 
 **Namespace Isolation** (ADR-013):
+
 - Install templates to `.aida/` subdirectories within `~/.claude/`
 - Prevents conflicts with user's custom content
 - Clear ownership boundary (AIDA owns `.aida/`, user owns everything else)
 - Support for `.aida-deprecated/` namespace
 
 **Deprecation System**:
+
 - Version-based deprecation with frontmatter schema
 - `scripts/cleanup-deprecated.sh` for automated cleanup
 - Frontmatter fields: `deprecated`, `deprecated_in`, `remove_in`, `canonical`, `reason`
 
 **Testing Infrastructure**:
+
 - 98 bats unit tests (100% pass rate)
 - Docker-based cross-platform testing
 - Upgrade scenario testing with user content preservation
 - CI/CD workflows for Ubuntu/macOS/Windows
 
 **Documentation**:
+
 - `docs/INSTALLATION.md` (1,040 lines) - Comprehensive user installation guide
 - `docs/testing/MANUAL_TESTING.md` (985 lines) - QA verification procedures
 - ADR-011 (Modular Installer Architecture)
@@ -827,12 +875,14 @@ Successfully refactored the monolithic AIDA installer (625 lines) into a modular
 ### Implementation Details
 
 **Architecture Decisions**:
+
 - Chose namespace isolation (`.aida/` subdirectories) over surgical installation
 - 7-tier config merging eliminates need for variable substitution
 - Session-scoped caching with PID-based cleanup
 - Templates as folders (not flat files) for better organization
 
 **Key Technical Approaches**:
+
 - All business logic extracted to `lib/installer-common/` for dotfiles reuse
 - `install.sh` reduced to thin orchestrator (~150 lines)
 - Normal mode: Copy templates with variable substitution
@@ -840,6 +890,7 @@ Successfully refactored the monolithic AIDA installer (625 lines) into a modular
 - Both modes: Always symlink `~/.aida/` to repo
 
 **Testing Methodology**:
+
 - Bats (Bash Automated Testing System) for unit tests
 - Docker containers for isolated integration testing
 - Upgrade scenarios with pre-populated user content
@@ -858,16 +909,19 @@ Successfully refactored the monolithic AIDA installer (625 lines) into a modular
 7. No dotfiles integration → Reusable libraries for multi-repo ecosystem
 
 **Effort Tracking**:
+
 - Estimated: 2 hours (original scope)
 - Actual: 14 hours (expanded scope with architecture, testing, documentation)
 - Complexity increased 7x but delivered foundational improvements
 
 **Trade-offs**:
+
 - Removed 4 unused config wrapper functions (discovered during testing)
 - Removed 8 untestable tests (interactive prompts, readonly variables)
 - Fixed critical `cp -a` bug that created nested directories during upgrades
 
 **Future Considerations**:
+
 - Windows testing infrastructure in place but not yet validated
 - Alias loading mechanism still needed (deferred to future ticket)
 - Multi-domain detection for build labels (Phase 2 planned)

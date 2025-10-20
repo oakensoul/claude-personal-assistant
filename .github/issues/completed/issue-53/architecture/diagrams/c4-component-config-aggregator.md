@@ -627,7 +627,7 @@ Overrides:
 ### Force Cache Refresh
 
 ```bash
-$ aida-config-helper.sh --no-cache
+aida-config-helper.sh --no-cache
 ```
 
 ### Validate Config

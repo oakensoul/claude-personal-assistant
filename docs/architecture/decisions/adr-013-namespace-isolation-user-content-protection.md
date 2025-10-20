@@ -528,7 +528,7 @@ git pull      # Get latest framework
 
 **User Guide**:
 
-```markdown
+````markdown
 ## File Organization
 
 AIDA uses namespace isolation to protect your content:
@@ -573,7 +573,7 @@ Safe to re-run installer:
 # Updates framework (.aida/ directories)
 # Preserves your custom content
 ```
-```
+````
 
 ### Testing
 

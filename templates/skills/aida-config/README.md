@@ -548,7 +548,6 @@ gh api "repos/${OWNER}/${REPO}/issues/${ISSUE_NUM}" \
   --method PATCH \
   --field state="in_progress"
 ```
-```
 
 ## Examples
 

@@ -601,7 +601,12 @@ test_config_priority() {
 ### View Full Config
 
 ```bash
-$ aida-config-helper.sh | jq
+aida-config-helper.sh | jq
+```
+
+Output:
+
+```json
 {
   "system": { ... },
   "paths": { ... },
@@ -615,9 +620,15 @@ $ aida-config-helper.sh | jq
 
 ### Explain Config Source
 
+Future enhancement:
+
 ```bash
-# Future enhancement
-$ aida-config-helper.sh --explain github.owner
+aida-config-helper.sh --explain github.owner
+```
+
+Output:
+
+```text
 Value: "oakensoul"
 Source: .github/GITHUB_CONFIG.json (priority 4)
 Overrides:
@@ -627,13 +638,18 @@ Overrides:
 ### Force Cache Refresh
 
 ```bash
-$ aida-config-helper.sh --no-cache
+aida-config-helper.sh --no-cache
 ```
 
 ### Validate Config
 
 ```bash
-$ aida-config-helper.sh --validate
+aida-config-helper.sh --validate
+```
+
+Output:
+
+```text
 ✓ All required keys present
 ✓ Paths exist
 ✓ Valid JSON structure

@@ -98,48 +98,48 @@ git push origin HEAD
 
 **Monitor in GitHub Actions UI:**
 
-**Stage 1: Lint & Validation**
+#### Stage 1: Lint & Validation
 
 - [ ] lint-shell completes successfully
 - [ ] validate-templates completes successfully
 
-**Stage 2: Unit Tests**
+#### Stage 2: Unit Tests
 
 - [ ] ubuntu-22.04 completes (~1-2 min)
 - [ ] ubuntu-24.04 completes (~1-2 min)
 - [ ] macos-13 completes (~2-3 min)
 - [ ] macos-14 completes (~2-3 min)
 
-**Stage 3: Integration Tests**
+#### Stage 3: Integration Tests
 
 - [ ] fresh-install scenario passes (~1-2 min)
 - [ ] upgrade-v0.1 scenario passes (~1-2 min)
 - [ ] upgrade-with-content scenario passes (~1-2 min)
 
-**Stage 4: Installation Tests**
+#### Stage 4: Installation Tests
 
 - [ ] ubuntu-22.04 normal mode passes
 - [ ] ubuntu-22.04 dev mode passes
 - [ ] macos-13 normal mode passes
 - [ ] macos-13 dev mode passes
 
-**Stage 5: Docker Tests**
+#### Stage 5: Docker Tests
 
 - [ ] ubuntu-22.04 container tests pass
 - [ ] ubuntu-24.04 container tests pass
 - [ ] debian-12 container tests pass
 
-**Stage 6: Coverage**
+#### Stage 6: Coverage
 
 - [ ] Coverage analysis completes
 - [ ] Report generated
 
-**Stage 7: Test Summary**
+#### Stage 7: Test Summary
 
 - [ ] All results aggregated
 - [ ] Overall status determined
 
-**Stage 8: PR Comment** (if PR)
+#### Stage 8: PR Comment (if PR)
 
 - [ ] Comment posted to PR
 - [ ] Formatting correct

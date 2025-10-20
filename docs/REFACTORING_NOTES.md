@@ -34,7 +34,7 @@ This document describes the refactoring of `install.sh` from a 625-line monolith
 
 ### New Module Structure
 
-```
+```text
 lib/installer-common/
 ├── colors.sh          # Color codes and terminal formatting
 ├── logging.sh         # Logging and message display

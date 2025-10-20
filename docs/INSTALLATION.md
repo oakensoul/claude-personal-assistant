@@ -203,7 +203,7 @@ Understanding the directory structure helps you customize and maintain your AIDA
 
 ### Directory Structure After Installation
 
-```
+```text
 ~/.aida/                          # Framework (symlinked to repository)
 ├── lib/
 │   ├── installer-common/         # Shared installer modules
@@ -305,7 +305,7 @@ The main entry point file that Claude reads when starting conversations. This fi
 
 Framework-provided templates are installed to **`.aida/` subdirectories**:
 
-```
+```text
 ~/.claude/commands/
 ├── .aida/                   # Framework commands (managed by AIDA)
 │   ├── start-work.md
@@ -380,7 +380,7 @@ The installer automatically:
 
 Automatic backups are created at:
 
-```
+```text
 ~/.claude/commands/.backup.YYYYMMDD-HHMMSS/
 ~/.claude/agents/.backup.YYYYMMDD-HHMMSS/
 ~/.claude/skills/.backup.YYYYMMDD-HHMMSS/

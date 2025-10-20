@@ -486,7 +486,7 @@ lib/installer-common/
 
 **Dependency graph**:
 
-```
+```text
 colors.sh (no deps)
   └── logging.sh
       ├── validation.sh

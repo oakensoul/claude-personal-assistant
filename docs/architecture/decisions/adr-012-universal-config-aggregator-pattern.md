@@ -254,6 +254,7 @@ CONFIG=$(curl localhost:9999/config)
 1. **Massive Performance Improvement**:
 
    **Before**:
+
    ```bash
    # Each command (12+ commands)
    cat .github/workflow-config.json      # I/O #1
@@ -265,6 +266,7 @@ CONFIG=$(curl localhost:9999/config)
    ```
 
    **After**:
+
    ```bash
    # All commands
    aida-config-helper.sh   # ONE call (cached after first)
@@ -329,6 +331,7 @@ CONFIG=$(curl localhost:9999/config)
 5. **Templates Stay Pure**:
 
    **Before** (variable substitution needed):
+
    ```markdown
    # templates/commands/start-work/README.md
    PROJECT_ROOT="{{PROJECT_ROOT}}"  # Substituted at install time
@@ -336,6 +339,7 @@ CONFIG=$(curl localhost:9999/config)
    ```
 
    **After** (runtime resolution via config):
+
    ```markdown
    # templates/commands/start-work/README.md
    PROJECT_ROOT=$(aida-config-helper.sh --key paths.project_root)
@@ -357,7 +361,7 @@ CONFIG=$(curl localhost:9999/config)
 
    ## Usage
 
-   ```bash
+   ```text
    # Get full config
    CONFIG=$(aida-config-helper.sh)
 
@@ -366,14 +370,14 @@ CONFIG=$(curl localhost:9999/config)
 
    # Get namespace
    GITHUB_CONFIG=$(aida-config-helper.sh --namespace github)
-   ```
+   ```text
 
    ## Benefits
 
    - Single call gets ALL config
    - Session caching (fast repeat calls)
    - Consistent across all commands
-   ```
+   ```text
 
 ### Consequences
 
@@ -450,41 +454,51 @@ aida-config-helper.sh --validate
 
 ### Config Sources (Priority Order)
 
-**7. Environment Variables** (highest priority)
+#### 7. Environment Variables (highest priority)
+
 - `GITHUB_TOKEN`
 - `EDITOR`
 - `AIDA_*` variables
 
-**6. Project AIDA Config**
+#### 6. Project AIDA Config
+
 - `.aida/config.json` (project-specific overrides)
 
-**5. Workflow Config**
+#### 5. Workflow Config
+
 - `.github/workflow-config.json` (created by `/workflow-init`)
 
-**4. GitHub Config**
+#### 4. GitHub Config
+
 - `.github/GITHUB_CONFIG.json` (created by `/github-init`)
 
-**3. Git Config**
+#### 3. Git Config
+
 - `~/.gitconfig`, `.git/config` (user.name, user.email)
 
-**2. User AIDA Config**
+#### 2. User AIDA Config
+
 - `~/.claude/aida-config.json` (created during install)
 
-**1. System Defaults** (lowest priority)
+#### 1. System Defaults (lowest priority)
+
 - Built-in defaults (fallbacks)
 
 ### Caching Strategy
 
 **Cache Location**:
+
 - `/tmp/aida-config-cache-$$` (per shell session)
 - `/tmp/aida-config-checksum-$$` (validation)
 
 **Invalidation**:
+
 - Checksum all config file modification times
 - If checksum changed → regenerate cache
 - If checksum matches → use cached result
 
 **Performance**:
+
 - Cold cache: ~50-100ms (read + merge all configs)
 - Warm cache: ~1-2ms (read cache file)
 - 50-98% faster than cold cache
@@ -515,21 +529,25 @@ EOF
 ### Migration Plan
 
 **Phase 1: Create Aggregator** (4h)
+
 - Implement `aida-config-helper.sh`
 - Config merging logic
 - 7-tier priority resolution
 
 **Phase 2: Add Caching** (2h)
+
 - Implement checksum-based caching
 - Cache invalidation logic
 - Performance testing
 
 **Phase 3: Validation** (1h)
+
 - Config schema validation
 - Required keys checking
 - Error handling
 
 **Phase 4: Skill Documentation** (1h)
+
 - Create `~/.claude/skills/.aida/aida-config/`
 - Document usage patterns
 - Examples for agents
@@ -583,7 +601,7 @@ readonly AIDA_HOME=$(echo "$CONFIG" | jq -r '.paths.aida_home')
 
 When you need configuration:
 
-```bash
+```text
 # Get full config
 CONFIG=$(aida-config-helper.sh)
 
@@ -593,10 +611,10 @@ GITHUB_OWNER=$(aida-config-helper.sh --key github.owner)
 
 # Get namespace
 GITHUB_CONFIG=$(aida-config-helper.sh --namespace github)
-```
+```text
 
 This is faster than reading files directly and ensures consistent config priority.
-```
+```text
 
 ### Example 4: Debugging Config
 

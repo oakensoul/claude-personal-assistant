@@ -51,10 +51,11 @@ To start work: cd {{PROJECT_ROOT}}
 ```markdown
 # Good - templates stay pure, call config helper at runtime
 To start work:
-```bash
+
+` ``bash
 PROJECT_ROOT=$(aida-config-helper.sh --key paths.project_root)
 cd "$PROJECT_ROOT"
-```
+` ``
 ```
 
 Templates NO LONGER use `{{VAR}}` patterns. Configuration is resolved at runtime via `aida-config-helper.sh`.
@@ -588,10 +589,10 @@ templates/commands/start-work/
 
 To start work on an issue, run:
 
-```bash
+` ``bash
 cd {{PROJECT_ROOT}}
 git checkout -b feature/{{ISSUE_NUMBER}}
-```
+` ``
 ```
 
 **After:**
@@ -601,12 +602,12 @@ git checkout -b feature/{{ISSUE_NUMBER}}
 
 To start work on an issue, run:
 
-```bash
+` ``bash
 PROJECT_ROOT=$(aida-config-helper.sh --key paths.project_root)
 ISSUE_NUMBER=$(aida-config-helper.sh --key issue.number)
 cd "$PROJECT_ROOT"
 git checkout -b "feature/${ISSUE_NUMBER}"
-```
+` ``
 ```
 
 ## Integration with install.sh
