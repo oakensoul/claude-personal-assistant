@@ -157,13 +157,14 @@ run_installer() {
   fi
 
   # Run installer with automatic yes responses
+  # Provide: assistant name (jarvis), personality choice (1)
   if [[ "$mode" == "dev" ]]; then
     # Dev mode needs user input
-    echo -e "JARVIS\njarvis\n" | "$installer_cmd" $installer_args 2>&1
+    echo -e "jarvis\n1\n" | "$installer_cmd" $installer_args 2>&1
   else
     # Normal mode with non-interactive flag (if supported)
     # For now, provide default answers
-    echo -e "JARVIS\njarvis\n" | "$installer_cmd" $installer_args 2>&1
+    echo -e "jarvis\n1\n" | "$installer_cmd" $installer_args 2>&1
   fi
 
   local exit_code=$?
