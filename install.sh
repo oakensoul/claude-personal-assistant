@@ -214,10 +214,21 @@ create_directories() {
         return 1
     }
 
-    # Set proper permissions
-    print_message "info" "Setting permissions..."
-    find "${CLAUDE_DIR}" -type f -exec chmod 644 {} \; 2>/dev/null || true
-    find "${CLAUDE_DIR}" -type d -exec chmod 755 {} \; 2>/dev/null || true
+    # Set proper permissions (only on AIDA-managed files, not user content)
+    print_message "info" "Setting permissions on AIDA-managed files..."
+
+    # Set permissions only on AIDA namespace directories (preserves user file permissions)
+    for namespace_dir in "${CLAUDE_DIR}/commands/.aida" "${CLAUDE_DIR}/agents/.aida" \
+                         "${CLAUDE_DIR}/skills/.aida" "${CLAUDE_DIR}/documents/.aida"; do
+        if [[ -d "$namespace_dir" ]]; then
+            find "$namespace_dir" -type f -exec chmod 644 {} \; 2>/dev/null || true
+            find "$namespace_dir" -type d -exec chmod 755 {} \; 2>/dev/null || true
+        fi
+    done
+
+    # Set permissions on config file and CLAUDE.md
+    chmod 644 "${CLAUDE_DIR}/aida-config.json" 2>/dev/null || true
+    chmod 644 "${HOME}/CLAUDE.md" 2>/dev/null || true
 
     if [[ "$DEV_MODE" == false ]]; then
         find "${AIDA_DIR}" -type f -exec chmod 644 {} \; 2>/dev/null || true

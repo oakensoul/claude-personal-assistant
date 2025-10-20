@@ -277,8 +277,18 @@ backup_existing() {
     fi
 
     # If target doesn't exist, nothing to backup (idempotent)
-    if [[ ! -e "$target" ]]; then
+    if [[ ! -e "$target" ]] && [[ ! -L "$target" ]]; then
         print_message "info" "No backup needed: ${target} does not exist"
+        return 0
+    fi
+
+    # Handle symlinks specially - they don't contain data, just remove them
+    if [[ -L "$target" ]]; then
+        print_message "info" "Removing symlink (no backup needed): ${target}"
+        rm "$target" || {
+            print_message "error" "Failed to remove symlink: ${target}"
+            return 1
+        }
         return 0
     fi
 
@@ -286,6 +296,13 @@ backup_existing() {
     local timestamp
     timestamp=$(date +%Y%m%d-%H%M%S)
     local backup_path="${target}.backup.${timestamp}"
+
+    # If backup path already exists (same second), add counter
+    local counter=1
+    while [[ -e "$backup_path" ]]; do
+        backup_path="${target}.backup.${timestamp}.${counter}"
+        ((counter++))
+    done
 
     # Create backup
     if [[ -d "$target" ]]; then
