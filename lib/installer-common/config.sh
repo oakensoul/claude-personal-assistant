@@ -107,17 +107,17 @@ write_user_config() {
     timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
     # For upgrades, preserve existing user customizations
-    local existing_name="$assistant_name"
-    local existing_personality="$personality"
-    local existing_installed_at="$timestamp"
+    local final_name="$assistant_name"
+    local final_personality="$personality"
+    local final_installed_at="$timestamp"
 
     if [[ -f "$config_file" ]] && jq empty "$config_file" 2>/dev/null; then
-        # Config exists and is valid JSON - preserve user settings
-        existing_name=$(jq -r '.user.assistant_name // .assistant_name // "'"$assistant_name"'"' "$config_file")
-        existing_personality=$(jq -r '.user.personality // .personality // "'"$personality"'"' "$config_file")
-        existing_installed_at=$(jq -r '.installed_at // "'"$timestamp"'"' "$config_file")
+        # Config exists and is valid JSON - this is an upgrade, preserve user settings
+        final_name=$(jq -r '.user.assistant_name // .assistant_name' "$config_file")
+        final_personality=$(jq -r '.user.personality // .personality' "$config_file")
+        final_installed_at=$(jq -r '.installed_at' "$config_file")
 
-        print_message "info" "Preserving existing configuration: ${existing_name} (${existing_personality})"
+        print_message "info" "Preserving existing configuration: ${final_name} (${final_personality})"
     fi
 
     # Create config JSON
@@ -125,7 +125,7 @@ write_user_config() {
 {
   "version": "${version}",
   "install_mode": "${install_mode}",
-  "installed_at": "${existing_installed_at}",
+  "installed_at": "${final_installed_at}",
   "updated_at": "${timestamp}",
   "paths": {
     "aida_home": "${aida_dir}",
@@ -133,8 +133,8 @@ write_user_config() {
     "home": "${HOME}"
   },
   "user": {
-    "assistant_name": "${existing_name}",
-    "personality": "${existing_personality}"
+    "assistant_name": "${final_name}",
+    "personality": "${final_personality}"
   },
   "deprecation": {
     "include_deprecated": false
