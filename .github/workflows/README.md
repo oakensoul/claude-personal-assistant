@@ -160,7 +160,6 @@ Posts test summary to PR with:
 - Manual dispatch (workflow_dispatch)
 - Changes to:
   - `install.sh`
-  - `.github/docker/**`
   - `.github/testing/**`
   - `.github/workflows/test-installation.yml`
 
