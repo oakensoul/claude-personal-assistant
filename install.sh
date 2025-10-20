@@ -178,16 +178,16 @@ check_existing_install() {
     fi
 
     # Check Claude directory
+    # NOTE: We do NOT delete ~/.claude/ - it may contain user files!
+    # The namespace design installs AIDA templates to ~/.claude/*/.aida/
+    # User files remain at the top level: ~/.claude/commands/my-file.md
+    # AIDA files go in subdirs: ~/.claude/commands/.aida/start-work.md
     if [[ -e "${CLAUDE_DIR}" ]]; then
-        backup_existing "${CLAUDE_DIR}" || return 1
-        # backup_existing creates a copy but doesn't remove the original directory
-        # Remove it so we can start fresh
-        if [[ -d "${CLAUDE_DIR}" ]]; then
-            rm -rf "${CLAUDE_DIR}" || {
-                print_message "error" "Failed to remove existing Claude directory after backup"
-                return 1
-            }
+        if [[ ! -d "${CLAUDE_DIR}" ]]; then
+            print_message "error" "${CLAUDE_DIR} exists but is not a directory"
+            return 1
         fi
+        print_message "info" "Found existing ${CLAUDE_DIR} directory (user content will be preserved)"
         backup_made=true
     fi
 
