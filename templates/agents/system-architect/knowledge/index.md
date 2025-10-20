@@ -68,7 +68,7 @@ Read the core concepts and patterns to understand general best practices that ap
 
 ### For Project-Specific Architecture
 
-Combine this user-level knowledge with project-level architecture documentation in `{project}/.claude/agents-global/system-architect/`:
+Combine this user-level knowledge with project-level architecture documentation in `{project}/.claude/project/agents/system-architect/`:
 
 - Apply patterns from this knowledge base
 - Document decisions as ADRs in project
@@ -158,7 +158,7 @@ When patterns evolve or new best practices emerge:
 ## Related Documentation
 
 - **Agent Definition**: `~/.claude/agents/system-architect/system-architect.md`
-- **Project Architecture**: `{project}/.claude/agents-global/system-architect/`
+- **Project Architecture**: `{project}/.claude/project/agents/system-architect/`
 - **Tech Lead Knowledge**: `~/.claude/agents/tech-lead/knowledge/` (implementation-focused)
 - **Data Governance Knowledge**: `~/.claude/agents/data-governance-agent/knowledge/` (compliance-focused)
 

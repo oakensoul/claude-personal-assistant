@@ -31,9 +31,27 @@ Thank you for your interest in contributing to the AIDA (Agentic Intelligence Di
 - macOS 13+ or Linux (Ubuntu 20.04+, Debian 12+)
 - Bash 4.0+
 - Git
-- Pre-commit hooks installed
+- Pre-commit (see installation below)
 
 ### Setting Up Development Environment
+
+#### 1. Install pre-commit
+
+macOS:
+
+```bash
+brew install pre-commit
+```
+
+Linux:
+
+```bash
+pip install pre-commit
+# or
+pipx install pre-commit
+```
+
+#### 2. Clone and setup the repository
 
 ```bash
 # Clone the repository
@@ -43,7 +61,7 @@ cd claude-personal-assistant
 # Install in dev mode (creates symlinks for live editing)
 ./install.sh --dev
 
-# Install pre-commit hooks
+# Activate pre-commit hooks for this repository
 pre-commit install
 ```
 

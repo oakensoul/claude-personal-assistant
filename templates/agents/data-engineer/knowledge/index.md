@@ -56,7 +56,7 @@ Quick reference materials:
 Knowledge in this directory is **generic** and **reusable** across all data engineering projects.
 
 Project-specific implementation details (pipeline schedules, source systems, dbt config) should be documented in the project-level configuration at:
-`{project}/.claude/agents-global/data-engineer/index.md`
+`{project}/.claude/project/agents/data-engineer/index.md`
 
 ## dbt Knowledge
 

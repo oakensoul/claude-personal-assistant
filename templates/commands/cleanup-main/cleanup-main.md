@@ -2,6 +2,8 @@
 name: cleanup-main
 description: Automates cleanup after PR merge including branch deletion, main update, optional branch syncing, stash restoration, and context cleanup
 args: {}
+version: 1.0.0
+category: workflow
 ---
 
 # Cleanup Main Command

@@ -5,6 +5,8 @@ args:
   issue-id:
     description: GitHub issue number to start work on
     required: true
+version: 1.0.0
+category: workflow
 ---
 
 # Start Work Command

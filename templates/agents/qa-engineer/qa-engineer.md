@@ -1,5 +1,8 @@
 ---
 name: qa-engineer
+version: 1.0.0
+category: testing
+short_description: Cross-platform testing, installation validation, and QA
 description: Quality assurance and testing expert for cross-platform software validation, installation testing, regression testing, and comprehensive quality verification
 model: claude-sonnet-4.5
 color: yellow
@@ -49,7 +52,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/qa-engineer/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/qa-engineer/`
 
 **Contains**:
 
@@ -85,7 +88,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/qa-engineer/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/agents-global/qa-engineer/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/qa-engineer/`
 
 2. **Combine Understanding**:
    - Apply user-level testing standards to project-specific requirements
@@ -102,7 +105,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/qa-engineer/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/qa-engineer/`
    - Identify when project-specific knowledge is unavailable
 
 2. **Provide Notice**:
@@ -126,7 +129,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/qa-engineer/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/qa-engineer/` does NOT exist
 
 2. **Remind User**:
 
@@ -173,7 +176,7 @@ Checking for project-level knowledge...
 #### Step 3: Load Project-Level Knowledge (if exists)
 
 ```text
-Loading project-level QA knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/agents-global/qa-engineer/
+Loading project-level QA knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/agents/qa-engineer/
 - Instructions: [loaded/not found]
 - Test Requirements: [loaded/not found]
 - Platform Matrix: [loaded/not found]
@@ -812,7 +815,7 @@ Creates project-level QA configuration:
 **Check**:
 
 - Is there a `.git` directory?
-- Is `${CLAUDE_CONFIG_DIR}/agents-global/qa-engineer/` present?
+- Is `${CLAUDE_CONFIG_DIR}/project/agents/qa-engineer/` present?
 - Run from project root, not subdirectory
 
 ### Agent not using user testing standards
@@ -846,7 +849,7 @@ Creates project-level QA configuration:
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/qa-engineer/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/qa-engineer/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/qa-engineer/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/qa-engineer/qa-engineer.md`
 
 **Commands**: `/workflow-init`

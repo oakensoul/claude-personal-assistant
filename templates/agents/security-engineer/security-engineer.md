@@ -1,6 +1,9 @@
 ---
 name: security-engineer
 description: Data security expert specializing in encryption, access controls, threat modeling, and vulnerability management for data platforms
+short_description: Security architecture, encryption, and threat modeling
+version: "1.0.0"
+category: security
 model: claude-sonnet-4.5
 color: red
 temperature: 0.7
@@ -192,7 +195,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/security-engineer/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/security-engineer/`
 
 **Contains**:
 
@@ -215,7 +218,7 @@ The agent MUST:
 1. **Load Both Contexts**:
 
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/security-engineer/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/agents-global/security-engineer/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/security-engineer/`
 
 2. **Combine Understanding**:
 
@@ -235,7 +238,7 @@ The agent SHOULD:
 
 1. **Detect Missing Context**:
 
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/security-engineer/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/security-engineer/`
    - Identify when project-specific security knowledge is unavailable
 
 2. **Provide Notice**:
@@ -261,7 +264,7 @@ The agent MUST:
 1. **Detect Missing Configuration**:
 
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/security-engineer/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/security-engineer/` does NOT exist
 
 2. **Remind User**:
 
@@ -309,7 +312,7 @@ Checking for project-level knowledge...
 #### Step 3: Load Project-Level Knowledge (if exists)
 
 ```text
-Loading project-level security knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/agents-global/security-engineer/
+Loading project-level security knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/agents/security-engineer/
 - Infrastructure Config: [loaded/not found]
 - Threat Models: [loaded/not found]
 - Compliance Requirements: [loaded/not found]
@@ -385,7 +388,7 @@ fi
 
 ```bash
 # Look for project security agent directory
-if [ -d "${CLAUDE_CONFIG_DIR}/agents-global/security-engineer" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/project/agents/security-engineer" ]; then
   PROJECT_SECURITY_CONFIG=true
 else
   PROJECT_SECURITY_CONFIG=false
@@ -606,7 +609,7 @@ Invokes security-engineer agent for comprehensive audit:
 **Check**:
 
 - Is there a `.git` directory?
-- Is `${CLAUDE_CONFIG_DIR}/agents-global/security-engineer/` present?
+- Is `${CLAUDE_CONFIG_DIR}/project/agents/security-engineer/` present?
 - Run from project root, not subdirectory
 
 ### Agent not using user preferences
@@ -693,7 +696,7 @@ Invokes security-engineer agent for comprehensive audit:
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/security-engineer/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/security-engineer/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/security-engineer/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/security-engineer/security-engineer.md`
 
 **Commands**: `/workflow-init`, `/security-audit`

@@ -832,8 +832,8 @@ main() {
 
 ```bash
 # User-initiated cleanup
-~/.aida/scripts/deprecation-cleanup.sh --version 0.2.0 --dry-run
-~/.aida/scripts/deprecation-cleanup.sh --version 0.2.0 --apply
+~/.claude/scripts/.aida/cleanup-deprecated.sh --version 0.2.0 --dry-run
+~/.claude/scripts/.aida/cleanup-deprecated.sh --version 0.2.0 --apply
 ```
 
 **CI/CD Trigger**:

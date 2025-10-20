@@ -14,6 +14,8 @@ args:
   interactive:
     description: Use interactive mode to manually allocate time across issues
     required: false
+version: 1.0.0
+category: meta
 ---
 
 # Track Time Command

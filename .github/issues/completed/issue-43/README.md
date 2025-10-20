@@ -139,7 +139,7 @@ Successfully synced all user Claude configuration changes to repository template
 **Phase 1** (2025-10-10): Initial Template Sync
 
 1. **Agent Reorganization**: Implemented two-tier agent architecture
-   - Moved 6 project agents to `.claude/agents-global/` with project-specific context
+   - Moved 6 project agents to `.claude/project/agents/` with project-specific context
    - Converted product-manager and tech-lead to two-tier structure
    - Added AIDA framework agents to global templates
 

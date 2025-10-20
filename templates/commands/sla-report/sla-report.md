@@ -3,6 +3,8 @@ name: sla-report
 description: Generate SLA compliance reports, track error budgets, and identify SLA breach risks with executive dashboards
 model: sonnet
 type: global
+version: 1.0.0
+category: analysis
 ---
 
 # SLA Compliance Reporting

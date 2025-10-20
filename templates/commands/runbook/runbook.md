@@ -7,6 +7,8 @@ args:
   runbook_name:
     description: Name of the runbook to execute or 'list' to see available runbooks
     required: false
+version: 1.0.0
+category: workflow
 ---
 
 # Operational Runbook Execution

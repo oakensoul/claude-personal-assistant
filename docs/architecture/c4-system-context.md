@@ -211,7 +211,7 @@ C4Context
 
 - C4 Modeling Guide: `~/.claude/agents/system-architect/knowledge/core-concepts/c4-modeling.md`
 - AIDA Architecture Docs: `docs/architecture/`
-- Integration Specs: `.claude/agents-global/system-architect/specifications/integration-specifications.md`
+- Integration Specs: `.claude/project/agents/system-architect/specifications/integration-specifications.md`
 
 ## Version History
 

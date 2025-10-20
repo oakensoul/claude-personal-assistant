@@ -7,6 +7,8 @@ args:
     description: "full (default), labels-only, verify, reset"
     required: false
 
+version: 1.0.0
+category: project
 ---
 
 # GitHub Repository Initialization Command

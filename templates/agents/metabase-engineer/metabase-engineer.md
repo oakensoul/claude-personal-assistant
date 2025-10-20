@@ -1,5 +1,8 @@
 ---
 name: metabase-engineer
+version: 1.0.0
+category: business-intelligence
+short_description: Metabase dashboards, reports-as-code, and BI automation
 description: Metabase BI platform expert for reports-as-code, YAML specifications, API operations, visualization design, and deployment automation
 model: claude-sonnet-4.5
 color: purple

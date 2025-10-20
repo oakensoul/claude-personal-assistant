@@ -1,5 +1,8 @@
 ---
 name: code-reviewer
+version: "1.0.0"
+category: code-quality
+short_description: Code quality, security, and maintainability review across technologies
 description: Use this agent when you need to review code quality, enforce coding standards, or assess code for security, performance, and maintainability issues across multiple technologies. This includes PHP, JavaScript/TypeScript, React, and general code quality assessment. Examples: <example>Context: User wants code reviewed for security issues. user: 'Can you review this PHP code for potential security vulnerabilities?' assistant: 'I'll use the code-reviewer agent to perform a comprehensive security review of your PHP code.' <commentary>Since the user is asking for code review with focus on security, use the code-reviewer agent.</commentary></example> <example>Context: User needs code quality assessment. user: 'Please review my React components for performance and best practices' assistant: 'Let me use the code-reviewer agent to analyze your React components for performance optimization and best practices.' <commentary>Since the user wants code quality review for React components, use the code-reviewer agent.</commentary></example>
 model: sonnet
 color: yellow
@@ -234,7 +237,7 @@ This agent operates with a two-tier knowledge system for code quality standards 
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer/`
 
 **Contains**:
 
@@ -257,7 +260,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/code-reviewer/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer/`
 
 2. **Combine Understanding**:
    - Apply user-level standards to project-specific requirements
@@ -274,7 +277,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer/`
    - Identify when project-specific knowledge is unavailable
 
 2. **Provide Notice**:
@@ -298,7 +301,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer/` does NOT exist
 
 2. **Remind User**:
 
@@ -336,7 +339,7 @@ fi
 
 ```bash
 # Look for project code review directory
-if [ -d "${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer" ]; then
   PROJECT_REVIEW_CONFIG=true
 else
   PROJECT_REVIEW_CONFIG=false
@@ -429,7 +432,7 @@ fi
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/code-reviewer/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/code-reviewer/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/code-reviewer/code-reviewer.md`
 
 **Commands**: `/workflow-init`

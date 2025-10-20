@@ -10,6 +10,8 @@ args:
   breakdown-by:
     description: Cost breakdown dimension (warehouse, team, domain, user, query-type)
     required: false
+version: 1.0.0
+category: analysis
 ---
 
 # Snowflake Cost Review & Analysis

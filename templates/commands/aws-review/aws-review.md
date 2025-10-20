@@ -6,6 +6,8 @@ args:
   scope:
     description: What to review - "all" (default), "cdk", "cost", "security", or specific stack name
     required: false
+version: 1.0.0
+category: analysis
 ---
 
 # AWS Infrastructure Review Command

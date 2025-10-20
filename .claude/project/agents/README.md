@@ -57,7 +57,7 @@ Project-specific knowledge for the tech lead agent:
 When Claude Code invokes a global agent like `product-manager`, it will:
 
 1. Load the agent definition from `~/.claude/agents/product-manager/`
-2. Load project-specific context from `.claude/agents-global/product-manager/`
+2. Load project-specific context from `.claude/project/agents/product-manager/`
 3. Combine both to provide context-aware assistance
 
 This architecture allows global agents to be reusable across projects while still having access to project-specific knowledge.

@@ -261,7 +261,9 @@ display_next_steps() {
 
   1. Review configuration: ~/.claude/aida-config.json
   2. Try a command: /start-work
-  3. Read documentation: ~/.aida/README.md
+  3. List available commands: ~/.claude/scripts/.aida/list-commands.sh
+  4. List available agents: ~/.claude/scripts/.aida/list-agents.sh
+  5. Read documentation: ~/.aida/README.md
 $(if [[ "$install_mode" == "dev" ]]; then echo "
   Development mode: Changes to templates take effect
   immediately (no reinstall needed)"; fi)

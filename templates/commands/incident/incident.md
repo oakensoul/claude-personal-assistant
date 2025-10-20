@@ -10,6 +10,8 @@ args:
   description:
     description: Brief description of the incident
     required: false
+version: 1.0.0
+category: workflow
 ---
 
 # Production Incident Management

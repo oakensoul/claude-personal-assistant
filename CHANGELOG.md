@@ -5,6 +5,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.7] - 2025-10-20
+
+### Added
+
+- **Scripts Installation Fix**:
+  - Scripts now install to `~/.claude/scripts/.aida/` following namespace pattern
+  - Consistent with commands, agents, skills installation structure
+  - Dev mode uses symlinks, normal mode copies files
+- **Pre-commit Setup**:
+  - Added pre-commit installation instructions to CONTRIBUTING.md
+  - Documented Homebrew (macOS) and pip (Linux) installation methods
+  - Fixed markdown linting issues across all templates
+- **Discoverability Commands** (Issue #54):
+  - `/command-list` - List all available commands with category filtering
+  - `/agent-list` - List all available agents
+  - `/skill-list` - List all available skills (placeholder)
+- **CLI Scripts** (`~/.claude/scripts/.aida/`):
+  - `list-commands.sh` - Text and JSON output, category filtering
+  - `list-agents.sh` - Text and JSON output
+  - `list-skills.sh` - Placeholder for future implementation
+- **Shared Libraries** (`~/.claude/scripts/.aida/lib/`):
+  - `frontmatter-parser.sh` - Parse YAML frontmatter from markdown
+  - `json-formatter.sh` - Format output as valid JSON
+  - `path-sanitizer.sh` - Privacy-aware path sanitization
+  - `readlink-portable.sh` - Cross-platform symlink resolution
+- **Architecture Decision Record**:
+  - ADR-003: Rename agents-global to project/agents
+- **Migration System**:
+  - Automatic migration from `.claude/agents-global/` to `.claude/project/agents/`
+  - `lib/installer-common/migrations.sh` module
+  - Backward compatibility for v0.1.x installations
+
+### Changed
+
+- **BREAKING**: Directory structure renamed for clarity:
+  - `.claude/agents-global/` → `.claude/project/agents/`
+  - Rationale: "agents-global" was semantically incorrect (implied global scope for project-specific content)
+  - Migration: Automatic via installer, manual: `mv .claude/agents-global .claude/project/agents`
+  - See [ADR-003](docs/architecture/decisions/adr-003-rename-agents-global-to-project-agents.md) for details
+
+### Fixed
+
+- `list-agents.sh` now correctly filters out:
+  - Knowledge base files (`*/knowledge/*`)
+  - README documentation files
+  - Project configuration files (files with `project:` frontmatter)
+- Empty array handling in JSON output (macOS compatibility)
+- Cross-platform compatibility (`head -n -0` issue on macOS)
+
+### Documentation
+
+- Updated ADR-002 with new directory paths
+- Added migration guide for v0.1.x → v0.2.0
+- Updated all template references (41 files, 181 occurrences)
+
 ## [0.1.6] - 2025-10-18
 
 ### Added
@@ -75,7 +130,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- workflow-init command now creates agents in correct `.claude/agents-global/` directory (not `.claude/agents/`)
+- workflow-init command now creates agents in correct `.claude/project/agents/` directory (not `.claude/agents/`)
 - workflow-init now creates `index.md` files (not `instructions.md`) for two-tier architecture
 - publish-issue command updated to move (not delete) published drafts to `.github/issues/published/`
 
@@ -102,13 +157,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - data-governance-agent: Data compliance and privacy
   - security-engineer: Security and threat modeling
   - configuration-specialist, integration-specialist, privacy-security-auditor, qa-engineer, shell-script-specialist, shell-systems-ux-designer
-- Two-tier agent architecture documentation in .claude/agents-global/README.md
+- Two-tier agent architecture documentation in .claude/project/agents/README.md
 - 7 v0.1.0 milestone issues published (#44-#50) defining command consolidation plan
 
 ### Changed
 
 - Reorganized agents to two-tier architecture:
-  - Global agents moved to .claude/agents-global/ with project-specific context
+  - Global agents moved to .claude/project/agents/ with project-specific context
   - Product-manager and tech-lead converted to two-tier structure
   - AIDA framework agents now use global templates
 - Updated templates/commands/README.md to document all 32 current commands

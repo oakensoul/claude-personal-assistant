@@ -86,7 +86,7 @@ User-Level (generic):
   - Evaluation frameworks
 
 Project-Level (specific):
-{project}/.claude/agents-global/{agent}/
+{project}/.claude/project/agents/{agent}/
   - Project tech stack
   - Architecture decisions (ADRs)
   - C4 models
@@ -120,7 +120,7 @@ Project-Level (specific):
 ```text
 ~/.claude/agents/{agent}/knowledge/          (user)
 ~/org/.claude/agents/{agent}/knowledge/      (organization)
-{project}/.claude/agents-global/{agent}/     (project)
+{project}/.claude/project/agents/{agent}/     (project)
 ```
 
 **Pros**:
@@ -192,7 +192,7 @@ Project-Level (specific):
 - Technology evaluation frameworks
 - Cross-project best practices
 
-**Project-Level Knowledge** (`{project}/.claude/agents-global/{agent}/`):
+**Project-Level Knowledge** (`{project}/.claude/project/agents/{agent}/`):
 
 - Project-specific architecture (C4 models, ADRs)
 - Technology stack and rationale
@@ -204,7 +204,7 @@ Project-Level (specific):
 
 1. Always load user-level knowledge
 2. Check if in project directory (`.git` exists)
-3. Check if project-level knowledge exists (`.claude/agents-global/{agent}/`)
+3. Check if project-level knowledge exists (`.claude/project/agents/{agent}/`)
 4. Combine both tiers if available
 5. Warn if in project but no project-level knowledge
 
@@ -221,4 +221,15 @@ Project-Level (specific):
 
 ## Updates
 
-None yet
+### 2025-10-20: Directory Rename
+
+**What changed**: Project-level agent directory renamed from `.claude/agents-global/` to `.claude/project/agents/`
+
+**Why**: The name "agents-global" was semantically incorrect (implied global scope for project-specific content) and caused confusion in tooling and documentation.
+
+**Impact**: All path references in this ADR updated to reflect new structure. See [ADR-003](./adr-003-rename-agents-global-to-project-agents.md) for full rationale and migration guide.
+
+**New structure**:
+
+- User-level (global): `~/.claude/agents/{agent}/`
+- Project-level: `.claude/project/agents/{agent}/` ✓ (was: `.claude/agents-global/{agent}/`)
