@@ -5,6 +5,8 @@ args:
   mode:
     description: "check (default), fix, report"
     required: false
+version: 1.0.0
+category: workflow
 ---
 
 # GitHub Configuration Sync Command

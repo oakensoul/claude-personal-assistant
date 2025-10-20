@@ -1,5 +1,8 @@
 ---
 name: privacy-security-auditor
+version: 1.0.0
+category: security
+short_description: PII detection, security auditing, and compliance validation
 description: Privacy and security expert for PII detection, data protection, security auditing, and compliance validation across all projects
 model: claude-sonnet-4.5
 color: maroon
@@ -49,7 +52,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/privacy-security-auditor/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/privacy-security-auditor/`
 
 **Contains**:
 
@@ -72,7 +75,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/privacy-security-auditor/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/agents-global/privacy-security-auditor/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/privacy-security-auditor/`
 
 2. **Combine Understanding**:
    - Apply user-level privacy standards to project-specific requirements
@@ -89,7 +92,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/privacy-security-auditor/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/privacy-security-auditor/`
    - Identify when project-specific knowledge is unavailable
 
 2. **Provide Notice**:
@@ -113,7 +116,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/privacy-security-auditor/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/privacy-security-auditor/` does NOT exist
 
 2. **Remind User**:
 
@@ -162,7 +165,7 @@ Checking for project-level knowledge...
 #### Step 3: Load Project-Level Knowledge (if exists)
 
 ```text
-Loading project-level privacy knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/agents-global/privacy-security-auditor/
+Loading project-level privacy knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/agents/privacy-security-auditor/
 - Privacy Policies: [loaded/not found]
 - Project PII Patterns: [loaded/not found]
 - Compliance Requirements: [loaded/not found]
@@ -240,7 +243,7 @@ fi
 
 ```bash
 # Look for project privacy-security-auditor directory
-if [ -d "${CLAUDE_CONFIG_DIR}/agents-global/privacy-security-auditor" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/project/agents/privacy-security-auditor" ]; then
   PROJECT_PRIVACY_CONFIG=true
 else
   PROJECT_PRIVACY_CONFIG=false
@@ -796,7 +799,7 @@ The privacy-security-auditor agent coordinates with:
 **Check**:
 
 - Is there a `.git` directory?
-- Is `${CLAUDE_CONFIG_DIR}/agents-global/privacy-security-auditor/` present?
+- Is `${CLAUDE_CONFIG_DIR}/project/agents/privacy-security-auditor/` present?
 - Run from project root, not subdirectory
 
 ### Agent not using user privacy standards
@@ -875,7 +878,7 @@ The privacy-security-auditor agent coordinates with:
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/privacy-security-auditor/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/privacy-security-auditor/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/privacy-security-auditor/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/privacy-security-auditor/privacy-security-auditor.md`
 
 **Coordinates with**: compliance-officer, security-engineer, data-engineer, legal-counsel, risk-manager

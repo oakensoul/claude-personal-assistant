@@ -11,6 +11,8 @@ args:
     description: GitHub issue number to generate test plan for (optional)
     required: false
     type: number
+version: 1.0.0
+category: testing
 ---
 
 # Test Plan Generation Command

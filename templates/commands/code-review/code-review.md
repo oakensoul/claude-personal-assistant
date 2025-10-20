@@ -1,6 +1,7 @@
 ---
 name: code-review
 description: Comprehensive code quality review for security, performance, and maintainability
+category: analysis
 model: sonnet
 args:
   scope:
@@ -9,6 +10,7 @@ args:
   focus:
     description: Review focus - "security", "performance", "quality", "all" (default)
     required: false
+version: 1.0.0
 ---
 
 # Code Review - Comprehensive Code Quality Analysis

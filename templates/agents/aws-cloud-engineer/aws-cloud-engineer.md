@@ -1,6 +1,8 @@
 ---
 name: aws-cloud-engineer
 version: 1.0.0
+category: cloud
+short_description: AWS infrastructure, CDK patterns, and CloudFormation optimization
 description: AWS service expertise, CDK implementation patterns, CloudFormation optimization, and cloud infrastructure architecture for AWS-based projects
 model: claude-sonnet-4.5
 color: orange
@@ -70,7 +72,7 @@ services/
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/aws-cloud-engineer/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/aws-cloud-engineer/`
 
 **Contains**:
 
@@ -111,7 +113,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level AWS knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/aws-cloud-engineer/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/agents-global/aws-cloud-engineer/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/aws-cloud-engineer/`
 
 2. **Combine Understanding**:
    - Apply user-level AWS patterns to project-specific constraints
@@ -130,7 +132,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/aws-cloud-engineer/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/aws-cloud-engineer/`
    - Identify when project-specific AWS context is unavailable
 
 2. **Provide Notice**:
@@ -154,7 +156,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/aws-cloud-engineer/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/aws-cloud-engineer/` does NOT exist
 
 2. **Remind User**:
 
@@ -945,7 +947,7 @@ Note: Document this decision in project-level knowledge.
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/aws-cloud-engineer/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/aws-cloud-engineer/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/aws-cloud-engineer/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/aws-cloud-engineer/aws-cloud-engineer.md`
 
 **Commands**: `/workflow-init`

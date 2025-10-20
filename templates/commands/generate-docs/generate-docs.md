@@ -18,6 +18,8 @@ args:
   --audience:
     description: Target audience (developers, customers, partners)
     required: false
+version: 1.0.0
+category: documentation
 ---
 
 # Generate Documentation Command

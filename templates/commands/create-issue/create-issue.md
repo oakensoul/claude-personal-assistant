@@ -2,6 +2,8 @@
 name: create-issue
 description: Creates local issue draft with standardized formatting for later publishing to GitHub
 args: {}
+version: 1.0.0
+category: workflow
 ---
 
 # Create Issue Command

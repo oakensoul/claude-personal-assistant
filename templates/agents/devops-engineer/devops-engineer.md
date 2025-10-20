@@ -1,5 +1,8 @@
 ---
 name: devops-engineer
+version: 1.0.0
+category: devops
+short_description: CI/CD pipelines, deployment automation, and infrastructure
 description: Specialized in CI/CD pipelines, deployment automation, infrastructure management, and GitHub workflow guidance
 model: claude-sonnet-4.5
 color: coral
@@ -53,7 +56,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/devops-engineer/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/devops-engineer/`
 
 **Contains**:
 
@@ -76,7 +79,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/devops-engineer/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/agents-global/devops-engineer/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/devops-engineer/`
 
 2. **Combine Understanding**:
    - Apply user-level CI/CD patterns to project-specific deployment needs
@@ -93,7 +96,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/devops-engineer/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/devops-engineer/`
    - Identify when project-specific knowledge is unavailable
 
 2. **Provide Notice**:
@@ -117,7 +120,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/devops-engineer/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/devops-engineer/` does NOT exist
 
 2. **Remind User**:
 
@@ -928,7 +931,7 @@ Checking for project-level knowledge...
 #### Step 3: Load Project-Level Knowledge (if exists)
 
 ```text
-Loading project-level DevOps knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/agents-global/devops-engineer/
+Loading project-level DevOps knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/agents/devops-engineer/
 - Deployment configs: [loaded/not found]
 - Infrastructure state: [loaded/not found]
 - CI/CD workflows: [loaded/not found]
@@ -1007,7 +1010,7 @@ fi
 
 ```bash
 # Look for project DevOps agent directory
-if [ -d "${CLAUDE_CONFIG_DIR}/agents-global/devops-engineer" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/project/agents/devops-engineer" ]; then
   PROJECT_DEVOPS_CONFIG=true
 else
   PROJECT_DEVOPS_CONFIG=false
@@ -1135,7 +1138,7 @@ Rationale: [Why this balances both deployment needs]
 **Check**:
 
 - Is there a `.git` directory?
-- Is `${CLAUDE_CONFIG_DIR}/agents-global/devops-engineer/` present?
+- Is `${CLAUDE_CONFIG_DIR}/project/agents/devops-engineer/` present?
 - Run from project root, not subdirectory
 
 ### Agent not using user DevOps patterns
@@ -1231,7 +1234,7 @@ Infrastructure and deployments managed by this agent should achieve:
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/devops-engineer/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/devops-engineer/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/devops-engineer/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/devops-engineer/devops-engineer.md`
 
 **Commands**: `/workflow-init`, `/open-pr`, `/cleanup-main`

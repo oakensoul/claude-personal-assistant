@@ -12,6 +12,8 @@ args:
   comprehensive:
     description: Run comprehensive cross-platform audit with all scopes and frameworks
     required: false
+version: 1.0.0
+category: analysis
 ---
 
 # Security Audit & Vulnerability Assessment

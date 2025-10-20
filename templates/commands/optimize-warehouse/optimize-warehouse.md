@@ -3,6 +3,8 @@ name: optimize-warehouse
 description: Analyze Snowflake warehouse utilization and provide right-sizing, auto-suspend, and multi-cluster recommendations
 model: sonnet
 type: global
+version: 1.0.0
+category: analysis
 ---
 
 # Warehouse Optimization & Right-Sizing

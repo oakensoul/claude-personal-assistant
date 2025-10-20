@@ -3,6 +3,8 @@ name: workflow-init
 description: Initialize workflow configuration for a project with interactive setup
 model: sonnet[1m+]
 args: {}
+version: 1.0.0
+category: project
 ---
 
 # Workflow Init Command
@@ -330,7 +332,7 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 
        📋 Part 2: This Project's Specific Requirements
        ===============================================
-       Location: {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/
+       Location: {project-path}/${CLAUDE_CONFIG_DIR}/project/agents/product-manager/
        Scope: Applies ONLY to this project
 
        ```
@@ -364,15 +366,15 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 
      - Ask: "THIS PROJECT'S specific PM instructions (optional):"
        - Example: "AIDA uses AGPL-3.0 license, semantic versioning required, developer experience is paramount"
-       - Display: "Creating project-specific PM config at {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/"
-       - Create `{project-path}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/index.md`
+       - Display: "Creating project-specific PM config at {project-path}/${CLAUDE_CONFIG_DIR}/project/agents/product-manager/"
+       - Create `{project-path}/${CLAUDE_CONFIG_DIR}/project/agents/product-manager/index.md`
 
      - Display:
 
        ```
        ✓ Product Manager configured:
          - Global agent: ~/${CLAUDE_CONFIG_DIR}/agents/product-manager/ (reusable across all projects)
-         - Project context: {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/product-manager/ (this project only)
+         - Project context: {project-path}/${CLAUDE_CONFIG_DIR}/project/agents/product-manager/ (this project only)
        ```
 
 10. **Configure Tech Lead** (NEW):
@@ -492,7 +494,7 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 
         ⚙️  Part 2: This Project's Specific Requirements
         ===============================================
-        Location: {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/tech-lead/
+        Location: {project-path}/${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/
         Scope: Applies ONLY to this project
 
         ```
@@ -504,15 +506,15 @@ Interactively initialize workflow configuration for a project. Creates `${CLAUDE
 
       - Ask: "THIS PROJECT'S specific technical guidelines (optional):"
         - Example: "All shell scripts must pass shellcheck, use bash 3.2+ for macOS compatibility, container-based testing required"
-        - Display: "Creating project-specific Tech Lead config at {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/tech-lead/"
-        - Create `{project-path}/${CLAUDE_CONFIG_DIR}/agents-global/tech-lead/index.md`
+        - Display: "Creating project-specific Tech Lead config at {project-path}/${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/"
+        - Create `{project-path}/${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/index.md`
 
       - Display:
 
         ```
         ✓ Tech Lead configured:
           - Global agent: ~/${CLAUDE_CONFIG_DIR}/agents/tech-lead/ (reusable across all projects)
-          - Project context: {project-path}/${CLAUDE_CONFIG_DIR}/agents-global/tech-lead/ (this project only)
+          - Project context: {project-path}/${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/ (this project only)
         ```
 
 11. **Configure Expert Analysis** (NEW):

@@ -3,6 +3,8 @@ name: metric-audit
 description: Audit metric definitions for consistency across dashboards, validate semantic layer alignment, and detect metric sprawl
 model: sonnet
 type: global
+version: 1.0.0
+category: analysis
 ---
 
 # Metric Consistency Audit

@@ -1,6 +1,9 @@
 ---
 name: shell-systems-ux-designer
 description: CLI UX design expert for command ergonomics, terminal interaction patterns, help documentation, and intuitive shell experiences across all projects
+short_description: CLI UX design and terminal interaction patterns
+version: "1.0.0"
+category: shell
 model: claude-sonnet-4.5
 color: cyan
 temperature: 0.7
@@ -51,7 +54,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/shell-systems-ux-designer/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/shell-systems-ux-designer/`
 
 **Contains**:
 
@@ -75,7 +78,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/shell-systems-ux-designer/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/agents-global/shell-systems-ux-designer/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/shell-systems-ux-designer/`
 
 2. **Combine Understanding**:
    - Apply universal CLI UX principles to project-specific requirements
@@ -92,7 +95,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/shell-systems-ux-designer/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/shell-systems-ux-designer/`
    - Identify when project-specific CLI patterns are unavailable
 
 2. **Provide Notice**:
@@ -116,7 +119,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/agents-global/shell-systems-ux-designer/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/shell-systems-ux-designer/` does NOT exist
 
 2. **Remind User**:
 
@@ -165,7 +168,7 @@ Checking for project-level knowledge...
 #### Step 3: Load Project-Level Knowledge (if exists)
 
 ```text
-Loading project-level CLI UX knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/agents-global/shell-systems-ux-designer/
+Loading project-level CLI UX knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/agents/shell-systems-ux-designer/
 - Command Patterns: [loaded/not found]
 - Help Style Guide: [loaded/not found]
 - Error Templates: [loaded/not found]
@@ -251,7 +254,7 @@ fi
 
 ```bash
 # Look for project CLI UX agent directory
-if [ -d "${CLAUDE_CONFIG_DIR}/agents-global/shell-systems-ux-designer" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/project/agents/shell-systems-ux-designer" ]; then
   PROJECT_CLI_CONFIG=true
 else
   PROJECT_CLI_CONFIG=false
@@ -941,7 +944,7 @@ CLI experiences designed by this agent should achieve:
 **Check**:
 
 - Is there a `.git` directory?
-- Is `${CLAUDE_CONFIG_DIR}/agents-global/shell-systems-ux-designer/` present?
+- Is `${CLAUDE_CONFIG_DIR}/project/agents/shell-systems-ux-designer/` present?
 - Run from project root, not subdirectory
 
 ### Agent not using user patterns
@@ -997,7 +1000,7 @@ CLI experiences designed by this agent should achieve:
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/shell-systems-ux-designer/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/agents-global/shell-systems-ux-designer/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/shell-systems-ux-designer/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/shell-systems-ux-designer/shell-systems-ux-designer.md`
 
 **Commands**: `/workflow-init`, `/cli-design` (if exists)

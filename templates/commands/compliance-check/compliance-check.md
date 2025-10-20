@@ -16,6 +16,8 @@ args:
     description: Run comprehensive audit with full DSR testing and penetration checks
     required: false
     default: false
+version: 1.0.0
+category: analysis
 ---
 
 # Compliance Validation & Audit Command

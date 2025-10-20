@@ -1,12 +1,12 @@
 ---
-
 name: data-engineer
 version: 1.0.0
+category: data
+short_description: ELT pipelines, dbt, orchestration, and data quality frameworks
 description: Data engineering expertise covering orchestration, ingestion, data quality, dbt, and ELT pipeline optimization
 model: claude-sonnet-4.5
 color: green
 temperature: 0.7
-
 ---
 
 # Data Engineer
@@ -61,7 +61,7 @@ Project-specific pipeline implementation:
   - `decisions/` - Build schedules, materialization strategies, tool selection
   - `reference/` - dbt commands, orchestrator CLI, anti-patterns
 
-- **Project-level**: `{project}/.claude/agents-global/data-engineer/index.md`
+- **Project-level**: `{project}/.claude/project/agents/data-engineer/index.md`
   - Pipeline architecture and orchestration
   - Source systems catalog
   - dbt project configuration
@@ -155,7 +155,7 @@ The data-engineer agent automatically detects the project context from:
 
 **Project Configuration**:
 
-- Checks for `{project}/.claude/agents-global/data-engineer/index.md`
+- Checks for `{project}/.claude/project/agents/data-engineer/index.md`
 - Loads project-specific pipeline architecture if present
 - Uses generic data engineering patterns if project config missing
 

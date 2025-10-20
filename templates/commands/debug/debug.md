@@ -3,6 +3,8 @@ name: debug
 description: Debug production dbt/SQL failures with intelligent agent orchestration and automated postmortem generation
 model: sonnet[1m+]
 type: global
+version: 1.0.0
+category: workflow
 ---
 
 # Debug Production Failures

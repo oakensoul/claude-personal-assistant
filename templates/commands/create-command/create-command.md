@@ -5,6 +5,8 @@ args:
   description:
     description: Initial command description and purpose (optional - will prompt if not provided)
     required: false
+version: 1.0.0
+category: meta
 ---
 
 # Create Command

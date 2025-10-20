@@ -6,6 +6,8 @@ args:
     description: "Comma-separated list of GitHub usernames to review the PR (overrides workflow-config.json)"
     required: false
     type: string
+version: 1.0.0
+category: workflow
 ---
 
 # Open Pull Request Command

@@ -11,6 +11,8 @@ args:
     description: "Automatically commit changes after each task completion (default: true)"
     required: false
     type: boolean
+version: 1.0.0
+category: workflow
 ---
 
 # Implementation Orchestration Command

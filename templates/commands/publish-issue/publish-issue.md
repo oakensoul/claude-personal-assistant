@@ -5,6 +5,8 @@ args:
   slugs:
     description: "One or more slugs to publish, or --milestone X.Y, or --all"
     required: false
+version: 1.0.0
+category: workflow
 ---
 
 # Publish Issue Command

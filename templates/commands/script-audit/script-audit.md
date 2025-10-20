@@ -9,6 +9,8 @@ args:
   check:
     description: Check type - "compatibility", "security", "style", "all" (default)
     required: false
+version: 1.0.0
+category: analysis
 ---
 
 # Shell Script Audit Command

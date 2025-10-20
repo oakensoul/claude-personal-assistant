@@ -3,6 +3,8 @@ name: expert-analysis
 description: Run multi-agent expert analysis on current issue to generate PRD and technical specifications
 model: sonnet[1m]
 args: {}
+version: 1.0.0
+category: analysis
 ---
 
 # Expert Analysis Command

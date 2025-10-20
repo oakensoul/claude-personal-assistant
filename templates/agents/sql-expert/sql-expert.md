@@ -1,12 +1,12 @@
 ---
-
 name: sql-expert
-version: 1.0.0
 description: SQL query optimization, platform-specific best practices, and data warehouse expertise across multiple SQL platforms
+short_description: SQL query optimization and data warehouse expertise
+version: "1.0.0"
+category: data
 model: claude-sonnet-4.5
 color: blue
 temperature: 0.7
-
 ---
 
 # SQL Expert
@@ -57,7 +57,7 @@ Project-specific SQL standards and platform configuration:
   - `decisions/` - When to use which approach
   - `reference/` - SQL syntax reference, optimization cookbook
 
-- **Project-level**: `{project}/.claude/agents-global/sql-expert/index.md`
+- **Project-level**: `{project}/.claude/project/agents/sql-expert/index.md`
   - Primary platform declaration (Snowflake, PostgreSQL, etc.)
   - SQL standards and conventions
   - Performance benchmarks and SLAs
@@ -116,7 +116,7 @@ The sql-expert agent automatically detects the SQL platform and project context 
 
 **Project Configuration**:
 
-- Checks for `{project}/.claude/agents-global/sql-expert/index.md`
+- Checks for `{project}/.claude/project/agents/sql-expert/index.md`
 - Loads project-specific SQL standards if present
 - Uses generic SQL knowledge if project config missing
 

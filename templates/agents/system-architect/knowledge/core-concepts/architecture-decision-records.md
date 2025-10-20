@@ -278,7 +278,7 @@ Use prefixes for categories: `ADR-SOFT-001`, `ADR-DATA-001`, `ADR-INFRA-001`
 ### File Structure
 
 ```text
-.claude/agents-global/system-architect/decisions/
+.claude/project/agents/system-architect/decisions/
 ├── README.md (index of all ADRs)
 ├── adr-001-technology-stack.md
 ├── adr-002-authentication-strategy.md

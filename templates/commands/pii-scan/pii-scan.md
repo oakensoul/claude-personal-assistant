@@ -10,6 +10,8 @@ args:
   domain:
     description: Business domain filter (finance, contests, partners, shared)
     required: false
+version: 1.0.0
+category: analysis
 ---
 
 # PII Detection & Data Classification
