@@ -778,6 +778,11 @@ EOF
 # =============================================================================
 
 @test "migration: v0.1.6 flat structure converts to namespace" {
+  # Skip on bash < 4.0 (associative arrays not supported)
+  if [[ "${BASH_VERSINFO[0]}" -lt 4 ]]; then
+    skip "Requires bash 4.0+ for associative arrays (current: ${BASH_VERSION})"
+  fi
+
   section "Testing full v0.1.6 to v0.2.0 migration"
 
   # Setup complete v0.1.6 installation
