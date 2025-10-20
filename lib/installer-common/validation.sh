@@ -236,12 +236,14 @@ validate_dependencies() {
     fi
 
     # Check for required commands
-    local required_commands=("git" "mkdir" "chmod" "ln" "rsync" "date" "mv" "find" "realpath")
+    local required_commands=("git" "mkdir" "chmod" "ln" "rsync" "date" "mv" "find" "realpath" "jq")
     for cmd in "${required_commands[@]}"; do
         if ! command -v "$cmd" &> /dev/null; then
             print_message "error" "Required command not found: $cmd"
             if [[ "$cmd" == "realpath" ]]; then
                 print_message "info" "Install realpath on macOS: brew install coreutils"
+            elif [[ "$cmd" == "jq" ]]; then
+                print_message "info" "Install jq: brew install jq (macOS) or apt-get install jq (Debian/Ubuntu)"
             fi
             errors=$((errors + 1))
         fi
