@@ -170,7 +170,7 @@ teardown() {
   run display_summary "normal" "$aida_dir" "$claude_dir" "1.2.3"
 
   [ "$status" -eq 0 ]
-  [[ "$output" =~ "1.2.3" ]]
+  [[ "$output" =~ 1.2.3 ]]
 }
 
 @test "display_summary shows normal mode" {
@@ -301,8 +301,8 @@ Step 2: Try again"
   run display_upgrade_summary "1.0.0" "2.0.0" 5
 
   [ "$status" -eq 0 ]
-  [[ "$output" =~ "1.0.0" ]]
-  [[ "$output" =~ "2.0.0" ]]
+  [[ "$output" =~ 1.0.0 ]]
+  [[ "$output" =~ 2.0.0 ]]
   [[ "$output" =~ "UPGRADE COMPLETE" ]]
 }
 

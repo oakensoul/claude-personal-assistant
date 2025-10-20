@@ -501,8 +501,10 @@ teardown() {
 
   generate_claude_md "$output" "JARVIS" "professional" "0.1.6" >/dev/null
 
-  grep -q "~/.aida/" "$output"
-  grep -q "~/.claude/" "$output"
+  # shellcheck disable=SC2088  # We're searching for literal tilde strings, not paths
+  grep -qF '~/.aida/' "$output"
+  # shellcheck disable=SC2088
+  grep -qF '~/.claude/' "$output"
 }
 
 @test "generate_claude_md includes version" {

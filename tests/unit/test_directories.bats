@@ -459,7 +459,7 @@ teardown() {
   run get_symlink_target "$link"
 
   [ "$status" -eq 0 ]
-  [[ "$output" =~ "$target" ]]
+  [[ "$output" =~ $target ]]
 }
 
 @test "get_symlink_target fails if path is not a symlink" {

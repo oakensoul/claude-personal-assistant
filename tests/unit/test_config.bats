@@ -129,5 +129,3 @@ teardown() {
   [ "$status" -eq 1 ]
   [[ "$output" =~ "Missing required arguments for" ]]
 }
-
-

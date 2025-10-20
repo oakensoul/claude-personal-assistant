@@ -123,7 +123,7 @@ setup() {
 
   [ "$status" -eq 0 ]
   [[ "$output" =~ "Invalid email" ]]
-  [[ "$output" =~ "user@example.com" ]]
+  [[ "$output" =~ user@example.com ]]
 }
 
 #######################################
