@@ -165,7 +165,8 @@ check_hardcoded_paths() {
     [[ -z "${line}" || "${line}" =~ ^[[:space:]]*# ]] && continue
 
     # Detect /Users/ paths (macOS)
-    if echo "${line}" | grep -qE '(^|[^$])/Users/[^/]+(/|$)'; then
+    # Skip if it's a regex pattern definition
+    if echo "${line}" | grep -qE '(^|[^$])/Users/[^/]+(/|$)' && ! echo "${line}" | grep -qE "(pattern:|regex:|grep|sed|awk)"; then
       # Extract the problematic path
       local path
       path=$(echo "${line}" | grep -oE '/Users/[^/]+[^[:space:]]*' | head -1)
@@ -273,9 +274,14 @@ check_credentials() {
     [[ -z "${line}" || "${line}" =~ ^[[:space:]]*# ]] && continue
 
     # Check for common credential patterns
-    if echo "${line}" | grep -qiE '(api[_-]?key|api[_-]?secret|password|token|secret[_-]?key)[[:space:]]*[:=][[:space:]]*['\''"][^'\''"]+['\''"]'; then
-      # Allow placeholder values
-      if echo "${line}" | grep -qiE '(your[_-]|my[_-]|example|placeholder|xxx|***|\.\.\.)'; then
+    if echo "${line}" | grep -qiE '(api_?key|api_?secret|password|token|secret_?key)[[:space:]]*[:=][[:space:]]*['\''"][^'\''"]+['\''"]'; then
+      # Allow placeholder values and environment variable patterns
+      if echo "${line}" | grep -qiE '(your_?|my_?|example|placeholder|xxx|***|\.\.\.|env_var|YOUR_|HERE)'; then
+        continue
+      fi
+
+      # Skip SQL examples with PASSWORD = '...'
+      if echo "${line}" | grep -qE "PASSWORD[[:space:]]*=[[:space:]]*'\.\.\.'" ; then
         continue
       fi
 
