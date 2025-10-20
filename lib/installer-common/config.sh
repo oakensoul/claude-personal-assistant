@@ -106,12 +106,26 @@ write_user_config() {
     local timestamp
     timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
+    # For upgrades, preserve existing user customizations
+    local existing_name="$assistant_name"
+    local existing_personality="$personality"
+    local existing_installed_at="$timestamp"
+
+    if [[ -f "$config_file" ]] && jq empty "$config_file" 2>/dev/null; then
+        # Config exists and is valid JSON - preserve user settings
+        existing_name=$(jq -r '.user.assistant_name // .assistant_name // "'"$assistant_name"'"' "$config_file")
+        existing_personality=$(jq -r '.user.personality // .personality // "'"$personality"'"' "$config_file")
+        existing_installed_at=$(jq -r '.installed_at // "'"$timestamp"'"' "$config_file")
+
+        print_message "info" "Preserving existing configuration: ${existing_name} (${existing_personality})"
+    fi
+
     # Create config JSON
     cat > "$config_file" <<EOF
 {
   "version": "${version}",
   "install_mode": "${install_mode}",
-  "installed_at": "${timestamp}",
+  "installed_at": "${existing_installed_at}",
   "updated_at": "${timestamp}",
   "paths": {
     "aida_home": "${aida_dir}",
@@ -119,8 +133,8 @@ write_user_config() {
     "home": "${HOME}"
   },
   "user": {
-    "assistant_name": "${assistant_name}",
-    "personality": "${personality}"
+    "assistant_name": "${existing_name}",
+    "personality": "${existing_personality}"
   },
   "deprecation": {
     "include_deprecated": false
