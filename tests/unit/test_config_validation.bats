@@ -21,10 +21,7 @@ setup() {
   export VALIDATOR="${BATS_TEST_DIRNAME}/../../lib/installer-common/config-validator.sh"
   export FIXTURES="${BATS_TEST_DIRNAME}/../fixtures/configs"
 
-  # Ensure validator is executable (skip if already executable, e.g., in Docker volumes)
-  if [[ ! -x "$VALIDATOR" ]]; then
-    chmod +x "$VALIDATOR" 2>/dev/null || true
-  fi
+  # Validator is executable via git (755) - no chmod needed
 }
 
 teardown() {
