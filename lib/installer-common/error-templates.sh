@@ -48,9 +48,9 @@ show_github_fix_suggestion() {
     fi
 
     echo ""
-    echo "$(color_blue '═══════════════════════════════════════')"
-    echo "$(color_blue 'GitHub Configuration Fix Suggestions')"
-    echo "$(color_blue '═══════════════════════════════════════')"
+    color_blue '═══════════════════════════════════════'
+    color_blue 'GitHub Configuration Fix Suggestions'
+    color_blue '═══════════════════════════════════════'
     echo ""
 
     # Show auto-detected values if available
@@ -63,13 +63,14 @@ show_github_fix_suggestion() {
         confidence=$(echo "$detected_info" | jq -r '.confidence // empty' 2>/dev/null || true)
 
         if [[ "$detected_provider" == "github" ]] && [[ -n "$detected_owner" ]] && [[ -n "$detected_repo" ]]; then
-            echo "$(color_green '✓') Auto-detected from git remote:"
+            echo -n "$(color_green '✓') "
+            echo "Auto-detected from git remote:"
             echo "  Remote URL: ${remote_url}"
             echo "  Owner:      ${detected_owner}"
             echo "  Repo:       ${detected_repo}"
             echo "  Confidence: ${confidence}"
             echo ""
-            echo "$(color_green 'Quick fix (copy and paste):')"
+            color_green 'Quick fix (copy and paste):'
             echo "  Add to ${config_file}:"
             echo ""
             echo "  {"
@@ -84,7 +85,7 @@ show_github_fix_suggestion() {
     fi
 
     # Manual fix instructions
-    echo "$(color_blue 'Manual configuration:')"
+    color_blue 'Manual configuration:'
     echo "  1. Find your GitHub repository"
     echo "  2. Get the owner (username or organization)"
     echo "  3. Get the repository name"
@@ -101,7 +102,7 @@ show_github_fix_suggestion() {
 
     # GitHub Enterprise instructions (if relevant)
     if [[ "$missing_fields" == *"enterprise_url"* ]]; then
-        echo "$(color_yellow 'For GitHub Enterprise:')"
+        color_yellow 'For GitHub Enterprise:'
         echo "  {"
         echo "    \"vcs\": {"
         echo "      \"provider\": \"github\","
@@ -115,7 +116,8 @@ show_github_fix_suggestion() {
         echo ""
     fi
 
-    echo "$(color_blue 'ℹ') Documentation: docs/configuration/schema-reference.md#github"
+    echo -n "$(color_blue 'ℹ') "
+    echo "Documentation: docs/configuration/schema-reference.md#github"
     echo ""
 }
 
@@ -140,9 +142,9 @@ show_gitlab_fix_suggestion() {
     fi
 
     echo ""
-    echo "$(color_blue '═══════════════════════════════════════')"
-    echo "$(color_blue 'GitLab Configuration Fix Suggestions')"
-    echo "$(color_blue '═══════════════════════════════════════')"
+    color_blue '═══════════════════════════════════════'
+    color_blue 'GitLab Configuration Fix Suggestions'
+    color_blue '═══════════════════════════════════════'
     echo ""
 
     # Show auto-detected values if available
@@ -155,13 +157,14 @@ show_gitlab_fix_suggestion() {
         confidence=$(echo "$detected_info" | jq -r '.confidence // empty' 2>/dev/null || true)
 
         if [[ "$detected_provider" == "gitlab" ]] && [[ -n "$detected_owner" ]] && [[ -n "$detected_repo" ]]; then
-            echo "$(color_green '✓') Auto-detected from git remote:"
+            echo -n "$(color_green '✓') "
+            echo "Auto-detected from git remote:"
             echo "  Remote URL: ${remote_url}"
             echo "  Owner:      ${detected_owner}"
             echo "  Repo:       ${detected_repo}"
             echo "  Confidence: ${confidence}"
             echo ""
-            echo "$(color_green 'Quick fix (copy and paste):')"
+            color_green 'Quick fix (copy and paste):'
             echo "  Add to ${config_file}:"
             echo ""
             echo "  {"
@@ -175,13 +178,14 @@ show_gitlab_fix_suggestion() {
             echo "    }"
             echo "  }"
             echo ""
-            echo "$(color_yellow '⚠') Note: Update project_id with numeric ID if known"
+            echo -n "$(color_yellow '⚠') "
+            echo "Note: Update project_id with numeric ID if known"
             echo ""
         fi
     fi
 
     # Manual fix instructions
-    echo "$(color_blue 'Manual configuration:')"
+    color_blue 'Manual configuration:'
     echo "  1. Go to your GitLab project"
     echo "  2. Get the owner (username or group)"
     echo "  3. Get the repository name"
@@ -202,7 +206,7 @@ show_gitlab_fix_suggestion() {
 
     # Self-hosted GitLab instructions (if relevant)
     if [[ "$missing_fields" == *"self_hosted_url"* ]]; then
-        echo "$(color_yellow 'For self-hosted GitLab:')"
+        color_yellow 'For self-hosted GitLab:'
         echo "  {"
         echo "    \"vcs\": {"
         echo "      \"gitlab\": {"
@@ -213,7 +217,8 @@ show_gitlab_fix_suggestion() {
         echo ""
     fi
 
-    echo "$(color_blue 'ℹ') Documentation: docs/configuration/schema-reference.md#gitlab"
+    echo -n "$(color_blue 'ℹ') "
+    echo "Documentation: docs/configuration/schema-reference.md#gitlab"
     echo ""
 }
 
@@ -238,9 +243,9 @@ show_bitbucket_fix_suggestion() {
     fi
 
     echo ""
-    echo "$(color_blue '═══════════════════════════════════════')"
-    echo "$(color_blue 'Bitbucket Configuration Fix Suggestions')"
-    echo "$(color_blue '═══════════════════════════════════════')"
+    color_blue '═══════════════════════════════════════'
+    color_blue 'Bitbucket Configuration Fix Suggestions'
+    color_blue '═══════════════════════════════════════'
     echo ""
 
     # Show auto-detected values if available
@@ -253,13 +258,14 @@ show_bitbucket_fix_suggestion() {
         confidence=$(echo "$detected_info" | jq -r '.confidence // empty' 2>/dev/null || true)
 
         if [[ "$detected_provider" == "bitbucket" ]] && [[ -n "$workspace" ]] && [[ -n "$repo_slug" ]]; then
-            echo "$(color_green '✓') Auto-detected from git remote:"
+            echo -n "$(color_green '✓') "
+            echo "Auto-detected from git remote:"
             echo "  Remote URL:  ${remote_url}"
             echo "  Workspace:   ${workspace}"
             echo "  Repo slug:   ${repo_slug}"
             echo "  Confidence:  ${confidence}"
             echo ""
-            echo "$(color_green 'Quick fix (copy and paste):')"
+            color_green 'Quick fix (copy and paste):'
             echo "  Add to ${config_file}:"
             echo ""
             echo "  {"
@@ -276,7 +282,7 @@ show_bitbucket_fix_suggestion() {
     fi
 
     # Manual fix instructions
-    echo "$(color_blue 'Manual configuration:')"
+    color_blue 'Manual configuration:'
     echo "  1. Go to your Bitbucket repository"
     echo "  2. Get the workspace name (from URL or settings)"
     echo "  3. Get the repository slug (lowercase repo name with hyphens)"
@@ -293,7 +299,8 @@ show_bitbucket_fix_suggestion() {
     echo "  }"
     echo ""
 
-    echo "$(color_blue 'ℹ') Documentation: docs/configuration/schema-reference.md#bitbucket"
+    echo -n "$(color_blue 'ℹ') "
+    echo "Documentation: docs/configuration/schema-reference.md#bitbucket"
     echo ""
 }
 
@@ -310,12 +317,12 @@ show_jira_fix_suggestion() {
     local config_file="$2"
 
     echo ""
-    echo "$(color_blue '═══════════════════════════════════════')"
-    echo "$(color_blue 'Jira Configuration Fix Suggestions')"
-    echo "$(color_blue '═══════════════════════════════════════')"
+    color_blue '═══════════════════════════════════════'
+    color_blue 'Jira Configuration Fix Suggestions'
+    color_blue '═══════════════════════════════════════'
     echo ""
 
-    echo "$(color_blue 'Manual configuration:')"
+    color_blue 'Manual configuration:'
     echo "  1. Go to your Jira instance"
     echo "  2. Get the base URL (e.g., https://company.atlassian.net)"
     echo "  3. Get your project key (uppercase, 1-10 characters)"
@@ -332,13 +339,14 @@ show_jira_fix_suggestion() {
     echo "  }"
     echo ""
 
-    echo "$(color_yellow 'Finding your project key:')"
+    color_yellow 'Finding your project key:'
     echo "  - Go to your project in Jira"
     echo "  - Look at the issue prefix (e.g., PROJ-123 → project key is PROJ)"
     echo "  - Or check Project Settings → Details"
     echo ""
 
-    echo "$(color_blue 'ℹ') Documentation: docs/configuration/schema-reference.md#jira"
+    echo -n "$(color_blue 'ℹ') "
+    echo "Documentation: docs/configuration/schema-reference.md#jira"
     echo ""
 }
 
@@ -355,12 +363,12 @@ show_linear_fix_suggestion() {
     local config_file="$2"
 
     echo ""
-    echo "$(color_blue '═══════════════════════════════════════')"
-    echo "$(color_blue 'Linear Configuration Fix Suggestions')"
-    echo "$(color_blue '═══════════════════════════════════════')"
+    color_blue '═══════════════════════════════════════'
+    color_blue 'Linear Configuration Fix Suggestions'
+    color_blue '═══════════════════════════════════════'
     echo ""
 
-    echo "$(color_blue 'Manual configuration:')"
+    color_blue 'Manual configuration:'
     echo "  1. Go to your Linear workspace"
     echo "  2. Get the team ID (UUID format)"
     echo "  3. Get the board ID (UUID format)"
@@ -377,13 +385,14 @@ show_linear_fix_suggestion() {
     echo "  }"
     echo ""
 
-    echo "$(color_yellow 'Finding your team and board IDs:')"
+    color_yellow 'Finding your team and board IDs:'
     echo "  - Go to Linear Settings → API"
     echo "  - Or check the URL when viewing your team/board"
     echo "  - Team ID is in the workspace settings"
     echo "  - Board ID is in the project settings"
     echo ""
 
-    echo "$(color_blue 'ℹ') Documentation: docs/configuration/schema-reference.md#linear"
+    echo -n "$(color_blue 'ℹ') "
+    echo "Documentation: docs/configuration/schema-reference.md#linear"
     echo ""
 }
