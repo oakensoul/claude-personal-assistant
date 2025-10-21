@@ -2,17 +2,6 @@
 name: Config System Tests
 
 on:
-  push:
-    branches:
-      - main
-      - 'milestone-v**'
-      - 'feature/**'
-    paths:
-      - 'lib/installer-common/**'
-      - 'lib/aida-config-helper.sh'
-      - 'tests/unit/test_*'
-      - 'tests/integration/test_config_workflow.sh'
-      - '.github/workflows/test-config-system.yml'
   pull_request:
     branches:
       - main
@@ -23,16 +12,7 @@ on:
       - 'tests/unit/test_*'
       - 'tests/integration/test_config_workflow.sh'
       - '.github/workflows/test-config-system.yml'
-
-# Allow manual trigger
   workflow_dispatch:
-
-# Prevent duplicate workflow runs on PR pushes
-# - PR pushes: Share group using head_ref (only latest run completes)
-# - Branch pushes: Unique group per branch using ref_name
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
-  cancel-in-progress: true
 
 jobs:
   test-macos:
