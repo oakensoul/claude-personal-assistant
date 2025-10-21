@@ -76,14 +76,14 @@ teardown() {
   run_installer "normal" "$TEST_DIR"
 
   # Verify config exists
-  assert_file_exists "${TEST_DIR}/.claude/aida-config.json"
+  assert_file_exists "${TEST_DIR}/.claude/config.json"
 
   # Verify valid JSON
-  assert_valid_json_file "${TEST_DIR}/.claude/aida-config.json"
+  assert_valid_json_file "${TEST_DIR}/.claude/config.json"
 
   # Verify has required fields
   local version
-  version=$(jq -r '.version' "${TEST_DIR}/.claude/aida-config.json")
+  version=$(jq -r '.version' "${TEST_DIR}/.claude/config.json")
   [[ -n "$version" ]]
 
   debug "Config file is valid JSON with version: $version"
@@ -229,24 +229,24 @@ EOF
   setup_v0_1_installation "$TEST_DIR"
 
   # Verify old config exists
-  assert_file_exists "${TEST_DIR}/.claude/aida-config.json"
+  assert_file_exists "${TEST_DIR}/.claude/config.json"
 
   local old_version
-  old_version=$(jq -r '.version' "${TEST_DIR}/.claude/aida-config.json")
+  old_version=$(jq -r '.version' "${TEST_DIR}/.claude/config.json")
   debug "Old config version: $old_version"
 
   # Run upgrade
   run_installer "normal" "$TEST_DIR"
 
   # Verify config still exists
-  assert_file_exists "${TEST_DIR}/.claude/aida-config.json"
+  assert_file_exists "${TEST_DIR}/.claude/config.json"
 
   # Verify config is valid JSON
-  assert_valid_json_file "${TEST_DIR}/.claude/aida-config.json"
+  assert_valid_json_file "${TEST_DIR}/.claude/config.json"
 
   # Verify version updated (should be >= 0.2.0 after implementation)
   local new_version
-  new_version=$(jq -r '.version' "${TEST_DIR}/.claude/aida-config.json")
+  new_version=$(jq -r '.version' "${TEST_DIR}/.claude/config.json")
   debug "New config version: $new_version"
 
   # Config should have expected structure
@@ -262,7 +262,7 @@ EOF
   setup_v0_1_installation "$TEST_DIR"
 
   # Modify config with user customization
-  local config="${TEST_DIR}/.claude/aida-config.json"
+  local config="${TEST_DIR}/.claude/config.json"
   jq '.assistant_name = "MY_CUSTOM_NAME"' "$config" > "${config}.tmp"
   mv "${config}.tmp" "$config"
 
@@ -713,7 +713,7 @@ EOF
   # For now, verify dev mode flag works
 
   # Verify config shows dev mode
-  local config="${TEST_DIR}/.claude/aida-config.json"
+  local config="${TEST_DIR}/.claude/config.json"
   if [[ -f "$config" ]]; then
     local mode
     mode=$(jq -r '.mode // .installation_mode // "normal"' "$config")
@@ -851,7 +851,7 @@ EOF
   setup_v0_1_installation "$TEST_DIR"
 
   # Verify old config format
-  local config="${TEST_DIR}/.claude/aida-config.json"
+  local config="${TEST_DIR}/.claude/config.json"
   local old_version
   old_version=$(jq -r '.version' "$config")
   debug "Pre-migration version: $old_version"

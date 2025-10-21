@@ -33,7 +33,7 @@ setup_v0_1_installation() {
     cp -R "${FIXTURES_DIR}/v0.1-installation/.claude/"* "${test_dir}/.claude/" 2>/dev/null || true
   fi
 
-  # Create v0.1.x config file (old format)
+  # Create v0.1.x config file (old format with old filename)
   local config_file="${test_dir}/.claude/aida-config.json"
   cat > "$config_file" <<'EOF'
 {
