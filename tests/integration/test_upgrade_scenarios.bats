@@ -76,14 +76,14 @@ teardown() {
   run_installer "normal" "$TEST_DIR"
 
   # Verify config exists
-  assert_file_exists "${TEST_DIR}/.claude/aida-config.json"
+  assert_file_exists "${TEST_DIR}/.claude/config.json"
 
   # Verify valid JSON
-  assert_valid_json_file "${TEST_DIR}/.claude/aida-config.json"
+  assert_valid_json_file "${TEST_DIR}/.claude/config.json"
 
   # Verify has required fields
   local version
-  version=$(jq -r '.version' "${TEST_DIR}/.claude/aida-config.json")
+  version=$(jq -r '.version' "${TEST_DIR}/.claude/config.json")
   [[ -n "$version" ]]
 
   debug "Config file is valid JSON with version: $version"
@@ -228,25 +228,27 @@ EOF
   # Setup v0.1.x installation
   setup_v0_1_installation "$TEST_DIR"
 
-  # Verify old config exists
-  assert_file_exists "${TEST_DIR}/.claude/aida-config.json"
+  # Verify old config exists (aida-config.json from v0.1.x)
+  local old_config="${TEST_DIR}/.claude/aida-config.json"
+  assert_file_exists "$old_config"
 
   local old_version
-  old_version=$(jq -r '.version' "${TEST_DIR}/.claude/aida-config.json")
+  old_version=$(jq -r '.version' "$old_config")
   debug "Old config version: $old_version"
 
-  # Run upgrade
+  # Run upgrade (should migrate to config.json)
   run_installer "normal" "$TEST_DIR"
 
-  # Verify config still exists
-  assert_file_exists "${TEST_DIR}/.claude/aida-config.json"
+  # Verify new config exists after migration
+  local new_config="${TEST_DIR}/.claude/config.json"
+  assert_file_exists "$new_config"
 
   # Verify config is valid JSON
-  assert_valid_json_file "${TEST_DIR}/.claude/aida-config.json"
+  assert_valid_json_file "$new_config"
 
   # Verify version updated (should be >= 0.2.0 after implementation)
   local new_version
-  new_version=$(jq -r '.version' "${TEST_DIR}/.claude/aida-config.json")
+  new_version=$(jq -r '.version' "$new_config")
   debug "New config version: $new_version"
 
   # Config should have expected structure
@@ -261,21 +263,22 @@ EOF
   # Setup v0.1.x installation
   setup_v0_1_installation "$TEST_DIR"
 
-  # Modify config with user customization
-  local config="${TEST_DIR}/.claude/aida-config.json"
-  jq '.assistant_name = "MY_CUSTOM_NAME"' "$config" > "${config}.tmp"
-  mv "${config}.tmp" "$config"
+  # Modify OLD config with user customization (aida-config.json from v0.1.x)
+  local old_config="${TEST_DIR}/.claude/aida-config.json"
+  jq '.assistant_name = "MY_CUSTOM_NAME"' "$old_config" > "${old_config}.tmp"
+  mv "${old_config}.tmp" "$old_config"
 
-  # Verify customization
+  # Verify customization in old config
   local custom_name
-  custom_name=$(jq -r '.assistant_name' "$config")
+  custom_name=$(jq -r '.assistant_name' "$old_config")
   [[ "$custom_name" == "MY_CUSTOM_NAME" ]]
 
-  # Run upgrade
+  # Run upgrade (should migrate aida-config.json → config.json)
   run_installer "normal" "$TEST_DIR"
 
-  # Verify customization preserved
-  custom_name=$(jq -r '.assistant_name' "$config")
+  # Verify customization preserved in NEW config after migration
+  local new_config="${TEST_DIR}/.claude/config.json"
+  custom_name=$(jq -r '.assistant_name' "$new_config")
   [[ "$custom_name" == "MY_CUSTOM_NAME" ]]
 
   debug "User config customizations preserved"
@@ -713,7 +716,7 @@ EOF
   # For now, verify dev mode flag works
 
   # Verify config shows dev mode
-  local config="${TEST_DIR}/.claude/aida-config.json"
+  local config="${TEST_DIR}/.claude/config.json"
   if [[ -f "$config" ]]; then
     local mode
     mode=$(jq -r '.mode // .installation_mode // "normal"' "$config")
@@ -850,22 +853,23 @@ EOF
   # Setup v0.1.6 installation with old config
   setup_v0_1_installation "$TEST_DIR"
 
-  # Verify old config format
-  local config="${TEST_DIR}/.claude/aida-config.json"
+  # Verify old config format (aida-config.json from v0.1.x)
+  local old_config="${TEST_DIR}/.claude/aida-config.json"
   local old_version
-  old_version=$(jq -r '.version' "$config")
+  old_version=$(jq -r '.version' "$old_config")
   debug "Pre-migration version: $old_version"
 
-  # Run migration
+  # Run migration (migrates aida-config.json → config.json)
   run_installer "normal" "$TEST_DIR"
 
-  # Verify config migrated
-  assert_file_exists "$config"
-  assert_valid_json_file "$config"
+  # Verify new config exists after migration
+  local new_config="${TEST_DIR}/.claude/config.json"
+  assert_file_exists "$new_config"
+  assert_valid_json_file "$new_config"
 
   # Verify has v0.2.0 structure
   local new_version
-  new_version=$(jq -r '.version' "$config")
+  new_version=$(jq -r '.version' "$new_config")
   debug "Post-migration version: $new_version"
 
   # Config should be valid

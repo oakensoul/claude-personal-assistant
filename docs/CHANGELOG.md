@@ -3,7 +3,7 @@ title: "Changelog"
 description: "Version history and release notes for AIDA framework"
 category: "meta"
 tags: ["changelog", "releases", "versions", "history"]
-last_updated: "2025-10-04"
+last_updated: "2025-10-21"
 status: "published"
 audience: "developers"
 ---
@@ -14,6 +14,99 @@ All notable changes to the AIDA framework will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.2.0] - 2025-10-21
+
+### Added
+
+#### Configuration System (Issue #55)
+
+- **VCS Provider Abstraction**: Complete provider abstraction system supporting GitHub, GitLab, and Bitbucket
+  - Auto-detection from git remote URLs with confidence scoring (high/medium/low)
+  - Provider-specific configuration under unified `vcs.*` namespace
+  - Extensible architecture for adding new VCS providers
+
+- **Three-Tier Validation Framework**:
+  - **Tier 1**: JSON Schema validation (structure, types, required fields)
+  - **Tier 2**: Provider-specific rules validation
+  - **Tier 3**: Connectivity validation stub (opt-in with `--verify-connection`)
+  - User-friendly error messages with auto-detected fix suggestions
+
+- **Safe Configuration Migration**:
+  - Automatic migration from schema v1.0 → v2.0
+  - Backup before migration with timestamped files
+  - Automatic rollback on validation failure
+  - Data integrity verification (no data loss)
+  - Dry-run mode for testing migrations
+  - Migration report generation
+
+- **New Configuration Namespaces**:
+  - `vcs.*` - Version control configuration (replaces `github.*`)
+  - `work_tracker.*` - Issue tracking system configuration
+  - `team.*` - Team configuration (reviewers, members, timezone)
+  - Config version tracking for migration management
+
+- **Security Enhancements**:
+  - Config files have 600 permissions (owner read/write only)
+  - Automatic .gitignore entries for config.json and backups
+  - Pre-commit hook for secret detection in config files
+  - Secrets validated against GitHub, Jira, Linear, Anthropic, AWS patterns
+
+- **Core Libraries** (6 new files, 6,500+ lines):
+  - `lib/installer-common/config-schema.json` (2,800 lines) - JSON Schema Draft-07
+  - `lib/installer-common/vcs-detector.sh` (547 lines) - VCS auto-detection
+  - `lib/installer-common/config-validator.sh` (1,449 lines) - 3-tier validation
+  - `lib/installer-common/config-migration.sh` (1,223 lines) - Safe migration
+  - `lib/installer-common/error-templates.sh` (389 lines) - User-friendly errors
+  - `scripts/validate-config-security.sh` - Pre-commit secret detection
+
+- **Configuration Templates** (5 templates):
+  - Generic template with all options
+  - Simple GitHub configuration
+  - GitHub Enterprise configuration
+  - GitLab + Jira cross-provider example
+  - Bitbucket configuration
+
+- **Comprehensive Documentation** (4 guides, 5,600+ lines):
+  - Schema reference (1,738 lines) - Complete field documentation
+  - Security model (1,700 lines) - Best practices and incident response
+  - VCS provider integration guide (1,550 lines) - Adding new providers
+  - Migration guide (400+ lines) - v1.0 → v2.0 migration
+
+- **Test Suite** (198 unit + 60+ integration tests, 100% passing):
+  - 75 VCS detection tests (GitHub, GitLab, Bitbucket)
+  - 94 validation tests (3-tier framework)
+  - 29 migration tests (workflow, rollback, idempotency)
+  - 7 integration scenarios (end-to-end workflows)
+  - Cross-platform CI/CD (macOS BSD + Linux GNU)
+
+### Changed
+
+- **Config File Location**: Renamed `~/.claude/aida-config.json` → `~/.claude/config.json`
+- **Config Helper Integration**: Updated `lib/aida-config-helper.sh` with auto-migration and VCS detection
+- **Installer Updates**: Added migration check, security permissions, and .gitignore management
+- **Pre-commit Hooks**: Added config security validation hook
+
+### Breaking Changes
+
+- **GitHub Namespace**: `github.*` → `vcs.github.*` (auto-migrated)
+- **Reviewers Location**: `workflow.pull_requests.reviewers` → `team.default_reviewers` (auto-migrated)
+- **Config Version**: Now requires `config_version: "2.0"` field
+
+### Migration
+
+All changes include automatic migration support:
+
+- Migration runs automatically on install/upgrade
+- Backward compatible until v0.4.0
+- Safe migration with backup and rollback
+- See `docs/migration/config-v1-to-v2.md` for details
+
+### Deprecation Timeline
+
+- **v0.2.0**: Auto-migration introduced (backward compatible)
+- **v0.3.0**: Old schema deprecated (warnings shown)
+- **v0.4.0**: Old schema removed (migration required)
 
 ## [0.1.2] - 2025-10-07
 

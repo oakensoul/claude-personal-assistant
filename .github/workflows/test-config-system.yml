@@ -1,0 +1,191 @@
+---
+name: Config System Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+      - 'milestone-v**'
+    paths:
+      - 'lib/installer-common/**'
+      - 'lib/aida-config-helper.sh'
+      - 'tests/unit/test_*'
+      - 'tests/integration/test_config_workflow.sh'
+      - '.github/workflows/test-config-system.yml'
+  workflow_dispatch:
+
+jobs:
+  test-macos:
+    name: "Test on macOS (BSD)"
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          # Install jq (required by config system)
+          brew install jq
+
+          # Install bats (test framework)
+          brew install bats-core
+
+          # Install JSON Schema validator (required for schema validation)
+          npm install -g ajv-cli ajv-formats
+
+      - name: Run unit tests
+        run: |
+          echo "::group::VCS Detection Tests"
+          bats tests/unit/test_vcs_detection.bats
+          echo "::endgroup::"
+
+          echo "::group::Config Validation Tests"
+          bats tests/unit/test_config_validation.bats
+          echo "::endgroup::"
+
+          echo "::group::Migration Tests"
+          bats tests/unit/test_migration.bats
+          echo "::endgroup::"
+
+      - name: Run integration tests
+        run: |
+          echo "::group::Fresh Install Test"
+          ./tests/integration/test_config_workflow.sh fresh-install
+          echo "::endgroup::"
+
+          echo "::group::Upgrade Migration Test"
+          ./tests/integration/test_config_workflow.sh upgrade-migration
+          echo "::endgroup::"
+
+          echo "::group::Migration Rollback Test"
+          ./tests/integration/test_config_workflow.sh migration-rollback
+          echo "::endgroup::"
+
+          echo "::group::VCS Detection Test"
+          ./tests/integration/test_config_workflow.sh vcs-detection
+          echo "::endgroup::"
+
+          echo "::group::Config Permissions Test"
+          ./tests/integration/test_config_workflow.sh permissions
+          echo "::endgroup::"
+
+          echo "::group::Idempotent Migration Test"
+          ./tests/integration/test_config_workflow.sh idempotent
+          echo "::endgroup::"
+
+      - name: Verify BSD compatibility
+        run: |
+          # Test BSD-specific commands used in config system
+          echo "Testing BSD stat command..."
+          touch /tmp/test-file
+          stat -f "%Lp" /tmp/test-file
+
+          echo "Testing BSD find command..."
+          find /tmp -name "test-file" -type f
+
+          echo "Testing md5 command..."
+          echo "test" | md5 -q
+
+  test-linux:
+    name: "Test on Linux (GNU)"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          # Update package list
+          sudo apt-get update -qq
+
+          # Install jq (required by config system)
+          sudo apt-get install -y jq
+
+          # Install bats (test framework)
+          sudo apt-get install -y bats
+
+          # Install JSON Schema validator (required for schema validation)
+          npm install -g ajv-cli ajv-formats
+
+      - name: Run unit tests
+        run: |
+          echo "::group::VCS Detection Tests"
+          bats tests/unit/test_vcs_detection.bats
+          echo "::endgroup::"
+
+          echo "::group::Config Validation Tests"
+          bats tests/unit/test_config_validation.bats
+          echo "::endgroup::"
+
+          echo "::group::Migration Tests"
+          bats tests/unit/test_migration.bats
+          echo "::endgroup::"
+
+      - name: Run integration tests
+        run: |
+          echo "::group::Fresh Install Test"
+          ./tests/integration/test_config_workflow.sh fresh-install
+          echo "::endgroup::"
+
+          echo "::group::Upgrade Migration Test"
+          ./tests/integration/test_config_workflow.sh upgrade-migration
+          echo "::endgroup::"
+
+          echo "::group::Migration Rollback Test"
+          ./tests/integration/test_config_workflow.sh migration-rollback
+          echo "::endgroup::"
+
+          echo "::group::VCS Detection Test"
+          ./tests/integration/test_config_workflow.sh vcs-detection
+          echo "::endgroup::"
+
+          echo "::group::Config Permissions Test"
+          ./tests/integration/test_config_workflow.sh permissions
+          echo "::endgroup::"
+
+          echo "::group::Idempotent Migration Test"
+          ./tests/integration/test_config_workflow.sh idempotent
+          echo "::endgroup::"
+
+      - name: Verify GNU compatibility
+        run: |
+          # Test GNU-specific commands used in config system
+          echo "Testing GNU stat command..."
+          touch /tmp/test-file
+          stat -c "%a" /tmp/test-file
+
+          echo "Testing GNU find command..."
+          find /tmp -maxdepth 1 -name "test-file" -type f 2>/dev/null
+
+          echo "Testing md5sum command..."
+          echo "test" | md5sum | cut -d' ' -f1
+
+  test-summary:
+    name: "Test Summary"
+    runs-on: ubuntu-latest
+    needs: [test-macos, test-linux]
+    if: always()
+
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.test-macos.result }}" = "success" ] && [ "${{ needs.test-linux.result }}" = "success" ]; then
+            echo "✅ All platform tests passed!"
+            echo ""
+            echo "Tested platforms:"
+            echo "  - macOS (BSD userland)"
+            echo "  - Ubuntu Linux (GNU userland)"
+            echo ""
+            echo "Test coverage:"
+            echo "  - Unit tests: VCS detection, validation, migration"
+            echo "  - Integration tests: Fresh install, upgrade, rollback, idempotency"
+            echo "  - Platform-specific: BSD vs GNU command compatibility"
+            exit 0
+          else
+            echo "❌ Some platform tests failed:"
+            echo "  macOS: ${{ needs.test-macos.result }}"
+            echo "  Linux: ${{ needs.test-linux.result }}"
+            exit 1
+          fi

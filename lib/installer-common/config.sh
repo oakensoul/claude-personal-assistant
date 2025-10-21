@@ -102,7 +102,7 @@ write_user_config() {
         }
     fi
 
-    local config_file="${claude_dir}/aida-config.json"
+    local config_file="${claude_dir}/config.json"
     local timestamp
     timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 

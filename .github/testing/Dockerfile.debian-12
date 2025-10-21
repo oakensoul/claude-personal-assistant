@@ -12,7 +12,11 @@ RUN apt-get update && apt-get install -y \
     bats \
     curl \
     make \
+    npm \
     && rm -rf /var/lib/apt/lists/*
+
+# Install JSON Schema validator (required for config validation tests)
+RUN npm install -g ajv-cli ajv-formats
 
 # Set bash as default shell
 SHELL ["/bin/bash", "-c"]

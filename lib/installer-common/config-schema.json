@@ -1,0 +1,371 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AIDA Configuration Schema",
+  "description": "Configuration schema for AIDA workflow automation system including VCS, work tracker, team, and workflow settings",
+  "type": "object",
+  "required": [
+    "config_version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "config_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$",
+      "description": "Configuration schema version (format: major.minor). Current version: 1.0",
+      "examples": ["1.0"]
+    },
+    "vcs": {
+      "type": "object",
+      "description": "Version Control System configuration",
+      "required": ["provider"],
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": ["github", "gitlab", "bitbucket"],
+          "description": "VCS provider type. Determines which provider-specific configuration is used."
+        },
+        "owner": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]$|^[a-zA-Z0-9]$",
+          "description": "Repository owner (GitHub/GitLab username or organization, GitLab group). Required for github and gitlab providers.",
+          "examples": ["oakensoul", "my-org"]
+        },
+        "repo": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$",
+          "description": "Repository name. Required for github and gitlab providers.",
+          "examples": ["claude-personal-assistant", "my-project"]
+        },
+        "main_branch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9/_.-]*$",
+          "default": "main",
+          "description": "Primary branch name (default: main). Common values: main, master, develop",
+          "examples": ["main", "master", "develop"]
+        },
+        "auto_detect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect VCS configuration from git remote (default: true)"
+        },
+        "github": {
+          "type": "object",
+          "description": "GitHub-specific configuration (only used when provider is 'github')",
+          "additionalProperties": false,
+          "properties": {
+            "enterprise_url": {
+              "type": ["string", "null"],
+              "pattern": "^https://[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9](:[0-9]+)?(/.*)?$",
+              "default": null,
+              "description": "GitHub Enterprise URL (null for github.com). Must be HTTPS.",
+              "examples": ["https://github.company.com", null]
+            }
+          }
+        },
+        "gitlab": {
+          "type": "object",
+          "description": "GitLab-specific configuration (only used when provider is 'gitlab')",
+          "additionalProperties": false,
+          "properties": {
+            "project_id": {
+              "type": ["string", "null"],
+              "pattern": "^[0-9]+$|^[a-zA-Z0-9][a-zA-Z0-9._-]*/[a-zA-Z0-9][a-zA-Z0-9._-]*$",
+              "description": "GitLab project ID (numeric) or full path (group/project). Required when provider is 'gitlab'.",
+              "examples": ["12345", "my-group/my-project"]
+            },
+            "self_hosted_url": {
+              "type": ["string", "null"],
+              "pattern": "^https://[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9](:[0-9]+)?(/.*)?$",
+              "default": null,
+              "description": "Self-hosted GitLab URL (null for gitlab.com). Must be HTTPS.",
+              "examples": ["https://gitlab.company.com", null]
+            },
+            "group": {
+              "type": ["string", "null"],
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]$|^[a-zA-Z0-9]$",
+              "default": null,
+              "description": "GitLab group name (optional, can be inferred from owner)",
+              "examples": ["my-team", null]
+            }
+          }
+        },
+        "bitbucket": {
+          "type": "object",
+          "description": "Bitbucket-specific configuration (only used when provider is 'bitbucket')",
+          "additionalProperties": false,
+          "properties": {
+            "workspace": {
+              "type": ["string", "null"],
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]$|^[a-zA-Z0-9]$",
+              "description": "Bitbucket workspace slug. Required when provider is 'bitbucket'.",
+              "examples": ["my-workspace", "company-name"]
+            },
+            "repo_slug": {
+              "type": ["string", "null"],
+              "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$|^[a-z0-9]$",
+              "description": "Bitbucket repository slug (lowercase with hyphens). Required when provider is 'bitbucket'.",
+              "examples": ["my-project", "web-app"]
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "provider": {"const": "github"}
+            }
+          },
+          "then": {
+            "required": ["owner", "repo"],
+            "properties": {
+              "owner": {"type": "string"},
+              "repo": {"type": "string"}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "provider": {"const": "gitlab"}
+            }
+          },
+          "then": {
+            "required": ["owner", "repo"],
+            "properties": {
+              "owner": {"type": "string"},
+              "repo": {"type": "string"},
+              "gitlab": {
+                "required": ["project_id"],
+                "properties": {
+                  "project_id": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "provider": {"const": "bitbucket"}
+            }
+          },
+          "then": {
+            "properties": {
+              "bitbucket": {
+                "required": ["workspace", "repo_slug"],
+                "properties": {
+                  "workspace": {"type": "string"},
+                  "repo_slug": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "work_tracker": {
+      "type": "object",
+      "description": "Work tracking system configuration (issue/task management)",
+      "required": ["provider"],
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": ["github_issues", "jira", "linear", "none"],
+          "description": "Work tracker provider type. Use 'none' to disable work tracking integration."
+        },
+        "auto_detect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect work tracker from VCS configuration (default: true)"
+        },
+        "github_issues": {
+          "type": "object",
+          "description": "GitHub Issues configuration (only used when provider is 'github_issues')",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "description": "Enable GitHub Issues integration (default: true when provider is github_issues)"
+            }
+          }
+        },
+        "jira": {
+          "type": "object",
+          "description": "Jira configuration (only used when provider is 'jira')",
+          "additionalProperties": false,
+          "properties": {
+            "base_url": {
+              "type": ["string", "null"],
+              "pattern": "^https://[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9](:[0-9]+)?(/.*)?$",
+              "description": "Jira base URL (must be HTTPS). Required when provider is 'jira'.",
+              "examples": ["https://company.atlassian.net", "https://jira.company.com"]
+            },
+            "project_key": {
+              "type": ["string", "null"],
+              "pattern": "^[A-Z0-9]{1,10}$",
+              "description": "Jira project key (uppercase alphanumeric, max 10 characters). Required when provider is 'jira'.",
+              "examples": ["PROJ", "TEAM123", "WEB"]
+            }
+          }
+        },
+        "linear": {
+          "type": "object",
+          "description": "Linear configuration (only used when provider is 'linear')",
+          "additionalProperties": false,
+          "properties": {
+            "team_id": {
+              "type": ["string", "null"],
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "description": "Linear team UUID. Required when provider is 'linear'.",
+              "examples": ["123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "board_id": {
+              "type": ["string", "null"],
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "description": "Linear board UUID. Required when provider is 'linear'.",
+              "examples": ["987fcdeb-51a2-43f1-9876-543210fedcba"]
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "provider": {"const": "jira"}
+            }
+          },
+          "then": {
+            "properties": {
+              "jira": {
+                "required": ["base_url", "project_key"],
+                "properties": {
+                  "base_url": {"type": "string"},
+                  "project_key": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "provider": {"const": "linear"}
+            }
+          },
+          "then": {
+            "properties": {
+              "linear": {
+                "required": ["team_id", "board_id"],
+                "properties": {
+                  "team_id": {"type": "string"},
+                  "board_id": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "team": {
+      "type": "object",
+      "description": "Team member and code review configuration",
+      "additionalProperties": false,
+      "properties": {
+        "review_strategy": {
+          "type": "string",
+          "enum": ["list", "round-robin", "query", "none"],
+          "default": "list",
+          "description": "Code review assignment strategy: 'list' (use default_reviewers), 'round-robin' (rotate through members), 'query' (prompt user), 'none' (no auto-assignment)"
+        },
+        "default_reviewers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]$|^[a-zA-Z0-9]$"
+          },
+          "uniqueItems": true,
+          "description": "List of default reviewer usernames (used when review_strategy is 'list')",
+          "examples": [["alice", "bob"], ["tech-lead"]]
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["username", "role"],
+            "additionalProperties": false,
+            "properties": {
+              "username": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]$|^[a-zA-Z0-9]$",
+                "description": "Team member's VCS username",
+                "examples": ["alice", "bob-smith"]
+              },
+              "role": {
+                "type": "string",
+                "enum": ["developer", "tech-lead", "reviewer"],
+                "description": "Team member's role: 'developer' (contributor), 'tech-lead' (architect/lead), 'reviewer' (code reviewer)"
+              },
+              "availability": {
+                "type": "string",
+                "enum": ["available", "limited", "unavailable"],
+                "default": "available",
+                "description": "Team member's availability status for review assignments (default: available)"
+              }
+            }
+          },
+          "description": "List of team members with roles and availability (used for round-robin strategy)",
+          "examples": [[
+            {"username": "alice", "role": "tech-lead", "availability": "available"},
+            {"username": "bob", "role": "developer", "availability": "limited"}
+          ]]
+        }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "description": "Workflow automation behavior settings",
+      "additionalProperties": false,
+      "properties": {
+        "commit": {
+          "type": "object",
+          "description": "Git commit automation settings",
+          "additionalProperties": false,
+          "properties": {
+            "auto_commit": {
+              "type": "boolean",
+              "default": true,
+              "description": "Automatically commit changes after each task completion (default: true)"
+            }
+          }
+        },
+        "pr": {
+          "type": "object",
+          "description": "Pull request automation settings",
+          "additionalProperties": false,
+          "properties": {
+            "auto_version_bump": {
+              "type": "boolean",
+              "default": true,
+              "description": "Automatically bump version in package files when creating PR (default: true)"
+            },
+            "update_changelog": {
+              "type": "boolean",
+              "default": true,
+              "description": "Automatically update CHANGELOG.md when creating PR (default: true)"
+            },
+            "draft_by_default": {
+              "type": "boolean",
+              "default": false,
+              "description": "Create pull requests as drafts by default (default: false)"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "config_version": "1.0",
+
+  "vcs": {
+    "provider": "gitlab",
+    "owner": "engineering-team",
+    "repo": "api-platform",
+    "main_branch": "develop",
+    "auto_detect": true,
+    "gitlab": {
+      "project_id": "engineering-team/api-platform",
+      "self_hosted_url": "https://gitlab.company.io",
+      "group": "engineering-team"
+    }
+  },
+
+  "work_tracker": {
+    "provider": "jira",
+    "auto_detect": false,
+    "jira": {
+      "base_url": "https://company.atlassian.net",
+      "project_key": "API"
+    }
+  },
+
+  "team": {
+    "review_strategy": "round-robin",
+    "default_reviewers": [],
+    "members": [
+      {
+        "username": "emily-tech-lead",
+        "role": "tech-lead",
+        "availability": "available"
+      },
+      {
+        "username": "frank-backend",
+        "role": "developer",
+        "availability": "available"
+      },
+      {
+        "username": "grace-frontend",
+        "role": "developer",
+        "availability": "available"
+      },
+      {
+        "username": "henry-reviewer",
+        "role": "reviewer",
+        "availability": "available"
+      }
+    ]
+  },
+
+  "workflow": {
+    "commit": {
+      "auto_commit": true
+    },
+    "pr": {
+      "auto_version_bump": true,
+      "update_changelog": true,
+      "draft_by_default": true
+    }
+  }
+}

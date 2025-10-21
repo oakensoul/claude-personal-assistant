@@ -1,0 +1,15 @@
+{
+  "config_version": "1.0",
+  "vcs": {
+    "provider": "github",
+    "owner": "oakensoul",
+    "repo": "test-repo"
+  },
+  "work_tracker": {
+    "provider": "linear",
+    "linear": {
+      "team_id": "123e4567-e89b-12d3-a456-426614174000",
+      "board_id": "987fcdeb-51a2-43f1-9876-543210fedcba"
+    }
+  }
+}

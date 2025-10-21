@@ -1,0 +1,40 @@
+{
+  "config_version": "1.0",
+
+  "vcs": {
+    "provider": "bitbucket",
+    "owner": "not-used-for-bitbucket",
+    "repo": "not-used-for-bitbucket",
+    "main_branch": "main",
+    "auto_detect": true,
+    "bitbucket": {
+      "workspace": "startup-company",
+      "repo_slug": "web-application"
+    }
+  },
+
+  "work_tracker": {
+    "provider": "github_issues",
+    "auto_detect": false,
+    "github_issues": {
+      "enabled": true
+    }
+  },
+
+  "team": {
+    "review_strategy": "query",
+    "default_reviewers": [],
+    "members": []
+  },
+
+  "workflow": {
+    "commit": {
+      "auto_commit": true
+    },
+    "pr": {
+      "auto_version_bump": true,
+      "update_changelog": true,
+      "draft_by_default": false
+    }
+  }
+}

@@ -254,8 +254,8 @@ create_directories() {
         fi
     done
 
-    # Set permissions on config file and CLAUDE.md
-    chmod 644 "${CLAUDE_DIR}/aida-config.json" 2>/dev/null || true
+    # Set permissions on config file and CLAUDE.md (will be updated later by set_config_permissions)
+    chmod 644 "${CLAUDE_DIR}/config.json" 2>/dev/null || true
     chmod 644 "${HOME}/CLAUDE.md" 2>/dev/null || true
 
     if [[ "$DEV_MODE" == false ]]; then
@@ -268,6 +268,136 @@ create_directories() {
     echo ""
 }
 
+
+#######################################
+# Migrate old configuration files
+# Checks for old config.json files and migrates them to new schema
+# Globals:
+#   CLAUDE_DIR, INSTALLER_COMMON
+# Arguments:
+#   None
+# Returns:
+#   0 on success
+#######################################
+migrate_config_files() {
+    local old_config="${CLAUDE_DIR}/aida-config.json"
+    local new_config="${CLAUDE_DIR}/config.json"
+
+    # Skip if no old config exists
+    if [[ ! -f "$old_config" ]] && [[ ! -f "$new_config" ]]; then
+        return 0
+    fi
+
+    # Source config-migration.sh if available
+    if [[ -f "${INSTALLER_COMMON}/config-migration.sh" ]]; then
+        # shellcheck source=lib/installer-common/config-migration.sh
+        source "${INSTALLER_COMMON}/config-migration.sh" || {
+            print_message "warning" "Could not source config-migration.sh, skipping config migration"
+            return 0
+        }
+
+        # Check if new config exists and needs migration
+        if [[ -f "$new_config" ]]; then
+            if needs_migration "$new_config" 2>/dev/null; then
+                print_message "info" "Migrating configuration to new schema..."
+                if migrate_config "$new_config" "false" >/dev/null 2>&1; then
+                    print_message "success" "Configuration migrated successfully"
+                else
+                    print_message "warning" "Configuration migration failed, continuing with existing config"
+                fi
+                echo ""
+            fi
+        # Check if old config exists and needs renaming + migration
+        elif [[ -f "$old_config" ]]; then
+            print_message "info" "Renaming configuration file..."
+            mv "$old_config" "$new_config" || {
+                print_message "warning" "Could not rename config file, continuing"
+                return 0
+            }
+
+            if needs_migration "$new_config" 2>/dev/null; then
+                print_message "info" "Migrating configuration to new schema..."
+                if migrate_config "$new_config" "false" >/dev/null 2>&1; then
+                    print_message "success" "Configuration migrated successfully"
+                else
+                    print_message "warning" "Configuration migration failed, continuing with existing config"
+                fi
+            fi
+            echo ""
+        fi
+    fi
+
+    return 0
+}
+
+#######################################
+# Set security permissions on configuration files
+# Globals:
+#   CLAUDE_DIR
+# Arguments:
+#   None
+# Returns:
+#   0 on success
+#######################################
+set_config_permissions() {
+    print_message "info" "Setting security permissions on configuration files..."
+
+    # User config (600 - only owner can read/write)
+    if [[ -f "${CLAUDE_DIR}/config.json" ]]; then
+        chmod 600 "${CLAUDE_DIR}/config.json" || {
+            print_message "warning" "Could not set permissions on user config"
+        }
+    fi
+
+    # Set permissions on backup files (600)
+    find "${CLAUDE_DIR}" -name "*.backup.*" -type f -exec chmod 600 {} \; 2>/dev/null || true
+
+    print_message "success" "Security permissions set"
+    echo ""
+}
+
+#######################################
+# Add .gitignore entries for config and backup files
+# Globals:
+#   CLAUDE_DIR, AIDA_DIR
+# Arguments:
+#   None
+# Returns:
+#   0 on success
+#######################################
+add_gitignore_entries() {
+    # Add to user .gitignore
+    local user_gitignore="${HOME}/.gitignore"
+
+    # Create .gitignore if it doesn't exist
+    if [[ ! -f "$user_gitignore" ]]; then
+        touch "$user_gitignore"
+    fi
+
+    # Add config.json to .gitignore if not already there
+    if ! grep -q "\.claude/config\.json" "$user_gitignore" 2>/dev/null; then
+        echo "# AIDA user configuration (contains sensitive data)" >> "$user_gitignore"
+        echo ".claude/config.json" >> "$user_gitignore"
+    fi
+
+    # Add backup files to .gitignore if not already there
+    if ! grep -q "\*\.backup\.\*" "$user_gitignore" 2>/dev/null; then
+        echo "# AIDA backup files" >> "$user_gitignore"
+        echo "*.backup.*" >> "$user_gitignore"
+    fi
+
+    # Add to AIDA .gitignore for project configs
+    local aida_gitignore="${AIDA_DIR}/.gitignore"
+    if [[ ! -f "$aida_gitignore" ]]; then
+        cat > "$aida_gitignore" <<EOF
+# AIDA backup files
+*.backup.*
+
+# AIDA temporary files
+*.tmp.*
+EOF
+    fi
+}
 
 #######################################
 # Display installation summary wrapper
@@ -407,6 +537,9 @@ main() {
     # Run migrations for backward compatibility
     run_migrations
 
+    # Check and migrate old configuration files
+    migrate_config_files
+
     # Create directory structure
     create_directories
 
@@ -472,6 +605,12 @@ main() {
         print_message "error" "Failed to write user configuration"
         exit 1
     }
+
+    # Set security permissions on config files
+    set_config_permissions
+
+    # Add .gitignore entries
+    add_gitignore_entries
 
     # Generate entry point (use module function with all required parameters)
     generate_claude_md "$CLAUDE_MD" "$ASSISTANT_NAME" "$PERSONALITY" "$VERSION" || {

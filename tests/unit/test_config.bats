@@ -45,8 +45,8 @@ teardown() {
   run write_user_config "normal" "$aida_dir" "$claude_dir" "1.0.0" "JARVIS" "professional"
 
   [ "$status" -eq 0 ]
-  assert_file_exists "$claude_dir/aida-config.json"
-  assert_valid_json_file "$claude_dir/aida-config.json"
+  assert_file_exists "$claude_dir/config.json"
+  assert_valid_json_file "$claude_dir/config.json"
 }
 
 @test "write_user_config includes correct version" {
@@ -56,7 +56,7 @@ teardown() {
   write_user_config "normal" "$aida_dir" "$claude_dir" "2.5.1" "JARVIS" "professional" >/dev/null
 
   local version
-  version=$(jq -r '.version' "$claude_dir/aida-config.json")
+  version=$(jq -r '.version' "$claude_dir/config.json")
 
   [ "$version" = "2.5.1" ]
 }
@@ -68,7 +68,7 @@ teardown() {
   write_user_config "dev" "$aida_dir" "$claude_dir" "1.0.0" "JARVIS" "professional" >/dev/null
 
   local mode
-  mode=$(jq -r '.install_mode' "$claude_dir/aida-config.json")
+  mode=$(jq -r '.install_mode' "$claude_dir/config.json")
 
   [ "$mode" = "dev" ]
 }
@@ -80,7 +80,7 @@ teardown() {
   write_user_config "normal" "$aida_dir" "$claude_dir" "1.0.0" "JARVIS" "professional" >/dev/null
 
   local aida_path
-  aida_path=$(jq -r '.paths.aida_home' "$claude_dir/aida-config.json")
+  aida_path=$(jq -r '.paths.aida_home' "$claude_dir/config.json")
 
   [ "$aida_path" = "$aida_dir" ]
 }
@@ -92,9 +92,9 @@ teardown() {
   write_user_config "normal" "$aida_dir" "$claude_dir" "1.0.0" "Alfred" "butler" >/dev/null
 
   local assistant_name
-  assistant_name=$(jq -r '.user.assistant_name' "$claude_dir/aida-config.json")
+  assistant_name=$(jq -r '.user.assistant_name' "$claude_dir/config.json")
   local personality
-  personality=$(jq -r '.user.personality' "$claude_dir/aida-config.json")
+  personality=$(jq -r '.user.personality' "$claude_dir/config.json")
 
   [ "$assistant_name" = "Alfred" ]
   [ "$personality" = "butler" ]

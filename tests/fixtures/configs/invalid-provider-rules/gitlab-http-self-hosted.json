@@ -1,0 +1,12 @@
+{
+  "config_version": "1.0",
+  "vcs": {
+    "provider": "gitlab",
+    "owner": "test",
+    "repo": "repo",
+    "gitlab": {
+      "project_id": "12345",
+      "self_hosted_url": "http://gitlab.company.com"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "config_version": "1.0",
+  "vcs": {
+    "provider": "github",
+    "owner": "oakensoul",
+    "repo": "test-repo",
+    "main_branch": "main",
+    "auto_detect": true
+  },
+  "work_tracker": {
+    "provider": "github_issues",
+    "auto_detect": true,
+    "github_issues": {
+      "enabled": true
+    }
+  },
+  "team": {
+    "review_strategy": "list",
+    "default_reviewers": ["alice", "bob"],
+    "members": [
+      {
+        "username": "alice",
+        "role": "tech-lead",
+        "availability": "available"
+      },
+      {
+        "username": "bob",
+        "role": "developer",
+        "availability": "limited"
+      }
+    ]
+  },
+  "workflow": {
+    "commit": {
+      "auto_commit": true
+    },
+    "pr": {
+      "auto_version_bump": true,
+      "update_changelog": true,
+      "draft_by_default": false
+    }
+  }
+}

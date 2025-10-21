@@ -123,6 +123,7 @@ get_config_checksum() {
     # Config file locations (in priority order, lowest to highest)
     local config_files=(
         "${HOME}/.claude/aida-config.json"
+        "${HOME}/.claude/config.json"
         "${HOME}/.gitconfig"
         ".git/config"
         ".github/GITHUB_CONFIG.json"
@@ -219,8 +220,8 @@ get_system_defaults() {
         --arg git_root "$git_root" \
         --arg home "$HOME" \
         '{
+            config_version: "2.0",
             system: {
-                config_version: "1.0",
                 cache_enabled: true
             },
             paths: {
@@ -240,10 +241,22 @@ get_system_defaults() {
                     email: ""
                 }
             },
-            github: {
+            vcs: {
+                provider: "",
                 owner: "",
                 repo: "",
-                main_branch: "main"
+                main_branch: "main",
+                auto_detect: true
+            },
+            work_tracker: {
+                provider: "",
+                auto_detect: true
+            },
+            team: {
+                review_strategy: "list",
+                default_reviewers: [],
+                members: [],
+                timezone: "UTC"
             },
             workflow: {
                 commit: {
@@ -289,7 +302,7 @@ read_json_config() {
 }
 
 #######################################
-# Get user AIDA config (~/.claude/aida-config.json)
+# Get user AIDA config (~/.claude/config.json or ~/.claude/aida-config.json)
 # Globals:
 #   HOME
 # Arguments:
@@ -300,7 +313,11 @@ read_json_config() {
 #   JSON configuration to stdout
 #######################################
 get_user_config() {
-    local config_file="${HOME}/.claude/aida-config.json"
+    # Check new location first, fallback to old location
+    local config_file="${HOME}/.claude/config.json"
+    if [[ ! -f "$config_file" ]]; then
+        config_file="${HOME}/.claude/aida-config.json"
+    fi
     read_json_config "$config_file"
 }
 
@@ -464,6 +481,134 @@ merge_configs() {
 }
 
 #######################################
+# Check if user config needs migration and run if needed
+# Globals:
+#   HOME
+#   INSTALLER_COMMON
+# Arguments:
+#   None
+# Returns:
+#   0 on success or no migration needed, 1 on migration failure
+#######################################
+check_and_migrate_config() {
+    local user_config="${HOME}/.claude/config.json"
+
+    # Check if old config exists (aida-config.json)
+    if [[ ! -f "$user_config" ]] && [[ -f "${HOME}/.claude/aida-config.json" ]]; then
+        user_config="${HOME}/.claude/aida-config.json"
+    fi
+
+    # Skip if no config file exists
+    if [[ ! -f "$user_config" ]]; then
+        return 0
+    fi
+
+    # Skip if migration script not available
+    if [[ ! -f "${INSTALLER_COMMON}/config-migration.sh" ]]; then
+        return 0
+    fi
+
+    # Check if migration needed
+    # shellcheck source=lib/installer-common/config-migration.sh
+    source "${INSTALLER_COMMON}/config-migration.sh"
+
+    if needs_migration "$user_config" 2>/dev/null; then
+        log_to_file "INFO" "Auto-migrating config: $user_config"
+
+        # Run migration (suppress output to avoid polluting config output)
+        if ! migrate_config "$user_config" "false" >/dev/null 2>&1; then
+            log_to_file "ERROR" "Config migration failed: $user_config"
+            return 1
+        fi
+
+        log_to_file "SUCCESS" "Config migration completed: $user_config"
+    fi
+
+    return 0
+}
+
+#######################################
+# Apply VCS auto-detection if needed
+# Arguments:
+#   $1 - Merged config (JSON)
+# Returns:
+#   0 on success
+# Outputs:
+#   Updated config with VCS auto-detection results
+#######################################
+apply_vcs_autodetection() {
+    local config="$1"
+
+    # Check if auto-detection enabled and provider empty
+    local auto_detect
+    auto_detect=$(echo "$config" | jq -r '.vcs.auto_detect // true')
+
+    local provider
+    provider=$(echo "$config" | jq -r '.vcs.provider // ""')
+
+    # Skip if auto-detection disabled or provider already set (non-empty)
+    if [[ "$auto_detect" != "true" ]]; then
+        echo "$config"
+        return 0
+    fi
+
+    # Skip if provider is already set to a non-empty value
+    if [[ -n "$provider" ]]; then
+        echo "$config"
+        return 0
+    fi
+
+    # Skip if VCS detector not available
+    if [[ ! -f "${INSTALLER_COMMON}/vcs-detector.sh" ]]; then
+        echo "$config"
+        return 0
+    fi
+
+    # Run VCS detection
+    local detected_info
+    detected_info=$(bash "${INSTALLER_COMMON}/vcs-detector.sh" 2>/dev/null || echo "{}")
+
+    # Check if detection succeeded
+    local detected_provider
+    detected_provider=$(echo "$detected_info" | jq -r '.provider // empty')
+
+    if [[ -z "$detected_provider" ]] || [[ "$detected_provider" == "unknown" ]]; then
+        # No detection results, return original config
+        echo "$config"
+        return 0
+    fi
+
+    # Merge detected values into config (only if not already set)
+    # Use conditional checks because jq's // operator doesn't treat "" as null/false
+    local updated_config
+    updated_config=$(jq -n \
+        --argjson base "$config" \
+        --argjson detected "$detected_info" \
+        '
+        $base |
+        .vcs.provider = (if ($base.vcs.provider == "" or $base.vcs.provider == null) then $detected.provider else $base.vcs.provider end) |
+        .vcs.owner = (if ($base.vcs.owner == "" or $base.vcs.owner == null) then $detected.owner else $base.vcs.owner end) |
+        .vcs.repo = (if ($base.vcs.repo == "" or $base.vcs.repo == null) then $detected.repo else $base.vcs.repo end) |
+        if $detected.domain and $detected.provider then
+            .vcs[$detected.provider] = (.vcs[$detected.provider] // {}) |
+            .vcs[$detected.provider].enterprise_url = (
+                if ($base.vcs[$detected.provider].enterprise_url == null or $base.vcs[$detected.provider].enterprise_url == "") then
+                    if $detected.domain != ($detected.provider + ".com") then
+                        "https://" + $detected.domain
+                    else
+                        null
+                    end
+                else
+                    $base.vcs[$detected.provider].enterprise_url
+                end
+            )
+        else . end
+        ')
+
+    echo "$updated_config"
+}
+
+#######################################
 # Get merged config with caching
 # Globals:
 #   CACHE_FILE
@@ -476,6 +621,11 @@ merge_configs() {
 #   Merged JSON configuration to stdout
 #######################################
 get_merged_config() {
+    # Check for migration before caching
+    check_and_migrate_config || {
+        log_to_file "WARNING" "Config migration check failed, continuing with existing config"
+    }
+
     if is_cache_valid; then
         # Fast path: return cached result
         cat "$CACHE_FILE"
@@ -483,6 +633,9 @@ get_merged_config() {
         # Slow path: merge configs and cache result
         local merged_config
         merged_config=$(merge_configs)
+
+        # Apply VCS auto-detection if needed
+        merged_config=$(apply_vcs_autodetection "$merged_config")
 
         # Cache the result
         echo "$merged_config" > "$CACHE_FILE"
@@ -545,47 +698,104 @@ get_config_namespace() {
 }
 
 #######################################
-# Validate config has required keys
+# Validate config using 3-tier validation framework
 # Globals:
-#   None
+#   INSTALLER_COMMON
+#   HOME
 # Arguments:
-#   None
+#   $1 - Validation tier (optional: structure, provider, connectivity, all)
+#        Defaults to "structure" for compatibility
 # Returns:
-#   0 if all required keys exist, 1 otherwise
+#   0 if validation passes, 1 otherwise
+# shellcheck disable=SC2120
 #######################################
 validate_config() {
-    local required_keys=(
-        "paths.aida_home"
-        "paths.claude_config_dir"
-        "paths.home"
-    )
+    local tier="${1:-structure}"
 
-    local merged_config
-    merged_config=$(get_merged_config)
-
-    local errors=0
-
-    print_message "info" "Validating configuration..."
-
-    for key in "${required_keys[@]}"; do
-        local value
-        value=$(echo "$merged_config" | jq -r ".$key" 2>/dev/null || echo "null")
-
-        if [[ "$value" == "null" ]] || [[ -z "$value" ]]; then
-            print_message "error" "Required config key missing or empty: $key"
-            errors=$((errors + 1))
-        else
-            print_message "success" "  $key: $value"
-        fi
-    done
-
-    if [[ $errors -gt 0 ]]; then
-        print_message "error" "Configuration validation failed ($errors errors)"
-        return 1
+    # Check if we have a user config file to validate
+    local user_config="${HOME}/.claude/config.json"
+    if [[ ! -f "$user_config" ]]; then
+        user_config="${HOME}/.claude/aida-config.json"
     fi
 
-    print_message "success" "Configuration validation passed"
-    return 0
+    if [[ ! -f "$user_config" ]]; then
+        # No user config exists - validate against minimal requirements
+        print_message "info" "No user config found - validating system defaults..."
+
+        local merged_config
+        merged_config=$(get_merged_config)
+
+        # Check minimal required paths exist
+        local required_keys=(
+            "paths.aida_home"
+            "paths.claude_config_dir"
+            "paths.home"
+        )
+
+        local errors=0
+
+        for key in "${required_keys[@]}"; do
+            local value
+            value=$(echo "$merged_config" | jq -r ".$key" 2>/dev/null || echo "null")
+
+            if [[ "$value" == "null" ]] || [[ -z "$value" ]]; then
+                print_message "error" "Required config key missing or empty: $key"
+                errors=$((errors + 1))
+            fi
+        done
+
+        if [[ $errors -gt 0 ]]; then
+            print_message "error" "Configuration validation failed ($errors errors)"
+            return 1
+        fi
+
+        print_message "success" "Configuration validation passed (system defaults)"
+        return 0
+    fi
+
+    # Use 3-tier validation framework if available
+    if [[ -f "${INSTALLER_COMMON}/config-validator.sh" ]]; then
+        print_message "info" "Running ${tier} validation on: $user_config"
+
+        if bash "${INSTALLER_COMMON}/config-validator.sh" --tier "$tier" "$user_config"; then
+            print_message "success" "Configuration validation passed (${tier})"
+            return 0
+        else
+            print_message "error" "Configuration validation failed (${tier})"
+            return 1
+        fi
+    else
+        # Fallback to basic validation
+        print_message "warning" "Validation framework not found, using basic validation"
+
+        local merged_config
+        merged_config=$(get_merged_config)
+
+        local required_keys=(
+            "paths.aida_home"
+            "paths.claude_config_dir"
+        )
+
+        local errors=0
+
+        for key in "${required_keys[@]}"; do
+            local value
+            value=$(echo "$merged_config" | jq -r ".$key" 2>/dev/null || echo "null")
+
+            if [[ "$value" == "null" ]] || [[ -z "$value" ]]; then
+                print_message "error" "Required config key missing or empty: $key"
+                errors=$((errors + 1))
+            fi
+        done
+
+        if [[ $errors -gt 0 ]]; then
+            print_message "error" "Configuration validation failed ($errors errors)"
+            return 1
+        fi
+
+        print_message "success" "Configuration validation passed (basic)"
+        return 0
+    fi
 }
 
 #######################################

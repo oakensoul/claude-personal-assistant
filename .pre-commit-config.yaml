@@ -16,6 +16,7 @@ repos:
         args: [--allow-multiple-documents]
       - id: check-json
         name: Check JSON syntax
+        exclude: tests/fixtures/configs/invalid-structure/invalid-json.json
       - id: check-added-large-files
         name: Check for large files
         args: [--maxkb=1000]
@@ -70,3 +71,23 @@ repos:
         # TODO: Fix CI-specific failure (works locally, fails in GitHub Actions)
         # Temporarily allow failures until root cause is identified
         stages: [manual]
+
+      # AIDA config security validation
+      # Detects secrets in AIDA configuration files (user and project configs)
+      # Checks for: GitHub tokens, Jira tokens, Linear keys, Anthropic keys, AWS credentials
+      # Coordinates with gitleaks hook (broader scope) - this is config-specific
+      #
+      # To bypass (NOT RECOMMENDED):
+      #   git commit --no-verify
+      #
+      # Only bypass when:
+      #   - False positive (placeholder/example value)
+      #   - Committing a template with placeholder secrets
+      # NEVER bypass for actual API keys or tokens!
+      - id: validate-config-security
+        name: Validate config file security (AIDA)
+        description: Detect secrets and credentials in AIDA configuration files
+        entry: scripts/validate-config-security.sh
+        language: script
+        files: config\.json$
+        pass_filenames: false

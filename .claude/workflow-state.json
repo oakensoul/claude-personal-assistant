@@ -1,10 +1,10 @@
 {
   "active_issue": {
-    "number": 39,
-    "title": "Add workflow commands to templates folder for user customization",
-    "branch": "milestone-v0.1.0/chore/39-add-workflow-commands-to-templates-folder",
-    "started_at": "2025-10-07T00:00:00Z",
+    "number": 55,
+    "title": "Create configuration system with .claude/config.yml schema",
+    "branch": "milestone-v0.1/feature/55-create-configuration-system",
+    "started_at": "2025-10-20T19:11:00Z",
     "analysis_complete": true,
-    "milestone": "0.1.0 - Foundation"
+    "milestone": "0.1.0"
   }
 }

@@ -1,16 +1,6 @@
 name: Installer Tests
 
 on:
-  push:
-    branches:
-      - main
-      - 'milestone-*'
-    paths:
-      - 'lib/**'
-      - 'install.sh'
-      - 'tests/**'
-      - 'Makefile'
-      - '.github/workflows/test-installer.yml'
   pull_request:
     branches:
       - main
@@ -22,13 +12,6 @@ on:
       - 'Makefile'
       - '.github/workflows/test-installer.yml'
   workflow_dispatch:
-
-# Prevent duplicate workflow runs on PR pushes
-# - PR pushes: Share group using head_ref (only latest run completes)
-# - Branch pushes: Unique group per branch using ref_name
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
-  cancel-in-progress: true
 
 jobs:
   # ============================================================
@@ -101,6 +84,16 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install jq
+
+      - name: Install JSON Schema Validator (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          npm install -g ajv-cli ajv-formats
+
+      - name: Install JSON Schema Validator (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          npm install -g ajv-cli ajv-formats
 
       - name: Verify Bats installation
         run: |
@@ -513,44 +506,3 @@ jobs:
             exit 1
           fi
           echo "✅ All test stages passed!"
-
-  # ============================================================
-  # Stage 8: PR Comment (for pull requests only)
-  # ============================================================
-  pr-comment:
-    name: Post PR Comment
-    runs-on: ubuntu-latest
-    needs: test-summary
-    if: github.event_name == 'pull_request' && always()
-    permissions:
-      pull-requests: write
-    steps:
-      - name: Create PR comment
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const summary = `## 🧪 Installer Test Results
-
-            | Stage | Status |
-            |-------|--------|
-            | Shell Linting | ${{ needs.lint-shell.result == 'success' && '✅' || '❌' }} |
-            | Template Validation | ${{ needs.validate-templates.result == 'success' && '✅' || '❌' }} |
-            | Unit Tests | ${{ needs.unit-tests.result == 'success' && '✅' || '❌' }} |
-            | Integration Tests | ${{ needs.integration-tests.result == 'success' && '✅' || '❌' }} |
-            | Installation Tests | ${{ needs.installation-tests.result == 'success' && '✅' || '❌' }} |
-            | Docker Tests | ${{ needs.docker-tests.result == 'success' && '✅' || '❌' }} |
-
-            **Overall Status:** ${
-              '${{ needs.test-summary.result }}' === 'success'
-                ? '✅ All tests passed!'
-                : '❌ Some tests failed'
-            }
-
-            [View detailed logs](${context.payload.pull_request.html_url}/checks)`;
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: summary
-            });

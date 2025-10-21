@@ -1,0 +1,11 @@
+{
+  "config_version": "1.0",
+  "vcs": {
+    "provider": "github",
+    "owner": "company",
+    "repo": "enterprise-repo",
+    "github": {
+      "enterprise_url": "https://github.company.com"
+    }
+  }
+}
