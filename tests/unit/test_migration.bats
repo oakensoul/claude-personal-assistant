@@ -26,6 +26,9 @@ setup() {
     SCRIPT_DIR="$(cd "$(dirname "$BATS_TEST_FILENAME")/../../lib/installer-common" && pwd)"
     source "${SCRIPT_DIR}/config-migration.sh"
 
+    # Disable -u flag to prevent bats internal variable issues
+    set +u
+
     # Create temp directory for test files
     TEST_DIR="$(mktemp -d)"
     export TEST_DIR

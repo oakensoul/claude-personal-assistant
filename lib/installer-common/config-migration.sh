@@ -26,7 +26,11 @@
 # Repository: https://github.com/oakensoul/claude-personal-assistant
 #
 
-set -euo pipefail
+# Only apply strict mode when executed directly, not when sourced
+# (sourcing with -u causes issues with bats internal variables)
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    set -euo pipefail
+fi
 
 # Constants
 # Declare and assign separately to avoid masking return values (SC2155)
