@@ -530,6 +530,8 @@ EOF
 #######################################
 
 @test "migrate_config: rolls back on validation failure" {
+    skip "Test requires mock validation failure"
+
     # Create invalid old config that will fail migration
     cat > "$TEST_CONFIG" << 'EOF'
 {
@@ -540,13 +542,12 @@ EOF
 EOF
 
     # Save original
+    local original_content
     original_content=$(cat "$TEST_CONFIG")
 
     # Try to migrate (will fail validation due to missing repo)
     # Note: This might not fail depending on schema requirements
     # For this test, we'll use a different approach
-
-    skip "Test requires mock validation failure"
 }
 
 #######################################
