@@ -1,0 +1,19 @@
+{
+  "config_version": "1.0",
+  "vcs": {
+    "provider": "gitlab",
+    "owner": "mygroup",
+    "repo": "myproject",
+    "gitlab": {
+      "project_id": "my-group/my-project",
+      "self_hosted_url": "https://gitlab.company.com"
+    }
+  },
+  "work_tracker": {
+    "provider": "jira",
+    "jira": {
+      "base_url": "https://company.atlassian.net",
+      "project_key": "PROJ"
+    }
+  }
+}

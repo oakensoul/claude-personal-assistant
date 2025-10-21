@@ -1,0 +1,11 @@
+{
+  "config_version": "1.0",
+  "vcs": {
+    "provider": "github",
+    "owner": "test",
+    "repo": "repo"
+  },
+  "team": {
+    "default_reviewers": "alice"
+  }
+}

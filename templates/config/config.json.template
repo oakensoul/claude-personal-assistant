@@ -1,0 +1,141 @@
+{
+  "_comment": "AIDA Configuration Template - Replace {{PLACEHOLDERS}} with your values",
+  "_description": "This template shows all available configuration options with placeholders and examples",
+
+  "config_version": "1.0",
+
+  "vcs": {
+    "_comment": "Version Control System Configuration",
+    "provider": "{{VCS_PROVIDER}}",
+    "_provider_options": ["github", "gitlab", "bitbucket"],
+
+    "owner": "{{OWNER}}",
+    "_owner_description": "Repository owner (GitHub/GitLab username or organization)",
+
+    "repo": "{{REPO}}",
+    "_repo_description": "Repository name",
+
+    "main_branch": "main",
+    "_main_branch_options": ["main", "master", "develop"],
+
+    "auto_detect": true,
+    "_auto_detect_description": "Automatically detect VCS configuration from git remote",
+
+    "github": {
+      "_comment": "GitHub-specific configuration (only used when provider is 'github')",
+      "enterprise_url": null,
+      "_enterprise_url_example": "https://github.company.com"
+    },
+
+    "gitlab": {
+      "_comment": "GitLab-specific configuration (only used when provider is 'gitlab')",
+      "project_id": "{{GITLAB_PROJECT_ID}}",
+      "_project_id_examples": ["12345", "my-group/my-project"],
+
+      "self_hosted_url": null,
+      "_self_hosted_url_example": "https://gitlab.company.com",
+
+      "group": null,
+      "_group_description": "GitLab group name (optional, can be inferred from owner)"
+    },
+
+    "bitbucket": {
+      "_comment": "Bitbucket-specific configuration (only used when provider is 'bitbucket')",
+      "workspace": "{{BITBUCKET_WORKSPACE}}",
+      "_workspace_example": "my-workspace",
+
+      "repo_slug": "{{BITBUCKET_REPO_SLUG}}",
+      "_repo_slug_example": "my-project",
+      "_repo_slug_note": "Must be lowercase with hyphens"
+    }
+  },
+
+  "work_tracker": {
+    "_comment": "Work Tracking System Configuration (issue/task management)",
+    "provider": "{{WORK_TRACKER_PROVIDER}}",
+    "_provider_options": ["github_issues", "jira", "linear", "none"],
+
+    "auto_detect": true,
+    "_auto_detect_description": "Automatically detect work tracker from VCS configuration",
+
+    "github_issues": {
+      "_comment": "GitHub Issues configuration (only used when provider is 'github_issues')",
+      "enabled": true
+    },
+
+    "jira": {
+      "_comment": "Jira configuration (only used when provider is 'jira')",
+      "base_url": "{{JIRA_BASE_URL}}",
+      "_base_url_examples": ["https://company.atlassian.net", "https://jira.company.com"],
+
+      "project_key": "{{JIRA_PROJECT_KEY}}",
+      "_project_key_examples": ["PROJ", "TEAM123", "WEB"],
+      "_project_key_note": "Uppercase alphanumeric, max 10 characters"
+    },
+
+    "linear": {
+      "_comment": "Linear configuration (only used when provider is 'linear')",
+      "team_id": "{{LINEAR_TEAM_ID}}",
+      "_team_id_example": "123e4567-e89b-12d3-a456-426614174000",
+      "_team_id_note": "Linear team UUID",
+
+      "board_id": "{{LINEAR_BOARD_ID}}",
+      "_board_id_example": "987fcdeb-51a2-43f1-9876-543210fedcba",
+      "_board_id_note": "Linear board UUID"
+    }
+  },
+
+  "team": {
+    "_comment": "Team Member and Code Review Configuration",
+
+    "review_strategy": "{{REVIEW_STRATEGY}}",
+    "_review_strategy_options": ["list", "round-robin", "query", "none"],
+    "_review_strategy_descriptions": {
+      "list": "Use default_reviewers list",
+      "round-robin": "Rotate through team members",
+      "query": "Prompt user for reviewers",
+      "none": "No automatic reviewer assignment"
+    },
+
+    "default_reviewers": ["{{REVIEWER_1}}", "{{REVIEWER_2}}"],
+    "_default_reviewers_description": "List of default reviewer usernames (used when review_strategy is 'list')",
+
+    "members": [
+      {
+        "username": "{{TEAM_MEMBER_1}}",
+        "role": "{{ROLE_1}}",
+        "_role_options": ["developer", "tech-lead", "reviewer"],
+        "availability": "available",
+        "_availability_options": ["available", "limited", "unavailable"]
+      },
+      {
+        "username": "{{TEAM_MEMBER_2}}",
+        "role": "{{ROLE_2}}",
+        "availability": "available"
+      }
+    ],
+    "_members_description": "List of team members with roles and availability (used for round-robin strategy)"
+  },
+
+  "workflow": {
+    "_comment": "Workflow Automation Behavior Settings",
+
+    "commit": {
+      "_comment": "Git commit automation settings",
+      "auto_commit": true,
+      "_auto_commit_description": "Automatically commit changes after each task completion"
+    },
+
+    "pr": {
+      "_comment": "Pull request automation settings",
+      "auto_version_bump": true,
+      "_auto_version_bump_description": "Automatically bump version in package files when creating PR",
+
+      "update_changelog": true,
+      "_update_changelog_description": "Automatically update CHANGELOG.md when creating PR",
+
+      "draft_by_default": false,
+      "_draft_by_default_description": "Create pull requests as drafts by default"
+    }
+  }
+}

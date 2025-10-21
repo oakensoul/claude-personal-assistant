@@ -1,0 +1,15 @@
+{
+  "config_version": "1.0",
+  "vcs": {
+    "provider": "github",
+    "owner": "test",
+    "repo": "repo"
+  },
+  "work_tracker": {
+    "provider": "linear",
+    "linear": {
+      "team_id": "not-a-uuid",
+      "board_id": "987fcdeb-51a2-43f1-9876-543210fedcba"
+    }
+  }
+}

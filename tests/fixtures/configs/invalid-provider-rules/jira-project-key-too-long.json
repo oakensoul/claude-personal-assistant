@@ -1,0 +1,15 @@
+{
+  "config_version": "1.0",
+  "vcs": {
+    "provider": "github",
+    "owner": "test",
+    "repo": "repo"
+  },
+  "work_tracker": {
+    "provider": "jira",
+    "jira": {
+      "base_url": "https://company.atlassian.net",
+      "project_key": "TOOLONGKEY12"
+    }
+  }
+}

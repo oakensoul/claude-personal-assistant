@@ -1,0 +1,60 @@
+{
+  "config_version": "1.0",
+
+  "vcs": {
+    "provider": "github",
+    "owner": "acme-corp",
+    "repo": "enterprise-platform",
+    "main_branch": "main",
+    "auto_detect": true,
+    "github": {
+      "enterprise_url": "https://github.acme-corp.com"
+    }
+  },
+
+  "work_tracker": {
+    "provider": "github_issues",
+    "auto_detect": true,
+    "github_issues": {
+      "enabled": true
+    }
+  },
+
+  "team": {
+    "review_strategy": "round-robin",
+    "default_reviewers": [],
+    "members": [
+      {
+        "username": "alice-smith",
+        "role": "tech-lead",
+        "availability": "available"
+      },
+      {
+        "username": "bob-jones",
+        "role": "developer",
+        "availability": "available"
+      },
+      {
+        "username": "carol-williams",
+        "role": "reviewer",
+        "availability": "limited"
+      },
+      {
+        "username": "david-brown",
+        "role": "developer",
+        "availability": "available"
+      }
+    ]
+  },
+
+  "workflow": {
+    "commit": {
+      "auto_commit": true
+    },
+    "pr": {
+      "auto_version_bump": true,
+      "update_changelog": true,
+      "draft_by_default": false
+    }
+  }
+}

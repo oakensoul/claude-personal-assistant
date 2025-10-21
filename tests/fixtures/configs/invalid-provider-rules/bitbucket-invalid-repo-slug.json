@@ -1,0 +1,10 @@
+{
+  "config_version": "1.0",
+  "vcs": {
+    "provider": "bitbucket",
+    "bitbucket": {
+      "workspace": "my-workspace",
+      "repo_slug": "My-Project"
+    }
+  }
+}
