@@ -170,7 +170,7 @@ jobs:
           stat -c "%a" /tmp/test-file
 
           echo "Testing GNU find command..."
-          find /tmp -name "test-file" -type f
+          find /tmp -maxdepth 1 -name "test-file" -type f 2>/dev/null
 
           echo "Testing md5sum command..."
           echo "test" | md5sum | cut -d' ' -f1
