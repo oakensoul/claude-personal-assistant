@@ -451,7 +451,7 @@ test_vcs_detection() {
 
     detected=$(cd "${TEST_BASE_DIR}" && bash "${REPO_ROOT}/lib/installer-common/vcs-detector.sh" 2>/dev/null)
     assert_jq_equals <(echo "$detected") '.provider' 'bitbucket' "Bitbucket detected"
-    assert_jq_equals <(echo "$detected") '.owner' 'team' "Bitbucket owner detected"
+    assert_jq_equals <(echo "$detected") '.workspace' 'team' "Bitbucket workspace detected"
 
     print_color "$GREEN" "✓ VCS detection scenario passed"
 }
