@@ -44,6 +44,9 @@ jobs:
           # Install bats (test framework)
           brew install bats-core
 
+          # Install JSON Schema validator (required for schema validation)
+          npm install -g ajv-cli ajv-formats
+
       - name: Run unit tests
         run: |
           echo "::group::VCS Detection Tests"
@@ -115,6 +118,9 @@ jobs:
 
           # Install bats (test framework)
           sudo apt-get install -y bats
+
+          # Install JSON Schema validator (required for schema validation)
+          npm install -g ajv-cli ajv-formats
 
       - name: Run unit tests
         run: |
