@@ -173,7 +173,9 @@ extract_github_info() {
         elif [[ "$domain" =~ github ]]; then
             confidence="medium"  # Enterprise GitHub
         else
-            confidence="low"
+            # Domain doesn't match GitHub - reject
+            log_debug "Domain '$domain' is not GitHub, rejecting"
+            return 1
         fi
 
     # Try HTTPS format: https://github.com/owner/repo
@@ -189,7 +191,9 @@ extract_github_info() {
         elif [[ "$domain" =~ github ]]; then
             confidence="medium"  # Enterprise GitHub
         else
-            confidence="low"
+            # Domain doesn't match GitHub - reject
+            log_debug "Domain '$domain' is not GitHub, rejecting"
+            return 1
         fi
     else
         log_debug "URL does not match GitHub patterns: $url"
@@ -241,7 +245,9 @@ extract_gitlab_info() {
         elif [[ "$domain" =~ gitlab ]]; then
             confidence="medium"  # Self-hosted GitLab
         else
-            confidence="low"
+            # Domain doesn't match GitLab - reject
+            log_debug "Domain '$domain' is not GitLab, rejecting"
+            return 1
         fi
 
     # Try HTTPS format: https://gitlab.com/owner/repo
@@ -257,7 +263,9 @@ extract_gitlab_info() {
         elif [[ "$domain" =~ gitlab ]]; then
             confidence="medium"  # Self-hosted GitLab
         else
-            confidence="low"
+            # Domain doesn't match GitLab - reject
+            log_debug "Domain '$domain' is not GitLab, rejecting"
+            return 1
         fi
     else
         log_debug "URL does not match GitLab patterns: $url"
@@ -308,7 +316,9 @@ extract_bitbucket_info() {
         elif [[ "$domain" =~ bitbucket ]]; then
             confidence="medium"  # Self-hosted Bitbucket
         else
-            confidence="low"
+            # Domain doesn't match Bitbucket - reject
+            log_debug "Domain '$domain' is not Bitbucket, rejecting"
+            return 1
         fi
 
     # Try HTTPS format: https://bitbucket.org/workspace/repo
@@ -324,7 +334,9 @@ extract_bitbucket_info() {
         elif [[ "$domain" =~ bitbucket ]]; then
             confidence="medium"  # Self-hosted Bitbucket
         else
-            confidence="low"
+            # Domain doesn't match Bitbucket - reject
+            log_debug "Domain '$domain' is not Bitbucket, rejecting"
+            return 1
         fi
     else
         log_debug "URL does not match Bitbucket patterns: $url"

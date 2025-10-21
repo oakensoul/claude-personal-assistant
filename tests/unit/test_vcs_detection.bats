@@ -733,14 +733,12 @@ teardown() {
   local result
   result=$(detect_vcs_provider)
 
-  # Bug discovered: All providers use same regex, GitHub matches first
-  # GitLab URL is detected as "github" provider
-  # Confidence is "medium" because branch detection succeeds (low + branch = medium)
-  # This is a design issue - extract functions should fail for non-matching domains
-  [ "$(echo "$result" | jq -r '.provider')" = "github" ]
+  # Fixed: Extract functions now validate domain before returning
+  # GitLab URL is now correctly detected as "gitlab" provider
+  [ "$(echo "$result" | jq -r '.provider')" = "gitlab" ]
   [ "$(echo "$result" | jq -r '.owner')" = "mygroup" ]
   [ "$(echo "$result" | jq -r '.repo')" = "myproject" ]
-  [ "$(echo "$result" | jq -r '.confidence')" = "medium" ]
+  [ "$(echo "$result" | jq -r '.confidence')" = "high" ]
 }
 
 @test "detect_vcs_provider: detects Bitbucket from actual git repo" {
@@ -755,14 +753,12 @@ teardown() {
   local result
   result=$(detect_vcs_provider)
 
-  # Bug discovered: All providers use same regex, GitHub matches first
-  # Bitbucket URL is detected as "github" provider
-  # Confidence is "medium" because branch detection succeeds (low + branch = medium)
-  # This is a design issue - extract functions should fail for non-matching domains
-  [ "$(echo "$result" | jq -r '.provider')" = "github" ]
-  [ "$(echo "$result" | jq -r '.owner')" = "workspace" ]
-  [ "$(echo "$result" | jq -r '.repo')" = "repository" ]
-  [ "$(echo "$result" | jq -r '.confidence')" = "medium" ]
+  # Fixed: Extract functions now validate domain before returning
+  # Bitbucket URL is now correctly detected as "bitbucket" provider
+  [ "$(echo "$result" | jq -r '.provider')" = "bitbucket" ]
+  [ "$(echo "$result" | jq -r '.workspace')" = "workspace" ]
+  [ "$(echo "$result" | jq -r '.repo_slug')" = "repository" ]
+  [ "$(echo "$result" | jq -r '.confidence')" = "high" ]
 }
 
 @test "detect_vcs_provider: handles not a git repo gracefully" {
@@ -808,13 +804,12 @@ teardown() {
   local result
   result=$(detect_vcs_provider 2>/dev/null)
 
-  # Bug: Unknown domains still match GitHub pattern
-  # Confidence is "medium" because branch detection succeeds (low + branch = medium)
-  # Should return "unknown" provider but returns "github"
-  [ "$(echo "$result" | jq -r '.provider')" = "github" ]
+  # Fixed: Unknown domains now correctly rejected by all extractors
+  # Returns "unknown" provider as expected
+  [ "$(echo "$result" | jq -r '.provider')" = "unknown" ]
   [ "$(echo "$result" | jq -r '.confidence')" = "medium" ]
-  [ "$(echo "$result" | jq -r '.owner')" = "owner" ]
-  [ "$(echo "$result" | jq -r '.repo')" = "repo" ]
+  [ "$(echo "$result" | jq -r '.owner')" = "unknown" ]
+  [ "$(echo "$result" | jq -r '.repo')" = "unknown" ]
 }
 
 @test "detect_vcs_provider: returns valid JSON structure" {
