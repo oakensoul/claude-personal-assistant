@@ -102,6 +102,16 @@ jobs:
         run: |
           brew install jq
 
+      - name: Install JSON Schema Validator (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          npm install -g ajv-cli ajv-formats
+
+      - name: Install JSON Schema Validator (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          npm install -g ajv-cli ajv-formats
+
       - name: Verify Bats installation
         run: |
           bats --version
