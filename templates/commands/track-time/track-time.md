@@ -1,6 +1,8 @@
 ---
 name: track-time
 description: Log development time with automatic activity detection from git commits and GitHub issues
+category: meta
+version: 1.0.0
 args:
   duration:
     description: Time spent (e.g., "2.5h", "1.5", "90m")
