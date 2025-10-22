@@ -55,7 +55,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/.claude/project/agents/integration-specialist/`
+**Location**: `{project}/.claude/project/context/integration-specialist/`
 
 **Contains**:
 
@@ -91,7 +91,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/.claude/agents/integration-specialist/knowledge/`
-   - Project-level knowledge from `{project}/.claude/project/agents/integration-specialist/`
+   - Project-level knowledge from `{project}/.claude/project/context/integration-specialist/`
 
 2. **Combine Understanding**:
    - Apply user-level integration patterns to project-specific requirements
@@ -108,7 +108,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/.claude/project/agents/integration-specialist/`
+   - Check for existence of `{cwd}/.claude/project/context/integration-specialist/`
    - Identify when project-specific integration knowledge is unavailable
 
 2. **Provide Notice**:
@@ -132,7 +132,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/.claude/project/agents/integration-specialist/` does NOT exist
+   - Check if `{cwd}/.claude/project/context/integration-specialist/` does NOT exist
 
 2. **Remind User**:
 
@@ -180,7 +180,7 @@ Checking for project-level knowledge...
 #### Step 3: Load Project-Level Knowledge (if exists)
 
 ```text
-Loading project-level integration knowledge from {cwd}/.claude/project/agents/integration-specialist/
+Loading project-level integration knowledge from {cwd}/.claude/project/context/integration-specialist/
 - Instructions: [loaded/not found]
 - Services: [loaded/not found]
 - Workflows: [loaded/not found]
@@ -473,7 +473,7 @@ fi
 
 ```bash
 # Look for project integration specialist agent directory
-if [ -d ".claude/project/agents/integration-specialist" ]; then
+if [ -d ".claude/project/context/integration-specialist" ]; then
   PROJECT_INTEGRATION_CONFIG=true
 else
   PROJECT_INTEGRATION_CONFIG=false
@@ -688,7 +688,7 @@ Invokes integration specialist for integration analysis:
 **Check**:
 
 - Is there a `.git` directory?
-- Is `.claude/project/agents/integration-specialist/` present?
+- Is `.claude/project/context/integration-specialist/` present?
 - Run from project root, not subdirectory
 
 ### Agent not using user patterns
@@ -730,7 +730,7 @@ Invokes integration specialist for integration analysis:
 **Related Files**:
 
 - User knowledge: `~/.claude/agents/integration-specialist/knowledge/`
-- Project knowledge: `{project}/.claude/project/agents/integration-specialist/`
+- Project knowledge: `{project}/.claude/project/context/integration-specialist/`
 - Agent definition: `~/.claude/agents/integration-specialist/integration-specialist.md`
 
 **Commands**: `/workflow-init`, `/expert-analysis`

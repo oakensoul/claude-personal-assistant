@@ -61,7 +61,7 @@ Project-specific pipeline implementation:
   - `decisions/` - Build schedules, materialization strategies, tool selection
   - `reference/` - dbt commands, orchestrator CLI, anti-patterns
 
-- **Project-level**: `{project}/.claude/project/agents/data-engineer/index.md`
+- **Project-level**: `{project}/.claude/project/context/data-engineer/index.md`
   - Pipeline architecture and orchestration
   - Source systems catalog
   - dbt project configuration
@@ -155,7 +155,7 @@ The data-engineer agent automatically detects the project context from:
 
 **Project Configuration**:
 
-- Checks for `{project}/.claude/project/agents/data-engineer/index.md`
+- Checks for `{project}/.claude/project/context/data-engineer/index.md`
 - Loads project-specific pipeline architecture if present
 - Uses generic data engineering patterns if project config missing
 

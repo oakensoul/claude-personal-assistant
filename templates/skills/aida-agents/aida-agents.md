@@ -39,11 +39,11 @@ An AIDA agent is a **specialized AI persona** with domain expertise, configured 
 AIDA uses a **two-tier discovery pattern** (defined in ADR-002):
 
 1. **User-Level** (`~/.claude/agents/`): Generic, reusable agents for all projects
-2. **Project-Level** (`./.claude/agents/` or `./.claude/project/agents/`): Project-specific overrides and custom agents
+2. **Project-Level** (`./.claude/project/context/`): Project-specific context and knowledge for agents
 
 **Discovery Order**:
 
-1. Check project-level first (`./.claude/project/agents/`)
+1. Check project-level context first (`./.claude/project/context/`)
 2. Fall back to user-level (`~/.claude/agents/`)
 3. Merge knowledge from both if agent exists at both levels
 
@@ -61,13 +61,13 @@ User-Level Agents:
 │       ├── frameworks/
 │       └── templates/
 
-Project-Level Agents:
-./.claude/project/agents/
+Project-Level Context:
+./.claude/project/context/
 ├── product-manager/
-│   └── index.md                    # Project-specific config
-│       # Extends/overrides user-level agent
+│   └── index.md                    # Project-specific context
+│       # Provides context for user-level agent
 └── custom-project-agent/
-    └── index.md                    # Project-only agent
+    └── index.md                    # Project-only context
 ```
 
 ### File Naming Convention
@@ -186,10 +186,10 @@ Common agent categories (not exhaustive):
 mkdir -p ~/.claude/agents/{agent-name}/knowledge
 ```
 
-**For project-level agent** (project-specific):
+**For project-level context** (project-specific):
 
 ```bash
-mkdir -p ./.claude/project/agents/{agent-name}
+mkdir -p ./.claude/project/context/{agent-name}
 ```
 
 ### Step 3: Create Agent Definition File
@@ -252,7 +252,7 @@ tags: [{relevant-tags}]
 - {Related agents}
 ```
 
-**Project-level** (`./.claude/project/agents/{agent-name}/index.md`):
+**Project-level** (`./.claude/project/context/{agent-name}/index.md`):
 
 ```markdown
 ---
@@ -389,7 +389,7 @@ mkdir -p ~/.claude/agents/{agent-name}/knowledge/{subdomain}
 The `list-agents.sh` CLI script:
 
 1. **Scans user-level**: `~/.claude/agents/*/` for `{agent-name}.md` files
-2. **Scans project-level**: `./.claude/project/agents/*/` for `index.md` files
+2. **Scans project-level**: `./.claude/project/context/*/` for `index.md` files
 3. **Parses frontmatter**: Extracts name, version, description, category
 4. **Deduplicates**: Uses `realpath` to detect symlinks (dev mode)
 5. **Formats output**:
@@ -456,11 +456,11 @@ The `list-agents.sh` CLI script:
 - Broadly applicable knowledge
 - Examples: `code-reviewer`, `sql-expert`, `devops-engineer`
 
-**Project-level agents** (in `./.claude/project/agents/`):
+**Project-level context** (in `./.claude/project/context/`):
 
 - Project-specific context
 - Custom workflows or patterns
-- Extends user-level agents
+- Provides context for user-level agents
 - Examples: `myapp-backend-engineer`, `project-specific-auditor`
 
 ### Knowledge Organization
@@ -542,7 +542,7 @@ The `list-agents.sh` CLI script:
 **Checks**:
 
 1. File named correctly? (`{agent-name}.md` or `index.md`)
-2. In correct directory? (`~/.claude/agents/` or `./.claude/project/agents/`)
+2. In correct directory? (`~/.claude/agents/` or `./.claude/project/context/`)
 3. Frontmatter valid YAML?
 4. Required fields present?
 
@@ -638,10 +638,10 @@ cat ~/.claude/agents/markdown-expert/markdown-expert.md
 
 ```bash
 # Create directory
-mkdir -p ./.claude/project/agents/myapp-api-specialist
+mkdir -p ./.claude/project/context/myapp-api-specialist
 
-# Create agent file
-cat > ./.claude/project/agents/myapp-api-specialist/index.md << 'EOF'
+# Create context file
+cat > ./.claude/project/context/myapp-api-specialist/index.md << 'EOF'
 ---
 name: myapp-api-specialist
 version: 1.0.0

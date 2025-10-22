@@ -1,8 +1,10 @@
 ---
 name: compliance-check
 description: Validate GDPR, CCPA, SOC2, and HIPAA compliance with automated audit trail verification and gap analysis
-model: claude-opus-4-20250514
+model: claude-sonnet-4.5
 type: global
+category: analysis
+version: 1.0.0
 args:
   framework:
     description: Compliance framework to validate (GDPR, CCPA, SOC2, HIPAA, or ALL)

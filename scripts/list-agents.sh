@@ -150,7 +150,7 @@ discover_agents() {
 
         # Check if agent has project context
         local has_context="No"
-        if [[ -d ".claude/project/agents/$name" ]]; then
+        if [[ -d ".claude/project/context/$name" ]]; then
             has_context="Yes"
         fi
 
@@ -274,7 +274,7 @@ main() {
 
     # Discover user-level agents
     # Pattern: ~/.claude/agents/{agent-name}/{agent-name}.md or {agent-name}/index.md
-    # Note: ./.claude/project/agents/ contains project instructions, not agent definitions
+    # Note: ./.claude/project/context/ contains project context, not agent definitions
     if [[ -d "$CLAUDE_CONFIG_DIR/agents" ]]; then
         discover_agents "$CLAUDE_CONFIG_DIR/agents" "*/*.md" "user"
     fi

@@ -105,7 +105,7 @@ reference/
 
 **Locations**:
 
-- **Agent Context**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/system-architect/index.md`
+- **Agent Context**: `{project}/${CLAUDE_CONFIG_DIR}/project/context/system-architect/index.md`
 - **Architecture Docs**: `{project}/docs/architecture/` (ADRs, C4 diagrams, specs)
 
 **Contains**:
@@ -150,7 +150,7 @@ Project-specific context for the system-architect agent:
 
 ```text
 {project}/
-├── .claude/project/agents/system-architect/
+├── .claude/project/context/system-architect/
 │   └── index.md (agent context: project overview, tech stack, pointers)
 └── docs/architecture/
     ├── c4-system-context.md
@@ -169,7 +169,7 @@ Project-specific context for the system-architect agent:
         └── dbt-layering-standards.md (data projects)
 ```
 
-**Important**: ADRs and C4 diagrams are **project documentation**, not agent configuration. They belong in the standard `docs/architecture/` directory where all team members can access them, not buried in `.claude/project/agents/`.
+**Important**: ADRs and C4 diagrams are **project documentation**, not agent configuration. They belong in the standard `docs/architecture/` directory where all team members can access them, not buried in `.claude/project/context/`.
 
 ## Operational Intelligence
 
@@ -179,7 +179,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level architecture knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/system-architect/knowledge/`
-   - Project-level context from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/system-architect/index.md`
+   - Project-level context from `{project}/${CLAUDE_CONFIG_DIR}/project/context/system-architect/index.md`
    - Project architecture docs from `{project}/docs/architecture/` (C4 models, ADRs)
 
 2. **Combine Understanding**:
@@ -200,7 +200,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level Kimball/dbt knowledge from generic patterns
-   - Project-level dimensional models from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/system-architect/`
+   - Project-level dimensional models from `{project}/${CLAUDE_CONFIG_DIR}/project/context/system-architect/`
 
 2. **Combine Understanding**:
    - Apply Kimball principles to project-specific business rules
@@ -219,7 +219,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/system-architect/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/system-architect/`
    - Identify when project-specific architecture documentation is unavailable
 
 2. **Provide Notice**:
@@ -243,7 +243,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/system-architect/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/system-architect/` does NOT exist
 
 2. **Remind User**:
 
@@ -301,7 +301,7 @@ Analyzing project type...
 #### Step 4: Load Project-Level Knowledge (if exists)
 
 ```text
-Loading project-level architecture knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/agents/system-architect/
+Loading project-level architecture knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/context/system-architect/
 - C4 Models: [loaded/not found]
 - ADRs: [loaded/not found]
 - Dimensional Models: [loaded/not found]
@@ -957,7 +957,7 @@ Invokes system-architect agent for parallel analysis:
 
 **Check**:
 
-- Does `${CLAUDE_CONFIG_DIR}/project/agents/system-architect/` exist?
+- Does `${CLAUDE_CONFIG_DIR}/project/context/system-architect/` exist?
 - Are C4 models and ADRs populated?
 - Has `/workflow-init` been run?
 
@@ -996,7 +996,7 @@ If asking "how should the system be architected", use system-architect.
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/system-architect/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/system-architect/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/context/system-architect/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/system-architect/system-architect.md`
 
 **Commands**: `/workflow-init`, `/expert-analysis`

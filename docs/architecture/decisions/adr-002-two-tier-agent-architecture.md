@@ -86,7 +86,7 @@ User-Level (generic):
   - Evaluation frameworks
 
 Project-Level (specific):
-{project}/.claude/project/agents/{agent}/
+{project}/.claude/project/context/{agent}/
   - Project tech stack
   - Architecture decisions (ADRs)
   - C4 models
@@ -120,7 +120,7 @@ Project-Level (specific):
 ```text
 ~/.claude/agents/{agent}/knowledge/          (user)
 ~/org/.claude/agents/{agent}/knowledge/      (organization)
-{project}/.claude/project/agents/{agent}/     (project)
+{project}/.claude/project/context/{agent}/     (project)
 ```
 
 **Pros**:
@@ -192,7 +192,7 @@ Project-Level (specific):
 - Technology evaluation frameworks
 - Cross-project best practices
 
-**Project-Level Knowledge** (`{project}/.claude/project/agents/{agent}/`):
+**Project-Level Knowledge** (`{project}/.claude/project/context/{agent}/`):
 
 - Project-specific architecture (C4 models, ADRs)
 - Technology stack and rationale
@@ -204,9 +204,9 @@ Project-Level (specific):
 
 1. Always load user-level knowledge
 2. Check if in project directory (`.git` exists)
-3. Check if project-level knowledge exists (`.claude/project/agents/{agent}/`)
+3. Check if project-level context exists (`.claude/project/context/{agent}/`)
 4. Combine both tiers if available
-5. Warn if in project but no project-level knowledge
+5. Warn if in project but no project-level context
 
 **Commands**:
 
@@ -221,9 +221,9 @@ Project-Level (specific):
 
 ## Updates
 
-### 2025-10-20: Directory Rename
+### 2025-10-20: Directory Rename (agents-global to project/context)
 
-**What changed**: Project-level agent directory renamed from `.claude/agents-global/` to `.claude/project/agents/`
+**What changed**: Project-level agent directory renamed from `.claude/agents-global/` to `.claude/project/context/`
 
 **Why**: The name "agents-global" was semantically incorrect (implied global scope for project-specific content) and caused confusion in tooling and documentation.
 
@@ -232,4 +232,17 @@ Project-Level (specific):
 **New structure**:
 
 - User-level (global): `~/.claude/agents/{agent}/`
-- Project-level: `.claude/project/agents/{agent}/` ✓ (was: `.claude/agents-global/{agent}/`)
+- Project-level: `.claude/project/context/{agent}/` ✓ (was: `.claude/agents-global/{agent}/`)
+
+### 2025-10-22: Directory Rename (project/agents to project/context)
+
+**What changed**: Project-level directory renamed from `.claude/project/agents/` to `.claude/project/context/`
+
+**Why**: The name "agents" implied these were agent definition files, but they are actually project-specific context for agents defined elsewhere. The new name "context" more accurately reflects the purpose.
+
+**Impact**: All path references updated throughout codebase.
+
+**New structure**:
+
+- User-level (global): `~/.claude/agents/{agent}/`
+- Project-level: `.claude/project/context/{agent}/` ✓ (was: `.claude/project/context/{agent}/`)

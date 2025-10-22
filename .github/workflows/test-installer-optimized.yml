@@ -1,0 +1,441 @@
+name: Installer Tests (Optimized)
+
+on:
+  pull_request:
+    branches:
+      - main
+      - 'milestone-*'
+    paths:
+      - 'lib/**'
+      - 'install.sh'
+      - 'tests/unit/**'
+      - 'tests/integration/**'
+      - 'Makefile'
+      - '.github/workflows/test-installer.yml'
+  workflow_dispatch:
+
+jobs:
+  # ============================================================
+  # Stage 1: Lint & Validation (Parallel)
+  # ============================================================
+  lint-shell:
+    name: Lint Shell Scripts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run shellcheck
+        run: |
+          shellcheck install.sh
+          find lib -name "*.sh" -type f -exec shellcheck {} +
+          bash -n install.sh
+          find lib -name "*.sh" -type f -exec bash -n {} \;
+
+  validate-templates:
+    name: Validate Templates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate template frontmatter
+        continue-on-error: true
+        run: ./scripts/validate-templates.sh --verbose
+
+  # ============================================================
+  # Stage 2: Unit Tests (Reduced Matrix)
+  # ============================================================
+  unit-tests:
+    name: Unit Tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    needs: [lint-shell, validate-templates]
+    strategy:
+      fail-fast: false
+      matrix:
+        # Optimized: Only test latest versions on PRs
+        os: [ubuntu-24.04, macos-14]
+        include:
+          # Add older versions only on release branches
+          - os: ubuntu-22.04
+            if: startsWith(github.base_ref, 'release/')
+          - os: macos-13
+            if: startsWith(github.base_ref, 'release/')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Optimized: Cache Homebrew installations
+      - name: Cache Homebrew packages
+        if: runner.os == 'macOS'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/Homebrew
+            /opt/homebrew/Cellar/bats-core
+            /opt/homebrew/Cellar/jq
+          key: ${{ runner.os }}-brew-${{ hashFiles('.github/workflows/*.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-brew-
+
+      # Optimized: Cache npm packages
+      - name: Cache npm packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y bats jq
+          npm install -g ajv-cli ajv-formats
+
+      - name: Install dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install bats-core jq
+          npm install -g ajv-cli ajv-formats
+
+      - name: Run unit tests
+        run: make test-unit
+
+      # Optimized: Include config-specific tests here
+      - name: Run config-specific unit tests
+        run: |
+          bats tests/unit/test_vcs_detection.bats
+          bats tests/unit/test_config_validation.bats
+          bats tests/unit/test_migration.bats
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results-${{ matrix.os }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ============================================================
+  # Stage 3: Parallel Test Execution
+  # ============================================================
+
+  # Integration tests (runs in parallel with installation/docker)
+  integration-tests:
+    name: Integration Tests (${{ matrix.scenario }})
+    runs-on: ubuntu-24.04
+    needs: unit-tests
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - fresh-install
+          - upgrade-v0.1
+          - upgrade-with-content
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y bats jq
+
+      - name: Setup test fixtures
+        run: |
+          mkdir -p /tmp/test-fixtures
+          cp -r .github/testing/fixtures/* /tmp/test-fixtures/
+
+      - name: Run integration tests
+        run: make test-integration
+        env:
+          TEST_SCENARIO: ${{ matrix.scenario }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results-${{ matrix.scenario }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # Optimized: Removed integration-tests dependency
+  installation-tests:
+    name: Installation Test (${{ matrix.mode }} mode, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    needs: unit-tests  # ✅ Only needs unit tests now
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14]  # Optimized: Latest only
+        mode: [normal, dev]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install jq (Ubuntu)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -qq && sudo apt-get install -y jq
+
+      - name: Install bash 5.x and jq (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install bash jq
+          echo "/opt/homebrew/bin/bash" | sudo tee -a /etc/shells
+
+      - name: Test fresh installation
+        run: |
+          if [ "${{ matrix.mode }}" = "dev" ]; then
+            echo -e "testassistant\n1\n" | ./install.sh --dev
+          else
+            echo -e "testassistant\n1\n" | ./install.sh
+          fi
+
+      - name: Verify installation
+        run: |
+          test -d ~/.aida && echo "✓ ~/.aida exists" || exit 1
+          test -d ~/.claude && echo "✓ ~/.claude exists" || exit 1
+          test -f ~/CLAUDE.md && echo "✓ CLAUDE.md exists" || exit 1
+
+      - name: Verify installation mode
+        run: |
+          if [ -L ~/.aida ]; then
+            echo "✓ ~/.aida is symlinked"
+          else
+            echo "✗ ~/.aida should be symlinked"
+            exit 1
+          fi
+
+          if [ "${{ matrix.mode }}" = "dev" ]; then
+            if [ -L ~/.claude/commands/.aida ]; then
+              echo "✓ Dev mode: symlinked"
+            else
+              echo "✗ Dev mode should be symlinked"
+              exit 1
+            fi
+          else
+            if [ ! -L ~/.claude/commands/.aida ] && [ -d ~/.claude/commands/.aida ]; then
+              echo "✓ Normal mode: copied"
+            else
+              echo "✗ Normal mode should be copied"
+              exit 1
+            fi
+          fi
+
+      - name: Upload installation logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: installation-logs-${{ matrix.mode }}-${{ matrix.os }}
+          path: |
+            ~/.aida/install.log
+            ~/CLAUDE.md
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # Optimized: Docker layer caching + removed integration dependency
+  docker-tests:
+    name: Docker Tests (${{ matrix.platform }})
+    runs-on: ubuntu-latest
+    needs: unit-tests  # ✅ Only needs unit tests now
+    strategy:
+      fail-fast: false
+      matrix:
+        # Optimized: Reduced from 3 to 2 platforms
+        platform:
+          - ubuntu-24.04
+          - debian-12
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Optimized: Add Docker layer caching
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ matrix.platform }}-${{ hashFiles('.github/testing/Dockerfile.${{ matrix.platform }}') }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-${{ matrix.platform }}-
+            ${{ runner.os }}-buildx-
+
+      - name: Build test image
+        run: |
+          docker buildx build \
+            --cache-from type=local,src=/tmp/.buildx-cache \
+            --cache-to type=local,dest=/tmp/.buildx-cache-new,mode=max \
+            --load \
+            -t aida-test:${{ matrix.platform }} \
+            -f .github/testing/Dockerfile.${{ matrix.platform }} \
+            .github/testing/
+
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+      - name: Run tests in container
+        run: |
+          docker run --rm \
+            -v $(pwd):/workspace \
+            -w /workspace \
+            aida-test:${{ matrix.platform }} \
+            make test-all
+
+      - name: Test installation in container
+        run: |
+          docker run --rm \
+            -v $(pwd):/workspace \
+            -w /workspace \
+            aida-test:${{ matrix.platform }} \
+            bash -c 'echo -e "testassistant\n1\n" | ./install.sh'
+
+      - name: Upload Docker test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-test-logs-${{ matrix.platform }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # Optimized: Parallel WSL test execution
+  wsl-tests:
+    name: WSL Tests (${{ matrix.test-type }})
+    runs-on: windows-latest
+    needs: unit-tests  # ✅ Only needs unit tests now
+    strategy:
+      fail-fast: false
+      matrix:
+        test-type: [unit, integration, install-normal, install-dev]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup WSL
+        uses: Vampire/setup-wsl@v2
+        with:
+          distribution: Ubuntu-22.04
+
+      - name: Install test dependencies in WSL
+        shell: wsl-bash {0}
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y bats shellcheck jq make
+
+      - name: Run ${{ matrix.test-type }} test
+        shell: wsl-bash {0}
+        run: |
+          case "${{ matrix.test-type }}" in
+            unit)
+              make test-unit
+              ;;
+            integration)
+              make test-integration
+              ;;
+            install-normal)
+              echo -e "testassistant\n1" | ./install.sh
+              test -d ~/.aida && test -d ~/.claude && test -f ~/CLAUDE.md
+              ;;
+            install-dev)
+              rm -rf ~/.aida ~/.claude ~/CLAUDE.md
+              echo -e "testassistant\n1" | ./install.sh --dev
+              test -L ~/.claude/agents/.aida
+              test -L ~/.claude/commands/.aida
+              readlink ~/.claude/agents/.aida | grep -q "templates/agents"
+              ;;
+          esac
+
+      - name: Upload WSL test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wsl-test-logs-${{ matrix.test-type }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ============================================================
+  # Stage 4: Coverage & Summary
+  # ============================================================
+  coverage:
+    name: Test Coverage Analysis
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y bats jq
+
+      - name: Generate coverage report
+        run: make test-coverage > coverage-report.txt
+
+      - name: Display coverage
+        run: cat coverage-report.txt
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report.txt
+          retention-days: 30
+
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs:
+      - lint-shell
+      - validate-templates
+      - unit-tests
+      - integration-tests
+      - installation-tests
+      - docker-tests
+      - wsl-tests
+      - coverage
+    if: always()
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Generate test summary
+        run: |
+          echo "# Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          [ "${{ needs.lint-shell.result }}" = "success" ] && echo "✅ Shell linting passed" >> $GITHUB_STEP_SUMMARY || echo "❌ Shell linting failed" >> $GITHUB_STEP_SUMMARY
+          [ "${{ needs.validate-templates.result }}" = "success" ] && echo "✅ Template validation passed" >> $GITHUB_STEP_SUMMARY || echo "⚠️  Template validation warnings" >> $GITHUB_STEP_SUMMARY
+          [ "${{ needs.unit-tests.result }}" = "success" ] && echo "✅ Unit tests passed" >> $GITHUB_STEP_SUMMARY || echo "❌ Unit tests failed" >> $GITHUB_STEP_SUMMARY
+          [ "${{ needs.integration-tests.result }}" = "success" ] && echo "✅ Integration tests passed" >> $GITHUB_STEP_SUMMARY || echo "❌ Integration tests failed" >> $GITHUB_STEP_SUMMARY
+          [ "${{ needs.installation-tests.result }}" = "success" ] && echo "✅ Installation tests passed" >> $GITHUB_STEP_SUMMARY || echo "❌ Installation tests failed" >> $GITHUB_STEP_SUMMARY
+          [ "${{ needs.docker-tests.result }}" = "success" ] && echo "✅ Docker tests passed" >> $GITHUB_STEP_SUMMARY || echo "❌ Docker tests failed" >> $GITHUB_STEP_SUMMARY
+          [ "${{ needs.wsl-tests.result }}" = "success" ] && echo "✅ WSL tests passed" >> $GITHUB_STEP_SUMMARY || echo "❌ WSL tests failed" >> $GITHUB_STEP_SUMMARY
+          [ "${{ needs.coverage.result }}" = "success" ] && echo "✅ Coverage analysis completed" >> $GITHUB_STEP_SUMMARY || echo "❌ Coverage analysis failed" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check overall status
+        run: |
+          if [ "${{ needs.lint-shell.result }}" != "success" ] || \
+             [ "${{ needs.unit-tests.result }}" != "success" ] || \
+             [ "${{ needs.integration-tests.result }}" != "success" ] || \
+             [ "${{ needs.installation-tests.result }}" != "success" ] || \
+             [ "${{ needs.docker-tests.result }}" != "success" ] || \
+             [ "${{ needs.wsl-tests.result }}" != "success" ]; then
+            echo "❌ One or more test stages failed"
+            exit 1
+          fi
+          echo "✅ All test stages passed!"

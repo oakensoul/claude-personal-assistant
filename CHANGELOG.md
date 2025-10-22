@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.8] - 2025-10-22
+
+### Added
+
+- **Discoverability Commands Completion** (Issue #54):
+  - Installer integration with discovery script configuration
+  - Discovery scripts made executable during installation
+  - Component counts displayed using JSON output or manual fallback
+  - Display message: "Discover with: /agent-list, /skill-list, /command-list"
+
+### Changed
+
+- **Directory Refactoring**: `.claude/project/agents/` → `.claude/project/context/`
+  - Updated 63 files across codebase for semantic clarity
+  - Context files are not agent definitions, but project-specific knowledge
+  - See ADR-002 update for rationale
+- **Model Cost Optimization**: Migrated 3 components from opus to sonnet
+  - claude-agent-manager: claude-opus-4 → claude-sonnet-4.5
+  - security-audit: opus → sonnet
+  - compliance-check: claude-opus-4 → claude-sonnet-4.5
+
+### Fixed
+
+- **Command Frontmatter**: Added missing category and version to 4 commands
+  - compliance-check, security-audit, generate-docs, track-time
+- **Category Taxonomy**: Updated from 8 proposed to 6 active categories
+  - analysis (11), workflow (10), meta (4), project (2), testing (1), documentation (1)
+
+### Documentation
+
+- Updated CLAUDE.md with Issue #54 completion status
+- Updated category count from 8 to 6 in aida-commands skill documentation
+- Updated last_updated date to 2025-10-22
+
 ## [0.1.7] - 2025-10-20
 
 ### Added
@@ -20,7 +54,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Discoverability Commands** (Issue #54):
   - `/command-list` - List all available commands with category filtering
   - `/agent-list` - List all available agents
-  - `/skill-list` - List all available skills (placeholder)
+  - `/skill-list` - List all available skills
+  - **Configuration Migration**: All 29 commands now have category and version frontmatter
+  - **Category Taxonomy**: Finalized 6 active categories (analysis, workflow, meta, project, testing, documentation)
+  - **Installer Integration**: Discovery scripts configured and made executable during installation
+  - **Component Counts**: Installer displays installed agents, skills, and commands using discovery scripts
 - **CLI Scripts** (`~/.claude/scripts/.aida/`):
   - `list-commands.sh` - Text and JSON output, category filtering
   - `list-agents.sh` - Text and JSON output
@@ -31,18 +69,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `path-sanitizer.sh` - Privacy-aware path sanitization
   - `readlink-portable.sh` - Cross-platform symlink resolution
 - **Architecture Decision Record**:
-  - ADR-003: Rename agents-global to project/agents
+  - ADR-003: Rename agents-global to project/context
 - **Migration System**:
-  - Automatic migration from `.claude/agents-global/` to `.claude/project/agents/`
+  - Automatic migration from `.claude/agents-global/` to `.claude/project/context/`
   - `lib/installer-common/migrations.sh` module
   - Backward compatibility for v0.1.x installations
 
 ### Changed
 
 - **BREAKING**: Directory structure renamed for clarity:
-  - `.claude/agents-global/` → `.claude/project/agents/`
+  - `.claude/agents-global/` → `.claude/project/context/`
   - Rationale: "agents-global" was semantically incorrect (implied global scope for project-specific content)
-  - Migration: Automatic via installer, manual: `mv .claude/agents-global .claude/project/agents`
+  - Migration: Automatic via installer, manual: `mv .claude/agents-global .claude/project/context`
   - See [ADR-003](docs/architecture/decisions/adr-003-rename-agents-global-to-project-agents.md) for details
 
 ### Fixed
@@ -130,7 +168,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- workflow-init command now creates agents in correct `.claude/project/agents/` directory (not `.claude/agents/`)
+- workflow-init command now creates agents in correct `.claude/project/context/` directory (not `.claude/agents/`)
 - workflow-init now creates `index.md` files (not `instructions.md`) for two-tier architecture
 - publish-issue command updated to move (not delete) published drafts to `.github/issues/published/`
 
@@ -157,13 +195,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - data-governance-agent: Data compliance and privacy
   - security-engineer: Security and threat modeling
   - configuration-specialist, integration-specialist, privacy-security-auditor, qa-engineer, shell-script-specialist, shell-systems-ux-designer
-- Two-tier agent architecture documentation in .claude/project/agents/README.md
+- Two-tier agent architecture documentation in .claude/project/context/README.md
 - 7 v0.1.0 milestone issues published (#44-#50) defining command consolidation plan
 
 ### Changed
 
 - Reorganized agents to two-tier architecture:
-  - Global agents moved to .claude/project/agents/ with project-specific context
+  - Global agents moved to .claude/project/context/ with project-specific context
   - Product-manager and tech-lead converted to two-tier structure
   - AIDA framework agents now use global templates
 - Updated templates/commands/README.md to document all 32 current commands

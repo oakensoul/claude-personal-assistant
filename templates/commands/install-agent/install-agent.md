@@ -13,14 +13,14 @@ category: meta
 
 # Install Agent Command
 
-Installs a global two-tier agent into the current project by creating project-specific configuration at `.claude/project/agents/{agent}/index.md` with automatically generated knowledge based on project scanning.
+Installs a global two-tier agent into the current project by creating project-specific configuration at `.claude/project/context/{agent}/index.md` with automatically generated knowledge based on project scanning.
 
 This command is executed by the `claude-agent-manager` agent.
 
 ## Directory Structure
 
 - **User-level agents**: `~/.claude/agents/{agent}/{agent}.md` (generic knowledge, shared across all projects)
-- **Project-level configs**: `.claude/project/agents/{agent}/index.md` (project-specific context, created in current working directory)
+- **Project-level configs**: `.claude/project/context/{agent}/index.md` (project-specific context, created in current working directory)
 
 ## Usage
 
@@ -72,7 +72,7 @@ fi
 
 # Project-specific config location
 CLAUDE_PROJECT_CONFIG="${PROJECT_ROOT}/.claude"
-AGENTS_GLOBAL_DIR="${CLAUDE_PROJECT_CONFIG}/project/agents"
+AGENTS_GLOBAL_DIR="${CLAUDE_PROJECT_CONFIG}/project/context"
 ```
 
 **Validation:**
@@ -140,7 +140,7 @@ For the selected agent(s):
 
 **Check if already installed**:
 
-- Look for `.claude/project/agents/{agent}/index.md` in the current project directory
+- Look for `.claude/project/context/{agent}/index.md` in the current project directory
 
 **If exists**:
 
@@ -769,8 +769,8 @@ Project-specific DataDog monitoring configuration and observability patterns.
 
 ```bash
 # Create in current project directory
-mkdir -p ".claude/project/agents/{agent}"
-mkdir -p ".claude/project/agents/{agent}/knowledge" # Optional, for future use
+mkdir -p ".claude/project/context/{agent}"
+mkdir -p ".claude/project/context/{agent}/knowledge" # Optional, for future use
 ```
 
 **Write index.md**:
@@ -783,7 +783,7 @@ mkdir -p ".claude/project/agents/{agent}/knowledge" # Optional, for future use
 **Set permissions**:
 
 ```bash
-chmod 644 ".claude/project/agents/{agent}/index.md"
+chmod 644 ".claude/project/context/{agent}/index.md"
 ```
 
 ### 7. Display Installation Summary
@@ -800,7 +800,7 @@ Agent Configuration:
 - Type: {detected-project-type}
 
 Created:
-- .claude/project/agents/{agent}/index.md
+- .claude/project/context/{agent}/index.md
 
 Detected Context:
 - Platform: {platform}
@@ -809,7 +809,7 @@ Detected Context:
 
 Next Steps:
 1. Review the generated configuration:
-   cat .claude/project/agents/{agent}/index.md
+   cat .claude/project/context/{agent}/index.md
 
 2. Update TODO sections with project-specific information:
    - {list-key-todos-from-template}
@@ -818,7 +818,7 @@ Next Steps:
    {Example invocation based on agent type}
 
 4. (Optional) Add additional knowledge files:
-   .claude/project/agents/{agent}/knowledge/
+   .claude/project/context/{agent}/knowledge/
 
 The {agent} agent is now aware of your project context!
 ```
@@ -834,7 +834,7 @@ Summary:
 ✓ system-architect (v1.1.0) - Architecture docs template created
 
 Total agents installed: 3
-Review configurations in: .claude/project/agents/
+Review configurations in: .claude/project/context/
 
 Next steps: Review and update TODO sections in each index.md
 ```
@@ -950,7 +950,7 @@ temperature: 0.7
 
 ### Project Configuration Frontmatter
 
-**Project-level index** (`.claude/project/agents/{agent}/index.md` in current project):
+**Project-level index** (`.claude/project/context/{agent}/index.md` in current project):
 
 ```yaml
 ---
@@ -1098,7 +1098,7 @@ Please resolve the issue and try again.
 **Related Files**:
 
 - User-level agents: `~/.claude/agents/{agent}/{agent}.md` (shared across all projects)
-- Project-level config: `.claude/project/agents/{agent}/index.md` (in current project directory)
+- Project-level config: `.claude/project/context/{agent}/index.md` (in current project directory)
 
 **Commands**: `/install-agent`, `/create-agent`, `/workflow-init`
 

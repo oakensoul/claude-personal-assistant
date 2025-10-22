@@ -137,7 +137,7 @@ Claude invokes: scripts/list-agents.sh
 Script executes:
 
 1. Scan ~/.claude/agents/ → parse frontmatter
-2. Scan ./.claude/project/agents/ → parse frontmatter
+2. Scan ./.claude/project/context/ → parse frontmatter
 3. Detect symlinks (realpath comparison)
 4. Format output (Global section, Project section)
 5. Return to Claude

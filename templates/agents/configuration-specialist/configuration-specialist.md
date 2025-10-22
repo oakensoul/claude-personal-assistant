@@ -69,7 +69,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/configuration-specialist/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/context/configuration-specialist/`
 
 **Contains**:
 
@@ -93,7 +93,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/configuration-specialist/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/configuration-specialist/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/context/configuration-specialist/`
 
 2. **Combine Understanding**:
    - Apply generic configuration patterns to project-specific requirements
@@ -111,7 +111,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/configuration-specialist/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/configuration-specialist/`
    - Identify when project-specific knowledge is unavailable
 
 2. **Provide Notice**:
@@ -135,7 +135,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/configuration-specialist/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/configuration-specialist/` does NOT exist
 
 2. **Remind User**:
 
@@ -750,7 +750,7 @@ Run /workflow-init to add project context for tailored configuration design.
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/configuration-specialist/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/configuration-specialist/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/context/configuration-specialist/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/configuration-specialist/configuration-specialist.md`
 
 **Commands**: `/workflow-init`, `/config-validate`

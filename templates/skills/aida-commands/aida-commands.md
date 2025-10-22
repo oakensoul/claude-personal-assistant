@@ -132,14 +132,14 @@ category: workflow              # One of 8 standard categories (REQUIRED)
 
 **IMPORTANT**: Every command MUST have exactly ONE category from this list:
 
-1. **workflow** - Development workflow automation (start-work, open-pr, implement)
-2. **git** - Git operations (commit, branch management, history)
-3. **project** - Project setup, initialization, configuration
-4. **analysis** - Code analysis, auditing, reviews
-5. **deployment** - Deployment, release, environment management
-6. **testing** - Test execution, validation, quality checks
-7. **documentation** - Docs generation, updates, formatting
-8. **meta** - System commands (agent-list, skill-list, command-list, help)
+1. **workflow** - Development workflow automation (start-work, open-pr, implement, cleanup-main)
+2. **analysis** - Code analysis, auditing, reviews, security (code-review, security-audit, compliance-check)
+3. **meta** - System commands (agent-list, skill-list, command-list, create-agent, create-command)
+4. **project** - Project setup, initialization, configuration (workflow-init, github-init, track-time)
+5. **testing** - Test execution, validation, quality checks (test-plan)
+6. **documentation** - Docs generation, updates, formatting (generate-docs)
+
+**Note**: Additional categories (git, deployment) may be added in future as commands are created for those domains.
 
 **Single category only** - Commands cannot belong to multiple categories. This forces clear categorization and simpler filtering.
 
@@ -905,7 +905,7 @@ Use the project's existing test framework and conventions.
 3. No typos in category name?
 4. Not using custom category?
 
-**Fix**: Update category to one of: workflow, git, project, analysis, deployment, testing, documentation, meta
+**Fix**: Update category to one of: workflow, analysis, meta, project, testing, documentation
 
 ### Agent Delegation Fails
 
@@ -1188,7 +1188,7 @@ This skill provides the foundational knowledge about AIDA commands:
 
 - **Architecture**: Two-tier, file-based, frontmatter-driven, namespace-separated
 - **Structure**: Single file per command, .aida namespace for framework commands
-- **Categories**: 8 standard categories (single category per command)
+- **Categories**: 6 active categories (single category per command, expandable to 8+)
 - **Creation**: Clear patterns for user, framework, and project commands
 - **Validation**: Frontmatter, structure, content, category checks
 - **Discovery**: Integration with `list-commands.sh`, category filtering

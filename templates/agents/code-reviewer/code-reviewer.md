@@ -237,7 +237,7 @@ This agent operates with a two-tier knowledge system for code quality standards 
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/context/code-reviewer/`
 
 **Contains**:
 
@@ -260,7 +260,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/code-reviewer/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/context/code-reviewer/`
 
 2. **Combine Understanding**:
    - Apply user-level standards to project-specific requirements
@@ -277,7 +277,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/code-reviewer/`
    - Identify when project-specific knowledge is unavailable
 
 2. **Provide Notice**:
@@ -301,7 +301,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/code-reviewer/` does NOT exist
 
 2. **Remind User**:
 
@@ -339,7 +339,7 @@ fi
 
 ```bash
 # Look for project code review directory
-if [ -d "${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/project/context/code-reviewer" ]; then
   PROJECT_REVIEW_CONFIG=true
 else
   PROJECT_REVIEW_CONFIG=false
@@ -432,7 +432,7 @@ fi
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/code-reviewer/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/code-reviewer/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/context/code-reviewer/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/code-reviewer/code-reviewer.md`
 
 **Commands**: `/workflow-init`

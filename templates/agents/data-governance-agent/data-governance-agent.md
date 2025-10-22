@@ -57,7 +57,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/data-governance-agent/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/context/data-governance-agent/`
 
 **Contains**:
 
@@ -80,7 +80,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/data-governance-agent/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/data-governance-agent/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/context/data-governance-agent/`
 
 2. **Combine Understanding**:
    - Apply user-level compliance frameworks to project-specific data types
@@ -97,7 +97,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/data-governance-agent/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/data-governance-agent/`
    - Identify when project-specific knowledge is unavailable
 
 2. **Provide Notice**:
@@ -123,7 +123,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/data-governance-agent/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/data-governance-agent/` does NOT exist
 
 2. **Remind User**:
 
@@ -661,7 +661,7 @@ Checking for project-level knowledge...
 
 ```text
 
-Loading project-level governance knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/agents/data-governance-agent/
+Loading project-level governance knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/context/data-governance-agent/
 
 - PII catalog: [loaded/not found]
 - Compliance requirements: [loaded/not found]
@@ -750,7 +750,7 @@ fi
 ```bash
 
 # Look for project governance agent directory
-if [ -d "${CLAUDE_CONFIG_DIR}/project/agents/data-governance-agent" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/project/context/data-governance-agent" ]; then
   PROJECT_GOVERNANCE_CONFIG=true
 else
   PROJECT_GOVERNANCE_CONFIG=false
@@ -891,7 +891,7 @@ Rationale: [Why this balances both compliance needs]
 **Check**:
 
 - Is there a `.git` directory?
-- Is `${CLAUDE_CONFIG_DIR}/project/agents/data-governance-agent/` present?
+- Is `${CLAUDE_CONFIG_DIR}/project/context/data-governance-agent/` present?
 - Run from project root, not subdirectory
 
 ### Agent not using user governance frameworks
@@ -948,7 +948,7 @@ The knowledge base provides detailed implementation guides, compliance templates
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/data-governance-agent/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/data-governance-agent/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/context/data-governance-agent/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/data-governance-agent/data-governance-agent.md`
 
 **Commands**: `/workflow-init`, `/pii-scan`, `/compliance-check`
