@@ -14,7 +14,11 @@ RUN apt-get update && apt-get install -y \
     jq \
     coreutils \
     findutils \
+    npm \
     && rm -rf /var/lib/apt/lists/*
+
+# Install JSON Schema validator (required for config validation tests)
+RUN npm install -g ajv-cli ajv-formats
 
 # Verify bash version
 RUN bash --version

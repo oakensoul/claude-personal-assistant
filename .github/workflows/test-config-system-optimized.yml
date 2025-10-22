@@ -1,0 +1,140 @@
+---
+name: Config System Tests (Optimized)
+
+on:
+  pull_request:
+    branches:
+      - main
+      - 'milestone-v**'
+    paths:
+      # Optimized: More specific path filters
+      - 'lib/installer-common/config.sh'
+      - 'lib/installer-common/vcs_detection.sh'
+      - 'lib/aida-config-helper.sh'
+      - 'tests/unit/test_vcs_detection.bats'
+      - 'tests/unit/test_config_validation.bats'
+      - 'tests/unit/test_migration.bats'
+      - 'tests/integration/test_config_workflow.sh'
+      - '.github/workflows/test-config-system.yml'
+  workflow_dispatch:
+
+jobs:
+  # Optimized: Combined into single matrix job
+  test-config-system:
+    name: "Config Tests (${{ matrix.os }})"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14, ubuntu-24.04]  # Latest versions only
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Optimized: Cache dependencies
+      - name: Cache Homebrew packages
+        if: runner.os == 'macOS'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/Homebrew
+            /opt/homebrew/Cellar/bats-core
+            /opt/homebrew/Cellar/jq
+          key: ${{ runner.os }}-brew-${{ hashFiles('.github/workflows/*.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-brew-
+
+      - name: Cache npm packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install jq bats-core
+          npm install -g ajv-cli ajv-formats
+
+      - name: Install dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y jq bats
+          npm install -g ajv-cli ajv-formats
+
+      # Optimized: Run all unit tests in single step
+      - name: Run unit tests
+        run: |
+          echo "::group::All Unit Tests"
+          bats tests/unit/test_vcs_detection.bats
+          bats tests/unit/test_config_validation.bats
+          bats tests/unit/test_migration.bats
+          echo "::endgroup::"
+
+      # Optimized: Run all integration tests in single script
+      - name: Run integration tests
+        run: |
+          echo "::group::All Integration Tests"
+          ./tests/integration/test_config_workflow.sh fresh-install
+          ./tests/integration/test_config_workflow.sh upgrade-migration
+          ./tests/integration/test_config_workflow.sh migration-rollback
+          ./tests/integration/test_config_workflow.sh vcs-detection
+          ./tests/integration/test_config_workflow.sh permissions
+          ./tests/integration/test_config_workflow.sh idempotent
+          echo "::endgroup::"
+
+      - name: Verify platform compatibility
+        run: |
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            echo "Testing BSD compatibility..."
+            touch /tmp/test-file
+            stat -f "%Lp" /tmp/test-file
+            find /tmp -name "test-file" -type f
+            echo "test" | md5 -q
+          else
+            echo "Testing GNU compatibility..."
+            touch /tmp/test-file
+            stat -c "%a" /tmp/test-file
+            find /tmp -maxdepth 1 -name "test-file" -type f 2>/dev/null
+            echo "test" | md5sum | cut -d' ' -f1
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: config-test-results-${{ matrix.os }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  test-summary:
+    name: "Test Summary"
+    runs-on: ubuntu-latest
+    needs: test-config-system
+    if: always()
+
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.test-config-system.result }}" = "success" ]; then
+            echo "✅ All platform tests passed!"
+            echo ""
+            echo "Tested platforms:"
+            echo "  - macOS 14 (BSD userland)"
+            echo "  - Ubuntu 24.04 (GNU userland)"
+            echo ""
+            echo "Test coverage:"
+            echo "  - Unit tests: VCS detection, validation, migration"
+            echo "  - Integration tests: Fresh install, upgrade, rollback, idempotency"
+            echo "  - Platform-specific: BSD vs GNU command compatibility"
+            exit 0
+          else
+            echo "❌ Platform tests failed"
+            echo "Result: ${{ needs.test-config-system.result }}"
+            exit 1
+          fi
