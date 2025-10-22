@@ -1,7 +1,7 @@
 ---
 name: security-audit
 description: Conduct comprehensive security audit of data platform including Snowflake, Metabase, Airbyte, and dbt Cloud with STRIDE threat modeling
-model: opus
+model: sonnet
 args:
   scope:
     description: Audit scope (snowflake, metabase, airbyte, dbt-cloud, encryption, access-control, network, api-security, secrets, all)
