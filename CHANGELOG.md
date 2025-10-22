@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.8] - 2025-10-22
+
+### Added
+
+- **Discoverability Commands Completion** (Issue #54):
+  - Installer integration with discovery script configuration
+  - Discovery scripts made executable during installation
+  - Component counts displayed using JSON output or manual fallback
+  - Display message: "Discover with: /agent-list, /skill-list, /command-list"
+
+### Changed
+
+- **Directory Refactoring**: `.claude/project/agents/` → `.claude/project/context/`
+  - Updated 63 files across codebase for semantic clarity
+  - Context files are not agent definitions, but project-specific knowledge
+  - See ADR-002 update for rationale
+- **Model Cost Optimization**: Migrated 3 components from opus to sonnet
+  - claude-agent-manager: claude-opus-4 → claude-sonnet-4.5
+  - security-audit: opus → sonnet
+  - compliance-check: claude-opus-4 → claude-sonnet-4.5
+
+### Fixed
+
+- **Command Frontmatter**: Added missing category and version to 4 commands
+  - compliance-check, security-audit, generate-docs, track-time
+- **Category Taxonomy**: Updated from 8 proposed to 6 active categories
+  - analysis (11), workflow (10), meta (4), project (2), testing (1), documentation (1)
+
+### Documentation
+
+- Updated CLAUDE.md with Issue #54 completion status
+- Updated category count from 8 to 6 in aida-commands skill documentation
+- Updated last_updated date to 2025-10-22
+
 ## [0.1.7] - 2025-10-20
 
 ### Added
