@@ -3,7 +3,7 @@ title: "CLAUDE.md - Project Instructions"
 description: "Guidance for Claude Code when working with this repository"
 category: "meta"
 tags: ["claude", "instructions", "project-config", "development"]
-last_updated: "2025-10-20"
+last_updated: "2025-10-22"
 status: "published"
 audience: "developers"
 ---
@@ -166,7 +166,7 @@ This project includes three foundational meta-skills that provide comprehensive 
 **Provides knowledge about**:
 
 - Command architecture (slash commands, namespaces, .aida framework commands)
-- Category taxonomy (8 standard categories: workflow, git, project, analysis, deployment, testing, documentation, meta)
+- Category taxonomy (6 active categories: workflow, analysis, meta, project, testing, documentation)
 - Frontmatter schema and command structure
 - Creating, updating, and validating commands
 - Delegation patterns (how commands invoke agents)
@@ -339,15 +339,16 @@ See [docs/architecture/dotfiles-integration.md](docs/architecture/dotfiles-integ
 
 ## Current State
 
-**Active development** - v0.1.6 released with modular installer and .aida namespace installation.
+**Active development** - v0.1.7 released with discoverability commands and category taxonomy.
 
-**In progress** - v0.1.7: Discoverability commands (Issue #54)
+**Completed** - v0.1.7: Discoverability commands (Issue #54)
 
 - ✅ AIDA meta-skills created (`aida-agents`, `aida-skills`, `aida-commands`)
 - ✅ CLI infrastructure built (frontmatter parser, path sanitizer, JSON formatter)
 - ✅ Discovery scripts created (`list-agents.sh`, `list-skills.sh`, `list-commands.sh`)
 - ✅ Slash commands created (`/agent-list`, `/skill-list`, `/command-list`)
 - ✅ `claude-agent-manager` agent updated with meta-skills
-- 🚧 Configuration migration (add category/version to 32 commands)
-- 🚧 Testing & validation
-- 🚧 Installer integration
+- ✅ Configuration migration (29 commands with category/version frontmatter)
+- ✅ Category taxonomy finalized (6 active categories)
+- ✅ Testing & validation complete
+- ✅ Installer integration with discovery script configuration

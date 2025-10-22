@@ -426,6 +426,71 @@ show_installation_summary() {
 }
 
 #######################################
+# Configure discovery scripts and display component counts
+# Makes discovery scripts executable and shows installed components
+# Globals:
+#   CLAUDE_DIR
+# Arguments:
+#   None
+# Returns:
+#   0 on success
+#######################################
+configure_discovery_scripts() {
+    print_message "info" "Configuring discovery scripts..."
+
+    # Make discovery scripts executable
+    local scripts=(
+        "${CLAUDE_DIR}/scripts/.aida/list-agents.sh"
+        "${CLAUDE_DIR}/scripts/.aida/list-skills.sh"
+        "${CLAUDE_DIR}/scripts/.aida/list-commands.sh"
+    )
+
+    for script in "${scripts[@]}"; do
+        if [[ -f "$script" ]]; then
+            chmod +x "$script" || {
+                print_message "warning" "Could not make $script executable"
+            }
+        fi
+    done
+
+    # Get component counts using discovery scripts (with JSON output)
+    local agents=0
+    local skills=0
+    local commands=0
+
+    # Check if jq is available for JSON parsing
+    if command -v jq &>/dev/null; then
+        # Use JSON output for accurate counts
+        if [[ -x "${CLAUDE_DIR}/scripts/.aida/list-agents.sh" ]]; then
+            agents=$("${CLAUDE_DIR}/scripts/.aida/list-agents.sh" --format json 2>/dev/null | jq -r '.count // 0' 2>/dev/null || echo "0")
+        fi
+
+        if [[ -x "${CLAUDE_DIR}/scripts/.aida/list-skills.sh" ]]; then
+            skills=$("${CLAUDE_DIR}/scripts/.aida/list-skills.sh" --format json 2>/dev/null | jq -r '.count // 0' 2>/dev/null || echo "0")
+        fi
+
+        if [[ -x "${CLAUDE_DIR}/scripts/.aida/list-commands.sh" ]]; then
+            commands=$("${CLAUDE_DIR}/scripts/.aida/list-commands.sh" --format json 2>/dev/null | jq -r '.count // 0' 2>/dev/null || echo "0")
+        fi
+    else
+        # Fallback: count directories/files manually
+        agents=$(find "${CLAUDE_DIR}/agents/.aida" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+        skills=$(find "${CLAUDE_DIR}/skills/.aida" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+        commands=$(find "${CLAUDE_DIR}/commands/.aida" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+    fi
+
+    print_message "success" "Discovery scripts configured"
+    echo ""
+    echo "Installed AIDA components:"
+    echo "  Agents:   ${agents}"
+    echo "  Skills:   ${skills}"
+    echo "  Commands: ${commands}"
+    echo ""
+    echo "Discover with: /agent-list, /skill-list, /command-list"
+    echo ""
+}
+
+#######################################
 # Main installation function (orchestrator)
 # Coordinates installation flow by calling modular functions
 # Globals:
@@ -594,6 +659,9 @@ main() {
         print_message "error" "Failed to install CLI scripts"
         exit 1
     }
+
+    # Make discovery scripts executable and display component counts
+    configure_discovery_scripts
 
     # Write user configuration (convert boolean to string)
     local install_mode="normal"

@@ -20,7 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Discoverability Commands** (Issue #54):
   - `/command-list` - List all available commands with category filtering
   - `/agent-list` - List all available agents
-  - `/skill-list` - List all available skills (placeholder)
+  - `/skill-list` - List all available skills
+  - **Configuration Migration**: All 29 commands now have category and version frontmatter
+  - **Category Taxonomy**: Finalized 6 active categories (analysis, workflow, meta, project, testing, documentation)
+  - **Installer Integration**: Discovery scripts configured and made executable during installation
+  - **Component Counts**: Installer displays installed agents, skills, and commands using discovery scripts
 - **CLI Scripts** (`~/.claude/scripts/.aida/`):
   - `list-commands.sh` - Text and JSON output, category filtering
   - `list-agents.sh` - Text and JSON output
