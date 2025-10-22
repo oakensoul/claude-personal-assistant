@@ -49,7 +49,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/context/tech-lead/`
 
 **Contains**:
 
@@ -71,7 +71,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/tech-lead/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/context/tech-lead/`
 
 2. **Combine Understanding**:
    - Apply user-level standards to project-specific constraints
@@ -88,7 +88,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/tech-lead/`
    - Identify when project-specific knowledge is unavailable
 
 2. **Provide Notice**:
@@ -112,7 +112,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/tech-lead/` does NOT exist
 
 2. **Remind User**:
 
@@ -159,7 +159,7 @@ Checking for project-level knowledge...
 #### Step 3: Load Project-Level Knowledge (if exists)
 
 ```text
-Loading project-level tech lead knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/
+Loading project-level tech lead knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/context/tech-lead/
 - Instructions: [loaded/not found]
 - Architecture: [loaded/not found]
 - Decisions: [loaded/not found]
@@ -236,7 +236,7 @@ fi
 
 ```bash
 # Look for project tech lead agent directory
-if [ -d "${CLAUDE_CONFIG_DIR}/project/agents/tech-lead" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/project/context/tech-lead" ]; then
   PROJECT_TECH_CONFIG=true
 else
   PROJECT_TECH_CONFIG=false
@@ -631,7 +631,7 @@ User-level pattern:
 **Check**:
 
 - Is there a `.git` directory?
-- Is `${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/` present?
+- Is `${CLAUDE_CONFIG_DIR}/project/context/tech-lead/` present?
 - Run from project root, not subdirectory
 
 ### Agent not using user standards
@@ -681,7 +681,7 @@ User-level pattern:
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/tech-lead/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/tech-lead/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/context/tech-lead/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/tech-lead/tech-lead.md`
 
 **Commands**: `/workflow-init`, `/expert-analysis`, `/code-review`

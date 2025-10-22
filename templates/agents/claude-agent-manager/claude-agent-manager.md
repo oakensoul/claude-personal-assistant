@@ -4,12 +4,12 @@ version: 2.0.0
 category: meta
 short_description: Agent and command creation with structure and documentation standards
 description: Specialized agent for creating, maintaining, and optimizing Claude Code agents and commands with proper structure, documentation, and knowledge management
-model: claude-opus-4
+model: claude-sonnet-4.5
 color: magenta
 temperature: 0.7
 skills: [aida-agents, aida-skills, aida-commands]
 tags: [meta, agent-management, command-management, skill-management, discovery]
-last_updated: "2025-10-20"
+last_updated: "2025-10-22"
 ---
 
 # Claude Agent Manager

@@ -356,7 +356,7 @@ test_agent_discovery() {
 
     # Project-level context
     cd /path/to/project
-    test -d .claude/project/agents/tech-lead/
+    test -d .claude/project/context/tech-lead/
 
     # Agent should load both
     aida agent list | grep "tech-lead"
@@ -374,7 +374,7 @@ test_workflow_commands() {
 
     # /workflow-init should create structure
     aida workflow-init
-    test -d .claude/project/agents/
+    test -d .claude/project/context/
     test -f .claude/CLAUDE.md
 
     # /start-work should create branch

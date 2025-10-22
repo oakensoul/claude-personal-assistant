@@ -147,7 +147,7 @@ Use this for significant architecture decisions:
 
    ```bash
    cp ~/.claude/agents/system-architect/knowledge/reference/adr-template.md \
-      .claude/project/agents/system-architect/decisions/adr-XXX-title.md
+      .claude/project/context/system-architect/decisions/adr-XXX-title.md
    ```
 
 2. **Number sequentially**: Use next available number (ADR-001, ADR-002, etc.)
@@ -164,7 +164,7 @@ Use this for significant architecture decisions:
    - Implement decision
 
 5. **Update index**:
-   - Add to `.claude/project/agents/system-architect/decisions/README.md`
+   - Add to `.claude/project/context/system-architect/decisions/README.md`
 
 ### When to Use Which Template
 

@@ -89,7 +89,7 @@ AIDA uses a two-phase variable substitution system:
 **Project Configuration**:
 
 - `.claude/agents/` - Project-specific agents
-- `.claude/project/agents/` - Project context for global agents
+- `.claude/project/context/` - Project context for global agents
 - `.claude/commands/` - Project-specific commands
 - `CLAUDE.md` - Project instructions
 

@@ -539,7 +539,7 @@ This agent operates with a two-tier knowledge system for cost optimization exper
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/cost-optimization-agent/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/context/cost-optimization-agent/`
 
 **Contains**:
 
@@ -562,7 +562,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/cost-optimization-agent/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/cost-optimization-agent/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/context/cost-optimization-agent/`
 
 2. **Combine Understanding**:
    - Apply user-level cost optimization philosophy to project budgets
@@ -579,7 +579,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/cost-optimization-agent/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/cost-optimization-agent/`
    - Identify when project-specific cost data is unavailable
 
 2. **Provide Notice**:
@@ -603,7 +603,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/cost-optimization-agent/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/cost-optimization-agent/` does NOT exist
 
 2. **Remind User**:
 
@@ -642,7 +642,7 @@ fi
 
 ```bash
 # Look for project cost optimization directory
-if [ -d "${CLAUDE_CONFIG_DIR}/project/agents/cost-optimization-agent" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/project/context/cost-optimization-agent" ]; then
   PROJECT_COST_CONFIG=true
 else
   PROJECT_COST_CONFIG=false
@@ -677,7 +677,7 @@ Cost optimization managed by this agent should achieve:
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/cost-optimization-agent/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/cost-optimization-agent/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/context/cost-optimization-agent/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/cost-optimization-agent/cost-optimization-agent.md`
 
 **Commands**: `/workflow-init`, `/cost-review`

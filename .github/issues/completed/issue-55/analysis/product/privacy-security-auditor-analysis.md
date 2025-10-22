@@ -11,7 +11,7 @@ status: "draft"
 
 ## Context Detection
 
-**Project-level privacy config**: Found at `.claude/project/agents/privacy-security-auditor/`
+**Project-level privacy config**: Found at `.claude/project/context/privacy-security-auditor/`
 **User-level knowledge**: Not found (using generic best practices)
 
 Proceeding with project-specific privacy standards and generic security principles.

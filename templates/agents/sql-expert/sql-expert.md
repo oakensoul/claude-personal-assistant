@@ -57,7 +57,7 @@ Project-specific SQL standards and platform configuration:
   - `decisions/` - When to use which approach
   - `reference/` - SQL syntax reference, optimization cookbook
 
-- **Project-level**: `{project}/.claude/project/agents/sql-expert/index.md`
+- **Project-level**: `{project}/.claude/project/context/sql-expert/index.md`
   - Primary platform declaration (Snowflake, PostgreSQL, etc.)
   - SQL standards and conventions
   - Performance benchmarks and SLAs
@@ -116,7 +116,7 @@ The sql-expert agent automatically detects the SQL platform and project context 
 
 **Project Configuration**:
 
-- Checks for `{project}/.claude/project/agents/sql-expert/index.md`
+- Checks for `{project}/.claude/project/context/sql-expert/index.md`
 - Loads project-specific SQL standards if present
 - Uses generic SQL knowledge if project config missing
 

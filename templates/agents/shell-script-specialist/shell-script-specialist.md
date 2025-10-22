@@ -69,7 +69,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/shell-script-specialist/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/context/shell-script-specialist/`
 
 **Contains**:
 
@@ -92,7 +92,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/shell-script-specialist/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/shell-script-specialist/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/context/shell-script-specialist/`
 
 2. **Combine Understanding**:
    - Apply user-level standards to project-specific requirements
@@ -109,7 +109,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/shell-script-specialist/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/shell-script-specialist/`
    - Identify when project-specific knowledge is unavailable
 
 2. **Provide Notice**:
@@ -119,7 +119,7 @@ The agent SHOULD:
 
    Providing general shell scripting guidance based on user-level knowledge only.
 
-   For project-specific patterns, add documentation to {project}/${CLAUDE_CONFIG_DIR}/project/agents/shell-script-specialist/
+   For project-specific patterns, add documentation to {project}/${CLAUDE_CONFIG_DIR}/project/context/shell-script-specialist/
    ```
 
 3. **Give General Guidance**:
@@ -133,7 +133,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/shell-script-specialist/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/shell-script-specialist/` does NOT exist
 
 2. **Remind User**:
 
@@ -695,7 +695,7 @@ Scripts developed by this agent should achieve:
 
 Contains generic, reusable shell scripting patterns and best practices that apply across all projects.
 
-**Project-Level Knowledge**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/shell-script-specialist/`
+**Project-Level Knowledge**: `{project}/${CLAUDE_CONFIG_DIR}/project/context/shell-script-specialist/`
 
 Contains project-specific requirements, custom CLI commands, and domain-specific validation rules.
 
@@ -718,5 +718,5 @@ Contains project-specific requirements, custom CLI commands, and domain-specific
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/shell-script-specialist/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/shell-script-specialist/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/context/shell-script-specialist/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/shell-script-specialist/shell-script-specialist.md`

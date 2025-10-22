@@ -354,7 +354,7 @@ When C4 models change due to architecture decisions, create an ADR documenting:
 
 ### In Project Repository
 
-**Location**: `{project}/.claude/project/agents/system-architect/architecture/`
+**Location**: `{project}/.claude/project/context/system-architect/architecture/`
 
 **Files**:
 

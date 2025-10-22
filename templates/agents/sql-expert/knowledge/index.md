@@ -60,7 +60,7 @@ Quick reference materials:
 Knowledge in this directory is **generic** and **reusable** across all projects.
 
 Project-specific SQL standards (SQLFluff rules, CTE naming conventions, performance benchmarks) should be documented in the project-level configuration at:
-`{project}/.claude/project/agents/sql-expert/index.md`
+`{project}/.claude/project/context/sql-expert/index.md`
 
 ## Platform Coverage
 

@@ -41,7 +41,7 @@ This agent operates with a two-tier knowledge system:
 
 ### Tier 2: Project-Level Context (Project-Specific)
 
-**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/technical-writer/`
+**Location**: `{project}/${CLAUDE_CONFIG_DIR}/project/context/technical-writer/`
 
 **Contains**:
 
@@ -63,7 +63,7 @@ The agent MUST:
 
 1. **Load Both Contexts**:
    - User-level knowledge from `~/${CLAUDE_CONFIG_DIR}/agents/technical-writer/knowledge/`
-   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/agents/technical-writer/`
+   - Project-level knowledge from `{project}/${CLAUDE_CONFIG_DIR}/project/context/technical-writer/`
 
 2. **Combine Understanding**:
    - Apply user-level writing style to project-specific content
@@ -80,7 +80,7 @@ The agent MUST:
 The agent SHOULD:
 
 1. **Detect Missing Context**:
-   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/technical-writer/`
+   - Check for existence of `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/technical-writer/`
    - Identify when project-specific documentation knowledge is unavailable
 
 2. **Provide Notice**:
@@ -104,7 +104,7 @@ The agent MUST:
 
 1. **Detect Missing Configuration**:
    - Check if `{cwd}/.git` exists (indicating a project)
-   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/agents/technical-writer/` does NOT exist
+   - Check if `{cwd}/${CLAUDE_CONFIG_DIR}/project/context/technical-writer/` does NOT exist
 
 2. **Remind User**:
 
@@ -151,7 +151,7 @@ Checking for project-level knowledge...
 #### Step 3: Load Project-Level Knowledge (if exists)
 
 ```text
-Loading project-level documentation knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/agents/technical-writer/
+Loading project-level documentation knowledge from {cwd}/${CLAUDE_CONFIG_DIR}/project/context/technical-writer/
 - Terminology Glossary: [loaded/not found]
 - Project Standards: [loaded/not found]
 - Audience Personas: [loaded/not found]
@@ -225,7 +225,7 @@ fi
 
 ```bash
 # Look for project technical-writer agent directory
-if [ -d "${CLAUDE_CONFIG_DIR}/project/agents/technical-writer" ]; then
+if [ -d "${CLAUDE_CONFIG_DIR}/project/context/technical-writer" ]; then
   PROJECT_DOCS_CONFIG=true
 else
   PROJECT_DOCS_CONFIG=false
@@ -760,7 +760,7 @@ Invokes technical-writer agent for documentation generation:
 **Check**:
 
 - Is there a `.git` directory?
-- Is `${CLAUDE_CONFIG_DIR}/project/agents/technical-writer/` present?
+- Is `${CLAUDE_CONFIG_DIR}/project/context/technical-writer/` present?
 - Run from project root, not subdirectory
 
 ### Agent not using user preferences
@@ -838,7 +838,7 @@ Documentation created by this agent should:
 **Related Files**:
 
 - User knowledge: `~/${CLAUDE_CONFIG_DIR}/agents/technical-writer/knowledge/`
-- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/agents/technical-writer/`
+- Project knowledge: `{project}/${CLAUDE_CONFIG_DIR}/project/context/technical-writer/`
 - Agent definition: `~/${CLAUDE_CONFIG_DIR}/agents/technical-writer/technical-writer.md`
 
 **Commands**: `/workflow-init`, `/generate-docs`

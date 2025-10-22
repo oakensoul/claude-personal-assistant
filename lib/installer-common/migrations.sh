@@ -25,7 +25,7 @@
 set -euo pipefail
 
 #######################################
-# Migrate .claude/agents-global/ to .claude/project/agents/
+# Migrate .claude/agents-global/ to .claude/project/context/
 # Arguments:
 #   $1 - Base directory (typically .claude)
 # Returns:
@@ -36,7 +36,7 @@ set -euo pipefail
 migrate_agents_global_to_project() {
     local base_dir="$1"
     local old_path="${base_dir}/agents-global"
-    local new_path="${base_dir}/project/agents"
+    local new_path="${base_dir}/project/context"
 
     # Check if old directory exists
     if [[ ! -d "$old_path" ]]; then
@@ -64,7 +64,7 @@ migrate_agents_global_to_project() {
         return 1
     }
 
-    print_message "success" "Migration complete: agents-global → project/agents"
+    print_message "success" "Migration complete: agents-global → project/context"
     return 0
 }
 
@@ -85,9 +85,9 @@ run_migrations() {
     # Run each migration
     local migrations_run=0
 
-    # Migration 1: agents-global → project/agents (v0.2.0)
+    # Migration 1: agents-global → project/context (v0.2.0)
     if migrate_agents_global_to_project "$claude_dir"; then
-        if [[ -d "${claude_dir}/project/agents" ]]; then
+        if [[ -d "${claude_dir}/project/context" ]]; then
             ((migrations_run++))
         fi
     fi
@@ -118,7 +118,7 @@ check_migrations_needed() {
     local claude_dir="${CLAUDE_DIR:-$HOME/.claude}"
 
     # Check for agents-global
-    if [[ -d "${claude_dir}/agents-global" ]] && [[ ! -d "${claude_dir}/project/agents" ]]; then
+    if [[ -d "${claude_dir}/agents-global" ]] && [[ ! -d "${claude_dir}/project/context" ]]; then
         return 0  # Migration needed
     fi
 

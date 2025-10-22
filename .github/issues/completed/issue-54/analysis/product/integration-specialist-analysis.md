@@ -57,8 +57,8 @@ Analysis of integration patterns and system integration concerns for implementin
 # Two-tier discovery (user + project level)
 ~/.claude/agents/          # User-level agents (global)
 ./.claude/agents/          # Project-level agents (standalone)
-~/.claude/project/agents/   # User-level extensions (symlinks)
-./.claude/project/agents/   # Project-level extensions
+~/.claude/project/context/   # User-level extensions (symlinks)
+./.claude/project/context/   # Project-level extensions
 
 # Commands
 ~/.claude/commands/        # User-level commands (via symlink to templates)
